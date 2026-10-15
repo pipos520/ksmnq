@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡师模拟器 · 你不对劲·世界观</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+body {
+  font-family: "Zpix", "Pixel", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: repeating-linear-gradient(0deg, #f3ead9 0px, #f3ead9 32px, #e8d9bb 32px, #e8d9bb 64px);
+  color: #3a2a18; min-height: 100vh;
+}
+.pixel-top { height: 16px; background: repeating-linear-gradient(90deg, #8a5a2b 0 48px, #c9a26a 48px 96px, #d9b98a 96px 144px, #6b4423 144px 192px, #a67c3d 192px 240px); border-bottom: 4px solid #3a2a18; }
+.container { max-width: 920px; margin: 0 auto; padding: 40px 20px 60px; }
+.logo-area { text-align: center; margin-bottom: 30px; }
+.logo-badge { display: inline-block; padding: 18px 40px; background: #fff; border: 4px solid #3a2a18; box-shadow: 8px 8px 0 #3a2a18; margin-bottom: 20px; }
+.logo-title { font-size: 9vw; font-weight: 900; letter-spacing: 0.5vw; color: #3a2a18; white-space: nowrap; text-shadow: 0.08em 0.08em 0 #c9a26a, 0.16em 0.16em 0 #8a5a2b; }
+@media (max-width: 640px) { .logo-title { font-size: 13vw; letter-spacing: 0.6vw; } }
+.logo-sub { margin-top: 16px; font-size: 18px; color: #3a2a18; letter-spacing: 6px; font-weight: 700; background: #c9a26a; display: inline-block; padding: 6px 24px; border: 3px solid #3a2a18; box-shadow: 4px 4px 0 #3a2a18; }
+.download-section { text-align: center; margin: 30px 0; }
+.pixel-btn { position: relative; display: inline-block; padding: 14px 34px; font-size: 18px; font-weight: 900; letter-spacing: 2px; text-decoration: none; color: #3a2a18; border: 4px solid #3a2a18; transition: none; cursor: pointer; }
+.pixel-btn:active { transform: translate(4px, 4px); box-shadow: none !important; }
+.back-btn { background: #c9a26a; box-shadow: 6px 6px 0 #3a2a18; }
+.jump-nav { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 24px 0; }
+.jump-tag { display: inline-block; padding: 10px 22px; background: #8a5a2b; border: 3px solid #3a2a18; box-shadow: 3px 3px 0 #3a2a18; font-size: 15px; font-weight: 900; color: #fff; text-decoration: none; transition: none; }
+.jump-tag:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #3a2a18; }
+.jump-tag:hover { background: #c9a26a; color: #3a2a18; }
+.pixel-card { background: #fff; border: 4px solid #3a2a18; box-shadow: 8px 8px 0 rgba(58,42,24,0.9); padding: 28px; margin: 28px 0; scroll-margin-top: 20px; }
+.pixel-card h2 { font-size: 22px; margin-bottom: 14px; color: #3a2a18; display: inline-block; padding: 4px 14px; background: #d9b98a; border: 3px solid #3a2a18; box-shadow: 3px 3px 0 #3a2a18; letter-spacing: 2px; }
+.pixel-card p { line-height: 1.9; font-size: 15px; font-weight: 500; }
+.card-toggle { display: block; width: 100%; padding: 14px 20px; background: #d9b98a; border: 3px solid #3a2a18; box-shadow: 4px 4px 0 #3a2a18; font-family: inherit; font-size: 15px; font-weight: 900; color: #3a2a18; cursor: pointer; text-align: left; letter-spacing: 1px; margin-bottom: 8px; }
+.card-toggle:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #3a2a18; }
+.card-toggle::after { content: "▶"; float: right; transition: transform 0.2s; }
+.card-toggle.open::after { transform: rotate(90deg); }
+.card-content { display: none; border: 3px solid #3a2a18; border-top: none; background: #fff; padding: 16px; margin-bottom: 8px; }
+.card-content.open { display: block; }
+.card-list { display: flex; flex-direction: column; gap: 10px; }
+.card-item { border: 2px solid #3a2a18; background: #fffdf5; padding: 10px 12px; box-shadow: 3px 3px 0 #3a2a18; }
+.ci-line1 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ci-name { font-weight: 900; font-size: 15px; }
+.ci-star { font-size: 13px; letter-spacing: 2px; }
+.ci-cost { margin-left: auto; background: #8a5a2b; color: #fff; border: 2px solid #3a2a18; padding: 2px 10px; font-weight: 900; font-size: 12px; }
+.ci-line2 { margin-top: 4px; font-size: 12px; color: #6b5535; display: flex; gap: 14px; }
+.ci-num { color: #999; }
+.ci-ah { font-weight: 700; }
+.ci-line3 { margin-top: 6px; font-size: 13px; line-height: 1.6; color: #3a2a18; }
+.ci-recipe { margin-top: 4px; padding: 3px 6px; font-size: 12px; color: #5a3a15; background: rgba(201,162,106,0.25); border-top: 1px dashed #8a5a2b; }
+.ci-flavor { margin-top: 4px; padding: 3px 6px; font-size: 12px; color: #5a3a15; background: rgba(217,185,138,0.5); border-top: 1px dashed #c9a26a; font-style: italic; }
+.star-1 { color: #95a5a6; } .star-2 { color: #c9a26a; } .star-3 { color: #8a5a2b; font-weight: 900; }
+@media (max-width: 640px) { .ci-name { font-size: 14px; } .ci-line3 { font-size: 12px; } }
+.lore-inner { font-size: 14px; line-height: 1.85; }
+.lore-inner h4 { font-size: 15px; margin: 14px 0 6px; color: #3a2a18; border-left: 5px solid #8a5a2b; padding-left: 10px; letter-spacing: 1px; }
+.lore-inner p { margin: 8px 0; }
+.lore-inner ul { margin: 6px 0 10px 20px; }
+.lore-inner li { margin: 4px 0; }
+.lore-inner table.dt { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 13px; }
+.lore-inner table.dt th, .lore-inner table.dt td { border: 1px solid #3a2a18; padding: 6px 8px; text-align: left; }
+.lore-inner table.dt th { background: #f3ead9; }
+.lore-quote { border-left: 4px solid #8a5a2b; background: #f3ead9; padding: 10px 14px; margin: 10px 0; font-style: italic; }
+.doc-h1 { font-size: 17px; font-weight: 900; margin: 16px 0 6px; color: #3a2a18; border-left: 6px solid #d9b98a; padding-left: 10px; letter-spacing: 1px; }
+.doc-h2 { font-size: 15px; font-weight: 900; margin: 12px 0 4px; color: #3a2a18; border-left: 4px solid #c9a26a; padding-left: 8px; }
+.doc-h3 { margin: 8px 0 2px; }
+.dhr { border: none; border-top: 3px dashed #8a5a2b; margin: 16px 0; }
+.footer { text-align: center; padding: 30px 20px; font-size: 13px; color: #6b5535; border-top: 4px solid #3a2a18; background: #fff; }
+</style>
+</head>
+<body>
+<div class="pixel-top"></div>
+<div class="container">
+  <div class="logo-area">
+    <div class="logo-badge"><div class="logo-title">卡师模拟器</div></div>
+    <div class="logo-sub">你不对劲 · 同居小情侣单元剧</div>
+  </div>
+  <div class="download-section">
+    <a class="pixel-btn back-btn" href="index.html">← 返回首页下载游戏</a>
+  </div>
+  <div class="jump-nav">
+    <a class="jump-tag" href="#novel">📖 小说</a>
+    <a class="jump-tag" href="#chars">👤 角色信息</a>
+    <a class="jump-tag" href="#cards">🃏 卡包</a>
+  </div>
+  <div class="lore-quote" style="max-width:860px;margin:20px auto;">「围巾拆了重织，下一条不歪。戒指戴左手，怕掉。」</div>
+  <div class="pixel-card" id="novel">
+    <h2>📖 小说 · 单元剧</h2>
+    <table class="dt"><thead><tr><th>章节</th><th>标题</th><th>状态</th></tr></thead></table>
+<table class="dt"><thead><tr><th>序章一</th><th>初见</th><th>✅ 已完结</th></tr></thead></table>
+<table class="dt"><thead><tr><th>序章二</th><th>同居</th><th>✅ 已完结</th></tr></thead></table>
+<table class="dt"><thead><tr><th>第一单元</th><th>半夜亮灯</th><th>✅ 已完结</th></tr></thead></table>
+<table class="dt"><thead><tr><th>第二单元</th><th>（待写）</th><th>模板见《你不对劲》·设定.txt</th></tr></thead></table>
+<table class="dt"><thead><tr><th>后续</th><th>生日 / 纪念日 / 见家长 / 情人节…</th><th>可无限扩展</th></tr></thead></table>
+<hr class="dhr">
+    <button class="card-toggle " onclick="toggleCards(this)">📖 展开单元索引</button>
+<div class="card-content"><div class="lore-inner"><table class="dt"><thead><tr><th>章节</th><th>标题</th><th>状态</th></tr></thead></table>
+<table class="dt"><thead><tr><th>序章一</th><th>初见</th><th>✅ 已完结</th></tr></thead></table>
+<table class="dt"><thead><tr><th>序章二</th><th>同居</th><th>✅ 已完结</th></tr></thead></table>
+<table class="dt"><thead><tr><th>第一单元</th><th>半夜亮灯</th><th>✅ 已完结</th></tr></thead></table>
+<table class="dt"><thead><tr><th>第二单元</th><th>（待写）</th><th>模板见《你不对劲》·设定.txt</th></tr></thead></table>
+<table class="dt"><thead><tr><th>后续</th><th>生日 / 纪念日 / 见家长 / 情人节…</th><th>可无限扩展</th></tr></thead></table>
+<hr class="dhr"></div></div><button class="card-toggle " onclick="toggleCards(this)">📖 展开序章一 · 初见</button>
+<div class="card-content"><div class="lore-inner"><p>宋迟公司楼下有家花店，门脸不大，门口摆着两排绿萝。</p>
+<p>那天他下班路过，店里一个小姑娘正蹲在台阶上剪花枝，头也不抬："买花？"</p>
+<p>"看看。"</p>
+<p>"看可以，别踩我花盆。"</p>
+<p>宋迟低头，脚边果然放着一排挪出来的花盆。他往后退了一步："……你这店也太随意了。"</p>
+<p>"小本生意，没工夫收拾。"小姑娘站起来，拍拍围裙上的土，"要什么？"</p>
+<p>"有没有好养活的？"</p>
+<p>"仙人掌。"</p>
+<p>"……还有呢？"</p>
+<p>"绿萝，十五。"</p>
+<p>"十块。"</p>
+<p>小姑娘上下打量他一眼："你是今天头一个跟我砍价的。"</p>
+<p>"那卖不卖？"</p>
+<p>"卖。"她把绿萝往他面前一推，"扫码。"</p>
+<p>宋迟扫了码，抱着绿萝走了两步，又回头："几天浇一次水？"</p>
+<p>"三天，别晒大太阳。"</p>
+<p>"行。"</p>
+<p>第二天宋迟又来了。小姑娘正在给花换水，看见他："绿萝死了？"</p>
+<p>"没死。"宋迟把绿萝放柜台上，"就是桌上太素了，想配点带花的。"</p>
+<p>小姑娘看了他两秒，从桶里抽出一支白雏菊，插进绿萝盆里："送你的。"</p>
+<p>宋迟低头看着那支雏菊，又抬头看她："那我明天还来，你明天还送吗？"</p>
+<p>"……你脸皮挺厚。"</p>
+<p>"跟你学的。"</p>
+<p>"我没教过你。"</p>
+<p>"你教我砍价了。"宋迟抱着绿萝往外走，"明天见。"</p>
+<p>后来宋迟隔三差五就去那家花店。有时候买支雏菊，有时候什么都不买，站门口看一会儿。小姑娘从"又来了"变成"今天要什么"，再后来不用他开口，直接递他一朵。</p>
+<p>有天下班，宋迟在门口站了半天。小姑娘问："今天不买花？"</p>
+<p>"……我想问个事。你们店，缺不缺人？"</p>
+<p>"缺啊，缺个会养花的。"小姑娘头也不抬，"你会吗？"</p>
+<p>"不会。"</p>
+<p>"那招你干嘛？"</p>
+<p>"我买花。"宋迟说，"你店里的花我快买一遍了。我每天来帮你搬花、浇水、跑腿，工钱不要，你每天给我配一枝花就行。"</p>
+<p>小姑娘手里的剪刀停了，抬头看他："……你叫什么？"</p>
+<p>"宋迟。网店客服，下班早。"</p>
+<p>"姜糖。"她把剪刀放下，"这店不是我开的，招人得问店长。"</p>
+<p>"那我什么时候能问？"</p>
+<p>"她周一在。"</p>
+<p>"那我周一再来。"</p>
+<p>宋迟转身走了。姜糖站在门口看着他的背影，低头看了看桶里插着的雏菊，把那支开得最好的抽出来，放到了柜台上。</p>
+<p>（序章一完）</p>
+<hr class="dhr"></div></div><button class="card-toggle " onclick="toggleCards(this)">📖 展开序章二 · 同居</button>
+<div class="card-content"><div class="lore-inner"><p>姜糖和宋迟交往快一年了。</p>
+<p>这一年里，宋迟还是每天去花店。说好"每天配一枝花"，他真的一天没断过。有时候店里忙，他就蹲门口等；有时候下雨，他打着伞站外面，伞尖滴水，怀里抱着绿萝盆——那盆绿萝已经换过两次盆了，枝蔓垂到柜台上，姜糖说要给他换棵大的，他不肯，说这棵是他买的。</p>
+<p>姜糖的东西也开始慢慢往宋迟那儿搬。</p>
+<p>最开始是周末留宿。然后是换洗衣服，一个背包；然后是护肤品，一抽屉；然后是书，一摞；然后是冬天的厚外套，直接挂进了他衣柜。</p>
+<p>宋迟的衣柜本来就不大，被姜糖的裙子占去一半。他也没说什么，自己把外套叠起来放床尾。</p>
+<p>有天晚上，姜糖在宋迟那儿洗完澡，穿着他的大T恤坐在沙发上擦头发。宋迟从厨房端出两杯水，坐她旁边，电视开着，谁也没看。</p>
+<p>过了会儿，姜糖说："我那儿房租快到期了。"</p>
+<p>"嗯。"</p>
+<p>"续了一年，押金加房租，小一万。"</p>
+<p>宋迟"嗯"了一声，喝了口水。</p>
+<p>姜糖等了半天，没等到下文，转头看他："你就不说点啥？"</p>
+<p>宋迟放下杯子："你东西都搬得差不多了。"</p>
+<p>"……那是我放你这儿暂放的。"</p>
+<p>"暂放一年了。"</p>
+<p>姜糖噎住："……你什么意思？"</p>
+<p>"没什么意思。"宋迟看着电视，"就是想说，你放我这儿的东西，没一件是来拿的。"</p>
+<p>"那是我忘了。"</p>
+<p>"你连冬天的外套都没拿回去过。"宋迟说，"三月了，外套还在我衣柜里。"</p>
+<p>姜糖不说话了。</p>
+<p>电视里在放一个家居广告，俩人在新装修的房子里搬家具。宋迟拿起遥控器，把电视关了。</p>
+<p>"我这儿两室一厅，主卧我住，次卧堆了俩箱子，一直没收拾。"他说，"你要是愿意，次卧收拾出来给你放花。"</p>
+<p>姜糖愣了一下："……放花？"</p>
+<p>"你不是老说你那几盆花放店里没太阳吗？"宋迟说，"次卧朝南，一天能晒到晚。你把你那些花搬过来，我给你钉个花架。"</p>
+<p>"……我搬过来，就为了放花？"</p>
+<p>"你搬过来，花有地方放，你也有地方住。"宋迟顿了顿，"房租不用你出，你负责交水电就行。"</p>
+<p>"……你算盘打得挺响。"</p>
+<p>"嗯，我算盘打得响。"宋迟看着她，"你就说来不来。"</p>
+<p>姜糖低头看自己脚上的拖鞋——是宋迟的，大了两码。她脚边还放着一个纸箱，里面是她下午带来的几本书，还没往他书架上放。</p>
+<p>"来。"她说。</p>
+<p>搬家那天是周六。宋迟一大早就起来，把次卧的俩纸箱搬到阳台，又把主卧衣柜腾出一半，俩抽屉清出来贴了标签：一个写"姜糖·零碎"，一个写"姜糖·袜子"。</p>
+<p>姜糖拎着行李箱进门，看见衣柜上贴的标签，愣了两秒："……袜子还要单独一个抽屉？"</p>
+<p>"你东西多。"</p>
+<p>"我东西不多。"</p>
+<p>宋迟看了她一眼："昨晚上你朋友圈发'收拾东西收拾出三大箱'。"</p>
+<p>"……你翻我朋友圈。"</p>
+<p>"你发朋友圈不就是让人看的。"宋迟说着，从楼下拎上来俩新牙刷架，一个粉色一个蓝色，往洗手台上一放，"你挑一个。"</p>
+<p>"……我挑粉的。"</p>
+<p>"行，粉的归你，蓝的归我。"</p>
+<p>姜糖看着他往洗手台上摆牙刷架，又看看客厅——次卧的门开着，里面墙边已经钉好了一排木架，上面空空的，等着放花。</p>
+<p>"宋迟。"</p>
+<p>"嗯？"</p>
+<p>"你什么时候钉的？"</p>
+<p>"昨天晚上。"宋迟头也没回，"你那几盆绿萝，明天我骑车给你搬过来。"</p>
+<p>姜糖站在门口，看着那排空木架，好一会儿没说话。</p>
+<p>"……宋迟。"</p>
+<p>"嗯？"</p>
+<p>"我俩这就……住一块儿了？"</p>
+<p>"嗯。"宋迟把牙刷架摆正，"你牙刷换新的吗？家里只有我的。"</p>
+<p>"换。"姜糖说，"晚上去买。"</p>
+<p>"行。"宋迟回头看了她一眼，"冰箱里有牛奶，你先喝，我去楼下买个晾衣架，阳台那个是坏的。"</p>
+<p>他出门的时候，姜糖站在客厅里，看着腾出来的一半衣柜、贴了标签的抽屉、粉色牙刷架，还有冰箱上新买的一排牛奶。</p>
+<p>那天晚上，两人并排躺在主卧的床上。床单是宋迟新换的，还带着洗衣液的味道。</p>
+<p>姜糖直挺挺躺着，盯着天花板，心跳快得像打鼓。宋迟躺她旁边，也是直挺挺的，大气不敢出。</p>
+<p>过了很久，黑暗里宋迟轻声说："……明天早上，楼下有煎饼摊，鸡蛋灌饼挺好吃的。"</p>
+<p>"……嗯。"</p>
+<p>"你要吃吗？"</p>
+<p>"……要。"</p>
+<p>"那我给你带。"</p>
+<p>又过了很久，姜糖说："宋迟。"</p>
+<p>"嗯？"</p>
+<p>"你被子盖反了。"</p>
+<p>"……"宋迟翻身坐起来，把被子翻了个面，又躺下，"睡觉。"</p>
+<p>"睡。"姜糖也翻了个身，背对着他，嘴角翘着，没让他看见。</p>
+<p>（序章二完）</p>
+<hr class="dhr"></div></div><button class="card-toggle " onclick="toggleCards(this)">📖 展开第一单元 · 半夜亮灯</button>
+<div class="card-content"><div class="lore-inner"><p>姜糖搬进宋迟的小出租屋，到今天正好一百天。</p>
+<p>一百天前，宋迟把衣柜腾出一半给她挂衣服，腾出两个抽屉给她放零碎，又去楼下买了俩新牙刷架，一个粉色一个蓝色。姜糖当时觉得这人靠谱，结果同居第一百天的凌晨三点，她蹲在客厅地上，觉得这人可能没那么靠谱了。</p>
+<p>——因为她正往沙发垫底下塞一条织了一半的围巾。</p>
+<p>围巾是墨绿色的，针脚歪歪扭扭，姜糖学了三礼拜视频，拆了五回，终于织出个能看出是围巾的形状。宋迟生日在后天，她想给个惊喜，白天没空织，只能半夜爬起来偷偷织两行，织完再塞回沙发垫底下。</p>
+<p>今晚她刚塞到一半，客厅灯"啪"地亮了。</p>
+<p>宋迟站在卧室门口，手里端着个杯子，显然也是出来倒水的。</p>
+<p>两人隔着一个沙发对视。姜糖手里还攥着半条围巾，墨绿色的毛线尾巴从沙发垫底下垂出来，晃啊晃。</p>
+<p>"……你还没睡？"宋迟问，眼睛往她手里瞟。</p>
+<p>"……你也没睡。"姜糖把围巾往背后一藏，"怎么，倒水还是盯梢？"</p>
+<p>"倒水，顺带看看我对象半夜蹲客厅干嘛。"</p>
+<p>"看到了？"</p>
+<p>"看到了。"宋迟喝了口水，"藏得挺好，就是尾巴露出来了。"</p>
+<p>"……你瞎了。"</p>
+<p>"行，我瞎了。"宋迟转身回卧室，"你继续，别冻着。"</p>
+<p>各自回屋，都心想：完了，被发现了。</p>
+<p>第二天，姜糖在花店上班，脑子里全是昨晚那幕。她想：他肯定看见围巾了。他要是知道我在给他织围巾，生日就没惊喜了。得换个藏的地方。</p>
+<p>她把毛线从沙发垫底下掏出来，塞进衣柜最上层，拿两件不穿的毛衣盖住。又想：不行，他万一翻衣柜呢？又掏出来，塞进阳台洗衣机的滚筒里——反正最近不用洗衣机。</p>
+<p>宋迟那边也没闲着。他白天在网店当客服，趁着回复间隙，点开一个金饰店的对话框。</p>
+<p>"哥，那枚戒指，能再便宜点吗？"</p>
+<p>对面秒回："哥，你都砍了半个月了。这价真到底了。"</p>
+<p>宋迟发了个"求求了"的表情包，又说："我对象手指细，能不能先拿个样品我量量？"</p>
+<p>对面回："行，下午你过来，别带对象啊。"</p>
+<p>宋迟回了个"放心"。他关掉对话框，又翻了翻上个月的聊天记录，一条不剩，全删干净了。</p>
+<p>晚上回到家，姜糖已经做好了饭。两菜一汤，番茄炒蛋、拍黄瓜、紫菜蛋花汤，都是他俩这几天新学的。</p>
+<p>宋迟洗手坐下，先夹了一筷子番茄炒蛋："好吃。"</p>
+<p>姜糖"嗯"了一声，低头扒饭。过了会儿，她问："你最近老看手机，是不是有事？"</p>
+<p>宋迟筷子顿了一下："没有，工作群。你呢，半夜老亮灯。"</p>
+<p>"……看小说。"</p>
+<p>"什么小说？"</p>
+<p>"……霸道总裁。"</p>
+<p>"霸道总裁半夜不睡觉，在客厅织毛衣？"</p>
+<p>姜糖筷子一停："……你看见了？"</p>
+<p>"看见什么？"</p>
+<p>"……没什么。"姜糖夹了一筷子拍黄瓜，"那你呢，你工作群白天聊不完，非得半夜聊？"</p>
+<p>"群里有夜班同事。"</p>
+<p>"什么同事，女的吧。"</p>
+<p>"男的。"</p>
+<p>"男的你删什么聊天记录？"</p>
+<p>宋迟筷子也停了："……你翻我手机了？"</p>
+<p>"没翻。"姜糖慢悠悠地说，"你删记录的时候我看见了。"</p>
+<p>"……那是工作群误删。"</p>
+<p>"哦，工作群。"姜糖点头，"你工作群真忙，半夜还给你发戒指的图。"</p>
+<p>宋迟呛了一下："……什么戒指，你看错了。"</p>
+<p>"看错了吗？"姜糖盯着他，"那你手机屏幕怎么突然暗了。"</p>
+<p>宋迟低头——他刚才下意识按了锁屏键。手机黑屏。</p>
+<p>"……"宋迟把手机塞回兜里，"吃饭。"</p>
+<p>"吃。"姜糖给他碗里夹了块番茄，"多吃点，别半夜又爬起来倒水。"</p>
+<p>"……你也是，别半夜又爬起来看霸道总裁。"</p>
+<p>"管得着吗。"</p>
+<p>"管不着。"宋迟说，"但你围巾织歪了。"</p>
+<p>"……你闭嘴。"</p>
+<p>宋迟信了？他没信。他心想：什么霸道总裁要半夜亮灯看？还藏围巾？不对，她到底在给谁织？</p>
+<p>姜糖也没信他。她心想：工作群能聊到半夜？还删记录？还看戒指的图？他是不是外面有人了？</p>
+<p>两人各怀心事吃完饭，各怀心事洗完碗，各怀心事躺到床上。背对背，谁都没睡着。姜糖在被窝里瞪着他后脑勺，宋迟在黑暗里盯着天花板。</p>
+<p>半夜十二点，姜糖听见宋迟呼吸匀了，偷偷爬起来。她没开灯，摸黑去阳台，从洗衣机里掏出毛线，蹲在月光下接着织。</p>
+<p>她刚织了两行，身后传来宋迟的声音："……你干嘛呢？"</p>
+<p>姜糖手一抖，毛线球滚出去，咕噜咕噜滚到宋迟脚边。</p>
+<p>宋迟弯腰捡起来，看着那团墨绿色的毛线，又看看她手里织了一半的围巾，沉默了五秒。</p>
+<p>"……给我织的？"</p>
+<p>姜糖破罐子破摔："……嗯。生日礼物。学了三礼拜，拆了五回。本来想后天给你。"</p>
+<p>宋迟愣在那儿。过了好一会儿，他忽然笑了，从睡衣口袋里掏出一个丝绒小盒。</p>
+<p>"本来想后天给你。"</p>
+<p>姜糖瞪着他手里的盒子："……这啥？"</p>
+<p>"戒指。怎么，只许你半夜织围巾，不许我半夜量手指？"</p>
+<p>"……你量我手指干嘛？"</p>
+<p>"买戒指。"宋迟打开盒子，里面是一枚银戒指，素圈，光溜溜的，"跟金店老板砍了半个月价，昨天刚拿回来。怕买大了。"</p>
+<p>"……你不是说工作群误删吗？"</p>
+<p>"那是金店老板的聊天记录。"宋迟说，"我说误删你就信啊？"</p>
+<p>"我信了。"姜糖瞪他，"你等着。"</p>
+<p>"等着就等着。"宋迟把盒子往她面前递了递，"先戴。"</p>
+<p>姜糖盯着那枚戒指，半天没说话。她把围巾往地上一放，伸出左手："你量得还挺准。"</p>
+<p>宋迟把戒指套上她无名指，不大不小，正好。</p>
+<p>姜糖低头看看戒指，又看看地上的围巾，忽然说："围巾拆了，我重织。这条针脚歪，配不上戒指。"</p>
+<p>宋迟说："不用，这条就挺好。我后天戴脖子上班。"</p>
+<p>"丑。"</p>
+<p>"我乐意。"</p>
+<p>"……我也乐意。"姜糖小声说，把手缩回去，戒指在月光下晃了一下。</p>
+<p>第二天早上，冰箱上多了张便利贴。姜糖的字：围巾拆了重织，下一条不歪。</p>
+<p>下面多了一行宋迟的回复，字迹潦草：戒指戴左手，怕掉。</p>
+<p>（第一单元完）</p></div></div>
+  </div>
+  <div class="pixel-card" id="chars">
+    <h2>👤 角色档案</h2>
+    <button class="card-toggle " onclick="toggleCards(this)">👤 展开姜糖</button>
+<div class="card-content"><div class="lore-inner"><ul><li>&lt;b&gt;年龄&lt;/b&gt;：23</li><li>&lt;b&gt;身份&lt;/b&gt;：花店店员（"一束花店"，干了两年）</li><li>&lt;b&gt;住进来天数&lt;/b&gt;：100天</li><li>&lt;b&gt;性格&lt;/b&gt;：嘴硬心软。嘴上说"我才不会织毛衣"，半夜偷偷学了三礼拜视频；嘴上嫌他烦，冰箱便利贴全是她先写。</li><li>&lt;b&gt;小秘密&lt;/b&gt;：在学织围巾（宋迟已知道，但她以为他不知道——单元剧里这是固定梗）</li><li>&lt;b&gt;标志物品&lt;/b&gt;：墨绿色毛线（塞过沙发垫/衣柜/洗衣机）、粉色牙刷架、冰箱便利贴</li><li>&lt;b&gt;口头禅&lt;/b&gt;："我没事。""你听错了。""……霸道总裁。"</li></ul></div></div><button class="card-toggle " onclick="toggleCards(this)">👤 展开宋迟</button>
+<div class="card-content"><div class="lore-inner"><ul><li>&lt;b&gt;年龄&lt;/b&gt;：24</li><li>&lt;b&gt;身份&lt;/b&gt;：网店客服（白天上班，手机永远挂着工作群）</li><li>&lt;b&gt;性格&lt;/b&gt;：表面闷，行动派。量手指围度趁人睡着、砍价砍半个月、删聊天记录删得干干净净。</li><li>&lt;b&gt;小秘密&lt;/b&gt;：偷偷准备了戒指（姜糖已知道，但他以为她不知道——固定梗）</li><li>&lt;b&gt;标志物品&lt;/b&gt;：丝绒小盒+银戒指、蓝色牙刷架、金店聊天记录（删了又聊）</li><li>&lt;b&gt;口头禅&lt;/b&gt;："没有，工作群。""嗯，看小说。""我乐意。"</li></ul>
+<hr class="dhr"></div></div><button class="card-toggle " onclick="toggleCards(this)">👤 展开配角（常驻，各单元串场）</button>
+<div class="card-content"><div class="lore-inner"><ul><li>&lt;b&gt;金店老板&lt;/b&gt;：被宋迟砍价砍到崩溃，名言："哥，你都砍了半个月了。"</li><li>&lt;b&gt;楼下煎饼摊老板娘&lt;/b&gt;：看着宋迟每天给姜糖带早饭，名言："小伙子又给媳妇带早饭啊。"</li></ul></div></div>
+  </div>
+  <div class="pixel-card" id="cards">
+    <h2>🃏 卡包 · 热恋期日常（20张）</h2>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开《你不对劲》卡包（20张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name">一束花店·绿萝</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">绿萝，十五。十块。卖。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">一束花店·白雏菊</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">「送你的。」她插进绿萝盆里。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">小出租屋·客厅</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 0 · 命 4</span></div><div class="ci-line3">【白板】<div class="ci-flavor">两室一厅，主卧住人，次卧放花。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">粉色牙刷架</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 1 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">「我挑粉的。」「行，粉的归你。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">蓝色牙刷架</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 1 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">蓝的归我。俩新牙刷架并排摆着。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">次卧·空花架</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 0 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">昨晚钉的，上面空空的，等着放花。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">冰箱·一排牛奶</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 0 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">宋迟新买的，码得整整齐齐。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">楼下·煎饼摊</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">「小伙子又给媳妇带早饭啊。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">姜糖·初见</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A20(1)/T03</div><div class="ci-flavor">「买花？」「看看。」「看可以，别踩我花盆。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">宋迟·客服下班早</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：抽1张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR12→A09(1)/T03</div><div class="ci-flavor">「宋迟。网店客服，下班早。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">同居·腾衣柜</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A02(2)/T03</div><div class="ci-flavor">衣柜腾出一半，两个抽屉贴了标签。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">半夜·亮灯</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被攻击时：造成2点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR10→A01(2)/T02</div><div class="ci-flavor">「……你还没睡？」「……你也没睡。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">围巾·墨绿色</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A33/T02</div><div class="ci-flavor">学了三礼拜视频，拆了五回，终于织出个能看是围巾的形状。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">鸡蛋灌饼·带早饭</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A02(2)/T03</div><div class="ci-flavor">「明天早上，楼下有煎饼摊，鸡蛋灌饼挺好吃的。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">宋迟·砍价半个月</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 3 · 命 2</span></div><div class="ci-line3">【起效】攻击宣言时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(1)/T03</div><div class="ci-flavor">「哥，那枚戒指，能再便宜点吗？」「哥，你都砍了半个月了。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">金店老板·崩溃</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 5</span></div><div class="ci-line3">【起效】被攻击时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR10→A02(2)/T03</div><div class="ci-flavor">「哥，你都砍了半个月了。这价真到底了。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">姜糖·霸道总裁</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：抽1张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR12→A09(1)/T03</div><div class="ci-flavor">「……看小说。」「什么小说？」「……霸道总裁。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">冰箱·便利贴</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A33/T02</div><div class="ci-flavor">「围巾拆了重织，下一条不歪。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">宋迟·戒指戴左手</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#19</span><span class="ci-ah">攻 2 · 命 3</span></div><div class="ci-line3">【起效】攻击宣言时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(1)/T03</div><div class="ci-flavor">「戒指戴左手，怕掉。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name">姜糖&amp;宋迟·并排</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#20</span><span class="ci-ah">攻 4 · 命 4</span></div><div class="ci-line3">【起效】己方回合开始时：+2攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(2)/T05</div><div class="ci-flavor">围巾拆了重织，下一条不歪。戒指戴左手，怕掉。</div></div></div>
+</div></div>
+  </div>
+  <div class="download-section">
+    <a class="pixel-btn back-btn" href="index.html">← 返回首页下载游戏</a>
+  </div>
+</div>
+<div class="footer">© 2026 卡师模拟器 · 你不对劲 · 20张卡全部公式验证</div>
+<script>
+function toggleCards(btn) { btn.classList.toggle('open'); var content = btn.nextElementSibling; content.classList.toggle('open'); }
+</script>
+</body>
+</html>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡师模拟器 · 官方站点</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+body {
+  font-family: "Zpix", "Pixel", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: repeating-linear-gradient(
+      0deg,
+      #fef9e7 0px, #fef9e7 32px,
+      #fdf3d8 32px, #fdf3d8 64px
+    );
+  color: #2b2b2b;
+  min-height: 100vh;
+}
+/* 顶部像素彩条 */
+.pixel-top {
+  height: 16px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ff6b57 0 48px, #ffd44d 48px 96px,
+    #7ed321 96px 144px, #66c4ff 144px 192px,
+    #b28dff 192px 240px
+  );
+  border-bottom: 4px solid #2b2b2b;
+}
+.container { max-width: 920px; margin: 0 auto; padding: 40px 20px 60px; }
+/* ===== 像素LOGO ===== */
+.logo-area { text-align: center; margin-bottom: 44px; }
+.logo-badge {
+  display: inline-block;
+  padding: 18px 40px;
+  background: #fff;
+  border: 4px solid #2b2b2b;
+  box-shadow: 8px 8px 0 #2b2b2b;
+  margin-bottom: 20px;
+}
+.logo-title {
+  font-size: 11vw;
+  font-weight: 900;
+  letter-spacing: 0.5vw;
+  color: #2b2b2b;
+  white-space: nowrap;
+  text-shadow:
+    0.08em 0.08em 0 #ffd44d,
+    0.16em 0.16em 0 #ff6b57;
+}
+@media (max-width: 640px) {
+  .logo-title { font-size: 14vw; letter-spacing: 0.6vw; }
+}
+.logo-sub {
+  margin-top: 16px;
+  font-size: 18px;
+  color: #2b2b2b;
+  letter-spacing: 6px;
+  font-weight: 700;
+  background: #ffd44d;
+  display: inline-block;
+  padding: 6px 24px;
+  border: 3px solid #2b2b2b;
+  box-shadow: 4px 4px 0 #2b2b2b;
+}
+.version-badge {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 24px;
+  background: #b28dff;
+  border: 3px solid #2b2b2b;
+  box-shadow: 4px 4px 0 #2b2b2b;
+  font-size: 14px;
+  font-weight: 700;
+  color: #2b2b2b;
+  letter-spacing: 2px;
+}
+/* ===== 下载区 ===== */
+.download-section { text-align: center; margin: 44px 0; }
+.pixel-btn {
+  position: relative;
+  display: inline-block;
+  padding: 16px 46px;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-decoration: none;
+  color: #2b2b2b;
+  border: 4px solid #2b2b2b;
+  transition: none;
+  cursor: pointer;
+}
+.pixel-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: none !important;
+}
+.download-btn {
+  background: #ff6b57;
+  box-shadow: 6px 6px 0 #2b2b2b;
+}
+.taptap-btn-wrap { margin-top: 28px; }
+.taptap-btn {
+  background: #66c4ff;
+  box-shadow: 6px 6px 0 #2b2b2b;
+  padding: 14px 40px;
+}
+.worldview-btn-wrap { margin-top: 20px; }
+.worldview-btn {
+  background: #b28dff;
+  box-shadow: 6px 6px 0 #2b2b2b;
+  padding: 14px 40px;
+}
+.download-hint {
+  margin-top: 18px;
+  font-size: 13px;
+  color: #6b6b6b;
+  font-weight: 700;
+}
+/* ===== 像素卡片 ===== */
+.pixel-card {
+  background: #fff;
+  border: 4px solid #2b2b2b;
+  box-shadow: 8px 8px 0 rgba(43,43,43,0.9);
+  padding: 28px;
+  margin: 28px 0;
+}
+.pixel-card h2 {
+  font-size: 22px;
+  margin-bottom: 14px;
+  color: #2b2b2b;
+  display: inline-block;
+  padding: 4px 14px;
+  background: #ffd44d;
+  border: 3px solid #2b2b2b;
+  box-shadow: 3px 3px 0 #2b2b2b;
+  letter-spacing: 2px;
+}
+.pixel-card p { line-height: 1.9; font-size: 15px; font-weight: 500; }
+/* ===== 特性轮播 ===== */
+.features {
+  margin-bottom: 48px;
+}
+.features h2 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 24px;
+  color: #2b2b2b;
+  letter-spacing: 2px;
+}
+.feature-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.feature-viewport {
+  overflow: hidden;
+  padding: 30px 0;
+  min-height: 240px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.feature-track {
+  width: 100%;
+}
+.feature {
+  display: none;
+  width: 78%;
+  max-width: 560px;
+  padding: 36px 28px;
+  background: #fff;
+  border: 4px solid #2b2b2b;
+  box-shadow: 8px 8px 0 #2b2b2b;
+  box-sizing: border-box;
+  text-align: center;
+  margin: 0 auto;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  opacity: 0;
+  transform: scale(0.94);
+}
+.feature.active {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+}
+.feature .icon {
+  font-size: 48px;
+  margin-bottom: 14px;
+}
+.feature .title {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: #2b2b2b;
+  display: inline-block;
+  padding: 5px 18px;
+  background: #ffd44d;
+  border: 2px solid #2b2b2b;
+}
+.feature .desc, .feature p {
+  line-height: 1.75;
+  color: #4a4a4a;
+  font-size: 16px;
+}
+.feature-dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+.feature-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ccc;
+  border: 2px solid #2b2b2b;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.feature-dot.active {
+  background: #2b2b2b;
+}
+@media (max-width: 640px) {
+  .feature {
+    width: 92%;
+    padding: 24px 16px;
+  }
+  .feature .icon { font-size: 36px; }
+  .feature .title { font-size: 18px; padding: 3px 12px; }
+  .feature .desc, .feature p { font-size: 14px; }
+}
+
+
+/* 移动端 */
+@media (max-width: 600px) {
+  .feature { flex: 0 0 88%; padding: 16px 12px 14px; }
+  .feature .icon { font-size: 36px; margin-bottom: 8px; }
+  .feature .title { font-size: 16px; padding: 2px 10px; }
+  .feature .desc { font-size: 12.5px; line-height: 1.6; }
+  .feature-track { gap: 12px; }
+}
+
+/* ===== 媒体轮播（视频 + 截图）===== */
+.media-section {
+  margin: 20px 0 48px 0;
+}
+.media-section h2 {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 18px;
+  color: #2b2b2b;
+  letter-spacing: 2px;
+}
+.media-viewport {
+  overflow: hidden;
+  padding: 20px 0;
+  min-height: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f0ead6;
+  border: 4px solid #2b2b2b;
+  box-shadow: 8px 8px 0 #2b2b2b;
+}
+.media-item {
+  display: none;
+  width: 92%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.media-item.active {
+  display: block;
+}
+.media-item video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: contain;
+  background: #000;
+  border: 3px solid #2b2b2b;
+}
+.media-item img {
+  display: block;
+  width: 100%;
+  max-height: 560px;
+  object-fit: contain;
+  background: #1a1a1a;
+  border: 3px solid #2b2b2b;
+}
+.media-caption {
+  text-align: center;
+  font-size: 14px;
+  color: #4a4a4a;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.media-thumbs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.media-thumb {
+  width: 84px;
+  height: 54px;
+  border: 3px solid #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #2b2b2b;
+  padding: 0;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+.media-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.media-thumb .thumb-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+}
+.media-thumb.active {
+  border-color: #2b2b2b;
+  transform: scale(1.12);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.media-thumb:hover {
+  transform: scale(1.08);
+}
+.media-thumb.active:hover {
+  transform: scale(1.12);
+}
+@media (max-width: 640px) {
+  .media-viewport { min-height: 260px; padding: 12px 0; }
+  .media-item { width: 96%; }
+  .media-thumb { width: 62px; height: 40px; border-width: 2px; }
+}
+/* ===== 特色列表 ===== */
+.pixel-card ul { padding-left: 28px; }
+.pixel-card li { line-height: 2; font-size: 14.5px; font-weight: 500; }
+/* ===== 公告 ===== */
+.announce {
+  background: #fff7e0;
+  border: 4px dashed #2b2b2b;
+  padding: 24px;
+  margin: 28px 0;
+  font-size: 14.5px;
+  line-height: 1.9;
+  font-weight: 500;
+}
+/* ===== 页脚 ===== */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  font-size: 13px;
+  color: #6b6b6b;
+  font-weight: 700;
+}
+footer a { color: #2b2b2b; text-decoration: none; border-bottom: 3px solid #ffd44d; }
+.social-links { margin-top: 12px; }
+.social-links a { margin: 0 12px; }
+/* 底部像素条 */
+.pixel-bottom {
+  height: 16px;
+  background: repeating-linear-gradient(
+    90deg,
+    #b28dff 0 48px, #66c4ff 48px 96px,
+    #7ed321 96px 144px, #ffd44d 144px 192px,
+    #ff6b57 192px 240px
+  );
+  border-top: 4px solid #2b2b2b;
+}
+</style>
+</head>
+<body>
+<div class="pixel-top"></div>
+<div class="container">
+  <div class="logo-area">
+    <div class="logo-badge">
+      <div class="logo-title">卡师模拟器</div>
+    </div>
+    <div class="logo-sub">制卡 · 对战 · 收集</div>
+    <br>
+    <div class="version-badge">版本：1.2.269111</div>
+  </div>
+
+  <div class="download-section">
+    <a class="pixel-btn download-btn" href="https://github.com/pipos52/kashi-simulator/releases/download/v1.2/kssp.apk" id="downloadLink">📥 立即下载 APK</a>
+    <div class="download-hint">Android 安卓包 · 点击下载 · 更新于 2026-09-11</div>
+    <div class="taptap-btn-wrap">
+      <a class="pixel-btn taptap-btn" href="https://tap.cn/zxP9x2Vm" target="_blank">TapTap 下载</a>
+    </div>
+    <div class="worldview-btn-wrap">
+      <a class="pixel-btn worldview-btn" href="worldview.html">🌍 沧澜古界 · 世界观</a>
+    </div>
+  </div>
+
+  <div class="pixel-card">
+    <h2>✨ 游戏简介</h2>
+    <p>
+      《卡师模拟器》是一款融合<b>卡牌制作</b>与<b>回合制策略对战</b>的独立游戏。
+      自由组合效果、打造专属卡牌，在像素世界中挑战强敌，登顶卡师之路！
+    </p>
+  </div>
+
+    <div class="features" id="featureCarousel">
+    <div class="feature-viewport">
+      <div class="feature-track" id="featureTrack">
+        <div class="feature active" data-idx="0"><div class="icon">🃏</div><div class="title">自由制卡</div><div class="desc">五大纹路维度自由组合，创造独一无二的专属卡牌</div></div>
+        <div class="feature" data-idx="1"><div class="icon">⚔️</div><div class="title">策略对战</div><div class="desc">能量管理 + 场地布局 + 元素克制，深度战术博弈</div></div>
+        <div class="feature" data-idx="2"><div class="icon">🏹</div><div class="title">野外探索</div><div class="desc">收集材料，解锁更多制卡配方与隐藏效果</div></div>
+        <div class="feature" data-idx="3"><div class="icon">💎</div><div class="title">品质系统</div><div class="desc">废品到完美五档品质，每一张卡都独一无二</div></div>
+        <!-- 克隆用于无缝循环 -->
+        <div class="feature" data-idx="0" data-clone="1"><div class="icon">🃏</div><div class="title">自由制卡</div><div class="desc">五大纹路维度自由组合，创造独一无二的专属卡牌</div></div>
+        <div class="feature" data-idx="1" data-clone="1"><div class="icon">⚔️</div><div class="title">策略对战</div><div class="desc">能量管理 + 场地布局 + 元素克制，深度战术博弈</div></div>
+      </div>
+    </div>
+    <div class="feature-dots" id="featureDots">
+      <div class="feature-dot active" data-target="0"></div>
+      <div class="feature-dot" data-target="1"></div>
+      <div class="feature-dot" data-target="2"></div>
+      <div class="feature-dot" data-target="3"></div>
+    </div>
+  </div>
+    <div class="media-section" id="mediaCarousel">
+      <h2>🎬 战斗实录 & 游戏截图</h2>
+      <div class="media-viewport">
+        <div class="media-item active" data-idx="0">
+          <video controls autoplay muted loop playsinline preload="metadata">
+            <source src="./battle-demo.mp4" type="video/mp4">
+          </video>
+          <div class="media-caption">⚔️ 战斗实录</div>
+        </div>
+        <div class="media-item" data-idx="1">
+          <img src="./screenshot-craft.jpg" alt="制卡界面">
+          <div class="media-caption">🎴 制卡界面</div>
+        </div>
+        <div class="media-item" data-idx="2">
+          <img src="./screenshot-explore.jpg" alt="探索界面">
+          <div class="media-caption">🌍 探索界面</div>
+        </div>
+      </div>
+      <div class="media-thumbs" id="mediaThumbs">
+        <button class="media-thumb active" data-target="0" title="战斗实录">
+          <img src="./screenshot-craft.jpg" alt="" style="opacity:0.4;">
+          <div class="thumb-icon">▶️</div>
+        </button>
+        <button class="media-thumb" data-target="1" title="制卡界面">
+          <img src="./screenshot-craft.jpg" alt="">
+        </button>
+        <button class="media-thumb" data-target="2" title="探索界面">
+          <img src="./screenshot-explore.jpg" alt="">
+        </button>
+      </div>
+    </div>
+<script>
+(function(){
+  var carousel = document.getElementById('mediaCarousel');
+  var items = carousel.querySelectorAll('.media-item');
+  var thumbs = carousel.querySelectorAll('.media-thumb');
+  var N = items.length;
+  var idx = 0;
+  var timer = null;
+  var pausedUntil = 0;
+  var lastPaused = null;
+
+  function apply(newIdx) {
+    var prevItem = items[idx];
+    if (prevItem) {
+      var v = prevItem.querySelector('video');
+      if (v && !v.paused) { v.pause(); }
+    }
+    idx = newIdx;
+    items.forEach(function(el, i) { el.classList.toggle('active', i === idx); });
+    thumbs.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+    // 恢复新视频播放（若之前是暂停状态才恢复）
+    if (!lastPaused) {
+      var v = items[idx].querySelector('video');
+      if (v) { v.play().catch(function(){}); }
+    }
+  }
+
+  function tick() {
+    if (Date.now() < pausedUntil) return;
+    apply(idx + 1);
+    if (idx >= N) { setTimeout(function() { apply(0); }, 350); }
+  }
+
+  function start() {
+    if (timer) clearInterval(timer);
+    timer = setInterval(tick, 5000);
+    // 启动时自动播放第一个视频
+    var v = items[0].querySelector('video');
+    if (v) { v.play().catch(function(){}); }
+  }
+  function pauseFor(ms) {
+    lastPaused = Date.now();
+    pausedUntil = Date.now() + ms;
+    // 立即暂停当前视频
+    var v = items[idx].querySelector('video');
+    if (v && !v.paused) v.pause();
+  }
+
+  carousel.addEventListener('mouseenter', function() { pauseFor(10000); });
+  carousel.addEventListener('mouseleave', function() {
+    // 离开时清除暂停标记（若暂停时间未到则继续暂停）
+  });
+  carousel.addEventListener('click', function() { pauseFor(15000); });
+  thumbs.forEach(function(d) {
+    d.addEventListener('click', function(e) {
+      e.stopPropagation();
+      apply(parseInt(d.dataset.target, 10));
+      pauseFor(8000);
+    });
+  });
+
+  // 视频自身点击（播放/暂停）也算交互
+  carousel.querySelectorAll('video').forEach(function(v) {
+    v.addEventListener('click', function(e) {
+      e.stopPropagation();
+      pauseFor(20000);
+      // 5 秒后如果没操作，自动恢复轮播（不重置视频播放）
+    });
+  });
+
+  start();
+})();
+</script>
+<footer>
+  <div>© 2026 pipos工作室 · 卡师模拟器官方站点</div>
+  <div class="social-links">
+    <a href="privacy.html">📄 隐私政策</a>
+    <a href="https://github.com/pipos52/kashi-simulator" target="_blank">🔗 GitHub 源码</a>
+  </div>
+</footer>
+<div class="pixel-bottom"></div>
+
+<script>
+(function(){
+  var carousel = document.getElementById('featureCarousel');
+  var items = document.querySelectorAll('#featureTrack .feature');
+  var dots = document.querySelectorAll('#featureDots .feature-dot');
+  var N = 4;
+  var idx = 0;
+  var timer = null;
+  var pausedUntil = 0;
+
+  function apply(newIdx) {
+    idx = newIdx;
+    items.forEach(function(el, i) { el.classList.toggle('active', i === newIdx); });
+    var real = ((newIdx % N) + N) % N;
+    dots.forEach(function(d, i) { d.classList.toggle('active', i === real); });
+  }
+
+  function tick() {
+    if (Date.now() < pausedUntil) return;
+    apply(idx + 1);
+    if (idx >= N) {
+      setTimeout(function() { apply(0); }, 750);
+    }
+  }
+
+  function start() {
+    if (timer) clearInterval(timer);
+    apply(0);
+    timer = setInterval(tick, 3000);
+  }
+  function pauseFor(ms) { pausedUntil = Date.now() + ms; }
+
+  carousel.addEventListener('mouseenter', function() { pauseFor(10000); });
+  carousel.addEventListener('click', function() { pauseFor(15000); });
+  dots.forEach(function(d) {
+    d.addEventListener('click', function(e) {
+      e.stopPropagation();
+      apply(parseInt(d.dataset.target, 10));
+      pauseFor(5000);
+    });
+  });
+
+  start();
+})();
+</script>
+
+</div>
+</body>
+</html>

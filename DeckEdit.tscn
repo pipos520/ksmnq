@@ -1,0 +1,332 @@
+[gd_scene load_steps=5 format=3 uid="uid://bde8k7edit001"]
+
+[ext_resource type="Script" path="res://DeckEdit.gd" id="1_script"]
+[ext_resource type="Theme" path="res://assets/theme/pixel_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" path="res://assets/theme/bg_night.png" id="3_bg_night"]
+[ext_resource type="Texture2D" path="res://assets/theme/bg_day.png" id="4_bg_day"]
+
+[node name="DeckEdit" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("2_theme")
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("3_bg_night")
+stretch_mode = 6
+
+[node name="TopBar" type="ColorRect" parent="."]
+anchor_right = 1.0
+offset_bottom = 160.0
+color = Color(0.08, 0.08, 0.12, 0.9)
+
+[node name="TopBarLine" type="ColorRect" parent="."]
+anchor_right = 1.0
+offset_top = 156.0
+offset_bottom = 160.0
+color = Color(0.91, 0.659, 0.22, 0.6)
+
+[node name="Title" type="Label" parent="."]
+anchor_right = 1.0
+offset_top = 10.0
+offset_bottom = 160.0
+theme_override_font_sizes/font_size = 100
+text = "编辑牌库"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackBtn" type="Button" parent="."]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 272.0
+offset_bottom = 112.0
+theme_override_font_sizes/font_size = 50
+text = "← 返回"
+
+[node name="BottomBar" type="ColorRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -160.0
+color = Color(0.08, 0.08, 0.12, 0.9)
+
+[node name="BottomBarLine" type="ColorRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -160.0
+offset_bottom = -156.0
+color = Color(0.91, 0.659, 0.22, 0.6)
+
+[node name="GalleryBtn" type="Button" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = -144.0
+offset_right = 305.0
+offset_bottom = -19.0
+theme_override_font_sizes/font_size = 50
+text = "📖 卡牌图鉴"
+
+[node name="CreateDeckBtn" type="Button" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 326.0
+offset_top = -144.0
+offset_right = 707.0
+offset_bottom = -19.0
+theme_override_font_sizes/font_size = 50
+text = "✨ 新建卡组"
+
+[node name="HelpBtn" type="Button" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 979.0
+offset_top = -144.0
+offset_right = 1066.0
+offset_bottom = -19.0
+theme_override_font_sizes/font_size = 60
+text = "?"
+
+[node name="DeckScroll" type="ScrollContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 160.0
+offset_bottom = -160.0
+vertical_scroll_mode = 2
+horizontal_scroll_mode = 0
+scroll_deadzone = 0.0
+
+[node name="DeckList" type="VBoxContainer" parent="DeckScroll"]
+size_flags_horizontal = 3
+
+[node name="DeckRow_0" type="PanelContainer" parent="DeckScroll/DeckList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="hbox_0" type="HBoxContainer" parent="DeckScroll/DeckList/DeckRow_0"]
+size_flags_horizontal = 3
+[node name="info_0" type="VBoxContainer" parent="DeckScroll/DeckList/DeckRow_0/hbox_0"]
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 0)
+[node name="name_0" type="Label" parent="DeckScroll/DeckList/DeckRow_0/hbox_0/info_0"]
+theme_override_font_sizes/font_size = 45
+[node name="count_0" type="Label" parent="DeckScroll/DeckList/DeckRow_0/hbox_0/info_0"]
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+[node name="action_0" type="Button" parent="DeckScroll/DeckList/DeckRow_0/hbox_0"]
+theme_override_font_sizes/font_size = 40
+text = "操作"
+
+[node name="DeckRow_1" type="PanelContainer" parent="DeckScroll/DeckList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="hbox_1" type="HBoxContainer" parent="DeckScroll/DeckList/DeckRow_1"]
+size_flags_horizontal = 3
+[node name="info_1" type="VBoxContainer" parent="DeckScroll/DeckList/DeckRow_1/hbox_1"]
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 0)
+[node name="name_1" type="Label" parent="DeckScroll/DeckList/DeckRow_1/hbox_1/info_1"]
+theme_override_font_sizes/font_size = 45
+[node name="count_1" type="Label" parent="DeckScroll/DeckList/DeckRow_1/hbox_1/info_1"]
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+[node name="action_1" type="Button" parent="DeckScroll/DeckList/DeckRow_1/hbox_1"]
+theme_override_font_sizes/font_size = 40
+text = "操作"
+
+[node name="DeckRow_2" type="PanelContainer" parent="DeckScroll/DeckList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="hbox_2" type="HBoxContainer" parent="DeckScroll/DeckList/DeckRow_2"]
+size_flags_horizontal = 3
+[node name="info_2" type="VBoxContainer" parent="DeckScroll/DeckList/DeckRow_2/hbox_2"]
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 0)
+[node name="name_2" type="Label" parent="DeckScroll/DeckList/DeckRow_2/hbox_2/info_2"]
+theme_override_font_sizes/font_size = 45
+[node name="count_2" type="Label" parent="DeckScroll/DeckList/DeckRow_2/hbox_2/info_2"]
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+[node name="action_2" type="Button" parent="DeckScroll/DeckList/DeckRow_2/hbox_2"]
+theme_override_font_sizes/font_size = 40
+text = "操作"
+
+[node name="DeckRow_3" type="PanelContainer" parent="DeckScroll/DeckList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="hbox_3" type="HBoxContainer" parent="DeckScroll/DeckList/DeckRow_3"]
+size_flags_horizontal = 3
+[node name="info_3" type="VBoxContainer" parent="DeckScroll/DeckList/DeckRow_3/hbox_3"]
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 0)
+[node name="name_3" type="Label" parent="DeckScroll/DeckList/DeckRow_3/hbox_3/info_3"]
+theme_override_font_sizes/font_size = 45
+[node name="count_3" type="Label" parent="DeckScroll/DeckList/DeckRow_3/hbox_3/info_3"]
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+[node name="action_3" type="Button" parent="DeckScroll/DeckList/DeckRow_3/hbox_3"]
+theme_override_font_sizes/font_size = 40
+text = "操作"
+
+[node name="DeckRow_4" type="PanelContainer" parent="DeckScroll/DeckList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="hbox_4" type="HBoxContainer" parent="DeckScroll/DeckList/DeckRow_4"]
+size_flags_horizontal = 3
+[node name="info_4" type="VBoxContainer" parent="DeckScroll/DeckList/DeckRow_4/hbox_4"]
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 0)
+[node name="name_4" type="Label" parent="DeckScroll/DeckList/DeckRow_4/hbox_4/info_4"]
+theme_override_font_sizes/font_size = 45
+[node name="count_4" type="Label" parent="DeckScroll/DeckList/DeckRow_4/hbox_4/info_4"]
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+[node name="action_4" type="Button" parent="DeckScroll/DeckList/DeckRow_4/hbox_4"]
+theme_override_font_sizes/font_size = 40
+text = "操作"
+
+[node name="DeckRow_5" type="PanelContainer" parent="DeckScroll/DeckList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="hbox_5" type="HBoxContainer" parent="DeckScroll/DeckList/DeckRow_5"]
+size_flags_horizontal = 3
+[node name="info_5" type="VBoxContainer" parent="DeckScroll/DeckList/DeckRow_5/hbox_5"]
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 0)
+[node name="name_5" type="Label" parent="DeckScroll/DeckList/DeckRow_5/hbox_5/info_5"]
+theme_override_font_sizes/font_size = 45
+[node name="count_5" type="Label" parent="DeckScroll/DeckList/DeckRow_5/hbox_5/info_5"]
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+[node name="action_5" type="Button" parent="DeckScroll/DeckList/DeckRow_5/hbox_5"]
+theme_override_font_sizes/font_size = 40
+text = "操作"
+
+[node name="DeckRow_6" type="PanelContainer" parent="DeckScroll/DeckList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="hbox_6" type="HBoxContainer" parent="DeckScroll/DeckList/DeckRow_6"]
+size_flags_horizontal = 3
+[node name="info_6" type="VBoxContainer" parent="DeckScroll/DeckList/DeckRow_6/hbox_6"]
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 0)
+[node name="name_6" type="Label" parent="DeckScroll/DeckList/DeckRow_6/hbox_6/info_6"]
+theme_override_font_sizes/font_size = 45
+[node name="count_6" type="Label" parent="DeckScroll/DeckList/DeckRow_6/hbox_6/info_6"]
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+[node name="action_6" type="Button" parent="DeckScroll/DeckList/DeckRow_6/hbox_6"]
+theme_override_font_sizes/font_size = 40
+text = "操作"
+
+[node name="DeckRow_7" type="PanelContainer" parent="DeckScroll/DeckList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="hbox_7" type="HBoxContainer" parent="DeckScroll/DeckList/DeckRow_7"]
+size_flags_horizontal = 3
+[node name="info_7" type="VBoxContainer" parent="DeckScroll/DeckList/DeckRow_7/hbox_7"]
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 0)
+[node name="name_7" type="Label" parent="DeckScroll/DeckList/DeckRow_7/hbox_7/info_7"]
+theme_override_font_sizes/font_size = 45
+[node name="count_7" type="Label" parent="DeckScroll/DeckList/DeckRow_7/hbox_7/info_7"]
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+[node name="action_7" type="Button" parent="DeckScroll/DeckList/DeckRow_7/hbox_7"]
+theme_override_font_sizes/font_size = 40
+text = "操作"
+
+[node name="DeckRow_8" type="PanelContainer" parent="DeckScroll/DeckList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="hbox_8" type="HBoxContainer" parent="DeckScroll/DeckList/DeckRow_8"]
+size_flags_horizontal = 3
+[node name="info_8" type="VBoxContainer" parent="DeckScroll/DeckList/DeckRow_8/hbox_8"]
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 0)
+[node name="name_8" type="Label" parent="DeckScroll/DeckList/DeckRow_8/hbox_8/info_8"]
+theme_override_font_sizes/font_size = 45
+[node name="count_8" type="Label" parent="DeckScroll/DeckList/DeckRow_8/hbox_8/info_8"]
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+[node name="action_8" type="Button" parent="DeckScroll/DeckList/DeckRow_8/hbox_8"]
+theme_override_font_sizes/font_size = 40
+text = "操作"
+
+[node name="DeckRow_9" type="PanelContainer" parent="DeckScroll/DeckList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="hbox_9" type="HBoxContainer" parent="DeckScroll/DeckList/DeckRow_9"]
+size_flags_horizontal = 3
+[node name="info_9" type="VBoxContainer" parent="DeckScroll/DeckList/DeckRow_9/hbox_9"]
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 0)
+[node name="name_9" type="Label" parent="DeckScroll/DeckList/DeckRow_9/hbox_9/info_9"]
+theme_override_font_sizes/font_size = 45
+[node name="count_9" type="Label" parent="DeckScroll/DeckList/DeckRow_9/hbox_9/info_9"]
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+[node name="action_9" type="Button" parent="DeckScroll/DeckList/DeckRow_9/hbox_9"]
+theme_override_font_sizes/font_size = 40
+text = "操作"
+
+[node name="EditRoot" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 160.0
+offset_bottom = -160.0
+visible = false
+
+[node name="EditTitle" type="Label" parent="EditRoot"]
+anchor_right = 1.0
+offset_bottom = 134.0
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+
+[node name="EditScroll" type="ScrollContainer" parent="EditRoot"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 134.0
+vertical_scroll_mode = 2
+horizontal_scroll_mode = 0
+scroll_deadzone = 0.0
+
+[node name="EditVBox" type="VBoxContainer" parent="EditRoot/EditScroll"]
+size_flags_horizontal = 3
+
+[node name="DeckSection" type="Label" parent="EditRoot/EditScroll/EditVBox"]
+theme_override_font_sizes/font_size = 45
+theme_override_colors/font_color = Color(0.945, 0.769, 0.059, 1)
+text = "━━━ 牌组卡牌 ━━━"
+horizontal_alignment = 1
+
+[node name="EditDeckCards" type="VBoxContainer" parent="EditRoot/EditScroll/EditVBox"]
+size_flags_horizontal = 3
+
+[node name="Separator" type="ColorRect" parent="EditRoot/EditScroll/EditVBox"]
+custom_minimum_size = Vector2(0, 3)
+size_flags_horizontal = 3
+color = Color(0.333, 0.333, 0.333, 1)
+
+[node name="AvailSection" type="Label" parent="EditRoot/EditScroll/EditVBox"]
+theme_override_font_sizes/font_size = 45
+theme_override_colors/font_color = Color(0.204, 0.596, 0.859, 1)
+text = "━━━ 可用卡牌 ━━━"
+horizontal_alignment = 1
+
+[node name="EditAvailCards" type="VBoxContainer" parent="EditRoot/EditScroll/EditVBox"]
+size_flags_horizontal = 3

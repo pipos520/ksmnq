@@ -1,0 +1,391 @@
+[gd_scene load_steps=5 format=3 uid="uid://exploration_main"]
+
+[ext_resource type="Script" path="res://Exploration.gd" id="1_script"]
+[ext_resource type="Theme" path="res://assets/theme/pixel_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" path="res://assets/theme/bg_night.png" id="3_bg_night"]
+[ext_resource type="Texture2D" path="res://assets/theme/bg_day.png" id="4_bg_day"]
+
+[node name="Exploration" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("2_theme")
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("3_bg_night")
+stretch_mode = 6
+
+[node name="TopBar" type="ColorRect" parent="."]
+anchor_right = 1.0
+offset_bottom = 160.0
+color = Color(0.08, 0.08, 0.12, 0.9)
+
+[node name="TopBarLine" type="ColorRect" parent="."]
+anchor_right = 1.0
+offset_top = 156.0
+offset_bottom = 160.0
+color = Color(0.91, 0.659, 0.22, 0.6)
+
+[node name="Title" type="Label" parent="."]
+anchor_right = 1.0
+offset_top = 10.0
+offset_bottom = 160.0
+theme_override_font_sizes/font_size = 100
+text = "野外探索"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackBtn" type="Button" parent="."]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 272.0
+offset_bottom = 112.0
+theme_override_font_sizes/font_size = 50
+text = "← 返回"
+
+[node name="MapScroll" type="ScrollContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 160.0
+offset_bottom = -160.0
+vertical_scroll_mode = 2
+horizontal_scroll_mode = 0
+scroll_deadzone = 0.0
+
+[node name="MapList" type="VBoxContainer" parent="MapScroll"]
+size_flags_horizontal = 3
+
+[node name="TutorialCard" type="Panel" parent="MapScroll/MapList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="TutorialIcon" type="Label" parent="MapScroll/MapList/TutorialCard"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_right = 260.0
+theme_override_font_sizes/font_size = 80
+text = "🥊"
+horizontal_alignment = 1
+vertical_alignment = 1
+[node name="TutorialInfo" type="VBoxContainer" parent="MapScroll/MapList/TutorialCard"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 280.0
+offset_top = 10.0
+offset_right = -20.0
+offset_bottom = -10.0
+[node name="TutorialName" type="Label" parent="MapScroll/MapList/TutorialCard/TutorialInfo"]
+theme_override_font_sizes/font_size = 46
+text = "📖 新手教学战 · 巷口混混"
+[node name="TutorialDiff" type="Label" parent="MapScroll/MapList/TutorialCard/TutorialInfo"]
+theme_override_font_sizes/font_size = 32
+text = "难度：教学"
+theme_override_colors/font_color = Color(0.91, 0.659, 0.22, 1)
+[node name="TutorialDesc" type="Label" parent="MapScroll/MapList/TutorialCard/TutorialInfo"]
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+text = "老陈说巷口有个收保护费的混混，拿他试试你新拿到的基础卡。"
+autowrap_mode = 2
+[node name="TutorialFlex" type="Control" parent="MapScroll/MapList/TutorialCard/TutorialInfo"]
+size_flags_vertical = 3
+custom_minimum_size = Vector2(0, 4)
+[node name="TutorialBtn" type="Button" parent="MapScroll/MapList/TutorialCard/TutorialInfo"]
+size_flags_horizontal = 8
+custom_minimum_size = Vector2(280, 50)
+theme_override_font_sizes/font_size = 35
+text = "🥊 应战"
+
+[node name="MapCard_0" type="Panel" parent="MapScroll/MapList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="MapIcon_0" type="Label" parent="MapScroll/MapList/MapCard_0"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_right = 260.0
+theme_override_font_sizes/font_size = 80
+text = "🌲"
+horizontal_alignment = 1
+vertical_alignment = 1
+[node name="MapInfo_0" type="VBoxContainer" parent="MapScroll/MapList/MapCard_0"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 280.0
+offset_top = 10.0
+offset_right = -20.0
+offset_bottom = -10.0
+[node name="MapName_0" type="Label" parent="MapScroll/MapList/MapCard_0/MapInfo_0"]
+theme_override_font_sizes/font_size = 50
+text = "🌲 迷雾森林"
+[node name="MapDiff_0" type="Label" parent="MapScroll/MapList/MapCard_0/MapInfo_0"]
+theme_override_font_sizes/font_size = 35
+text = "难度：简单"
+theme_override_colors/font_color = Color(0.361, 0.722, 0.361, 1)
+[node name="MapRec_0" type="Label" parent="MapScroll/MapList/MapCard_0/MapInfo_0"]
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+text = "推荐战力：100"
+[node name="MapDesc_0" type="Label" parent="MapScroll/MapList/MapCard_0/MapInfo_0"]
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+text = "幽暗的森林中弥漫着神秘雾气，据说深处藏着古老的卡牌碎片。"
+autowrap_mode = 2
+[node name="MapExploreBtn_0" type="Button" parent="MapScroll/MapList/MapCard_0"]
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -280.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 88.0
+theme_override_font_sizes/font_size = 38
+text = "🗡️ 探索"
+
+[node name="MapCard_1" type="Panel" parent="MapScroll/MapList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="MapIcon_1" type="Label" parent="MapScroll/MapList/MapCard_1"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_right = 260.0
+theme_override_font_sizes/font_size = 80
+text = "🔥"
+horizontal_alignment = 1
+vertical_alignment = 1
+[node name="MapInfo_1" type="VBoxContainer" parent="MapScroll/MapList/MapCard_1"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 280.0
+offset_top = 10.0
+offset_right = -20.0
+offset_bottom = -10.0
+[node name="MapName_1" type="Label" parent="MapScroll/MapList/MapCard_1/MapInfo_1"]
+theme_override_font_sizes/font_size = 50
+text = "🔥 火焰洞穴"
+[node name="MapDiff_1" type="Label" parent="MapScroll/MapList/MapCard_1/MapInfo_1"]
+theme_override_font_sizes/font_size = 35
+text = "难度：普通"
+theme_override_colors/font_color = Color(0.91, 0.659, 0.22, 1)
+[node name="MapRec_1" type="Label" parent="MapScroll/MapList/MapCard_1/MapInfo_1"]
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+text = "推荐战力：300"
+[node name="MapDesc_1" type="Label" parent="MapScroll/MapList/MapCard_1/MapInfo_1"]
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+text = "灼热的岩浆在地底流淌，火焰精灵守护着珍贵的火系素材。"
+autowrap_mode = 2
+[node name="MapExploreBtn_1" type="Button" parent="MapScroll/MapList/MapCard_1"]
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -280.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 88.0
+theme_override_font_sizes/font_size = 38
+text = "🗡️ 探索"
+
+[node name="MapCard_2" type="Panel" parent="MapScroll/MapList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="MapIcon_2" type="Label" parent="MapScroll/MapList/MapCard_2"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_right = 260.0
+theme_override_font_sizes/font_size = 80
+text = "⚔"
+horizontal_alignment = 1
+vertical_alignment = 1
+[node name="MapInfo_2" type="VBoxContainer" parent="MapScroll/MapList/MapCard_2"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 280.0
+offset_top = 10.0
+offset_right = -20.0
+offset_bottom = -10.0
+[node name="MapName_2" type="Label" parent="MapScroll/MapList/MapCard_2/MapInfo_2"]
+theme_override_font_sizes/font_size = 50
+text = "⚔ 决斗场"
+[node name="MapDiff_2" type="Label" parent="MapScroll/MapList/MapCard_2/MapInfo_2"]
+theme_override_font_sizes/font_size = 35
+text = "难度：匹配"
+theme_override_colors/font_color = Color(0.91, 0.659, 0.22, 1)
+[node name="MapRec_2" type="Label" parent="MapScroll/MapList/MapCard_2/MapInfo_2"]
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+text = "无限制"
+[node name="MapDesc_2" type="Label" parent="MapScroll/MapList/MapCard_2/MapInfo_2"]
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+text = "与服务器上的其他玩家卡组进行虚拟对战！选择你的卡组，随机匹配对手。"
+autowrap_mode = 2
+[node name="MapExploreBtn_2" type="Button" parent="MapScroll/MapList/MapCard_2"]
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -280.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 88.0
+theme_override_font_sizes/font_size = 38
+text = "🗡️ 探索"
+
+[node name="MapCard_3" type="Panel" parent="MapScroll/MapList"]
+visible = false
+custom_minimum_size = Vector2(0, 280.0)
+size_flags_horizontal = 3
+[node name="MapIcon_3" type="Label" parent="MapScroll/MapList/MapCard_3"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_right = 260.0
+theme_override_font_sizes/font_size = 80
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+[node name="MapInfo_3" type="VBoxContainer" parent="MapScroll/MapList/MapCard_3"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 280.0
+offset_top = 10.0
+offset_right = -20.0
+offset_bottom = -10.0
+[node name="MapName_3" type="Label" parent="MapScroll/MapList/MapCard_3/MapInfo_3"]
+theme_override_font_sizes/font_size = 50
+text = "未开放"
+[node name="MapDiff_3" type="Label" parent="MapScroll/MapList/MapCard_3/MapInfo_3"]
+theme_override_font_sizes/font_size = 35
+text = "难度：???"
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+[node name="MapRec_3" type="Label" parent="MapScroll/MapList/MapCard_3/MapInfo_3"]
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+text = "即将开放"
+[node name="MapDesc_3" type="Label" parent="MapScroll/MapList/MapCard_3/MapInfo_3"]
+theme_override_font_sizes/font_size = 30
+theme_override_colors/font_color = Color(0.667, 0.667, 0.667, 1)
+text = "新地图正在筹备中..."
+autowrap_mode = 2
+[node name="MapExploreBtn_3" type="Button" parent="MapScroll/MapList/MapCard_3"]
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -280.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 88.0
+theme_override_font_sizes/font_size = 38
+text = "🔒 未开放"
+disabled = true
+
+[node name="BottomBar" type="ColorRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -160.0
+color = Color(0.08, 0.08, 0.12, 0.9)
+
+[node name="BottomBarLine" type="ColorRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -160.0
+offset_bottom = -156.0
+color = Color(0.91, 0.659, 0.22, 0.6)
+
+[node name="BottomDeckBar" type="ColorRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -126.0
+color = Color(0.08, 0.08, 0.12, 0.9)
+
+[node name="BottomDeckBarLine" type="ColorRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -129.0
+offset_bottom = -126.0
+color = Color(0.91, 0.659, 0.22, 0.6)
+
+[node name="DeckIcon" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = -120.0
+offset_right = 170.0
+offset_bottom = -10.0
+theme_override_font_sizes/font_size = 45
+text = "🃏"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BottomDeckName" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 200.0
+offset_top = -120.0
+offset_right = -310.0
+offset_bottom = -10.0
+theme_override_font_sizes/font_size = 38
+text = "未选择卡组"
+vertical_alignment = 1
+
+[node name="BottomDeckSwitchBtn" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -118.0
+offset_right = -20.0
+offset_bottom = -15.0
+theme_override_font_sizes/font_size = 32
+text = "切换"
+
+[node name="HelpBtn" type="Button" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -118.0
+offset_right = 130.0
+offset_bottom = -15.0
+theme_override_font_sizes/font_size = 50
+text = "？"

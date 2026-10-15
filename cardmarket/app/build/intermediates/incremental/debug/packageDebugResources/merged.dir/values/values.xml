@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="card_bg">#FF1A1A2E</color>
+    <color name="card_primary">#FFE8A547</color>
+    <color name="card_secondary">#FF6FCF97</color>
+    <color name="card_surface">#FF252542</color>
+    <string name="app_name">卡牌集市</string>
+    <style name="Theme.CardMarket" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/card_bg</item>
+        <item name="android:statusBarColor">@color/card_bg</item>
+        <item name="android:navigationBarColor">@color/card_surface</item>
+    </style>
+</resources>

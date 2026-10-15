@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 卡牌底框 -->
+    <path
+        android:fillColor="#FFE8A547"
+        android:pathData="M54,28 L78,40 L78,68 L54,80 L30,68 L30,40 Z" />
+    <!-- 内层暗色 -->
+    <path
+        android:fillColor="#FF1A1A2E"
+        android:pathData="M54,35 L72,44 L72,64 L54,73 L36,64 L36,44 Z" />
+    <!-- 中央菱形 -->
+    <path
+        android:fillColor="#FFE8A547"
+        android:pathData="M54,48 L60,54 L54,60 L48,54 Z" />
+
+</vector>

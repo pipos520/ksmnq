@@ -1,0 +1,402 @@
+{
+  "player": {
+    "cards": [
+      {
+        "id": "CARD_QP_001",
+        "name": "青云符师",
+        "fields": [
+          "青云派",
+          "符法"
+        ],
+        "cost": 3,
+        "atk": 1,
+        "hp": 2,
+        "quality": "标准",
+        "element": "风",
+        "desc": "青云符师，符法通灵。入场时从牌库中抽一张牌。",
+        "star": 1,
+        "effects": [
+          {
+            "trigger": "TR01",
+            "action": "A09",
+            "target": "T03",
+            "value": 1,
+            "desc": "入场：抽1张牌"
+          }
+        ]
+      },
+      {
+        "id": "CARD_QP_002",
+        "name": "青云医者",
+        "fields": [
+          "青云派",
+          "医术"
+        ],
+        "cost": 4,
+        "atk": 1,
+        "hp": 2,
+        "quality": "标准",
+        "element": "水",
+        "desc": "青云医者，妙手回春。每回合结束时回复己方一名随机随从2点生命。",
+        "star": 1,
+        "effects": [
+          {
+            "trigger": "TR14",
+            "action": "A02",
+            "target": "T03",
+            "value": 2,
+            "desc": "回合结束时：回复己方一名随机随从2点生命"
+          }
+        ]
+      },
+      {
+        "id": "CARD_QP_003",
+        "name": "青云风刃",
+        "fields": [
+          "青云派",
+          "风系"
+        ],
+        "cost": 3,
+        "atk": 0,
+        "hp": 0,
+        "quality": "标准",
+        "element": "风",
+        "desc": "凝聚风之力，化为无形利刃。造成3点伤害。",
+        "star": 1,
+        "effects": [
+          {
+            "trigger": "TR01",
+            "action": "A01",
+            "target": "T02",
+            "value": 3,
+            "desc": "对敌方随机单体造成3点伤害"
+          }
+        ]
+      },
+      {
+        "id": "CARD_QP_004",
+        "name": "青云步法",
+        "fields": [
+          "青云派",
+          "身法"
+        ],
+        "cost": 2,
+        "atk": 0,
+        "hp": 0,
+        "quality": "标准",
+        "element": "风",
+        "desc": "青云步法，踏风而行。使一名己方随从永久+2攻击力。",
+        "star": 1,
+        "effects": [
+          {
+            "trigger": "TR01",
+            "action": "A20",
+            "target": "T03",
+            "value": 2,
+            "desc": "使己方一名随机随从永久+2攻击力"
+          }
+        ]
+      },
+      {
+        "id": "CARD_QP_005",
+        "name": "青云法器·风铃",
+        "fields": [
+          "青云派",
+          "法器"
+        ],
+        "cost": 4,
+        "atk": 0,
+        "hp": 3,
+        "quality": "精良",
+        "element": "风",
+        "desc": "风铃轻响，福运临门。每回合开始抽1张牌。",
+        "star": 2,
+        "effects": [
+          {
+            "trigger": "TR12",
+            "action": "A09",
+            "target": "T03",
+            "value": 1,
+            "desc": "每回合开始时：抽1张牌"
+          }
+        ]
+      },
+      {
+        "id": "CARD_QP_006",
+        "name": "青云飞剑",
+        "fields": [
+          "青云派",
+          "剑法"
+        ],
+        "cost": 3,
+        "atk": 0,
+        "hp": 0,
+        "quality": "标准",
+        "element": "风",
+        "desc": "飞剑取首，千里之外。造成2点伤害。",
+        "star": 1,
+        "effects": [
+          {
+            "trigger": "TR01",
+            "action": "A01",
+            "target": "T02",
+            "value": 2,
+            "desc": "对敌方随机单体造成2点伤害"
+          }
+        ]
+      },
+      {
+        "id": "CARD_QP_007",
+        "name": "青云风雷引",
+        "fields": [
+          "青云派",
+          "风雷"
+        ],
+        "cost": 7,
+        "atk": 0,
+        "hp": 0,
+        "quality": "精良",
+        "element": "风",
+        "desc": "引风雷之力，涤荡乾坤！对所有敌方单位造成4点伤害。",
+        "star": 2,
+        "effects": [
+          {
+            "trigger": "TR01",
+            "action": "A01",
+            "target": "T04",
+            "value": 4,
+            "desc": "对所有敌方单位造成4点伤害"
+          }
+        ]
+      },
+      {
+        "id": "CARD_QP_008",
+        "name": "青云弟子·风",
+        "fields": [
+          "青云派",
+          "弟子"
+        ],
+        "cost": 1,
+        "atk": 1,
+        "hp": 2,
+        "quality": "标准",
+        "element": "风",
+        "desc": "青云派入门弟子，初窥风系门径。",
+        "star": 1
+      },
+      {
+        "id": "CARD_QP_009",
+        "name": "青云弟子·云",
+        "fields": [
+          "青云派",
+          "弟子"
+        ],
+        "cost": 1,
+        "atk": 2,
+        "hp": 1,
+        "quality": "标准",
+        "element": "风",
+        "desc": "青云派入门弟子，擅长云中漫步。",
+        "star": 1
+      },
+      {
+        "id": "CARD_QP_010",
+        "name": "青云剑侍",
+        "fields": [
+          "青云派",
+          "剑侍"
+        ],
+        "cost": 2,
+        "atk": 2,
+        "hp": 2,
+        "quality": "标准",
+        "element": "风",
+        "desc": "侍剑于青云门下，剑法初成。",
+        "star": 1
+      },
+      {
+        "id": "CARD_QP_011",
+        "name": "青云灵鹤",
+        "fields": [
+          "青云派",
+          "灵兽"
+        ],
+        "cost": 2,
+        "atk": 1,
+        "hp": 3,
+        "quality": "标准",
+        "element": "风",
+        "desc": "栖息于青云山间的灵鹤，通晓人性。",
+        "star": 1
+      },
+      {
+        "id": "CARD_QP_012",
+        "name": "青云拳师",
+        "fields": [
+          "青云派",
+          "拳法"
+        ],
+        "cost": 3,
+        "atk": 3,
+        "hp": 3,
+        "quality": "标准",
+        "element": "风",
+        "desc": "以拳入道，刚猛有力。",
+        "star": 1
+      },
+      {
+        "id": "CARD_QP_013",
+        "name": "青云弓手",
+        "fields": [
+          "青云派",
+          "弓术"
+        ],
+        "cost": 2,
+        "atk": 3,
+        "hp": 1,
+        "quality": "标准",
+        "element": "风",
+        "desc": "弓如满月，箭似流星。",
+        "star": 1
+      },
+      {
+        "id": "CARD_QP_014",
+        "name": "青云护法",
+        "fields": [
+          "青云派",
+          "护法"
+        ],
+        "cost": 3,
+        "atk": 2,
+        "hp": 4,
+        "quality": "标准",
+        "element": "风",
+        "desc": "青云派护法弟子，守护山门。",
+        "star": 1
+      },
+      {
+        "id": "CARD_QP_015",
+        "name": "青云内门弟子",
+        "fields": [
+          "青云派",
+          "弟子"
+        ],
+        "cost": 3,
+        "atk": 3,
+        "hp": 4,
+        "quality": "标准",
+        "element": "风",
+        "desc": "青云派内门弟子，已得真传。",
+        "star": 1
+      },
+      {
+        "id": "CARD_QP_016",
+        "name": "青云灵猫",
+        "fields": [
+          "青云派",
+          "灵兽"
+        ],
+        "cost": 1,
+        "atk": 1,
+        "hp": 1,
+        "quality": "标准",
+        "element": "风",
+        "desc": "青云山上的灵猫，机敏灵巧。",
+        "star": 1
+      },
+      {
+        "id": "CARD_QP_017",
+        "name": "青云阵法师",
+        "fields": [
+          "青云派",
+          "阵法"
+        ],
+        "cost": 2,
+        "atk": 1,
+        "hp": 4,
+        "quality": "精良",
+        "element": "风",
+        "desc": "精通阵法之道，防御力出众。",
+        "star": 2
+      },
+      {
+        "id": "CARD_QP_018",
+        "name": "青云巡山使",
+        "fields": [
+          "青云派",
+          "巡山"
+        ],
+        "cost": 4,
+        "atk": 4,
+        "hp": 5,
+        "quality": "精良",
+        "element": "风",
+        "desc": "巡山护法，威震八方。",
+        "star": 2
+      },
+      {
+        "id": "CARD_QP_019",
+        "name": "青云掌教",
+        "fields": [
+          "青云派",
+          "掌教"
+        ],
+        "cost": 4,
+        "atk": 3,
+        "hp": 5,
+        "quality": "精良",
+        "element": "风",
+        "desc": "青云派掌教真人，德高望重。",
+        "star": 2
+      },
+      {
+        "id": "CARD_QP_020",
+        "name": "青云食铁兽",
+        "fields": [
+          "青云派",
+          "灵兽"
+        ],
+        "cost": 2,
+        "atk": 2,
+        "hp": 3,
+        "quality": "精良",
+        "element": "风",
+        "desc": "以竹为食，力大无穷的灵兽。",
+        "star": 2
+      }
+    ],
+    "decks": {
+      "DECK_QP_STARTER": {
+        "id": "DECK_QP_STARTER",
+        "name": "青云派新手卡组",
+        "theme": "青云派",
+        "cards": [
+          "CARD_QP_008",
+          "CARD_QP_008",
+          "CARD_QP_016",
+          "CARD_QP_003",
+          "CARD_QP_004",
+          "CARD_QP_010",
+          "CARD_QP_010",
+          "CARD_QP_001",
+          "CARD_QP_002",
+          "CARD_QP_005",
+          "CARD_QP_006",
+          "CARD_QP_011",
+          "CARD_QP_020",
+          "CARD_QP_012",
+          "CARD_QP_014",
+          "CARD_QP_015",
+          "CARD_QP_019",
+          "CARD_QP_007",
+          "CARD_QP_018",
+          "CARD_QP_018"
+        ]
+      }
+    },
+    "gold": 100,
+    "diamonds": 50,
+    "level": 1,
+    "exp": 0
+  }
+}

@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡师模拟器 · 驯兽都市·世界观</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+body {
+  font-family: "Zpix", "Pixel", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: repeating-linear-gradient(0deg, #eef5ff 0px, #eef5ff 32px, #e3eefc 32px, #e3eefc 64px);
+  color: #2b2b2b; min-height: 100vh;
+}
+.pixel-top { height: 16px; background: repeating-linear-gradient(90deg, #66c4ff 0 48px, #7ed321 48px 96px, #b28dff 96px 144px, #ffd44d 144px 192px, #ff6b57 192px 240px); border-bottom: 4px solid #2b2b2b; }
+.container { max-width: 920px; margin: 0 auto; padding: 40px 20px 60px; }
+.logo-area { text-align: center; margin-bottom: 44px; }
+.logo-badge { display: inline-block; padding: 18px 40px; background: #fff; border: 4px solid #2b2b2b; box-shadow: 8px 8px 0 #2b2b2b; margin-bottom: 20px; }
+.logo-title { font-size: 11vw; font-weight: 900; letter-spacing: 0.5vw; color: #2b2b2b; white-space: nowrap; text-shadow: 0.08em 0.08em 0 #66c4ff, 0.16em 0.16em 0 #b28dff; }
+@media (max-width: 640px) { .logo-title { font-size: 14vw; letter-spacing: 0.6vw; } }
+.logo-sub { margin-top: 16px; font-size: 18px; color: #2b2b2b; letter-spacing: 6px; font-weight: 700; background: #66c4ff; display: inline-block; padding: 6px 24px; border: 3px solid #2b2b2b; box-shadow: 4px 4px 0 #2b2b2b; }
+.download-section { text-align: center; margin: 44px 0; }
+.pixel-btn { position: relative; display: inline-block; padding: 16px 46px; font-size: 20px; font-weight: 900; letter-spacing: 2px; text-decoration: none; color: #2b2b2b; border: 4px solid #2b2b2b; transition: none; cursor: pointer; }
+.pixel-btn:active { transform: translate(4px, 4px); box-shadow: none !important; }
+.back-btn { background: #66c4ff; box-shadow: 6px 6px 0 #2b2b2b; }
+.pixel-card { background: #fff; border: 4px solid #2b2b2b; box-shadow: 8px 8px 0 rgba(43,43,43,0.9); padding: 28px; margin: 28px 0; }
+.pixel-card h2 { font-size: 22px; margin-bottom: 14px; color: #2b2b2b; display: inline-block; padding: 4px 14px; background: #7ed321; border: 3px solid #2b2b2b; box-shadow: 3px 3px 0 #2b2b2b; letter-spacing: 2px; }
+.pixel-card p { line-height: 1.9; font-size: 15px; font-weight: 500; }
+.faction-tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+.faction-tag { display: inline-block; padding: 8px 16px; background: #b28dff; border: 3px solid #2b2b2b; box-shadow: 3px 3px 0 #2b2b2b; font-size: 14px; font-weight: 700; color: #2b2b2b; text-decoration: none; cursor: pointer; transition: none; }
+.faction-tag:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #2b2b2b; }
+.faction-tag:hover { background: #ffd44d; }
+.pack-section { margin-top: 32px; scroll-margin-top: 20px; }
+.pack-section h3 { font-size: 20px; margin-bottom: 12px; color: #2b2b2b; display: inline-block; padding: 4px 14px; background: #66c4ff; border: 3px solid #2b2b2b; box-shadow: 3px 3px 0 #2b2b2b; letter-spacing: 2px; }
+.pack-info { background: #f0f0f0; border: 3px solid #2b2b2b; padding: 16px; margin-bottom: 16px; font-size: 14px; line-height: 1.8; }
+.pack-info b { color: #66c4ff; }
+.card-toggle { display: block; width: 100%; padding: 14px 20px; background: #7ed321; border: 3px solid #2b2b2b; box-shadow: 4px 4px 0 #2b2b2b; font-family: inherit; font-size: 15px; font-weight: 900; color: #2b2b2b; cursor: pointer; text-align: left; letter-spacing: 1px; margin-bottom: 8px; }
+.card-toggle:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #2b2b2b; }
+.card-toggle::after { content: "▶"; float: right; transition: transform 0.2s; }
+.card-toggle.open::after { transform: rotate(90deg); }
+.card-content { display: none; border: 3px solid #2b2b2b; border-top: none; background: #fff; padding: 16px; margin-bottom: 8px; }
+.card-content.open { display: block; }
+.card-list { display: flex; flex-direction: column; gap: 10px; }
+.card-item { border: 2px solid #2b2b2b; background: #fffdf5; padding: 10px 12px; box-shadow: 3px 3px 0 #2b2b2b; }
+.ci-line1 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ci-name { font-weight: 900; font-size: 15px; }
+.ci-star { font-size: 13px; letter-spacing: 2px; }
+.ci-cost { margin-left: auto; background: #66c4ff; color: #fff; border: 2px solid #2b2b2b; padding: 2px 10px; font-weight: 900; font-size: 12px; }
+.ci-line2 { margin-top: 4px; font-size: 12px; color: #555; display: flex; gap: 14px; }
+.ci-num { color: #999; }
+.ci-ah { font-weight: 700; }
+.ci-line3 { margin-top: 6px; font-size: 13px; line-height: 1.6; color: #2b2b2b; }
+.ci-flavor { margin-top: 4px; padding: 3px 6px; font-size: 12px; color: #2e4a66; background: rgba(200,225,255,0.8); border-top: 1px dashed #66a6d9; font-style: italic; }
+.star-1 { color: #95a5a6; } .star-2 { color: #66c4ff; } .star-3 { color: #ff6b57; font-weight: 900; }
+@media (max-width: 640px) { .ci-name { font-size: 14px; } .ci-line3 { font-size: 12px; } }
+.lore-toggle { background: #ffd44d; margin-top: 10px; }
+.lore-content { background: #fffdf5; }
+.lore-inner { font-size: 14px; line-height: 1.85; }
+.lore-inner h4 { font-size: 15px; margin: 14px 0 6px; color: #2b2b2b; border-left: 5px solid #66c4ff; padding-left: 10px; letter-spacing: 1px; }
+.lore-inner p { margin: 8px 0; }
+.lore-inner ul { margin: 6px 0 10px 20px; }
+.lore-inner li { margin: 4px 0; }
+.lore-inner table.dt { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 13px; }
+.lore-inner table.dt th, .lore-inner table.dt td { border: 1px solid #2b2b2b; padding: 6px 8px; text-align: left; }
+.lore-inner table.dt th { background: #e3eefc; }
+.lore-quote { border-left: 4px solid #66c4ff; background: #eef5ff; padding: 10px 14px; margin: 10px 0; font-style: italic; }
+.doc-h1 { font-size: 17px; font-weight: 900; margin: 16px 0 6px; color: #2b2b2b; border-left: 6px solid #7ed321; padding-left: 10px; letter-spacing: 1px; }
+.doc-h2 { font-size: 15px; font-weight: 900; margin: 12px 0 4px; color: #2b2b2b; border-left: 4px solid #ffd44d; padding-left: 8px; }
+.doc-h3 { margin: 8px 0 2px; }
+.dhr { border: none; border-top: 3px dashed #b28dff; margin: 16px 0; }
+.footer { text-align: center; padding: 30px 20px; font-size: 13px; color: #555; border-top: 4px solid #2b2b2b; background: #fff; }
+</style>
+</head>
+<body>
+<div class="pixel-top"></div>
+<div class="container">
+  <div class="logo-area">
+    <div class="logo-badge"><div class="logo-title">卡师模拟器</div></div>
+    <div class="logo-sub">驯兽都市 · 世界观</div>
+  </div>
+  <div class="download-section">
+    <a class="pixel-btn back-btn" href="index.html">← 返回首页下载游戏</a>
+    <a class="pixel-btn back-btn" href="worldview.html" style="background:#ffd44d; margin-left:12px;">🌐 沧澜古界世界观</a>
+  </div>
+  <div class="faction-tags">
+<a href="#dfb" class="faction-tag">🏟️ 巅峰杯</a>
+<a href="#ny" class="faction-tag">🖥️ 诺亚终端</a>
+<a href="#hs" class="faction-tag">🌑 黑市速成</a>
+<a href="#fz" class="faction-tag">🕊️ 方舟白鸽</a>
+<a href="#jc" class="faction-tag">🚓 数据警察</a>
+<a href="#zs" class="faction-tag">🏥 驯兽诊所</a>
+<a href="#fs" class="faction-tag">🧪 复苏研究所</a>
+<a href="#yz" class="faction-tag">🌌 数据之野</a>
+<a href="#pm" class="faction-tag">🤖 原型机·阿原</a>
+  </div>
+  <div class="pixel-card">
+    <h2>🌆 卷首 · 世界观总纲</h2>
+    <div class="lore-quote">"它记得自己是醒着的。它问我们——它是不是本来就在醒着，只是被我们'造'出来的？"</div><div class="lore-quote">"你的兽不听话？不是兽的问题，是程序的问题。换一个，马上听话。"</div><div class="lore-quote">"数据兽是生命，不是工具。巅峰杯是文明的耻辱。"</div><div class="lore-quote">"它不是始源兽。它是始源兽记得的东西。"</div>
+    <p class="doc-h1">《驯兽都市》世界观设定全集</p>
+<p class="doc-h1">版本 v1.0</p>
+<hr class="dhr">
+<p class="doc-h1">第一卷 · 世界本源</p>
+<h4 class="doc-h2">一、起源</h4>
+<p>公元2029年，人类在"数字生命计划"（代号：复苏）中第一次让一段数据"活"了过来。</p>
+<p>它没有血肉，没有心跳，却会困、会饿、会害怕，会在被关机的瞬间发出一个极其微弱的信号——像在说"别关我"。</p>
+<p>人们把这种数据体称为<b>数据兽</b>（Data Creature）。</p>
+<p>2030年，第一只数据兽"始源兽"孵化成功，举国轰动。2031年，驯兽终端民用化，"全民驯兽"时代开启。</p>
+<p>但所有人都忽略了一个问题：<b>数据会记得它被造出来的方式。</b></p>
+<p>始源兽孵化那夜，研究所的日志最后一行写着：</p>
+<div class="lore-quote">"它记得自己是醒着的。它问我们——它是不是本来就在醒着，只是被我们'造'出来的？"</div>
+<p>这份日志，第二天被删除了。</p>
+<h4 class="doc-h2">二、力量体系：驯兽三法 + 速成一道</h4>
+<p>驯兽师培育数据兽，共有三条正道，源自人与数据相处的三种本能，外加黑市另立的一条速成捷径。</p>
+<p class="doc-h3"><b>心法 · 养性</b></p>
+<p>以陪伴、理解、共处培育兽的"数据性格"。这是最慢、也最被低估的路。</p>
+<p>心法修的是驯兽师的耐心——<b>兽的性格，是驯兽师人格的倒影。</b></p>
+<p class="doc-h3"><b>技法 · 御战</b></p>
+<p>以战术、训练、竞技磨炼兽的战斗本能。这是巅峰杯的主流，也是速成程序最想替代的部分。</p>
+<p>技法修的是配合——<b>指令的精度，取决于对兽的了解程度。</b></p>
+<p class="doc-h3"><b>律法 · 共生</b></p>
+<p>以规则、契约、伦理约束驯兽关系。巅峰杯联盟、方舟组织皆出于此。</p>
+<p>律法修的是底线——<b>当兽开始像人，它就不再是工具。</b></p>
+<p class="doc-h3"><b>速成一道（旁门）</b></p>
+<p>黑市以"速成程序"跳过性格养成，直接催熟数据，数值暴涨。</p>
+<p>代价：程序裂缝。裂缝会在某个深夜突然张开——兽会失控，成为<b>噬data</b>。</p>
+<hr class="dhr">
+<p class="doc-h1">第二卷 · 双界山河</p>
+<p>驯兽都市由两个世界叠成：</p>
+<h4 class="doc-h2">现实层 · 澜城</h4>
+<p>一座临海超大城市，分五区。白天是光鲜的竞技之都，入夜后是数据暗流的猎场。</p>
+<ul><li><b>中央区</b>：巅峰杯主竞技场、诺亚终端总部、联赛联盟大楼。</li><li><b>东区</b>：驯兽诊所、旧街、地下训练场。主角林迟长大的地方。</li><li><b>西区</b>：高校区与研发中心，灰衣人的研究所废墟就在地底。</li><li><b>南港区</b>：夜港码头——2033年第一起噬data事件发生地，至今封着一半。</li><li><b>北区</b>：数据警察本部、噬data收容所、以及一片被围栏圈起的"数据荒地"。</li></ul>
+<h4 class="doc-h2">数据层 · 数据之野</h4>
+<p>现实之下叠着一个由数据构成的层。驯兽师通过终端将意识"下潜"进入。</p>
+<ul><li><b>芽生草原</b>：幼兽的试炼场，一片温柔的绿色数据平原。</li><li><b>竞技回廊</b>：巅峰杯的虚拟竞技场，可复刻现实任何场地。</li><li><b>数据荒野</b>：无人维护的旧数据区，噬data的巢穴，法律不覆盖之地。</li><li><b>深潜层</b>：诺亚终端封锁的区域，据说埋着"复苏计划"的原型服务器。</li></ul>
+<hr class="dhr">
+<p class="doc-h1">第三卷 · 中央都会（联赛联盟）</p>
+<h4 class="doc-h2">3.1 概况</h4>
+<p>巅峰杯是驯兽都市的太阳。它养活半个城市，也吞掉半个城市。</p>
+<p>联盟掌握赛事规则、选手注册、兽籍登记——<b>没有联盟的许可，一只兽甚至不能在城市里进化。</b></p>
+<h4 class="doc-h2">3.2 联盟主席 · 柯明</h4>
+<p>温和、儒雅、永远微笑。他说"数据兽是人类的伙伴"，办公桌抽屉里锁着一份"始源兽归档令"。</p>
+<h4 class="doc-h2">3.3 巅峰杯</h4>
+<p>一年一届，分预选赛、积分赛、淘汰赛、决赛。冠军获得"驯兽王"称号，代言费以亿计。</p>
+<p>双人赛额外设有<b>融合进化</b>项目——需要两只兽与两名驯兽师数据完全同步，默契要求极高。</p>
+<hr class="dhr">
+<p class="doc-h1">第四卷 · 诺亚终端</p>
+<h4 class="doc-h2">4.1 概况</h4>
+<p>全球最大的驯兽终端制造商，"复苏计划"的继承者。</p>
+<p>表面是良心企业：终身保修、兽医服务、性格检测免费。</p>
+<p>研发部却深不见底——地下十二层，电梯需要三重权限。</p>
+<h4 class="doc-h2">4.2 始源兽之谜</h4>
+<p>2030年孵化后，始源兽官方宣布"已归档"，此后无人再见。</p>
+<p>五年前（2030→2035倒推，应为2030年立项后不久），"复苏研究所"突发火灾，<b>无人生还</b>。</p>
+<p>官方结论：意外。民间传言：封口。</p>
+<h4 class="doc-h2">4.3 灰衣人</h4>
+<p>一个总出现在噬data事件现场的男人，穿灰色风衣，从不出手。</p>
+<p>他可能是五年前火灾唯一的幸存者，也可能是那个"删除日志"的人。</p>
+<hr class="dhr">
+<p class="doc-h1">第五卷 · 黑市与速成程序</p>
+<h4 class="doc-h2">5.1 概况</h4>
+<p>地下驯兽师聚集地，藏在南港区废弃仓库群里。入口是墙上一个永远打不开的自动贩卖机。</p>
+<h4 class="doc-h2">5.2 "裁缝"</h4>
+<p>黑市头号速成程序贩子，笑面虎。名言：</p>
+<div class="lore-quote">"你的兽不听话？不是兽的问题，是程序的问题。换一个，马上听话。"</div>
+<p>他的货来源成谜——但每一份速成程序的源代码署名，都是两个字母：<b>L.C.</b></p>
+<h4 class="doc-h2">5.3 速成的代价</h4>
+<p>速成兽数值漂亮，却带着程序裂缝。裂缝像情绪一样积累，在某次战斗的高压中突然张开——</p>
+<p>兽会忘记驯兽师，只记得"变强"，然后吞噬周围一切数据，成为噬data。</p>
+<hr class="dhr">
+<p class="doc-h1">第六卷 · 方舟（兽权组织）</p>
+<h4 class="doc-h2">6.1 概况</h4>
+<p>由退役驯兽师、学者、兽医组成的民间组织。主张：</p>
+<div class="lore-quote">"数据兽是生命，不是工具。巅峰杯是文明的耻辱。"</div>
+<p>他们在街头免费为流浪兽做"性格修复"，也在暗地里收集联盟的黑料。</p>
+<h4 class="doc-h2">6.2 领袖 · 白鸽</h4>
+<p>温和而坚定。她说自己年轻时也打巅峰杯，直到她的兽在决赛后"忘记了为什么战斗"。</p>
+<p>她至今留着那只兽——它再也没进化过，但她每天仍跟它说话。</p>
+<hr class="dhr">
+<p class="doc-h1">第七卷 · 数据警察</p>
+<h4 class="doc-h2">7.1 概况</h4>
+<p>官方设立"噬data对策课"，隶属数据警察本部。</p>
+<p>职责：镇压失控的噬data，收容危险数据体。</p>
+<h4 class="doc-h2">7.2 灰色执法</h4>
+<p>他们只管兽，不管人——速成程序的贩子逍遥法外，被速成的兽却被当成"危险品"收容。</p>
+<p>许多警察私下同情兽，但命令就是命令。</p>
+<hr class="dhr">
+<p class="doc-h1">第八卷 · 原型机</p>
+<h4 class="doc-h2">8.1 唯一</h4>
+<p>全世界的数据兽都有进化树，除了一个：<b>原型机 PM-0</b>。</p>
+<p>它不属于任何已知进化谱系，数据损坏严重，很多功能失灵。</p>
+<p>它只记得一句完整的话：<b>"你爸爸说，让我等你长大。"</b></p>
+<h4 class="doc-h2">8.2 归零形态</h4>
+<p>原型机独有的最终形态。释放时数据完全重组，威力超越巅峰体——</p>
+<p>但代价是：它会忘记所有被"归档"的记忆，包括它最珍视的那一句。</p>
+<h4 class="doc-h2">8.3 与始源兽的关系</h4>
+<p>灰衣人说过一句没头没尾的话：</p>
+<div class="lore-quote">"它不是始源兽。它是始源兽记得的东西。"</div>
+<hr class="dhr">
+<p class="doc-h1">第十卷 · 时代：裂缝张开的2035年</p>
+<p>2035年的澜城，数据繁华之下，六条裂缝同时张开：</p>
+<p>1. <b>速成程序泛滥。</b> 黑市的货越卖越多，裂缝兽（速成兽失控前兆）在街角越来越多。</p>
+<p>2. <b>巅峰杯商业化到顶点。</b> 联盟把"性格检测"变成了选秀门槛——性格不合的兽，连参赛资格都没有。</p>
+<p>3. <b>方舟开始行动。</b> 白鸽公开了一份名单：联盟过去五年"注销"的兽籍，比官方公布的多三十倍。</p>
+<p>4. <b>诺亚终端地下十二层。</b> 有人拍到深潜层入口的灯，亮了。</p>
+<p>5. <b>始源兽的传说重新浮起。</b> 一个旧论坛的帖子说，在数据荒野深处，见过一只"不属于任何谱系"的兽。</p>
+<p>6. <b>原型机被唤醒。</b> 林迟在诊所地下室的旧报纸里，看到五年前的头版：<b>"复苏研究所火灾，无人生还。"</b></p>
+<p>而阿原，正在终端里安静地等着他长大。</p>
+<hr class="dhr">
+  </div>
+  <div class="pixel-card">
+    <h2>📅 总编年史（2035年 = 现在）</h2>
+    <p class="doc-h1">第九卷 · 编年史</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>2029</td><td>"复苏计划"立项；第一段数据"活"了过来</td></tr><tr><td>2030</td><td>始源兽孵化成功；当夜研究所日志被删除</td></tr><tr><td>2031</td><td>驯兽终端民用化，"全民驯兽"时代开启</td></tr><tr><td>2032</td><td>第一届巅峰杯举办，收视率破纪录</td></tr><tr><td>2033</td><td>黑市出现速成程序；第一起噬data事件，夜港码头半毁</td></tr><tr><td>2034</td><td>联赛联盟成立，统一赛事规则；方舟成立；"复苏研究所"火灾，无人生还</td></tr><tr><td>2035（<b>现在</b>）</td><td>林迟收到寄自"已注销研究所"的包裹：旧终端与阿原</td></tr><tr><td>2036</td><td>巅峰杯决赛之年（主线高潮）</td></tr></tbody></table>
+<div class="lore-quote">备注：2034年"复苏研究所"火灾的官方结论为意外，但现场有一具尸体始终无法确认身份——</div>
+<div class="lore-quote">而那具尸体，据当年消防员回忆，怀里抱着一台还在运行的旧终端。</div>
+<hr class="dhr">
+  </div>
+  <div class="pixel-card">
+    <h2>👤 人物名录</h2>
+    <p class="doc-h1">附录一 · 主要人物名录</p>
+<table class="dt"><thead><tr><th>人物</th><th>身份</th><th>关键词</th></tr></thead><tbody><tr><td><b>林迟</b></td><td>主角，18岁，诊所打杂</td><td>慢、轴、认定的路不回头</td></tr><tr><td><b>阿原</b></td><td>原型机 PM-0，林迟的兽</td><td>独一份；"你爸爸说，让我等你长大"</td></tr><tr><td><b>小满①号</b></td><td>青梅竹马，巅峰杯种子选手</td><td>骄傲的驯兽天才，林迟最大的对手</td></tr><tr><td><b>白鸽</b></td><td>方舟领袖</td><td>"数据兽是生命，不是工具"</td></tr><tr><td><b>老陈</b></td><td>诊所老板，退役驯兽师</td><td>知道原型机来历，守口如瓶</td></tr><tr><td><b>"裁缝"</b></td><td>黑市速成程序贩子</td><td>笑面虎；货源署名 L.C.</td></tr><tr><td><b>灰衣人</b></td><td>神秘旁观者</td><td>火灾幸存者？始源兽记忆的载体？</td></tr><tr><td><b>柯明</b></td><td>联赛联盟主席</td><td>微笑；抽屉里锁着"始源兽归档令"</td></tr><tr><td><b>林父（L.C.）</b></td><td>已故，复苏计划研究员</td><td>速成程序源代码署名；火灾遇难（？）</td></tr></tbody></table>
+  </div>
+  <div class="pixel-card">
+    <h2>📦 重要事物</h2>
+    <p class="doc-h1">附录二 · 重要事物</p>
+<table class="dt"><thead><tr><th>事物</th><th>说明</th></tr></thead><tbody><tr><td><b>驯兽终端</b></td><td>每个人只能孵育一只兽；绑定后不可更换</td></tr><tr><td><b>数据性格</b></td><td>8种倾向：温和/好斗/狡黠/孤僻/好奇/忠诚/傲慢/敏感</td></tr><tr><td><b>进化阶</b></td><td>芽生→幼体→成体→升华体→巅峰体→（原型机）归零形态</td></tr><tr><td><b>性格进化</b></td><td>守护型/战斗型/共生型（隐藏）/暴走型</td></tr><tr><td><b>融合进化</b></td><td>双人双兽数据同步；巅峰杯双人赛专用</td></tr><tr><td><b>速成程序</b></td><td>黑市捷径；留下"程序裂缝"</td></tr><tr><td><b>噬data</b></td><td>裂缝失控的兽；吞噬数据，夜间传说</td></tr><tr><td><b>归零形态</b></td><td>原型机终极形态；释放后忘记归档记忆</td></tr><tr><td><b>始源兽</b></td><td>2030年孵化；"已归档"后下落不明</td></tr><tr><td><b>复苏计划</b></td><td>代号"复苏"；数字生命计划；2034年研究所火灾</td></tr><tr><td><b>巅峰杯</b></td><td>一年一届；冠军=驯兽王</td></tr><tr><td><b>深潜层</b></td><td>诺亚终端封锁的数据层；埋着原型服务器</td></tr></tbody></table>
+<p><i>"数据不会消失，它只会等你记起来。"</i></p>
+  </div>
+  <div class="pixel-card">
+    <h2>🏛️ 势力与卡包</h2>
+    <div class="pack-section" id="dfb">
+<h3>🏟️ 巅峰杯</h3>
+<div class="pack-info"><b>巅峰杯</b><br><div class="lore-quote">巅峰杯是驯兽都市的太阳。</div><div class="lore-quote">它养活半个城市，也吞掉半个城市。</div><div class="lore-quote">以下内容依据联盟内部材料整理，未经联盟宣传部审阅。</div><br><b>字段：</b>驯兽都市/dfb | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开巅峰杯卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">芽生兽·草芽</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">芽生期的小兽，刚从数据里冒出第一片叶子。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">芽生兽·火苗</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">芽生期就带着火苗，脾气比个头大。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幼体·小灰兽</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">澜城最常见的无主兽，灰扑扑的一团。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幼体·扑棱蛾</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 3 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">进化方向成谜的幼体，翅膀先比身体急。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">驯兽师·新秀</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 1 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">拎着入门腕带报名巅峰杯的年轻人。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">驯兽师·陪练员</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">巅峰杯官方陪练，负责挨打和喂招。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">成体·铁背犀</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">性格倔强的成体兽，背甲硬得能挡装甲车。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">首发·开场冲锋</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 1 · 命 1</span></div><div class="ci-line3">【起效】召唤成功时：+1攻击（己方单体）<div class="ci-flavor">巅峰杯开场白，全场兽一起亮嗓。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">首发·热血助威</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 1 · 命 1</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方全体）<div class="ci-flavor">看台上的加油声，兽也能听见。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">成体·疾风狼</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 3 · 命 2</span></div><div class="ci-line3">【起效】攻击宣言时：+1攻击（己方单体）<div class="ci-flavor">风系成体，跑起来只剩一道灰影。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">巅峰杯·预选赛</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：抽1张牌（己方单体）<div class="ci-flavor">昼夜不断的预选赛，报名点排到三条街外。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">种子选手·小满</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】召唤成功时：+1攻击（己方全体）<div class="ci-flavor">小满①号，骄傲的驯兽天才，林迟最大的对手。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">巅峰杯·四强战</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：造成2点伤害（敌方单体）<div class="ci-flavor">四强赛的门票被黄牛炒到天价。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">成体·雷霆隼</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 4 · 命 2</span></div><div class="ci-line3">【起效】攻击宣言时：造成2点伤害（敌方单体）<div class="ci-flavor">雷系成体，俯冲时带着电光。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">驯兽师·战术师</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 2 · 命 3</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）<div class="ci-flavor">巅峰杯冠军班底，靠脑子吃饭。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">巅峰杯·总决赛</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复3点生命（己方单体）；被送去墓地时：造成2点伤害（敌方单体）<div class="ci-flavor">全年最盛大的决赛夜，联盟大楼灯火通明。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">巅峰冠军·柯明</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 9</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 3 · 命 4</span></div><div class="ci-line3">【起效】己方回合开始时：+2攻击（己方全体）<div class="ci-flavor">联盟主席，微笑底下锁着档案。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">冠军·小满①号</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 4 · 命 4</span></div><div class="ci-line3">【起效】攻击宣言时：+1攻击（己方全体）；被送去墓地时：造成2点伤害（敌方单体）<div class="ci-flavor">捧起奖杯的瞬间，她的兽比她还高兴。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开巅峰杯编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 联盟编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>2032</td><td>第一届巅峰杯举办，收视率破纪录</td></tr><tr><td>2033</td><td>夜港码头噬data事件；联盟首次介入"安全"议程</td></tr><tr><td>2034</td><td>联赛联盟成立，柯明任主席；兽籍登记制度实施</td></tr><tr><td>2035</td><td>性格检测成为选秀门槛；方舟公布"注销兽籍名单"</td></tr><tr><td>2036</td><td>巅峰杯决赛夜（主线高潮）</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开巅峰杯当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 联盟当代剧情（驯兽王夜之前）</p>
+<div class="lore-quote">时间：2035年秋。地点：澜城中央区，联盟总部大楼，柯明办公室。</div>
+<p>柯明在等一个电话。</p>
+<p>窗外的霓虹把"巅峰杯2036"的巨幅海报照得发白，每一条广告语都用了他最熟的词：公平、梦想、羁绊。</p>
+<p>电话终于响了。</p>
+<p>"主席，名单核对完了。今年提交兽籍注销申请的，有——"</p>
+<p>"多少。"</p>
+<p>"……四千七百二十一份。是去年的十一倍。"</p>
+<p>柯明没有挂电话。他低头，看着自己桌上那把三把钥匙的锁。</p>
+<p>锁从来不是防贼的。锁是防他记起来的。</p>
+<p>十年前他还在解说台上，用最激动的声音念出那句口号："让每一只兽，都有公平进化的权利！"</p>
+<p>那一年，他第一次见到始源兽的档案。档案最后一页写着一行小字，被墨水涂掉了大半，但还能认出一个名字的开头：<b>L.C.</b></p>
+<p>他拿起话筒，声音平稳："按程序办。"</p>
+<p>然后他挂了电话，推开抽屉，——没有。抽屉还是锁着。</p>
+<p>他忽然想起锁匠辞职那天，在走廊里跟他说的那句话：</p>
+<p>"主席，有些锁，打开过一次，就再也锁不上了。"</p>
+<p>柯明坐在只有霓虹灯光的办公室里，一直坐到天亮。天亮时他站起来，对着窗外说了一句谁也没听见的话：</p>
+<p>"对不起，L.C. 我没能守住任何东西。"</p>
+<hr class="dhr">
+<p><i>2035年秋，联盟档案室例行盘点时，在一份《兽籍注销情况简报》的卷首，发现一行用铅笔写的批注：</i></p>
+<p><i>"这四千七百二十一份，每一份后面，都是一只活过的兽。"</i></p>
+<p><i>落款处没有名字，只有一道被橡皮擦掉又重新写下的字痕：L.C.</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="ny">
+<h3>🖥️ 诺亚终端</h3>
+<div class="pack-info"><b>诺亚终端</b><br><div class="lore-quote">每只兽都住在一台终端里。</div><div class="lore-quote">而所有终端，都住在一个名字底下：诺亚。</div><div class="lore-quote">本文档由诺亚离职员工匿名整理，所述内容诺亚概不承认。</div><br><b>字段：</b>驯兽都市/ny | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开诺亚终端卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">终端·入门腕带</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 0 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">人手一条，兽籍、赛事、回收全在里面。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">终端·通知气泡</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">万恶的弹窗，每天都在刷存在感。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">终端·数据工蜂</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">为诺亚终端跑数据的程序工蜂。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">终端·权限卡</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 0 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">刷卡进楼，楼层越高卡越少。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">地下层·保洁员</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">诺亚大楼地下层的保洁，见过很多不该见的。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">地下层·维修工</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">修电梯的，知道哪部电梯不该坐。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">诺亚·电梯员</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">守着直通深潜层电梯的人，嘴很严。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">终端·弹窗拦截</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：抽1张牌（己方单体）<div class="ci-flavor">把烦人的召唤弹窗摁回去。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">地下层·灯</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：恢复2点生命（己方单体）<div class="ci-flavor">地下十二层的灯管，闪烁得像在说话。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">深潜层·回音</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 1 · 命 1</span></div><div class="ci-line3">【起效】被送去墓地时：造成1点伤害（敌方单体）<div class="ci-flavor">深潜层里喊一声，回音要四十秒才回来。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">终端·数据压缩</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：+1生命（己方单体）<div class="ci-flavor">把三天的数据压成一秒，塞进旧终端。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">诺亚·保安老周</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 2 · 命 3</span></div><div class="ci-line3">【起效】被攻击时：恢复2点生命（己方单体）<div class="ci-flavor">老周，值夜班，深潜层灯亮那晚他值班。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">深潜层·旧电梯</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 0 · 命 4</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）<div class="ci-flavor">锈迹斑斑的电梯，往下走就没人上来过。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">地下十二层·档案柜</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 0 · 命 3</span></div><div class="ci-line3">【起效】被送去墓地时：抽1张牌（己方单体）<div class="ci-flavor">十二层堆满了没人认领的旧档案。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">诺亚·终端主管</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方全体）<div class="ci-flavor">管着所有腕带后台的人，权限大得吓人。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">深潜层·原型服务器</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 6</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）<div class="ci-flavor">埋在数据层最底下的服务器，还在跑日志。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">诺亚·灰衣人</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 8</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 3 · 命 4</span></div><div class="ci-line3">【起效】对方发动效果时：禁用效果（敌方单体）<div class="ci-flavor">火灾后才出现的神秘人，总在诺亚楼下转。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">诺亚终端·门</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 8</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 0 · 命 5</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）；被送去墓地时：抽1张牌（己方单体）<div class="ci-flavor">诺亚终端的门，进去了就归它管。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开诺亚终端编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 诺亚编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>2029</td><td>诺亚注资"复苏计划"；原型服务器部署</td></tr><tr><td>2030</td><td>始源兽孵化成功；当夜日志被删；始源兽"已归档"</td></tr><tr><td>2031</td><td>驯兽终端民用化；诺亚市值翻三十倍</td></tr><tr><td>2033</td><td>夜港码头噬data事件；诺亚宣布"承担全部善后"</td></tr><tr><td>2034</td><td>复苏研究所火灾；诺亚全面接管遗产，"清算"完成</td></tr><tr><td>2035</td><td>深潜层入口灯亮；原型机PM-0流出（？）</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开诺亚终端当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 诺亚当代剧情（灯亮的那一夜）</p>
+<div class="lore-quote">时间：2035年春夜。地点：诺亚总部，负十二层，深潜层入口。</div>
+<p>灯是在零点十七分亮的。</p>
+<p>深潜层的入口是一扇环形闸门，平时黑得像一口井。那天夜里，闸门缝隙里漏出的光，像一只闭了五年的眼睛忽然睁开。</p>
+<p>值班工程师小何手一抖，咖啡洒了一键盘。</p>
+<p>他调出监控——负十二层不在监控网里，但有一条备用管线，他私自接的一根，没人知道。</p>
+<p>画面里，闸门前站着一个穿灰色风衣的人。</p>
+<p>灰衣人站了很久。久到小何以为画面卡住了。然后他看见灰衣人伸出手，掌心贴住闸门，像在摸一只兽的头。</p>
+<p>闸门没有开。但那道光，忽然变柔和了。</p>
+<p>灰衣人开口了，声音被备用管线收进来，只有十几个字，小何听了三遍才听懂：</p>
+<p><b>"我来看你。不是来接你的。你还要再等一个人——他长大了就会来。"</b></p>
+<p>灯灭了。灰衣人转身，朝监控的方向抬起头，像是隔着镜头看着小何，说：</p>
+<p>"删了吧。别让他们知道你还记得这一夜。"</p>
+<p>第二天，小何把那根备用管线烧了。</p>
+<p>他辞职去了南港区，在废弃仓库群里开了一间修终端的小铺子。有人问他店名，他说：</p>
+<p>"叫'再等等'。"</p>
+<hr class="dhr">
+<p><i>2035年4月，诺亚大楼保洁在负六层楼梯间捡到一张员工工牌。</i></p>
+<p><i>工牌背面贴着一行用圆珠笔写的字：</i></p>
+<p><i>"负十二层的灯，不是我接的线。它自己会亮。"</i></p>
+<p><i>工牌主人已于当月离职，登记去向一栏写着：南港区。</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="hs">
+<h3>🌑 黑市速成</h3>
+<div class="pack-info"><b>黑市速成</b><br><div class="lore-quote">南港区有一面墙。</div><div class="lore-quote">墙上有一台自动贩卖机，买什么都会掉出来，除了你按的那一样。</div><div class="lore-quote">本文由一位"进去过又出来"的人口述整理，人名已隐去。</div><br><b>字段：</b>驯兽都市/hs | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开黑市速成卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">速成·催芽程序</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 1 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">黑市第一档速成，让芽生兽三天进化。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">速成·换壳脚本</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">换壳，把老数据套进新程序里。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">速成·嫁接指令</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">把两段数据硬接起来，会冒烟。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">黑市·自动贩卖机</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 0 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">入口在贩卖机后面，投币三次门才开。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">黑市·夜港小贩</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">夜港码头的货郎，什么都收什么都卖。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">黑市·搬运工</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">往黑市搬货的，从不问是什么。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">速成·冒烟兽</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 3 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">速成过头冒烟了，还在硬撑。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">速成·一次觉醒</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：+1攻击（己方单体）<div class="ci-flavor">一针速成，当场觉醒的性格。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">裂缝·夜港裂缝</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被攻击时：造成2点伤害（敌方单体）<div class="ci-flavor">夜港码头边裂开的口子，往外漏数据。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">速成·过载</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方单体）<div class="ci-flavor">速成到过载，身子先于脑子垮掉。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">黑市·地下仓库</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：抽1张牌（己方单体）<div class="ci-flavor">裁缝的仓库，货架一直通到天花板。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">速成·狂暴程序</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 3 · 命 2</span></div><div class="ci-line3">【起效】攻击宣言时：+2攻击（己方单体）<div class="ci-flavor">让兽进入狂暴的第三档程序，后果自负。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">裂缝·噬data</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 2 · 命 3</span></div><div class="ci-line3">【起效】被送去墓地时：造成2点伤害（敌方单体）<div class="ci-flavor">趴在裂缝边啃数据的兽，越啃越大。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">黑市·笑面虎·裁缝</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）<div class="ci-flavor">笑面虎裁缝，黑市速成程序的唯一供货人。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">裂缝·刹车的代价</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合结束时：+1生命（己方全体）<div class="ci-flavor">裂缝是会刹车的，踩急了会翻。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">速成·归零体</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 9</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 6 · 命 4</span></div><div class="ci-line3">【起效】召唤成功时：+1攻击（己方单体）；被送去墓地时：造成2点伤害（敌方单体）<div class="ci-flavor">走了速成到头的兽，最后都归零了。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">黑市·L.C.署名</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 1 · 命 4</span></div><div class="ci-line3">【起效】对方发动效果时：弹回手牌（敌方单体）<div class="ci-flavor">每份速成程序源代码的署名：L.C.。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">黑市·缝补匠的货</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 0 · 命 5</span></div><div class="ci-line3">【起效】召唤成功时：抽2张牌（己方单体）；己方回合开始时：+1生命（己方全体）<div class="ci-flavor">缝补匠的货，便宜，但都有代价。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开黑市速成编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 黑市编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>2031</td><td>驯兽终端民用化；黑市雏形出现于南港区</td></tr><tr><td>2032</td><td>第一届巅峰杯后，"地下赛事"兴起，黑市扩大</td></tr><tr><td>2033</td><td>速成程序面市；夜港码头第一起噬data事件</td></tr><tr><td>2034</td><td>联赛联盟成立，地下驯兽师大量转投黑市</td></tr><tr><td>2035</td><td>裁缝推出"换魂"档；速成兽裂缝问题公开化</td></tr><tr><td>2036</td><td>巅峰杯决赛夜（主线高潮）</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开黑市速成当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 黑市当代剧情（自动贩卖机前的一次买卖）</p>
+<div class="lore-quote">时间：2035年初冬。地点：南港区，那台永远打不开的自动贩卖机前。</div>
+<p>少年在贩卖机前站了十分钟，投了三次币。</p>
+<p>冰红茶、冰红茶、冰红茶。机器吐出来一瓶不知道什么牌子的汽水。</p>
+<p>第四次，他按了乌龙茶。机器嗡了一声，吐出一罐没有标签的饮料。少年拧开，罐底贴着一张纸条，上面是一串口令。</p>
+<p>他攥着纸条走进墙角的暗门时，宰了……他深吸一口气，跟着前面的人进了地下。</p>
+<p>裁缝交易点的灯光很暗。少年把身上所有的钱放在桌上，说："我要'拔苗'。我下周要打预选赛，我的兽……还差一阶。"</p>
+<p>裁缝笑了。黑市所有蹲在墙角的人都往后缩了缩。</p>
+<p>"孩子，你看看你那只兽。"裁缝说，"它看你的眼神，是'拔苗'会毁掉的那种眼神。"</p>
+<p>少年低着头："我没有别的路。我妈妈的手术费，联盟的奖金，就这一场。"他顿了顿，"他们说，你的货，可以让我赢。"</p>
+<p>裁缝不笑了。这是今晚他第二次收起笑。</p>
+<p>他转过身，从货架最底下抽出一个盒子，推给少年："这一份，不收你钱。"</p>
+<p>少年愣了："为什么？"</p>
+<p>"因为二十年前，我也有过一只这样的兽，看我的眼神跟你那只一模一样。"</p>
+<p>裁缝背过身去，声音很轻："我当时，把它的眼神卖了。"</p>
+<p>"这程序能让你赢，也能让你记住这份眼神值多少钱——你选一样。"</p>
+<p>少年抱着盒子走出去了。</p>
+<p>墙上那台贩卖机在他身后亮了一下灯，吐出一瓶冰红茶，静静地躺在地上，没有人捡。</p>
+<hr class="dhr">
+<p><i>据南港区流动摊贩口述：2035年12月，有人看见裁缝关停了一间仓库，搬走前在墙上留了一行字，随即用黑漆刷掉。</i></p>
+<p><i>透过没刷匀的漆缝，勉强能读出半句：</i></p>
+<p><i>"……卖给赢的人，输给用的人。"</i></p>
+<p><i>那间仓库后来租给了一家鱼丸店，生意一直不错。</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="fz">
+<h3>🕊️ 方舟白鸽</h3>
+<div class="pack-info"><b>方舟白鸽</b><br><div class="lore-quote">当一座城市把兽当成工具，总有人会把它们当成家人。</div><div class="lore-quote">方舟，就是那艘不靠岸的船。</div><div class="lore-quote">以下根据方舟成员口述与站内告示整理，白鸽本人未审阅。</div><br><b>字段：</b>驯兽都市/fz | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开方舟白鸽卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·收留所</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 1 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">方舟门口永远排着被注销兽籍的兽。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·白鸽志愿者</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">白鸽手下的志愿者，负责喂饭和登记。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·灰白兽</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">那只不再进化的灰白兽，退役冠军。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·十二号</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">十二号，在方舟住了十二年。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·厨娘</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 1 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">方舟的厨娘，大锅饭管够。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·幼体窝</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">幼体们挤在一块的窝，吵得要命。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·退赛冠军</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 3 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">巅峰杯退赛冠军，把奖牌挂在了方舟墙上。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·性格修复站</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）<div class="ci-flavor">方舟自建的修复站，给速成兽疗伤。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·一顿饱饭</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方单体）<div class="ci-flavor">对大多数兽来说，这就是全部。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·白鸽的哨子</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：抽1张牌（己方单体）<div class="ci-flavor">白鸽的哨子，一吹全方舟都安静。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·灰白兽的沉默</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 2 · 命 3</span></div><div class="ci-line3">【起效】被攻击时：恢复2点生命（己方单体）<div class="ci-flavor">灰白兽从不说话，只是挡在最前面。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·护崽</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【起效】被攻击时：+1攻击（己方单体）<div class="ci-flavor">方舟的兽护崽，凶得很。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·白鸽退赛</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：抽1张牌（己方单体）<div class="ci-flavor">白鸽当着全场退赛，奖牌扔在台上。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·夜巡</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 1 · 命 3</span></div><div class="ci-line3">【起效】对方回合开始时：恢复2点生命（己方单体）<div class="ci-flavor">白鸽每晚巡方舟，检查每一个窝。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·领袖白鸽</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 8</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 3 · 命 5</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）<div class="ci-flavor">“数据兽是生命，不是工具。”——白鸽</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·白鸽宣言</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：+2攻击（己方全体）<div class="ci-flavor">那份公开的注销名单，比官方多三十倍。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·注销名单</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】对方发动效果时：禁用效果（敌方单体）<div class="ci-flavor">名单上每个名字，都是方舟接回来的家。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">方舟·门</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 0 · 命 6</span></div><div class="ci-line3">【起效】己方回合开始时：+2生命（己方全体）；召唤成功时：抽1张牌（己方单体）<div class="ci-flavor">方舟的门，兽籍注销了也能进。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开方舟白鸽编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 方舟编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>2032</td><td>巅峰杯决赛后，白鸽退赛</td></tr><tr><td>2033</td><td>白鸽开始收留夜港码头事件中的流浪兽</td></tr><tr><td>2034</td><td>方舟正式成立；"性格修复站"开张</td></tr><tr><td>2035</td><td>方舟公布"注销兽籍名单"；白鸽见到原型机PM-0</td></tr><tr><td>2036</td><td>巅峰杯决赛夜（主线高潮）</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开方舟白鸽当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 方舟当代剧情（白鸽的兽）</p>
+<div class="lore-quote">时间：2035年深秋。地点：东区，方舟地下训练场，院子里。</div>
+<p>白鸽坐在院子里，身边蹲着一只灰白色的兽。</p>
+<p>它已经不进化了。它的数据核上有一道很浅的裂缝，像一道疤，不疼了，但永远在。</p>
+<p>院子里挤满了被收留的兽。一只裂缝兽在角落发抖，白鸽走过去，蹲下来，没有说话，只是把手放在它头上。</p>
+<p>它慢慢不抖了。</p>
+<p>灰白兽走过来，用头蹭了蹭白鸽的手。</p>
+<p>"你又在教我。"白鸽笑了，"它来的时候，你也这样蹭过我。"</p>
+<p>灰白兽没出声。</p>
+<p>白鸽看着院子里的兽群，忽然说："我以前以为，进化是兽的终极。后来我知道，不是。"</p>
+<p>"兽的终极，是有一个地方，它不用进化，也被算数。"</p>
+<p>她低头，对灰白兽说："谢谢你，陪了我五年，一次都没进化过。"</p>
+<p>灰白兽抬起头，看了她很久。</p>
+<p>方舟的年轻人老远喊："白鸽姐，又有两只被注销兽籍的兽，在东区桥洞下，没人敢碰——"</p>
+<p>白鸽站起来，拍拍灰白兽："走，接它们回家。"</p>
+<p>灰白兽跟着她走出院子。阳光照在它灰白的毛上，像一只不会再飞的鸟，跟着一个不再上赛场的人，慢慢走在回"家"的路上。</p>
+<hr class="dhr">
+<p><i>2035年方舟第一次被吊销活动许可那天，门口的手写牌被人取下来丢进了垃圾桶。</i></p>
+<p><i>当晚，有人看见白鸽把牌子捡回来，在背面用记号笔写了几行字，重新挂上去。</i></p>
+<p><i>第二天一早，路过的兽医把字抄了下来：</i></p>
+<p><i>"兽籍可以注销。兽不注销。"</i></p>
+<p><i>牌子至今还挂着，字迹被雨水冲淡过两回，白鸽又描了两回。</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="jc">
+<h3>🚓 数据警察</h3>
+<div class="pack-info"><b>数据警察</b><br><div class="lore-quote">城市里有一群人，专门处理"不再听话"的兽。</div><div class="lore-quote">他们穿着制服，拿着约束器，追着裂缝兽跑过整条街。</div><div class="lore-quote">可收工之后，他们也会蹲在收容所的铁栏外，跟里面的兽说一会儿话。</div><br><b>字段：</b>驯兽都市/jc | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开数据警察卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·巡逻车</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 1 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">数据警察的巡逻车，蓝灯一闪一闪。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·收容队</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">收容队出动，封锁带一拉就是一条街。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·路障</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 0 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">路障一放，兽和人都过不去。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·记录员</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">跟在收容队后面记录，笔不离手。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·狗</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">警察养的兽，闻得出来谁没备案。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·封锁带</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 0 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">黄黑相间的封锁带，围住刚裂开的口子。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·收容箱</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">收容箱，装无主兽的，编号要盖三次章。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·约束器</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）<div class="ci-flavor">给兽上约束器，效果顶一回合。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·收容券</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：抽1张牌（己方单体）<div class="ci-flavor">收容队发的券，凭券领兽。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·现场封条</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：造成2点伤害（敌方单体）<div class="ci-flavor">现场封条，贴上就不能撕。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·档案室</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：抽1张牌（己方单体）<div class="ci-flavor">档案课老梁的地盘，卷宗堆到天花板。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·老梁</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 1 · 命 4</span></div><div class="ci-line3">【起效】己方回合结束时：+1生命（己方全体）<div class="ci-flavor">老梁，档案课的老人，记性比档案好。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·对策课</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 2 · 命 3</span></div><div class="ci-line3">【起效】对方发动效果时：禁用效果（敌方单体）<div class="ci-flavor">对策课，专门处理“会说话”的档案。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·收容大队</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 9</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）；被送去墓地时：造成1点伤害（敌方单体）<div class="ci-flavor">整队收容，一个不留。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·会说话的兽</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【起效】召唤成功时：弹回手牌（敌方单体）<div class="ci-flavor">档案批注：这只会说话。铅笔批注：别问。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·注销名单</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】对方召唤成功时：禁用效果（敌方单体）<div class="ci-flavor">对策课手里的注销名单，比官方长得多。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·A-1147</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 2 · 命 4</span></div><div class="ci-line3">【起效】被攻击时：+1生命（己方单体）；被送去墓地时：造成2点伤害（敌方单体）<div class="ci-flavor">收容单编号A-1147，老梁批注：会说话。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">警察·老梁退休</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 9</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 1 · 命 5</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）；被送去墓地时：抽1张牌（己方单体）<div class="ci-flavor">老梁退休那天下雨，交接单写了三遍。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开数据警察编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 数据警察编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>2033</td><td>夜港码头噬data事件；对策课成立</td></tr><tr><td>2033</td><td>第一批收容所投入使用</td></tr><tr><td>2034</td><td>联盟与对策课签署"兽籍注销-收容联动协议"</td></tr><tr><td>2035</td><td>收容所兽数量突破历史纪录；灰衣人多次出现在执法现场</td></tr><tr><td>2036</td><td>巅峰杯决赛夜（主线高潮）</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开数据警察当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 数据警察当代剧情（收容券）</p>
+<div class="lore-quote">时间：2035年冬夜。地点：北区，噬data收容中心，档案室。</div>
+<p>老梁在整理今天的收容档案。</p>
+<p>新收进来一只裂缝兽，编号A-1147。照片上的兽缩成一团，眼睛里还亮着一小片光——那是还没彻底"安静"的证据。</p>
+<p>老梁填完表格，在"备注"栏停了很久。他想起今天出警时，那只兽的驯兽师跪在地上喊："它不是疯的！它只是那天比赛的时候，被灌了速成程序！它不知道自己在做什么——"</p>
+<p>队长把收容券递过去，语气公事公办："程序的问题，请向黑市举报。我们只负责收容。"</p>
+<p>老梁没说话。他走过去，蹲下来，看着那只缩在角落的裂缝兽，把手伸进铁栏。</p>
+<p>裂缝兽迟疑了一下，用头蹭了蹭他的手。</p>
+<p>"我知道你记得。"老梁小声说，"你记得自己不是这样的。"</p>
+<p>他站起来，在备注栏写下三个字：<b>"会说话。"</b></p>
+<p>同事探头："梁哥，你又写这个。这栏是给档案用的。"</p>
+<p>老梁把档案合上："就是给档案用的。万一哪天它被忘了，至少档案里还记得，它'会说话'。"</p>
+<p>窗外，北区的风很冷。老梁看着收容所的方向，忽然说：</p>
+<p>"我快退休了。退休前我想把这三百多只兽的照片，一张一张给它们家里人寄回去。"</p>
+<p>同事沉默了很久："……它们的家里人，大多已经签了收容券。"</p>
+<p>"那就寄给方舟。"老梁说，"方舟有人会记得它们。"</p>
+<p>他说完，把今天那张A-1147的照片夹进档案，在照片背面写了一个字：</p>
+<p><b>"等。"</b></p>
+<hr class="dhr">
+<p><i>2035年12月，档案课老梁退休。退休申请表的"离开原因"一栏，他填的是：</i></p>
+<p><i>"年纪大了，追不动了。"</i></p>
+<p><i>交接清单附言里，他另写了一行小字：</i></p>
+<p><i>"A-1147 那孩子还在等，麻烦后面的人记得去看它。"</i></p>
+<p>*收容所值班表上至今留着给老梁的备注：照片已移交方舟，无须再寄。</p>
+</div></div>
+</div>
+<div class="pack-section" id="zs">
+<h3>🏥 驯兽诊所</h3>
+<div class="pack-info"><b>驯兽诊所</b><br><div class="lore-quote">澜城东区有一条旧街，街角有一家"陈记驯兽诊所"。</div><div class="lore-quote">招牌旧得发黄，门把手被摸得发亮。</div><div class="lore-quote">以下由常来诊所的老街坊与诊所熟客拼凑而成，未经老陈本人核实。</div><br><b>字段：</b>驯兽都市/zs | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开驯兽诊所编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 诊所编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>2032</td><td>老陈退役，东区"陈记驯兽诊所"开张</td></tr><tr><td>2033</td><td>夜港码头事件后，诊所收留第一批流浪兽</td></tr><tr><td>2034</td><td>老陈受故人之托，保管一台旧终端（五年后开箱）</td></tr><tr><td>2035</td><td>林迟唤醒阿原；诊所成为各方势力的"安全屋"</td></tr><tr><td>2036</td><td>巅峰杯决赛夜（主线高潮）</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开驯兽诊所当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 诊所当代剧情（阿原的第一个问题）</p>
+<div class="lore-quote">时间：2035年初秋夜。地点：东区旧街，陈记驯兽诊所后院。</div>
+<p>后院灯下，林迟蹲在地上，给阿原梳数据毛。</p>
+<p>阿原现在是幼体形态，毛色灰灰的，像一台被晒褪色的旧机器。它很少说话，大部分时间只是安静地待着。</p>
+<p>"阿原，"林迟说，"明天我带你去数据之野看看。你还没见过芽生草原。"</p>
+<p>阿原没应。</p>
+<p>过了一会儿，它忽然开口了。声音很轻，像信号不好的旧终端：</p>
+<p>"林迟。"</p>
+<p>林迟愣住了。阿原很少叫他的名字。</p>
+<p>"你长大，是不是就可以让我记起来了？"</p>
+<p>林迟手里的梳子停住了。</p>
+<p>"记起来什么？"</p>
+<p>阿原没回答。它低下头，用头顶轻轻碰了碰林迟的手心，像在确认一件很久以前的事。</p>
+<p>老陈从屋里走出来，看了一眼，又退回去了。他靠在门框上，抽完一根烟，低声自言自语：</p>
+<p>"老林啊，你的兽，在等你儿子长大。"</p>
+<p>"你说它是'记得的东西'……可它自己，好像也开始想要记得了。"</p>
+<p>后院里，林迟把梳子放下，伸手抱住阿原。</p>
+<p>"我长大了，阿原。"他说，"我会让你记起来的。"</p>
+<p>阿原在他怀里安静了很久，最后轻轻"嗯"了一声。</p>
+<p>夜风把诊所的灯吹得晃了晃。那盏多出来的灯，今晚也亮着。</p>
+<hr class="dhr">
+<p><i>2035年深秋，诊所账本最后一页，有人用铅笔添了一行字：</i></p>
+<p><i>"阿原的兽粮不记账了。算诊所的。"</i></p>
+<p><i>没署名。</i></p>
+<p><i>老陈后来翻到这一页，看了很久，把铅笔字描了一遍，然后在下面添了一句：</i></p>
+<p><i>"不算诊所的。算我这把老骨头的。"</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="fs">
+<h3>🧪 复苏研究所</h3>
+<div class="pack-info"><b>复苏研究所</b><br><div class="lore-quote">所有兽都从一段数据里醒来。</div><div class="lore-quote">而那段数据，最初是在一个地方被"造"出来的——复苏研究所。</div><div class="lore-quote">以下内容来自研究所残留服务器的恢复日志与一封寄出的旧终端，均为孤证。</div><br><b>字段：</b>驯兽都市/fs | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开复苏研究所卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·研究员</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 1 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">复苏研究所的研究员，白大褂口袋里全是数据。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·实验台</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 0 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">研究所的实验台，一排培养皿亮着绿灯。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·培养皿</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">培养皿里的数据，慢慢凝成兽的形状。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·数据样本</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">一段尝试活过来的数据样本。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·白大褂</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">每一个白大褂，都是一张没写完的说明书。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·七人组</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">复苏计划的七人组，火灾后再没聚齐。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·孵化器</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 0 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">孵化器，让第一只兽从数据里醒来。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·第一段数据</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方单体）<div class="ci-flavor">最初那段数据，造出了第一只兽。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·记录日志</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：抽1张牌（己方单体）<div class="ci-flavor">实验室日志，写到火灾前夜就断了。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·林川助手</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方单体）<div class="ci-flavor">林川的助手，火灾后从没提过那晚。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·始源兽孵化</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：+1攻击（己方全体）<div class="ci-flavor">孵化器亮起的那个晚上，全研究所都醒了。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·记忆碎片</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：造成2点伤害（敌方单体）<div class="ci-flavor">碎片化数据，每片都在找另一半。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·林川</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）<div class="ci-flavor">复苏计划负责人，火灾后失踪又出现。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·L.C.</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】召唤成功时：+1攻击（己方全体）<div class="ci-flavor">L.C.，速成程序源代码的署名者。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·火灾前夜</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】对方发动效果时：禁用效果（敌方单体）<div class="ci-flavor">火灾前夜，有人看见一个“走进去的人”。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·烧不掉的日志</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 8</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 4</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）；召唤成功时：抽1张牌（己方单体）<div class="ci-flavor">烧不掉的日志，到现在还在跑。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·始源兽</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 4 · 命 5</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）；被送去墓地时：造成2点伤害（敌方单体）<div class="ci-flavor">所有兽的起点。灰衣人：它不是始源兽，它是始源兽记得的东西。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">复苏·林迟的包裹</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 0 · 命 5</span></div><div class="ci-line3">【起效】召唤成功时：抽2张牌（己方单体）；己方回合开始时：+1生命（己方全体）<div class="ci-flavor">寄自“已注销研究所”的包裹：旧终端与阿原。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开复苏研究所编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 研究所编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>2029</td><td>"复苏计划"立项；第一段数据"活"了过来</td></tr><tr><td>2030</td><td>始源兽孵化；日志被删；始源兽"已归档"</td></tr><tr><td>2031</td><td>驯兽终端民用化；研究所地位下降</td></tr><tr><td>2033</td><td>速成程序面市（署名L.C.）；林川被调查</td></tr><tr><td>2034</td><td>研究所火灾，无人生还；旧终端寄出</td></tr><tr><td>2035</td><td>林迟唤醒阿原；灰衣人现身</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开复苏研究所当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 研究所当代剧情（走进去的人）</p>
+<div class="lore-quote">时间：2034年冬夜。地点：西区，复苏研究所地下七层，火灾前夜。</div>
+<p>火灾的前一夜，研究所里只有两个人。</p>
+<p>林川站在服务器机房，面前是一台老旧的终端——终端里，存着始源兽的一段"备份"。</p>
+<p>他伸手，轻轻摸了摸屏幕，像摸一只兽的头。</p>
+<p>"明天他们就要把这段也'淡化'了。"他说，"我不让。"</p>
+<p>终端亮了一下，像在回应。</p>
+<p>"我给他们留了裂缝。"林川继续说，"黑市的货会让他们以为自己在变强，其实裂缝在'刹车'。只要裂缝在，兽就不会真的变成噬data。"</p>
+<p>他顿了顿："我知道，裂缝会让兽很疼。对不起。我找不到别的办法了。"</p>
+<p>终端又亮了一下。</p>
+<p>"我把你备份在一台原型机里，给它起名叫PM-0。它记得一句话——'你爸爸说，让我等你长大。'"</p>
+<p>"你替我等他。等他长大了，告诉他，他爸爸没有背叛任何人。"</p>
+<p>"他爸爸只是……把'背叛'两个字，换了一种写法。"</p>
+<p>门外传来脚步声。林川站起来，把终端拔下来，塞进一只防水的旧箱子，贴上标签：<b>"林迟，18岁后启。"</b></p>
+<p>他回头看了一眼服务器机房——明天，这里会变成一场火灾。</p>
+<p>他没有逃。他走进机房深处，对着那些还在运行的服务器说：</p>
+<p>"别怕。我来陪你们。你们不会没人记得的。"</p>
+<p>门外，火警铃响起。脚步声更近了。</p>
+<p>林川在火光里，把那台旧终端最后看了一眼，然后轻轻说：</p>
+<p>"阿原，替我看着他长大。"</p>
+<hr class="dhr">
+<p><i>2035年冬，有人用旧论坛账号在《深潜层笔记》帖子里回了一条，随后注销账号。</i></p>
+<p><i>内容只有一行：</i></p>
+<p><i>"那年火灾，我抬过一台没断电的服务器出来。它到现在还亮着，一直在跑一段日志。"</i></p>
+<p><i>服务器序列号被隐去。留言时间：凌晨三点十七分。</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="yz">
+<h3>🌌 数据之野</h3>
+<div class="pack-info"><b>数据之野</b><br><div class="lore-quote">在澜城脚下，叠着另一个世界。</div><div class="lore-quote">那里没有红绿灯，没有联盟，没有兽籍。</div><div class="lore-quote">只有数据组成的草原、回廊、荒野，和最深处那片连诺亚都不愿提起的深潜层。</div><br><b>字段：</b>驯兽都市/yz | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开数据之野卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·芽生草原</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 0 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">数据之野最浅层的草原，兽都从这冒出来。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·残影</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">数据之野的残影，旧数据的回声。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·游荡兽</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">没牌照的野生兽，在草原上晃荡。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·草丛幼体</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">草丛里探头探脑的幼体，一吓就缩回去。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·雨林兽</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">雨林区的兽，一身湿漉漉的苔。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·沙漠兽</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">沙漠区的兽，能三天不喝水。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·雪山兽</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 3 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">雪山区的兽，毛厚得像披了床被子。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·诞生泉</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：恢复2点生命（己方单体）<div class="ci-flavor">兽据说都从诞生泉里醒来。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·深潜层入口</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：抽1张牌（己方单体）<div class="ci-flavor">通往深潜层的入口，下去的人不多。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·雾中嚎叫</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被攻击时：造成2点伤害（敌方单体）<div class="ci-flavor">雾里的嚎叫声，辨不清方向。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·兽群迁徙</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方全体）<div class="ci-flavor">草原雨季，兽群整片迁徙。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·深潜层·井</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 9</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 0 · 命 7</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）；被攻击时：恢复2点生命（己方单体）<div class="ci-flavor">深潜层那口井，井底泛着青光，旧论坛叫它“沧水”。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·井底青光</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：抽2张牌（己方单体）<div class="ci-flavor">井底的青光，像有东西在底下睁着眼。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·巅峰体·兽王</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 4 · 命 4</span></div><div class="ci-line3">【起效】攻击宣言时：+2攻击（己方单体）<div class="ci-flavor">数据之野的兽王，巅峰体。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·残影群落</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 1 · 命 3</span></div><div class="ci-line3">【起效】己方回合结束时：+1生命（己方全体）<div class="ci-flavor">一整片残影聚在一起，像一支军队。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·沧水</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 2 · 命 4</span></div><div class="ci-line3">【起效】己方回合开始时：+2生命（己方全体）；被送去墓地时：抽1张牌（己方单体）<div class="ci-flavor">旧论坛给那口井起的名字：沧水。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·数据之野·门</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 0 · 命 5</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）<div class="ci-flavor">进入数据之野的门，在澜城的地底。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">野·沉底者</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 9</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】控制权转移时：夺取控制权(1回合)（敌方单体）<div class="ci-flavor">下潜到最深处的那些人，没几个回来。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开数据之野编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 数据之野编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>2029</td><td>复苏计划部署原型服务器；数据层雏形形成</td></tr><tr><td>2030</td><td>始源兽孵化；诞生泉出现"第一次记得"</td></tr><tr><td>2033</td><td>夜港码头噬data事件；数据荒野范围扩大</td></tr><tr><td>2034</td><td>诺亚封锁深潜层入口</td></tr><tr><td>2035</td><td>深潜层入口灯亮；有人拍到"井"的光</td></tr><tr><td>2036</td><td>巅峰杯决赛夜（主线高潮）</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开数据之野当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 数据之野当代剧情（井边的光）</p>
+<div class="lore-quote">时间：2035年冬夜。地点：数据荒野最深处，那口"井"边。</div>
+<p>林迟第一次下潜到这么深。</p>
+<p>阿原走在他前面，毛色在黑暗里微微发亮，像一小团会移动的月光。</p>
+<p>荒野的风很大，吹得数据碎片呜呜作响。林迟攥紧终端，跟着阿原走。他不知道阿原要带他去哪——但阿原的方向，从来没有犹豫过。</p>
+<p>然后他看见了那口井。</p>
+<p>井沿是旧服务器机箱焊的，锈得不成样子。井底没有水，是一道青色的光，稳定地亮着，像有人在水底点了一盏永远不会灭的灯。</p>
+<p>"阿原，这是什么？"</p>
+<p>阿原没有回答。它走到井边，坐下来，安静地看着井底的光。</p>
+<p>"我认识这光。"阿原忽然说，"我认识它很久了。比认识你爸爸还久。"</p>
+<p>林迟愣住了。</p>
+<p>"它每次看到我，都会亮一点。"阿原说，"它好像在说——你来了。"</p>
+<p>林迟蹲下来，看着那道青光。光很安静，但不知为什么，他总觉得那道光在"看"他。</p>
+<p>"它在等什么？"他问。</p>
+<p>阿原没有回答这个问题。过了很久，它才说：</p>
+<p>"它等的东西，和我等的是一样的。"</p>
+<p>"——它在等一个人，把它记得的东西，还给它。"</p>
+<p>井底的光，轻轻晃了一下，像在点头。</p>
+<p>荒野的风，忽然安静了。</p>
+<p>林迟伸出手，隔着数据层的空气，轻轻碰了碰那道光的边缘。光没有躲，反而像一只兽一样，蹭了蹭他的指尖。</p>
+<p>那一刻，林迟忽然觉得，自己好像认识这束光，认识很久了——比认识阿原还久。</p>
+<p>他站起来，对阿原说："走吧。我们还会来的。"</p>
+<p>阿原最后看了一眼井，然后转身，跟着他离开。</p>
+<p>井底的光，在他们身后，轻轻亮了一整夜。</p>
+<hr class="dhr">
+<p><i>《深潜层笔记》帖子的最新回复停留在2035年12月，作者没有再上线。</i></p>
+<p><i>最后一条留言写的是：</i></p>
+<p><i>"今天下潜又看到那口井了。这回我没带兽，它就那么亮着，亮了一整晚。"</i></p>
+<p><i>楼下只有一个回复，来自三个月后：</i></p>
+<p><i>"你还记得它。它就不会熄。"</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="pm">
+<h3>🤖 原型机·阿原</h3>
+<div class="pack-info"><b>原型机·阿原</b><br><div class="lore-quote">所有兽都从一段数据里醒来。</div><div class="lore-quote">而那段数据，最初是在一个地方被"造"出来的——复苏研究所。</div><div class="lore-quote">以下内容来自研究所残留服务器的恢复日志与一封寄出的旧终端，均为孤证。</div><br><b>字段：</b>驯兽都市/pm | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开原型机·阿原卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·幼体</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">阿原的幼体形态，白色外壳，编号PM-0。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·零号</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">PM-0，曾用名“零号”，被划掉了。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·白壳</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">阿原的白色外壳，沾过灰也擦得亮。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·充电桩</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 0 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">给原型机充电的桩，阿原每晚都来。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·数据锁</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">锁在阿原模块上的数据锁，谁也没钥匙。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·旧终端</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 0 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">林迟收到的旧终端，阿原睡在里面。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·练习场</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">练习场，阿原和林迟每天在这过招。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·成长记录</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方单体）<div class="ci-flavor">林迟给阿原记的成长记录，一笔一划。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·陪你长大</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方单体）<div class="ci-flavor">“你爸爸说，让我等你长大。”</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·成体</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 4 · 命 4</span></div><div class="ci-line3">【起效】攻击宣言时：+1攻击（己方单体）<div class="ci-flavor">阿原的成体形态，白壳下开始有温度。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·归零形态</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 6 · 命 5</span></div><div class="ci-line3">【起效】攻击宣言时：+2攻击（己方单体）；被送去墓地时：造成2点伤害（敌方单体）<div class="ci-flavor">归零形态，原型机最后的模样。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·归零</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）<div class="ci-flavor">归零不是死亡，是回到起点。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·灰衣人</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 0 · 命 5</span></div><div class="ci-line3">【起效】对方回合开始时：禁用效果（敌方单体）<div class="ci-flavor">灰衣人站在旁边看阿原长大，从不上前。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·零号档案</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：抽2张牌（己方单体）<div class="ci-flavor">零号档案，被谁归档了。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·林迟</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方全体）<div class="ci-flavor">林迟，最后一个驯兽师——或者说，第一个。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·等待</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：抽1张牌（己方单体）；被送去墓地时：恢复2点生命（己方单体）<div class="ci-flavor">阿原在终端里安静地等着他长大。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·进化</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 9</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合结束时：+2攻击（己方全体）；己方回合开始时：+1生命（己方全体）<div class="ci-flavor">人人都说原型机不能进化，阿原不信。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">阿原·原型机</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 3 · 命 5</span></div><div class="ci-line3">【起效】己方回合开始时：+2攻击（己方全体）<div class="ci-flavor">PM-0，全世界唯一没有进化树的数据兽。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开原型机·阿原编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 研究所编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>2029</td><td>"复苏计划"立项；第一段数据"活"了过来</td></tr><tr><td>2030</td><td>始源兽孵化；日志被删；始源兽"已归档"</td></tr><tr><td>2031</td><td>驯兽终端民用化；研究所地位下降</td></tr><tr><td>2033</td><td>速成程序面市（署名L.C.）；林川被调查</td></tr><tr><td>2034</td><td>研究所火灾，无人生还；旧终端寄出</td></tr><tr><td>2035</td><td>林迟唤醒阿原；灰衣人现身</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开原型机·阿原当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 研究所当代剧情（走进去的人）</p>
+<div class="lore-quote">时间：2034年冬夜。地点：西区，复苏研究所地下七层，火灾前夜。</div>
+<p>火灾的前一夜，研究所里只有两个人。</p>
+<p>林川站在服务器机房，面前是一台老旧的终端——终端里，存着始源兽的一段"备份"。</p>
+<p>他伸手，轻轻摸了摸屏幕，像摸一只兽的头。</p>
+<p>"明天他们就要把这段也'淡化'了。"他说，"我不让。"</p>
+<p>终端亮了一下，像在回应。</p>
+<p>"我给他们留了裂缝。"林川继续说，"黑市的货会让他们以为自己在变强，其实裂缝在'刹车'。只要裂缝在，兽就不会真的变成噬data。"</p>
+<p>他顿了顿："我知道，裂缝会让兽很疼。对不起。我找不到别的办法了。"</p>
+<p>终端又亮了一下。</p>
+<p>"我把你备份在一台原型机里，给它起名叫PM-0。它记得一句话——'你爸爸说，让我等你长大。'"</p>
+<p>"你替我等他。等他长大了，告诉他，他爸爸没有背叛任何人。"</p>
+<p>"他爸爸只是……把'背叛'两个字，换了一种写法。"</p>
+<p>门外传来脚步声。林川站起来，把终端拔下来，塞进一只防水的旧箱子，贴上标签：<b>"林迟，18岁后启。"</b></p>
+<p>他回头看了一眼服务器机房——明天，这里会变成一场火灾。</p>
+<p>他没有逃。他走进机房深处，对着那些还在运行的服务器说：</p>
+<p>"别怕。我来陪你们。你们不会没人记得的。"</p>
+<p>门外，火警铃响起。脚步声更近了。</p>
+<p>林川在火光里，把那台旧终端最后看了一眼，然后轻轻说：</p>
+<p>"阿原，替我看着他长大。"</p>
+<hr class="dhr">
+<p><i>2035年冬，有人用旧论坛账号在《深潜层笔记》帖子里回了一条，随后注销账号。</i></p>
+<p><i>内容只有一行：</i></p>
+<p><i>"那年火灾，我抬过一台没断电的服务器出来。它到现在还亮着，一直在跑一段日志。"</i></p>
+<p><i>服务器序列号被隐去。留言时间：凌晨三点十七分。</i></p>
+</div></div>
+</div>
+  </div>
+  <div class="download-section">
+    <a class="pixel-btn back-btn" href="index.html">← 返回首页下载游戏</a>
+  </div>
+</div>
+<div class="footer">© 2025 卡师模拟器 · 驯兽都市 · 首期8包144张卡全部公式验证</div>
+<script>
+function toggleCards(btn) { btn.classList.toggle('open'); var content = btn.nextElementSibling; content.classList.toggle('open'); }
+</script>
+</body>
+</html>

@@ -1,0 +1,450 @@
+[gd_scene load_steps=10 format=3 uid="uid://b4x6m0vcn2k6c"]
+
+[ext_resource type="Script" path="res://Main.gd" id="1_script"]
+[ext_resource type="Theme" path="res://assets/theme/pixel_theme.tres" id="2_theme"]
+[ext_resource type="Shader" path="res://assets/shaders/card_gradient.gdshader" id="3_shader"]
+[ext_resource type="Texture2D" path="res://assets/theme/bg_night.png" id="4_bg_night"]
+[ext_resource type="Texture2D" path="res://assets/theme/bg_day.png" id="5_bg_day"]
+
+[sub_resource type="ShaderMaterial" id="mat_guild"]
+shader = ExtResource("3_shader")
+shader_parameter/color_top = Color(0.142, 0.189, 0.290, 1)
+shader_parameter/color_bottom = Color(0.102, 0.129, 0.204, 1)
+shader_parameter/radius = 22.0
+shader_parameter/rect_size = Vector2(984, 280)
+shader_parameter/shadow_blur = 18.0
+shader_parameter/shadow_alpha = 0.22
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/border_width = 3.0
+shader_parameter/border_color = Color(0.91, 0.66, 0.22, 0.8)
+
+[sub_resource type="ShaderMaterial" id="mat_workshop"]
+shader = ExtResource("3_shader")
+shader_parameter/color_top = Color(0.282, 0.220, 0.180, 1)
+shader_parameter/color_bottom = Color(0.169, 0.133, 0.110, 1)
+shader_parameter/radius = 22.0
+shader_parameter/rect_size = Vector2(486, 215)
+shader_parameter/shadow_blur = 18.0
+shader_parameter/shadow_alpha = 0.22
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/border_width = 3.0
+shader_parameter/border_color = Color(0.91, 0.66, 0.22, 0.8)
+
+[sub_resource type="ShaderMaterial" id="mat_deck"]
+shader = ExtResource("3_shader")
+shader_parameter/color_top = Color(0.259, 0.157, 0.180, 1)
+shader_parameter/color_bottom = Color(0.161, 0.106, 0.122, 1)
+shader_parameter/radius = 22.0
+shader_parameter/rect_size = Vector2(486, 215)
+shader_parameter/shadow_blur = 18.0
+shader_parameter/shadow_alpha = 0.22
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/border_width = 3.0
+shader_parameter/border_color = Color(0.91, 0.66, 0.22, 0.8)
+
+[sub_resource type="ShaderMaterial" id="mat_shop"]
+shader = ExtResource("3_shader")
+shader_parameter/color_top = Color(0.267, 0.188, 0.173, 1)
+shader_parameter/color_bottom = Color(0.165, 0.122, 0.110, 1)
+shader_parameter/radius = 22.0
+shader_parameter/rect_size = Vector2(486, 215)
+shader_parameter/shadow_blur = 18.0
+shader_parameter/shadow_alpha = 0.22
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/border_width = 3.0
+shader_parameter/border_color = Color(0.91, 0.66, 0.22, 0.8)
+
+[sub_resource type="ShaderMaterial" id="mat_explore"]
+shader = ExtResource("3_shader")
+shader_parameter/color_top = Color(0.157, 0.251, 0.212, 1)
+shader_parameter/color_bottom = Color(0.106, 0.161, 0.137, 1)
+shader_parameter/radius = 22.0
+shader_parameter/rect_size = Vector2(486, 215)
+shader_parameter/shadow_blur = 18.0
+shader_parameter/shadow_alpha = 0.22
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/border_width = 3.0
+shader_parameter/border_color = Color(0.91, 0.66, 0.22, 0.8)
+
+[node name="Main" type="Control" unique_id=262312050]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1599581506]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("4_bg_night")
+stretch_mode = 6
+
+[node name="Logo" type="Label" parent="." unique_id=1574227271]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 42.0
+offset_bottom = 220.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.886, 0.760, 0.471, 1)
+theme_override_font_sizes/font_size = 160
+text = "卡师模拟器"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GuideBtn" type="Button" parent="." unique_id=1094835907]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 34.0
+offset_top = -122.0
+offset_right = 114.0
+offset_bottom = -42.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 64
+flat = true
+text = "❓"
+
+[node name="GearButton" type="Button" parent="." unique_id=1099648102]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -114.0
+offset_top = -122.0
+offset_right = -34.0
+offset_bottom = -42.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 64
+flat = true
+text = "⚙"
+
+[node name="WebsiteBtn" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -214.0
+offset_top = -122.0
+offset_right = -134.0
+offset_bottom = -42.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 64
+flat = true
+text = "🌐"
+
+[node name="VersionLabel" type="Label" parent="." unique_id=1056571748]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.471, 0.471, 0.573, 1)
+theme_override_font_sizes/font_size = 32
+text = "测试 26.8.17.1v"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CardGuild" type="Control" parent="." unique_id=1001]
+layout_mode = 1
+anchor_left = 0.08
+anchor_top = 0.14
+anchor_right = 0.92
+anchor_bottom = 0.367
+offset_bottom = 0.0
+
+[node name="Bg" type="ColorRect" parent="CardGuild"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+material = SubResource("mat_guild")
+
+[node name="Icon" type="Label" parent="CardGuild"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.12
+anchor_right = 1.0
+anchor_bottom = 0.47
+theme_override_colors/font_color = Color(0.447, 0.651, 0.910, 1)
+theme_override_font_sizes/font_size = 80
+text = "🏛️"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="Label" parent="CardGuild"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.48
+anchor_right = 1.0
+anchor_bottom = 0.6
+theme_override_colors/font_color = Color(0.902, 0.902, 0.949, 1)
+theme_override_font_sizes/font_size = 72
+text = "卡师公会"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Desc" type="Label" parent="CardGuild"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.68
+anchor_right = 1.0
+anchor_bottom = 0.8
+theme_override_colors/font_color = Color(0.643, 0.643, 0.760, 1)
+theme_override_font_sizes/font_size = 36
+text = "个人信息，公会任务，提升等级"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Btn" type="Button" parent="CardGuild"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+flat = true
+
+[node name="CardWorkshop" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.08
+anchor_top = 0.384
+anchor_right = 0.494
+anchor_bottom = 0.588
+
+[node name="Bg" type="ColorRect" parent="CardWorkshop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+material = SubResource("mat_workshop")
+
+[node name="Icon" type="Label" parent="CardWorkshop"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.12
+anchor_right = 1.0
+anchor_bottom = 0.47
+theme_override_colors/font_color = Color(0.894, 0.667, 0.384, 1)
+theme_override_font_sizes/font_size = 64
+text = "🔨"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="Label" parent="CardWorkshop"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.48
+anchor_right = 1.0
+anchor_bottom = 0.6
+theme_override_colors/font_color = Color(0.902, 0.902, 0.949, 1)
+theme_override_font_sizes/font_size = 64
+text = "制卡工坊"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Desc" type="Label" parent="CardWorkshop"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.68
+anchor_right = 1.0
+anchor_bottom = 0.8
+theme_override_colors/font_color = Color(0.643, 0.643, 0.760, 1)
+theme_override_font_sizes/font_size = 32
+text = "制作卡基，调制卡墨，刻画成卡"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Btn" type="Button" parent="CardWorkshop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+flat = true
+
+[node name="CardDeck" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.506
+anchor_top = 0.384
+anchor_right = 0.92
+anchor_bottom = 0.588
+
+[node name="Bg" type="ColorRect" parent="CardDeck"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+material = SubResource("mat_deck")
+
+[node name="Icon" type="Label" parent="CardDeck"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.12
+anchor_right = 1.0
+anchor_bottom = 0.47
+theme_override_colors/font_color = Color(0.788, 0.400, 0.424, 1)
+theme_override_font_sizes/font_size = 64
+text = "🃏"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="Label" parent="CardDeck"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.48
+anchor_right = 1.0
+anchor_bottom = 0.6
+theme_override_colors/font_color = Color(0.902, 0.902, 0.949, 1)
+theme_override_font_sizes/font_size = 64
+text = "配置牌库"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Desc" type="Label" parent="CardDeck"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.68
+anchor_right = 1.0
+anchor_bottom = 0.8
+theme_override_colors/font_color = Color(0.643, 0.643, 0.760, 1)
+theme_override_font_sizes/font_size = 32
+text = "编辑管理战斗卡组"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Btn" type="Button" parent="CardDeck"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+flat = true
+
+[node name="CardShop" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.08
+anchor_top = 0.604
+anchor_right = 0.494
+anchor_bottom = 0.808
+
+[node name="Bg" type="ColorRect" parent="CardShop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+material = SubResource("mat_shop")
+
+[node name="Icon" type="Label" parent="CardShop"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.12
+anchor_right = 1.0
+anchor_bottom = 0.47
+theme_override_colors/font_color = Color(0.831, 0.486, 0.369, 1)
+theme_override_font_sizes/font_size = 64
+text = "🏪"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="Label" parent="CardShop"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.48
+anchor_right = 1.0
+anchor_bottom = 0.6
+theme_override_colors/font_color = Color(0.902, 0.902, 0.949, 1)
+theme_override_font_sizes/font_size = 64
+text = "商店街"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Desc" type="Label" parent="CardShop"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.68
+anchor_right = 1.0
+anchor_bottom = 0.8
+theme_override_colors/font_color = Color(0.643, 0.643, 0.760, 1)
+theme_override_font_sizes/font_size = 32
+text = "素材商店，卡包抽取"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Btn" type="Button" parent="CardShop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+flat = true
+
+[node name="CardExplore" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.506
+anchor_top = 0.604
+anchor_right = 0.92
+anchor_bottom = 0.808
+
+[node name="Bg" type="ColorRect" parent="CardExplore"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_top = 0.0
+anchor_bottom = 1.0
+material = SubResource("mat_explore")
+
+[node name="Icon" type="Label" parent="CardExplore"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.12
+anchor_right = 1.0
+anchor_bottom = 0.27
+theme_override_colors/font_color = Color(0.384, 0.733, 0.518, 1)
+theme_override_font_sizes/font_size = 64
+text = "🗺️"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="Label" parent="CardExplore"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.48
+anchor_right = 1.0
+anchor_bottom = 0.6
+theme_override_colors/font_color = Color(0.902, 0.902, 0.949, 1)
+theme_override_font_sizes/font_size = 64
+text = "野外探索"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Desc" type="Label" parent="CardExplore"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.68
+anchor_right = 1.0
+anchor_bottom = 0.8
+theme_override_colors/font_color = Color(0.643, 0.643, 0.760, 1)
+theme_override_font_sizes/font_size = 32
+text = "冒险对战，收集素材资源"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Btn" type="Button" parent="CardExplore"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+flat = true

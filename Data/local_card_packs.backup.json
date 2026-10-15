@@ -1,0 +1,1482 @@
+[
+  {
+    "id": 6,
+    "pack_id": "qp_jianxiu",
+    "pack_data": {
+      "desc": "剑法凌厉，攻击至上。以剑入道，锋芒毕露。",
+      "name": "青云·剑修",
+      "cards": [
+        {
+          "hp": 2,
+          "id": "CARD_QP_021",
+          "atk": 1,
+          "cost": 4,
+          "desc": "青云剑修入门弟子，初窥剑气门径。入场时激发剑意，鼓舞全体同门。",
+          "name": "青云剑修·入门",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "剑修"
+          ],
+          "effects": [
+            {
+              "desc": "入场：己方全体+1攻击",
+              "value": 1,
+              "action": "A20",
+              "target": "T05",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 2,
+          "id": "CARD_QP_022",
+          "atk": 3,
+          "cost": 4,
+          "desc": "御剑而行，剑随心动。每次攻击时凝聚剑气强化自身。",
+          "name": "青云剑修·御剑",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "剑修"
+          ],
+          "effects": [
+            {
+              "desc": "攻击宣言时：自身+1攻击",
+              "value": 1,
+              "action": "A20",
+              "target": "T03",
+              "trigger": "TR09"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_023",
+          "atk": 0,
+          "cost": 3,
+          "desc": "飞剑出鞘，千里追魂。对敌方随机单体造成3点伤害。",
+          "name": "青云·御剑诀",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "剑法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：对敌方随机单体造成3点伤害",
+              "value": 3,
+              "action": "A01",
+              "target": "T02",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 2,
+          "id": "CARD_QP_024",
+          "atk": 2,
+          "cost": 6,
+          "desc": "剑心通明，战意不息。每给予一次战斗伤害，便提升全队剑意。",
+          "name": "青云剑修·剑心",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "剑修"
+          ],
+          "effects": [
+            {
+              "desc": "给予战斗伤害时：己方全体+1攻击",
+              "value": 1,
+              "action": "A20",
+              "target": "T05",
+              "trigger": "TR11"
+            }
+          ],
+          "element": "风",
+          "quality": "卓越"
+        },
+        {
+          "hp": 3,
+          "id": "CARD_QP_025",
+          "atk": 3,
+          "cost": 6,
+          "desc": "天剑降世，锋芒毕露。入场时灌注大量剑气于自身。",
+          "name": "青云·天剑",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "剑法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：自身+3攻击",
+              "value": 3,
+              "action": "A20",
+              "target": "T03",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "卓越"
+        },
+        {
+          "hp": 2,
+          "id": "CARD_QP_008",
+          "atk": 1,
+          "cost": 1,
+          "desc": "青云派入门弟子，初窥风系门径。",
+          "name": "青云弟子·风",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "弟子"
+          ],
+          "element": "风",
+          "quality": "标准"
+        },
+        {
+          "hp": 2,
+          "id": "CARD_QP_010",
+          "atk": 2,
+          "cost": 2,
+          "desc": "侍剑于青云门下，剑法初成。",
+          "name": "青云剑侍",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "剑侍"
+          ],
+          "element": "风",
+          "quality": "标准"
+        },
+        {
+          "hp": 3,
+          "id": "CARD_QP_012",
+          "atk": 3,
+          "cost": 3,
+          "desc": "以拳入道，刚猛有力。",
+          "name": "青云拳师",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "拳法"
+          ],
+          "element": "风",
+          "quality": "标准"
+        },
+        {
+          "hp": 1,
+          "id": "CARD_QP_013",
+          "atk": 3,
+          "cost": 2,
+          "desc": "弓如满月，箭似流星。",
+          "name": "青云弓手",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "弓术"
+          ],
+          "element": "风",
+          "quality": "标准"
+        },
+        {
+          "hp": 5,
+          "id": "CARD_QP_018",
+          "atk": 4,
+          "cost": 4,
+          "desc": "巡山护法，威震八方。",
+          "name": "青云巡山使",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "巡山"
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_006",
+          "atk": 0,
+          "cost": 3,
+          "desc": "飞剑取首，千里之外。对敌方随机单体造成2点伤害。",
+          "name": "青云飞剑",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "剑法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：对敌方随机单体造成2点伤害",
+              "value": 2,
+              "action": "A01",
+              "target": "T02",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "标准"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_036",
+          "atk": 0,
+          "cost": 2,
+          "desc": "剑诀催动，剑气纵横。使己方一名随从永久+2攻击力。",
+          "name": "青云剑诀",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "剑法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：己方单体+2攻击",
+              "value": 2,
+              "action": "A20",
+              "target": "T03",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_037",
+          "atk": 0,
+          "cost": 5,
+          "desc": "抽刀断水，剑气破敌。直接破坏敌方一名随从。",
+          "name": "青云断水剑",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "剑法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：破坏敌方单体",
+              "value": 1,
+              "action": "A03",
+              "target": "T02",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_038",
+          "atk": 0,
+          "cost": 3,
+          "desc": "剑意纵横，气贯长虹。召唤时对敌方全体造成1点伤害。",
+          "name": "青云剑意",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "剑法"
+          ],
+          "effects": [
+            {
+              "desc": "召唤时：敌方全体1点伤害",
+              "value": 1,
+              "action": "A01",
+              "target": "T04",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 2,
+          "id": "CARD_QP_039",
+          "atk": 4,
+          "cost": 3,
+          "desc": "剑走偏锋，一击必杀。",
+          "name": "青云刺剑客",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "剑法"
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 6,
+          "id": "CARD_QP_040",
+          "atk": 5,
+          "cost": 7,
+          "desc": "剑中圣者，一剑破万法。攻击时直接摧毁敌方随从。",
+          "name": "青云剑圣",
+          "star": 3,
+          "fields": [
+            "青云派",
+            "剑法"
+          ],
+          "effects": [
+            {
+              "desc": "攻击宣言时：破坏敌方单体",
+              "value": 1,
+              "action": "A03",
+              "target": "T02",
+              "trigger": "TR09"
+            }
+          ],
+          "element": "风",
+          "quality": "卓越"
+        }
+      ]
+    },
+    "created_at": "2026-08-10T07:50:13.111814+00:00"
+  },
+  {
+    "id": 7,
+    "pack_id": "qp_fuxiu",
+    "pack_data": {
+      "desc": "符法玄妙，控场续航。以符入道，通灵天地。",
+      "name": "青云·符修",
+      "cards": [
+        {
+          "hp": 2,
+          "id": "CARD_QP_026",
+          "atk": 1,
+          "cost": 3,
+          "desc": "符修弟子，以符入道。入场时绘制灵符补充手牌。",
+          "name": "青云符修·绘符",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "符修"
+          ],
+          "effects": [
+            {
+              "desc": "入场：抽1张牌",
+              "value": 1,
+              "action": "A09",
+              "target": "T03",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_027",
+          "atk": 0,
+          "cost": 3,
+          "desc": "聚天地灵气，化为己用。使用后从牌库抽一张牌。",
+          "name": "青云·聚灵符",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "符法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：抽1张牌",
+              "value": 1,
+              "action": "A09",
+              "target": "T03",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 2,
+          "id": "CARD_QP_028",
+          "atk": 2,
+          "cost": 5,
+          "desc": "引天雷之力，诛邪退散。对方回合开始时降下雷击。",
+          "name": "青云符修·引雷",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "符修"
+          ],
+          "effects": [
+            {
+              "desc": "对方回合开始时：对敌方随机单体造成2点伤害",
+              "value": 2,
+              "action": "A01",
+              "target": "T02",
+              "trigger": "TR13"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_029",
+          "atk": 0,
+          "cost": 6,
+          "desc": "天雷降世，万物俱灭！对所有敌方单位造成4点伤害。",
+          "name": "青云·天雷符",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "符法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：对所有敌方单位造成4点伤害",
+              "value": 4,
+              "action": "A01",
+              "target": "T04",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "卓越"
+        },
+        {
+          "hp": 1,
+          "id": "CARD_QP_030",
+          "atk": 1,
+          "cost": 4,
+          "desc": "灵符护体，即便被破也会留下后手。被送去墓地时抽牌。",
+          "name": "青云符修·灵符",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "符修"
+          ],
+          "effects": [
+            {
+              "desc": "送墓时：抽1张牌",
+              "value": 1,
+              "action": "A09",
+              "target": "T03",
+              "trigger": "TR06"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 2,
+          "id": "CARD_QP_001",
+          "atk": 1,
+          "cost": 3,
+          "desc": "青云符师，符法通灵。入场时从牌库中抽一张牌。",
+          "name": "青云符师",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "符法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：抽1张牌",
+              "value": 1,
+              "action": "A09",
+              "target": "T03",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "标准"
+        },
+        {
+          "hp": 2,
+          "id": "CARD_QP_002",
+          "atk": 1,
+          "cost": 4,
+          "desc": "青云医者，妙手回春。每回合结束时回复己方一名随机随从2点生命。",
+          "name": "青云医者",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "医术"
+          ],
+          "effects": [
+            {
+              "desc": "回合结束时：回复己方一名随机随从2点生命",
+              "value": 2,
+              "action": "A02",
+              "target": "T03",
+              "trigger": "TR14"
+            }
+          ],
+          "element": "水",
+          "quality": "标准"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_003",
+          "atk": 0,
+          "cost": 3,
+          "desc": "凝聚风之力，化为无形利刃。造成3点伤害。",
+          "name": "青云风刃",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "风系"
+          ],
+          "effects": [
+            {
+              "desc": "对敌方随机单体造成3点伤害",
+              "value": 3,
+              "action": "A01",
+              "target": "T02",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "标准"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_004",
+          "atk": 0,
+          "cost": 2,
+          "desc": "青云步法，踏风而行。使一名己方随从永久+2攻击力。",
+          "name": "青云步法",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "身法"
+          ],
+          "effects": [
+            {
+              "desc": "使己方一名随机随从永久+2攻击力",
+              "value": 2,
+              "action": "A20",
+              "target": "T03",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "标准"
+        },
+        {
+          "hp": 3,
+          "id": "CARD_QP_005",
+          "atk": 0,
+          "cost": 4,
+          "desc": "风铃轻响，福运临门。每回合开始抽1张牌。",
+          "name": "青云法器·风铃",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "法器"
+          ],
+          "effects": [
+            {
+              "desc": "每回合开始时：抽1张牌",
+              "value": 1,
+              "action": "A09",
+              "target": "T03",
+              "trigger": "TR12"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 1,
+          "id": "CARD_QP_016",
+          "atk": 1,
+          "cost": 1,
+          "desc": "青云山上的灵猫，机敏灵巧。",
+          "name": "青云灵猫",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "灵兽"
+          ],
+          "element": "风",
+          "quality": "标准"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_041",
+          "atk": 0,
+          "cost": 2,
+          "desc": "符化灵甲，护身保命。使己方一名随从永久+2生命值。",
+          "name": "青云符甲",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "符法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：己方单体+2生命",
+              "value": 2,
+              "action": "A21",
+              "target": "T03",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_042",
+          "atk": 0,
+          "cost": 3,
+          "desc": "定身符出，敌手难动。将敌方一名随从弹回手牌。",
+          "name": "青云定身符",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "符法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：将敌方单体弹回手牌",
+              "value": 1,
+              "action": "A06",
+              "target": "T02",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_043",
+          "atk": 0,
+          "cost": 5,
+          "desc": "引九天玄雷，破邪除魔。对敌方全体造成2点伤害。",
+          "name": "青云引雷符",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "符法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：对敌方全体造成2点伤害",
+              "value": 2,
+              "action": "A01",
+              "target": "T04",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_044",
+          "atk": 0,
+          "cost": 6,
+          "desc": "万符齐爆，毁天灭地！对敌方全体造成3点伤害。",
+          "name": "青云符术·爆",
+          "star": 3,
+          "fields": [
+            "青云派",
+            "符法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：对敌方全体造成3点伤害",
+              "value": 3,
+              "action": "A01",
+              "target": "T04",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "卓越"
+        },
+        {
+          "hp": 3,
+          "id": "CARD_QP_045",
+          "atk": 1,
+          "cost": 2,
+          "desc": "灵符使者，虽死犹荣。被送去墓地时留下一道灵符。",
+          "name": "青云灵符使",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "符修"
+          ],
+          "effects": [
+            {
+              "desc": "送墓时：抽1张牌",
+              "value": 1,
+              "action": "A09",
+              "target": "T03",
+              "trigger": "TR06"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        }
+      ]
+    },
+    "created_at": "2026-08-10T07:50:14.340919+00:00"
+  },
+  {
+    "id": 8,
+    "pack_id": "qp_zhenxiu",
+    "pack_data": {
+      "desc": "阵法玄奥，坚如磐石。以阵御敌，固若金汤。",
+      "name": "青云·阵修",
+      "cards": [
+        {
+          "hp": 4,
+          "id": "CARD_QP_031",
+          "atk": 1,
+          "cost": 6,
+          "desc": "布下玄妙大阵，庇护全体同门。回合开始时为己方全体增加生命值。",
+          "name": "青云阵修·布阵",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "阵修"
+          ],
+          "effects": [
+            {
+              "desc": "己方回合开始时：己方全体+1生命",
+              "value": 1,
+              "action": "A21",
+              "target": "T05",
+              "trigger": "TR12"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 5,
+          "id": "CARD_QP_032",
+          "atk": 2,
+          "cost": 5,
+          "desc": "坚守阵法，岿然不动。被攻击时凝聚阵气强化自身。",
+          "name": "青云阵修·守阵",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "阵修"
+          ],
+          "effects": [
+            {
+              "desc": "被攻击时：自身+1生命",
+              "value": 1,
+              "action": "A21",
+              "target": "T03",
+              "trigger": "TR10"
+            }
+          ],
+          "element": "风",
+          "quality": "卓越"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_033",
+          "atk": 0,
+          "cost": 4,
+          "desc": "两仪相生，阴阳轮转。直接破坏敌方一名随从。",
+          "name": "青云·两仪阵",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "阵法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：破坏敌方单体",
+              "value": 1,
+              "action": "A03",
+              "target": "T02",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_034",
+          "atk": 0,
+          "cost": 6,
+          "desc": "四象齐出，镇压万邪！破坏所有敌方随从。",
+          "name": "青云·四象阵",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "阵法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：破坏所有敌方随从",
+              "value": 1,
+              "action": "A03",
+              "target": "T04",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "卓越"
+        },
+        {
+          "hp": 3,
+          "id": "CARD_QP_035",
+          "atk": 1,
+          "cost": 5,
+          "desc": "立于阵眼，洞悉破绽。回合开始时对敌方单体造成伤害。",
+          "name": "青云阵修·阵眼",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "阵修"
+          ],
+          "effects": [
+            {
+              "desc": "己方回合开始时：对敌方单体造成1点伤害",
+              "value": 1,
+              "action": "A01",
+              "target": "T02",
+              "trigger": "TR12"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 1,
+          "id": "CARD_QP_009",
+          "atk": 2,
+          "cost": 1,
+          "desc": "青云派入门弟子，擅长云中漫步。",
+          "name": "青云弟子·云",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "弟子"
+          ],
+          "element": "风",
+          "quality": "标准"
+        },
+        {
+          "hp": 3,
+          "id": "CARD_QP_011",
+          "atk": 1,
+          "cost": 2,
+          "desc": "栖息于青云山间的灵鹤，通晓人性。",
+          "name": "青云灵鹤",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "灵兽"
+          ],
+          "element": "风",
+          "quality": "标准"
+        },
+        {
+          "hp": 4,
+          "id": "CARD_QP_014",
+          "atk": 2,
+          "cost": 3,
+          "desc": "青云派护法弟子，守护山门。",
+          "name": "青云护法",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "护法"
+          ],
+          "element": "风",
+          "quality": "标准"
+        },
+        {
+          "hp": 4,
+          "id": "CARD_QP_015",
+          "atk": 3,
+          "cost": 3,
+          "desc": "青云派内门弟子，已得真传。",
+          "name": "青云内门弟子",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "弟子"
+          ],
+          "element": "风",
+          "quality": "标准"
+        },
+        {
+          "hp": 4,
+          "id": "CARD_QP_017",
+          "atk": 1,
+          "cost": 2,
+          "desc": "精通阵法之道，防御力出众。",
+          "name": "青云阵法师",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "阵法"
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 5,
+          "id": "CARD_QP_019",
+          "atk": 3,
+          "cost": 4,
+          "desc": "青云派掌教真人，德高望重。",
+          "name": "青云掌教",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "掌教"
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 3,
+          "id": "CARD_QP_020",
+          "atk": 2,
+          "cost": 2,
+          "desc": "以竹为食，力大无穷的灵兽。",
+          "name": "青云食铁兽",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "灵兽"
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_046",
+          "atk": 0,
+          "cost": 5,
+          "desc": "护山大阵威能无双，庇护所有同门。为己方全体增加生命值。",
+          "name": "青云护山大阵",
+          "star": 3,
+          "fields": [
+            "青云派",
+            "阵法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：己方全体+2生命",
+              "value": 2,
+              "action": "A21",
+              "target": "T05",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "卓越"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_047",
+          "atk": 0,
+          "cost": 3,
+          "desc": "聚天地灵气，纳为己用。为己方一名随从永久增加生命值。",
+          "name": "青云聚灵阵",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "阵法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：己方单体+3生命",
+              "value": 3,
+              "action": "A21",
+              "target": "T03",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_048",
+          "atk": 0,
+          "cost": 4,
+          "desc": "铁壁横空，固不可破。为己方一名随从大幅提升生命。",
+          "name": "青云铁壁阵",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "阵法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：己方单体+4生命",
+              "value": 4,
+              "action": "A21",
+              "target": "T03",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 0,
+          "id": "CARD_QP_049",
+          "atk": 0,
+          "cost": 2,
+          "desc": "阵旗飘扬，鼓舞士气。为己方一名随从增加攻击力。",
+          "name": "青云阵旗",
+          "star": 1,
+          "fields": [
+            "青云派",
+            "阵法"
+          ],
+          "effects": [
+            {
+              "desc": "入场：己方单体+2攻击",
+              "value": 2,
+              "action": "A20",
+              "target": "T03",
+              "trigger": "TR01"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        },
+        {
+          "hp": 5,
+          "id": "CARD_QP_050",
+          "atk": 3,
+          "cost": 4,
+          "desc": "阵中卫士，坚不可摧。被攻击时凝阵气强身。",
+          "name": "青云阵卫",
+          "star": 2,
+          "fields": [
+            "青云派",
+            "阵修"
+          ],
+          "effects": [
+            {
+              "desc": "被攻击时：自身+1生命",
+              "value": 1,
+              "action": "A21",
+              "target": "T03",
+              "trigger": "TR10"
+            }
+          ],
+          "element": "风",
+          "quality": "精良"
+        }
+      ]
+    },
+    "created_at": "2026-08-10T07:50:15.45579+00:00"
+  },
+  {
+    "id": "pack_qp_kongxin",
+    "pack_id": "qp_kongxin",
+    "pack_data": {
+      "name": "暗影·控心",
+      "desc": "暗影涌动，控心夺魂。以操控心神、夺取控制权为核心的暗影卡组。",
+      "cards": [
+        {
+          "id": "CARD_QP_051",
+          "name": "暗影·窃心贼",
+          "atk": 1,
+          "hp": 2,
+          "star": 1,
+          "element": "暗",
+          "quality": "精良",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 5,
+          "desc": "偷心之贼，攻防互换。攻击时与敌方最强者的攻防互换。",
+          "effects": [
+            {
+              "desc": "攻击宣言时：交换对方攻击最高卡牌的攻防",
+              "trigger": "TR09",
+              "action": "A25",
+              "target": "T13",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_052",
+          "name": "暗影·咒缚使",
+          "atk": 1,
+          "hp": 3,
+          "star": 1,
+          "element": "暗",
+          "quality": "精良",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 5,
+          "desc": "咒缚缠身，偷取牌运。被攻击时抽1张牌。",
+          "effects": [
+            {
+              "desc": "被攻击时：抽1张牌",
+              "trigger": "TR10",
+              "action": "A09",
+              "target": "T03",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_053",
+          "name": "暗影·噬心虫",
+          "atk": 2,
+          "hp": 2,
+          "star": 1,
+          "element": "暗",
+          "quality": "精良",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 4,
+          "desc": "噬心之虫，汲取生命。造成伤害时恢复1点生命。",
+          "effects": [
+            {
+              "desc": "给予战斗伤害时：恢复1点生命",
+              "trigger": "TR11",
+              "action": "A02",
+              "target": "T03",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_054",
+          "name": "暗影·缚魂链",
+          "atk": 1,
+          "hp": 2,
+          "star": 1,
+          "element": "暗",
+          "quality": "精良",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 4,
+          "desc": "魂锁缠身，束缚强敌。出场时交换对方最强者的攻防。",
+          "effects": [
+            {
+              "desc": "召唤成功时：交换对方攻击最高卡牌的攻防",
+              "trigger": "TR01",
+              "action": "A25",
+              "target": "T13",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_055",
+          "name": "暗影·幻心镜",
+          "atk": 2,
+          "hp": 2,
+          "star": 1,
+          "element": "暗",
+          "quality": "精良",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 2,
+          "desc": "镜中幻影，削弱攻击。被攻击时削弱对方攻击最高者。",
+          "effects": [
+            {
+              "desc": "被攻击时：对方攻击最高卡牌本回合-2攻击",
+              "trigger": "TR10",
+              "action": "A23",
+              "target": "T13",
+              "value": -2
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_056",
+          "name": "暗影·暗语者",
+          "atk": 1,
+          "hp": 3,
+          "star": 1,
+          "element": "暗",
+          "quality": "精良",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 5,
+          "desc": "暗语低吟，强化同伴。每回合强化己方最弱的同伴。",
+          "effects": [
+            {
+              "desc": "己方回合开始时：我方攻击最低卡牌+1攻击",
+              "trigger": "TR12",
+              "action": "A20",
+              "target": "T16",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_057",
+          "name": "暗影·迷心蝶",
+          "atk": 1,
+          "hp": 1,
+          "star": 1,
+          "element": "暗",
+          "quality": "精良",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 5,
+          "desc": "蝶翼轻扇，扰乱心智。出场时禁用敌方最弱者的效果。",
+          "effects": [
+            {
+              "desc": "召唤成功时：禁用对方攻击最低卡牌的效果一回合",
+              "trigger": "TR01",
+              "action": "A33",
+              "target": "T14",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_058",
+          "name": "暗影·蛊心徒",
+          "atk": 1,
+          "hp": 2,
+          "star": 1,
+          "element": "暗",
+          "quality": "精良",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 4,
+          "desc": "蛊心之毒，暗中侵蚀。每回合伤害敌方最强者。",
+          "effects": [
+            {
+              "desc": "己方回合开始时：对方攻击最高卡牌受到1点伤害",
+              "trigger": "TR12",
+              "action": "A01",
+              "target": "T13",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_059",
+          "name": "暗影·夺心者",
+          "atk": 2,
+          "hp": 3,
+          "star": 2,
+          "element": "暗",
+          "quality": "卓越",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 7,
+          "desc": "夺心控魂，为己所用。出场时夺取敌方最强者的控制权。",
+          "effects": [
+            {
+              "desc": "召唤成功时：夺取对方攻击最高卡牌的控制权一回合",
+              "trigger": "TR01",
+              "action": "A31",
+              "target": "T13",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_060",
+          "name": "暗影·心奴",
+          "atk": 2,
+          "hp": 2,
+          "star": 2,
+          "element": "暗",
+          "quality": "卓越",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 8,
+          "desc": "永世为奴，以命换权。以生命为代价永久夺取控制权。",
+          "effects": [
+            {
+              "desc": "召唤成功时：永久夺取对方攻击最低卡牌的控制权，支付3点生命",
+              "trigger": "TR01",
+              "action": "A32",
+              "target": "T14",
+              "value": 1,
+              "constraint": "CO03"
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_061",
+          "name": "暗影·魂锁",
+          "atk": 2,
+          "hp": 3,
+          "star": 2,
+          "element": "暗",
+          "quality": "卓越",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 9,
+          "desc": "魂锁横空，万法皆禁。出场时禁用敌方全体效果。",
+          "effects": [
+            {
+              "desc": "召唤成功时：禁用对方全体卡牌效果一回合",
+              "trigger": "TR01",
+              "action": "A33",
+              "target": "T04",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_062",
+          "name": "暗影·心魔",
+          "atk": 3,
+          "hp": 2,
+          "star": 2,
+          "element": "暗",
+          "quality": "卓越",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 5,
+          "desc": "心魔乱神，借力夺心。借能量之力夺取控制权。",
+          "effects": [
+            {
+              "desc": "召唤成功时：夺取对方攻击最高卡牌的控制权一回合，消耗3能量点",
+              "trigger": "TR01",
+              "action": "A31",
+              "target": "T13",
+              "value": 1,
+              "constraint": "CO05"
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_063",
+          "name": "暗影·怨灵",
+          "atk": 2,
+          "hp": 3,
+          "star": 2,
+          "element": "暗",
+          "quality": "卓越",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 7,
+          "desc": "怨灵不散，附身夺权。被送墓时夺取对方控制权。",
+          "effects": [
+            {
+              "desc": "被送去墓地时：夺取对方攻击最低卡牌的控制权一回合",
+              "trigger": "TR06",
+              "action": "A31",
+              "target": "T14",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_064",
+          "name": "暗影·蛊心师",
+          "atk": 2,
+          "hp": 3,
+          "star": 2,
+          "element": "暗",
+          "quality": "卓越",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 4,
+          "desc": "蛊惑人心，借力打力。被攻击时令对方自相残杀。",
+          "effects": [
+            {
+              "desc": "被攻击时：对方攻击最高卡牌受到1点伤害",
+              "trigger": "TR10",
+              "action": "A01",
+              "target": "T13",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_065",
+          "name": "暗影·控心魔主",
+          "atk": 3,
+          "hp": 5,
+          "star": 3,
+          "element": "暗",
+          "quality": "完美",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 11,
+          "desc": "万魔之主，控心为王。控制权异动时永久夺取敌方最强。",
+          "effects": [
+            {
+              "desc": "召唤成功时：永久夺取对方攻击最高卡牌的控制权。需控制权异动卡数量≥1",
+              "trigger": "TR01",
+              "action": "A32",
+              "target": "T13",
+              "value": 1,
+              "condition": "C16"
+            }
+          ]
+        },
+        {
+          "id": "CARD_QP_066",
+          "name": "暗影·轮回之主",
+          "atk": 4,
+          "hp": 4,
+          "star": 3,
+          "element": "暗",
+          "quality": "完美",
+          "fields": [
+            "暗影",
+            "控心"
+          ],
+          "cost": 15,
+          "desc": "轮回之主，掌控全场。控制权转移时夺取敌方全体。",
+          "effects": [
+            {
+              "desc": "控制权转移时：夺取对方全体卡牌的控制权一回合",
+              "trigger": "TR18",
+              "action": "A31",
+              "target": "T04",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "deploy": {
+    "project": "healthy-bunny-8323",
+    "org": "pipos52",
+    "runtime": {
+      "type": "dynamic",
+      "entrypoint": "main.ts"
+    },
+    "app": "healthy-bunny-8323"
+  }
+}

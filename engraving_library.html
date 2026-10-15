@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡师模拟器 · 纹路组件检索库</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:"Zpix","Pixel","PingFang SC","Microsoft YaHei",sans-serif; background:repeating-linear-gradient(0deg,#fef9e7 0px,#fef9e7 32px,#fdf3d8 32px,#fdf3d8 64px); color:#2b2b2b; min-height:100vh; }
+.pixel-top { height:16px; background:repeating-linear-gradient(90deg,#b28dff 0 48px,#66c4ff 48px 96px,#7ed321 96px 144px,#ffd44d 144px 192px,#ff6b57 192px 240px); border-bottom:4px solid #2b2b2b; }
+.container { max-width:960px; margin:0 auto; padding:40px 20px 60px; }
+.logo-area { text-align:center; margin-bottom:40px; }
+.logo-badge { display:inline-block; padding:16px 36px; background:#fff; border:4px solid #2b2b2b; box-shadow:8px 8px 0 #2b2b2b; }
+.logo-title { font-size:44px; font-weight:900; letter-spacing:4px; color:#2b2b2b; text-shadow:4px 4px 0 #ffd44d, 8px 8px 0 #b28dff; }
+.logo-sub { margin-top:14px; font-size:17px; letter-spacing:4px; font-weight:700; background:#b28dff; display:inline-block; padding:6px 22px; border:3px solid #2b2b2b; box-shadow:4px 4px 0 #2b2b2b; }
+.back-section { text-align:center; margin:30px 0; }
+.pixel-btn { display:inline-block; padding:14px 36px; font-size:17px; font-weight:900; letter-spacing:2px; text-decoration:none; color:#2b2b2b; border:4px solid #2b2b2b; cursor:pointer; }
+.back-btn { background:#66c4ff; box-shadow:6px 6px 0 #2b2b2b; }
+.search-bar { text-align:center; margin:30px 0; }
+.search-bar input { font-family:inherit; font-size:16px; padding:12px 20px; border:4px solid #2b2b2b; box-shadow:4px 4px 0 #2b2b2b; width:70%; max-width:480px; outline:none; }
+.filter-tags { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:20px 0; }
+.filter-tag { display:inline-block; padding:7px 16px; background:#ffd44d; border:3px solid #2b2b2b; box-shadow:3px 3px 0 #2b2b2b; font-size:13px; font-weight:700; color:#2b2b2b; cursor:pointer; }
+.filter-tag.active { background:#7ed321; }
+.section { margin:36px 0; }
+.section h2 { font-size:21px; margin-bottom:14px; display:inline-block; padding:4px 14px; background:#7ed321; border:3px solid #2b2b2b; box-shadow:3px 3px 0 #2b2b2b; letter-spacing:2px; }
+.section-desc { font-size:13px; color:#666; margin:8px 0 14px; font-weight:600; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px; }
+.comp { background:#fff; border:3px solid #2b2b2b; box-shadow:4px 4px 0 rgba(43,43,43,0.7); padding:12px 14px; }
+.comp .id { display:inline-block; background:#2b2b2b; color:#fff; font-size:11px; font-weight:900; padding:2px 8px; margin-right:8px; letter-spacing:1px; }
+.comp .name { font-weight:900; font-size:14px; }
+.comp .desc { font-size:12px; color:#555; margin-top:5px; line-height:1.5; }
+.comp .tag { display:inline-block; font-size:11px; font-weight:700; background:#e3eefc; border:1px solid #66c4ff; padding:1px 8px; margin-top:5px; margin-right:4px; }
+.actions { background:#fff7e0; }
+.formula { background:#f0f0f0; border:3px solid #2b2b2b; padding:16px 20px; margin:20px 0; font-size:14px; line-height:2; }
+.formula b { color:#7ed321; }
+.formula code { background:#2b2b2b; color:#7ed321; padding:2px 8px; font-size:13px; }
+.count-badge { float:right; background:#ff6b57; color:#fff; border:2px solid #2b2b2b; padding:2px 10px; font-size:12px; font-weight:900; }
+.footer { text-align:center; padding:26px 20px; font-size:13px; color:#666; border-top:4px solid #2b2b2b; background:#fff; font-weight:700; }
+</style>
+</head>
+<body>
+<div class="pixel-top"></div>
+<div class="container">
+  <div class="logo-area">
+    <div class="logo-badge"><div class="logo-title">纹路检索库</div></div>
+    <div class="logo-sub">卡师模拟器 · 纹路组件图鉴</div>
+  </div>
+  <div class="back-section">
+    <a class="pixel-btn back-btn" href="index.html">← 返回首页</a>
+  </div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="🔍 输入编号或名称检索，如 TR01 / 抽牌 / 检索字段">
+  </div>
+  <div class="filter-tags" id="filterTags">
+    <span class="filter-tag active" data-f="all">全部</span>
+    <span class="filter-tag" data-f="触发器">触发器</span>
+    <span class="filter-tag" data-f="条件">条件</span>
+    <span class="filter-tag" data-f="动作">动作</span>
+    <span class="filter-tag" data-f="目标">目标</span>
+    <span class="filter-tag" data-f="约束">约束</span>
+    <span class="filter-tag" data-f="抽牌/检索">抽牌/检索</span>
+    <span class="filter-tag" data-f="进化">进化相关</span>
+  </div>
+
+  <div class="formula">
+    <b>📐 装配公式（总纹路负荷）</b><br>
+    <code>毛负荷 = 动作基准 × 目标修正系数 + Σ(约束调整值)</code><br>
+    <code>总毛负荷 = Σ(所有效果毛负荷) + 攻击力×1.0 + 生命值×0.5</code><br>
+    <code>最终负荷 = max(0.5, 总毛负荷 × (1 - 倾向折扣率) - 卡墨减免)</code><br>
+    <b>进化</b>：进化卡通过 <b>A10 检索字段卡 / A11 检索卡</b> 从卡组检索下一进化形态，配合 <b>TR01/TR02</b> 触发。
+  </div>
+
+  <div class="section" data-section="触发器">
+    <h2>⚡ 触发器 <span class="count-badge">17个</span></h2>
+    <div class="section-desc">17个触发器 · 决定效果何时发动</div>
+    <div class="grid"><div class="comp" data-id="TR01" data-name="召唤成功时"><span class="id">TR01</span><span class="name">召唤成功时</span><span class="tag">速度1</span><span class="tag">一次性卡✓</span><div class="desc">通常召唤成功时触发</div></div><div class="comp" data-id="TR02" data-name="特殊召唤成功时"><span class="id">TR02</span><span class="name">特殊召唤成功时</span><span class="tag">速度1</span><span class="tag">一次性卡✓</span><div class="desc">任何方式特殊召唤成功时触发</div></div><div class="comp" data-id="TR03" data-name="从墓地特殊召唤时"><span class="id">TR03</span><span class="name">从墓地特殊召唤时</span><span class="tag">速度1</span><span class="tag">一次性卡✓</span><div class="desc">此卡从墓地特殊召唤成功时触发</div></div><div class="comp" data-id="TR04" data-name="被战斗破坏时"><span class="id">TR04</span><span class="name">被战斗破坏时</span><span class="tag">速度1</span><span class="tag">一次性卡✗</span><div class="desc">被战斗破坏送入墓地时触发</div></div><div class="comp" data-id="TR05" data-name="被破坏送入墓地时"><span class="id">TR05</span><span class="name">被破坏送入墓地时</span><span class="tag">速度1</span><span class="tag">一次性卡✗</span><div class="desc">战斗或效果破坏并送墓时触发</div></div><div class="comp" data-id="TR06" data-name="被送去墓地时"><span class="id">TR06</span><span class="name">被送去墓地时</span><span class="tag">速度1</span><span class="tag">一次性卡✗</span><div class="desc">任何方式送入墓地时触发（含解放、舍弃等）</div></div><div class="comp" data-id="TR07" data-name="被除外时"><span class="id">TR07</span><span class="name">被除外时</span><span class="tag">速度1</span><span class="tag">一次性卡✗</span><div class="desc">从任何地方被除外时触发</div></div><div class="comp" data-id="TR08" data-name="离开场上时"><span class="id">TR08</span><span class="name">离开场上时</span><span class="tag">速度1</span><span class="tag">一次性卡✗</span><div class="desc">从场上以任何方式离开时触发</div></div><div class="comp" data-id="TR09" data-name="攻击宣言时"><span class="id">TR09</span><span class="name">攻击宣言时</span><span class="tag">速度1</span><span class="tag">一次性卡✗</span><div class="desc">此卡攻击宣言时触发</div></div><div class="comp" data-id="TR10" data-name="被攻击时"><span class="id">TR10</span><span class="name">被攻击时</span><span class="tag">速度1</span><span class="tag">一次性卡✗</span><div class="desc">此卡成为攻击对象时触发</div></div><div class="comp" data-id="TR11" data-name="给予战斗伤害时"><span class="id">TR11</span><span class="name">给予战斗伤害时</span><span class="tag">速度1</span><span class="tag">一次性卡✗</span><div class="desc">此卡对对方造成战斗伤害时触发</div></div><div class="comp" data-id="TR12" data-name="己方回合开始时"><span class="id">TR12</span><span class="name">己方回合开始时</span><span class="tag">速度1</span><span class="tag">一次性卡✗</span><div class="desc">己方抽牌阶段开始时触发</div></div><div class="comp" data-id="TR13" data-name="对方回合开始时"><span class="id">TR13</span><span class="name">对方回合开始时</span><span class="tag">速度1</span><span class="tag">一次性卡✗</span><div class="desc">对方抽牌阶段开始时触发</div></div><div class="comp" data-id="TR14" data-name="己方回合结束时"><span class="id">TR14</span><span class="name">己方回合结束时</span><span class="tag">速度1</span><span class="tag">一次性卡✗</span><div class="desc">己方结束阶段时触发</div></div><div class="comp" data-id="TR15" data-name="对方回合结束时"><span class="id">TR15</span><span class="name">对方回合结束时</span><span class="tag">速度1</span><span class="tag">一次性卡✗</span><div class="desc">对方结束阶段时触发</div></div><div class="comp" data-id="TR16" data-name="对方发动效果时"><span class="id">TR16</span><span class="name">对方发动效果时</span><span class="tag">速度2</span><span class="tag">一次性卡✗</span><div class="desc">对方发动卡牌效果时可连锁触发</div></div><div class="comp" data-id="TR17" data-name="对方召唤成功时"><span class="id">TR17</span><span class="name">对方召唤成功时</span><span class="tag">速度2</span><span class="tag">一次性卡✗</span><div class="desc">对方怪兽召唤成功时可连锁触发</div></div></div>
+  </div>
+  <div class="section" data-section="条件">
+    <h2>🔎 条件 <span class="count-badge">15个</span></h2>
+    <div class="section-desc">15个条件 · 决定效果是否满足发动前提</div>
+    <div class="grid"><div class="comp" data-id="C01" data-name="场上存在指定字段"><span class="id">C01</span><span class="name">场上存在指定字段</span><span class="tag">参数</span><div class="desc">字段名（字符串）</div></div><div class="comp" data-id="C02" data-name="场上怪兽数量"><span class="id">C02</span><span class="name">场上怪兽数量</span><span class="tag">参数</span><div class="desc">比较符（≥/≤/=）+ 数值</div></div><div class="comp" data-id="C03" data-name="对方场上有怪兽"><span class="id">C03</span><span class="name">对方场上有怪兽</span><span class="tag">参数</span><div class="desc">无参数（布尔）</div></div><div class="comp" data-id="C04" data-name="生命值低于"><span class="id">C04</span><span class="name">生命值低于</span><span class="tag">参数</span><div class="desc">数值（己方生命 ≤ X）</div></div><div class="comp" data-id="C05" data-name="生命值高于"><span class="id">C05</span><span class="name">生命值高于</span><span class="tag">参数</span><div class="desc">数值（己方生命 ≥ X）</div></div><div class="comp" data-id="C06" data-name="生命值差"><span class="id">C06</span><span class="name">生命值差</span><span class="tag">参数</span><div class="desc">数值（双方差值 ≥ X）</div></div><div class="comp" data-id="C07" data-name="手牌数"><span class="id">C07</span><span class="name">手牌数</span><span class="tag">参数</span><div class="desc">比较符 + 数值</div></div><div class="comp" data-id="C08" data-name="能量点"><span class="id">C08</span><span class="name">能量点</span><span class="tag">参数</span><div class="desc">数值（当前能量 ≥ X）</div></div><div class="comp" data-id="C09" data-name="墓地卡牌数量"><span class="id">C09</span><span class="name">墓地卡牌数量</span><span class="tag">参数</span><div class="desc">比较符 + 数值</div></div><div class="comp" data-id="C10" data-name="墓地存在字段卡"><span class="id">C10</span><span class="name">墓地存在字段卡</span><span class="tag">参数</span><div class="desc">字段名</div></div><div class="comp" data-id="C11" data-name="除外区卡牌数量"><span class="id">C11</span><span class="name">除外区卡牌数量</span><span class="tag">参数</span><div class="desc">比较符 + 数值</div></div><div class="comp" data-id="C12" data-name="卡组数量"><span class="id">C12</span><span class="name">卡组数量</span><span class="tag">参数</span><div class="desc">比较符 + 数值</div></div><div class="comp" data-id="C13" data-name="手牌中特定卡"><span class="id">C13</span><span class="name">手牌中特定卡</span><span class="tag">参数</span><div class="desc">字段名</div></div><div class="comp" data-id="C14" data-name="本回合发动过N次"><span class="id">C14</span><span class="name">本回合发动过N次</span><span class="tag">参数</span><div class="desc">数值（本效果已发动 ≥ N）</div></div><div class="comp" data-id="C15" data-name="己方场上只有X字段"><span class="id">C15</span><span class="name">己方场上只有X字段</span><span class="tag">参数</span><div class="desc">字段名</div></div></div>
+  </div>
+  <div class="section" data-section="动作">
+    <h2>🎯 动作 <span class="count-badge">30个</span></h2>
+    <div class="section-desc">30个动作 · 决定效果做什么 · <b>A10/A11 = 检索（进化核心）</b></div>
+    <div class="grid actions"><div class="comp" data-id="A01" data-name="效果伤害"><span class="id">A01</span><span class="name">效果伤害</span><span class="tag">伤害/恢复</span><div class="desc">能量基准：数值 × 0.8</div></div><div class="comp" data-id="A02" data-name="恢复生命"><span class="id">A02</span><span class="name">恢复生命</span><span class="tag">伤害/恢复</span><div class="desc">能量基准：数值 × 0.6</div></div><div class="comp" data-id="A03" data-name="破坏"><span class="id">A03</span><span class="name">破坏</span><span class="tag">破坏/除去</span><div class="desc">能量基准：3.0</div></div><div class="comp" data-id="A04" data-name="除外"><span class="id">A04</span><span class="name">除外</span><span class="tag">破坏/除去</span><div class="desc">能量基准：4.0</div></div><div class="comp" data-id="A05" data-name="除外墓地卡"><span class="id">A05</span><span class="name">除外墓地卡</span><span class="tag">破坏/除去</span><div class="desc">能量基准：2.0</div></div><div class="comp" data-id="A06" data-name="弹回手牌"><span class="id">A06</span><span class="name">弹回手牌</span><span class="tag">破坏/除去</span><div class="desc">能量基准：3.0</div></div><div class="comp" data-id="A07" data-name="弹回卡组"><span class="id">A07</span><span class="name">弹回卡组</span><span class="tag">破坏/除去</span><div class="desc">能量基准：4.0</div></div><div class="comp" data-id="A08" data-name="送入墓地（非破坏）"><span class="id">A08</span><span class="name">送入墓地（非破坏）</span><span class="tag">破坏/除去</span><div class="desc">能量基准：2.5</div></div><div class="comp" data-id="A09" data-name="抽牌"><span class="id">A09</span><span class="name">抽牌</span><span class="tag">抽牌/检索</span><div class="desc">能量基准：数值 × 1.5</div></div><div class="comp" data-id="A10" data-name="检索字段卡"><span class="id">A10</span><span class="name">检索字段卡</span><span class="tag">抽牌/检索</span><div class="desc">能量基准：2.0</div></div><div class="comp" data-id="A11" data-name="检索卡"><span class="id">A11</span><span class="name">检索卡</span><span class="tag">抽牌/检索</span><div class="desc">能量基准：3.0</div></div><div class="comp" data-id="A12" data-name="墓地回收"><span class="id">A12</span><span class="name">墓地回收</span><span class="tag">抽牌/检索</span><div class="desc">能量基准：2.5</div></div><div class="comp" data-id="A13" data-name="除外回收"><span class="id">A13</span><span class="name">除外回收</span><span class="tag">抽牌/检索</span><div class="desc">能量基准：3.0</div></div><div class="comp" data-id="A14" data-name="卡组堆墓"><span class="id">A14</span><span class="name">卡组堆墓</span><span class="tag">抽牌/检索</span><div class="desc">能量基准：数值 × 1.0</div></div><div class="comp" data-id="A15" data-name="手牌特召"><span class="id">A15</span><span class="name">手牌特召</span><span class="tag">召唤/特召</span><div class="desc">能量基准：3.0</div></div><div class="comp" data-id="A16" data-name="墓地特召"><span class="id">A16</span><span class="name">墓地特召</span><span class="tag">召唤/特召</span><div class="desc">能量基准：3.5</div></div><div class="comp" data-id="A17" data-name="卡组特召"><span class="id">A17</span><span class="name">卡组特召</span><span class="tag">召唤/特召</span><div class="desc">能量基准：4.0</div></div><div class="comp" data-id="A18" data-name="除外特召"><span class="id">A18</span><span class="name">除外特召</span><span class="tag">召唤/特召</span><div class="desc">能量基准：4.5</div></div><div class="comp" data-id="A19" data-name="召唤衍生物"><span class="id">A19</span><span class="name">召唤衍生物</span><span class="tag">召唤/特召</span><div class="desc">能量基准：2.0 + X×0.5 + Y×0.3×Z</div></div><div class="comp" data-id="A20" data-name="攻击力增减（永久）"><span class="id">A20</span><span class="name">攻击力增减（永久）</span><span class="tag">数值变化</span><div class="desc">能量基准：绝对值 × 0.7</div></div><div class="comp" data-id="A21" data-name="生命值增减（永久）"><span class="id">A21</span><span class="name">生命值增减（永久）</span><span class="tag">数值变化</span><div class="desc">能量基准：绝对值 × 0.5</div></div><div class="comp" data-id="A22" data-name="攻命同时增减"><span class="id">A22</span><span class="name">攻命同时增减</span><span class="tag">数值变化</span><div class="desc">能量基准：绝对值 × 1.0</div></div><div class="comp" data-id="A23" data-name="回合内攻命增减"><span class="id">A23</span><span class="name">回合内攻命增减</span><span class="tag">数值变化</span><div class="desc">能量基准：绝对值 × 0.5</div></div><div class="comp" data-id="A24" data-name="全场增减"><span class="id">A24</span><span class="name">全场增减</span><span class="tag">数值变化</span><div class="desc">能量基准：绝对值 × 1.2</div></div><div class="comp" data-id="A25" data-name="交换攻防"><span class="id">A25</span><span class="name">交换攻防</span><span class="tag">数值变化</span><div class="desc">能量基准：2.5</div></div><div class="comp" data-id="A26" data-name="暂时夺取控制权"><span class="id">A26</span><span class="name">暂时夺取控制权</span><span class="tag">控制/限制</span><div class="desc">能量基准：4.0</div></div><div class="comp" data-id="A27" data-name="永久夺取控制权"><span class="id">A27</span><span class="name">永久夺取控制权</span><span class="tag">控制/限制</span><div class="desc">能量基准：6.0</div></div><div class="comp" data-id="A28" data-name="无法攻击"><span class="id">A28</span><span class="name">无法攻击</span><span class="tag">控制/限制</span><div class="desc">能量基准：2.0</div></div><div class="comp" data-id="A29" data-name="表示形式变更"><span class="id">A29</span><span class="name">表示形式变更</span><span class="tag">控制/限制</span><div class="desc">能量基准：1.5</div></div><div class="comp" data-id="A30" data-name="无效效果发动并破坏"><span class="id">A30</span><span class="name">无效效果发动并破坏</span><span class="tag">特殊</span><div class="desc">能量基准：3.5</div></div></div>
+  </div>
+  <div class="section" data-section="目标">
+    <h2>📍 目标 <span class="count-badge">12个</span></h2>
+    <div class="section-desc">12个目标 · 决定效果作用对象</div>
+    <div class="grid"><div class="comp" data-id="T01" data-name="自身"><span class="id">T01</span><span class="name">自身</span><span class="tag">目标</span><div class="desc">修正系数：1.0</div></div><div class="comp" data-id="T02" data-name="敌方单体"><span class="id">T02</span><span class="name">敌方单体</span><span class="tag">目标</span><div class="desc">修正系数：1.0</div></div><div class="comp" data-id="T03" data-name="己方单体"><span class="id">T03</span><span class="name">己方单体</span><span class="tag">目标</span><div class="desc">修正系数：1.0</div></div><div class="comp" data-id="T04" data-name="敌方全体"><span class="id">T04</span><span class="name">敌方全体</span><span class="tag">目标</span><div class="desc">修正系数：1.8</div></div><div class="comp" data-id="T05" data-name="己方全体"><span class="id">T05</span><span class="name">己方全体</span><span class="tag">目标</span><div class="desc">修正系数：1.8</div></div><div class="comp" data-id="T06" data-name="全场"><span class="id">T06</span><span class="name">全场</span><span class="tag">目标</span><div class="desc">修正系数：2.2</div></div><div class="comp" data-id="T07" data-name="敌方英雄"><span class="id">T07</span><span class="name">敌方英雄</span><span class="tag">目标</span><div class="desc">修正系数：1.2</div></div><div class="comp" data-id="T08" data-name="己方英雄"><span class="id">T08</span><span class="name">己方英雄</span><span class="tag">目标</span><div class="desc">修正系数：1.0</div></div><div class="comp" data-id="T09" data-name="手牌"><span class="id">T09</span><span class="name">手牌</span><span class="tag">目标</span><div class="desc">修正系数：1.0</div></div><div class="comp" data-id="T10" data-name="墓地"><span class="id">T10</span><span class="name">墓地</span><span class="tag">目标</span><div class="desc">修正系数：1.0</div></div><div class="comp" data-id="T11" data-name="卡组"><span class="id">T11</span><span class="name">卡组</span><span class="tag">目标</span><div class="desc">修正系数：1.2</div></div><div class="comp" data-id="T12" data-name="除外区"><span class="id">T12</span><span class="name">除外区</span><span class="tag">目标</span><div class="desc">修正系数：1.2</div></div></div>
+  </div>
+  <div class="section" data-section="约束">
+    <h2>🔗 约束 <span class="count-badge">16个</span></h2>
+    <div class="section-desc">16个约束 · 调整负荷与限制</div>
+    <div class="grid"><div class="comp" data-id="CO01" data-name="一回合一次"><span class="id">CO01</span><span class="name">一回合一次</span><span class="tag">频率限制</span><div class="desc">调整值：-1.5</div></div><div class="comp" data-id="CO02" data-name="一局一次"><span class="id">CO02</span><span class="name">一局一次</span><span class="tag">频率限制</span><div class="desc">调整值：-3.0</div></div><div class="comp" data-id="CO03" data-name="支付生命"><span class="id">CO03</span><span class="name">支付生命</span><span class="tag">代价支付</span><div class="desc">调整值：-X × 0.3</div></div><div class="comp" data-id="CO04" data-name="舍弃手牌"><span class="id">CO04</span><span class="name">舍弃手牌</span><span class="tag">代价支付</span><div class="desc">调整值：-X × 1.5</div></div><div class="comp" data-id="CO05" data-name="消耗能量"><span class="id">CO05</span><span class="name">消耗能量</span><span class="tag">代价支付</span><div class="desc">调整值：-X × 0.5</div></div><div class="comp" data-id="CO06" data-name="发动后送墓"><span class="id">CO06</span><span class="name">发动后送墓</span><span class="tag">自毁/放逐</span><div class="desc">调整值：-1.5</div></div><div class="comp" data-id="CO07" data-name="发动后除外"><span class="id">CO07</span><span class="name">发动后除外</span><span class="tag">自毁/放逐</span><div class="desc">调整值：-2.5</div></div><div class="comp" data-id="CO08" data-name="效果后自毁"><span class="id">CO08</span><span class="name">效果后自毁</span><span class="tag">自毁/放逐</span><div class="desc">调整值：-2.0</div></div><div class="comp" data-id="CO09" data-name="仅己方回合"><span class="id">CO09</span><span class="name">仅己方回合</span><span class="tag">时机限制</span><div class="desc">调整值：-0.5</div></div><div class="comp" data-id="CO10" data-name="仅对方回合"><span class="id">CO10</span><span class="name">仅对方回合</span><span class="tag">时机限制</span><div class="desc">调整值：-0.5</div></div><div class="comp" data-id="CO11" data-name="仅主要阶段"><span class="id">CO11</span><span class="name">仅主要阶段</span><span class="tag">时机限制</span><div class="desc">调整值：-0.3</div></div><div class="comp" data-id="CO12" data-name="仅战斗阶段"><span class="id">CO12</span><span class="name">仅战斗阶段</span><span class="tag">时机限制</span><div class="desc">调整值：-0.3</div></div><div class="comp" data-id="CO13" data-name="非永久卡（自动添加）"><span class="id">CO13</span><span class="name">非永久卡（自动添加）</span><span class="tag">类型/负面</span><div class="desc">调整值：-1.5</div></div><div class="comp" data-id="CO14" data-name="发动后受伤害"><span class="id">CO14</span><span class="name">发动后受伤害</span><span class="tag">类型/负面</span><div class="desc">调整值：-X × 0.5</div></div><div class="comp" data-id="CO15" data-name="不可被连锁"><span class="id">CO15</span><span class="name">不可被连锁</span><span class="tag">正面词条</span><div class="desc">调整值：+2.0</div></div><div class="comp" data-id="CO16" data-name="不受对方效果影响"><span class="id">CO16</span><span class="name">不受对方效果影响</span><span class="tag">正面词条</span><div class="desc">调整值：+3.0</div></div></div>
+  </div>
+</div>
+<div class="footer">© 2026 卡师模拟器 · 纹路组件库 90个组件 · 进化用检索纹路（A10/A11）</div>
+<script>
+(function(){
+  var input = document.getElementById('searchInput');
+  var tags = document.querySelectorAll('.filter-tag');
+  var comps = document.querySelectorAll('.comp');
+  var sections = document.querySelectorAll('.section');
+  var activeFilter = 'all';
+
+  function apply() {
+    var q = input.value.trim().toLowerCase();
+    var visible = 0;
+    comps.forEach(function(c) {
+      var text = (c.dataset.id + ' ' + c.dataset.name + ' ' + c.textContent).toLowerCase();
+      var matchQ = !q || text.indexOf(q) !== -1;
+      var sec = c.closest('.section').dataset.section;
+      var matchF = activeFilter === 'all' || sec === activeFilter || c.textContent.indexOf(activeFilter) !== -1;
+      var show = matchQ && matchF;
+      c.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    sections.forEach(function(s) {
+      var has = Array.prototype.some.call(s.querySelectorAll('.comp'), function(c) { return c.style.display !== 'none'; });
+      s.style.display = has ? '' : 'none';
+    });
+  }
+
+  input.addEventListener('input', apply);
+  tags.forEach(function(t) {
+    t.addEventListener('click', function() {
+      tags.forEach(function(x) { x.classList.remove('active'); });
+      t.classList.add('active');
+      activeFilter = t.dataset.f;
+      apply();
+    });
+  });
+  apply();
+})();
+</script>
+</body>
+</html>

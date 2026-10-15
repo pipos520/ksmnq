@@ -1,0 +1,772 @@
+{
+  "aux_items": [
+    {
+      "id": "AU16",
+      "name": "新生嫩芽",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "树苗精身上脱落的嫩芽，附在卡牌上使生命值+1",
+      "effect": {
+        "hp_bonus": 1
+      }
+    },
+    {
+      "id": "AU17",
+      "name": "木质纤维",
+      "type": "protect",
+      "rarity": "普通",
+      "description": "树苗精的木质躯干碎片，能吸收少量伤害，使卡牌受到伤害-1",
+      "effect": {
+        "damage_reduce": 1
+      }
+    },
+    {
+      "id": "AU18",
+      "name": "鹿角碎片",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "雾角鹿脱落的鹿角碎片，附在卡牌上使攻击力+1",
+      "effect": {
+        "atk_bonus": 1
+      }
+    },
+    {
+      "id": "AU19",
+      "name": "雾绒",
+      "type": "special",
+      "rarity": "普通",
+      "description": "鹿角上凝结的雾气绒毛，轻若无物，使卡牌能量消耗-1（最低1）",
+      "effect": {
+        "energy_reduce": 1
+      }
+    },
+    {
+      "id": "AU20",
+      "name": "孢子囊",
+      "type": "element",
+      "rarity": "普通",
+      "description": "蘑菇人背上的孢子囊，赋予卡牌暗属性，暗系效果强度+10%",
+      "effect": {
+        "element": "暗",
+        "element_power": 0.1
+      }
+    },
+    {
+      "id": "AU21",
+      "name": "蘑菇伞盖",
+      "type": "protect",
+      "rarity": "普通",
+      "description": "蘑菇人的伞盖碎片，为卡牌提供2点护盾（一次性抵消伤害）",
+      "effect": {
+        "shield": 2
+      }
+    },
+    {
+      "id": "AU22",
+      "name": "草蜥蜴鳞片",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "草蜥蜴身上脱落的火鳞片，附在卡牌上使攻击力+1",
+      "effect": {
+        "atk_bonus": 1
+      }
+    },
+    {
+      "id": "AU23",
+      "name": "蜥蜴尾",
+      "type": "protect",
+      "rarity": "普通",
+      "description": "草蜥蜴断尾再生的备用尾巴，卡牌被破坏时有30%概率不破坏",
+      "effect": {
+        "revive_chance": 0.3
+      }
+    },
+    {
+      "id": "AU24",
+      "name": "螳螂刀臂",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "螳螂刀客的前臂镰刀，附在卡牌上使攻击力+2",
+      "effect": {
+        "atk_bonus": 2
+      }
+    },
+    {
+      "id": "AU25",
+      "name": "螳螂翅膜",
+      "type": "special",
+      "rarity": "普通",
+      "description": "螳螂的透明翅膜，入场当回合即可进行攻击（一次性）",
+      "effect": {
+        "haste": true
+      }
+    },
+    {
+      "id": "AU26",
+      "name": "蛇鳞片",
+      "type": "protect",
+      "rarity": "普通",
+      "description": "青鳞蛇的翠绿鳞片，为卡牌提供1点护盾（一次性抵消伤害）",
+      "effect": {
+        "shield": 1
+      }
+    },
+    {
+      "id": "AU27",
+      "name": "毒液囊",
+      "type": "element",
+      "rarity": "普通",
+      "description": "青鳞蛇的毒腺囊，赋予卡牌暗属性，暗系效果强度+10%",
+      "effect": {
+        "element": "暗",
+        "element_power": 0.1
+      }
+    },
+    {
+      "id": "AU28",
+      "name": "岩石核心",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "岩石傀儡的灵晶核心，附在卡牌上使生命值+2",
+      "effect": {
+        "hp_bonus": 2
+      }
+    },
+    {
+      "id": "AU29",
+      "name": "矿脉石鳞",
+      "type": "protect",
+      "rarity": "普通",
+      "description": "岩石傀儡身上的坚硬石片，为卡牌提供2点护盾",
+      "effect": {
+        "shield": 2
+      }
+    },
+    {
+      "id": "AU30",
+      "name": "熔岩核心",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "熔岩蠕虫的熔岩核心，附在卡牌上使攻击力+2",
+      "effect": {
+        "atk_bonus": 2
+      }
+    },
+    {
+      "id": "AU31",
+      "name": "火鳞粉",
+      "type": "element",
+      "rarity": "普通",
+      "description": "熔岩蠕虫身上脱落的火鳞粉，赋予卡牌火属性，火系效果强度+10%",
+      "effect": {
+        "element": "火",
+        "element_power": 0.1
+      }
+    },
+    {
+      "id": "AU32",
+      "name": "暗晶尾刺",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "暗晶蝎的尾针，附在卡牌上使攻击力+1、生命值+1",
+      "effect": {
+        "atk_bonus": 1,
+        "hp_bonus": 1
+      }
+    },
+    {
+      "id": "AU33",
+      "name": "暗晶碎片",
+      "type": "element",
+      "rarity": "普通",
+      "description": "暗晶蝎身上的暗晶碎片，赋予卡牌暗属性，暗系效果强度+10%",
+      "effect": {
+        "element": "暗",
+        "element_power": 0.1
+      }
+    },
+    {
+      "id": "AU34",
+      "name": "纯净水心",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "水元素的核心结晶，附在卡牌上使生命值+2",
+      "effect": {
+        "hp_bonus": 2
+      }
+    },
+    {
+      "id": "AU35",
+      "name": "水纹护符",
+      "type": "protect",
+      "rarity": "普通",
+      "description": "水元素凝聚的水纹护符，卡牌被破坏时有30%概率不破坏",
+      "effect": {
+        "revive_chance": 0.3
+      }
+    },
+    {
+      "id": "AU36",
+      "name": "风蝶翅粉",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "风灵蝶翅膀上的闪亮粉末，附在卡牌上使攻击力+2",
+      "effect": {
+        "atk_bonus": 2
+      }
+    },
+    {
+      "id": "AU37",
+      "name": "轻羽",
+      "type": "special",
+      "rarity": "普通",
+      "description": "风灵蝶的轻柔羽毛，入场当回合即可进行攻击（一次性）",
+      "effect": {
+        "haste": true
+      }
+    },
+    {
+      "id": "AU38",
+      "name": "棱镜碎片",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "光棱镜的水晶碎片，附在卡牌上使攻击力+1、生命值+1",
+      "effect": {
+        "atk_bonus": 1,
+        "hp_bonus": 1
+      }
+    },
+    {
+      "id": "AU39",
+      "name": "圣光余晖",
+      "type": "element",
+      "rarity": "普通",
+      "description": "光棱镜折射的圣光残留，赋予卡牌光属性，光系效果强度+10%",
+      "effect": {
+        "element": "光",
+        "element_power": 0.1
+      }
+    },
+    {
+      "id": "AU40",
+      "name": "巨人之心",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "岩石巨人的核心碎片，附在卡牌上使生命值+3",
+      "effect": {
+        "hp_bonus": 3
+      }
+    },
+    {
+      "id": "AU41",
+      "name": "山岩石板",
+      "type": "protect",
+      "rarity": "普通",
+      "description": "岩石巨人身上的坚硬石板，为卡牌提供2点护盾",
+      "effect": {
+        "shield": 2
+      }
+    },
+    {
+      "id": "AU42",
+      "name": "暗影翎羽",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "暗影鸦的漆黑翎羽，附在卡牌上使攻击力+2",
+      "effect": {
+        "atk_bonus": 2
+      }
+    },
+    {
+      "id": "AU43",
+      "name": "夜喙碎片",
+      "type": "element",
+      "rarity": "普通",
+      "description": "暗影鸦喙尖的碎片，赋予卡牌暗属性，暗系效果强度+15%",
+      "effect": {
+        "element": "暗",
+        "element_power": 0.15
+      }
+    },
+    {
+      "id": "AU44",
+      "name": "风暴羽",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "风暴鹰的雷霆羽毛，附在卡牌上使攻击力+2、生命值+1",
+      "effect": {
+        "atk_bonus": 2,
+        "hp_bonus": 1
+      }
+    },
+    {
+      "id": "AU45",
+      "name": "雷电之眼",
+      "type": "special",
+      "rarity": "普通",
+      "description": "风暴鹰的雷电之眼，入场当回合即可进行攻击（一次性）",
+      "effect": {
+        "haste": true
+      }
+    },
+    {
+      "id": "AU46",
+      "name": "蛛丝囊",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "暗穴蜘蛛的蛛丝腺囊，附在卡牌上使生命值+2",
+      "effect": {
+        "hp_bonus": 2
+      }
+    },
+    {
+      "id": "AU47",
+      "name": "毒牙",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "暗穴蜘蛛的毒牙，附在卡牌上使攻击力+2",
+      "effect": {
+        "atk_bonus": 2
+      }
+    },
+    {
+      "id": "AU48",
+      "name": "熔岩龟甲",
+      "type": "protect",
+      "rarity": "普通",
+      "description": "熔岩龟的坚硬龟甲，为卡牌提供3点护盾",
+      "effect": {
+        "shield": 3
+      }
+    },
+    {
+      "id": "AU49",
+      "name": "火核",
+      "type": "element",
+      "rarity": "普通",
+      "description": "熔岩龟体内的火核，赋予卡牌火属性，火系效果强度+15%",
+      "effect": {
+        "element": "火",
+        "element_power": 0.15
+      }
+    },
+    {
+      "id": "AU50",
+      "name": "幻光翅粉",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "幻光蝶翅膀上的光粉，附在卡牌上使攻击力+1、生命值+2",
+      "effect": {
+        "atk_bonus": 1,
+        "hp_bonus": 2
+      }
+    },
+    {
+      "id": "AU51",
+      "name": "圣光蝶翼",
+      "type": "special",
+      "rarity": "普通",
+      "description": "幻光蝶的圣洁翅膀，入场当回合即可进行攻击（一次性）",
+      "effect": {
+        "haste": true
+      }
+    },
+    {
+      "id": "AU52",
+      "name": "迷雾结晶",
+      "type": "boost",
+      "rarity": "稀有",
+      "description": "迷雾守护者的力量结晶，附在卡牌上使攻击力+3",
+      "effect": {
+        "atk_bonus": 3
+      }
+    },
+    {
+      "id": "AU53",
+      "name": "守护之核",
+      "type": "protect",
+      "rarity": "稀有",
+      "description": "迷雾守护者的守护核心，卡牌被破坏时有50%概率不破坏",
+      "effect": {
+        "revive_chance": 0.5
+      }
+    },
+    {
+      "id": "AU54",
+      "name": "火焰核心",
+      "rarity": "稀有",
+      "desc": "熔岩元素的核心结晶，蕴含炽热的火元素能量。",
+      "type": "element",
+      "effect": {
+        "element": "火",
+        "element_power": 0.15
+      },
+      "description": "熔岩元素的核心结晶，附在卡牌上使火元素之力提升15%"
+    },
+    {
+      "id": "AU55",
+      "name": "支配徽记",
+      "rarity": "稀有",
+      "desc": "支配者掉落的暗黑徽记，铭刻着古老的奴役契约。",
+      "type": "special",
+      "effect": {
+        "energy_reduce": 1
+      },
+      "description": "支配者掉落的暗黑徽记，附在卡牌上使能量消耗降低1点"
+    },
+    {
+      "id": "AU56",
+      "name": "蝎毒腺",
+      "rarity": "稀有",
+      "desc": "熔岩毒蝎的毒腺，提炼后可制成强效火毒。",
+      "type": "poison",
+      "effect": {
+        "poison": 1
+      },
+      "description": "熔岩毒蝎的毒腺，附在卡牌上使攻击附带1层中毒"
+    },
+    {
+      "id": "AU57",
+      "name": "炎晶鳞片",
+      "rarity": "稀有",
+      "desc": "炎晶蛇蜕下的鳞片，灼热而坚硬，可用于制作火系防具。",
+      "type": "protect",
+      "effect": {
+        "shield": 3
+      },
+      "description": "炎晶蛇蜕下的鳞片，附在卡牌上获得3点护盾"
+    },
+    {
+      "id": "AU58",
+      "name": "猎犬獠牙",
+      "rarity": "稀有",
+      "desc": "熔岩猎犬的锋利獠牙，蕴含狂野的火焰之力。",
+      "type": "combo",
+      "effect": {
+        "combo": true
+      },
+      "description": "熔岩猎犬的锋利獠牙，附在卡牌上获得连击能力，一回合可攻击两次"
+    },
+    {
+      "id": "AU59",
+      "name": "星火碎片",
+      "rarity": "稀有",
+      "desc": "火焰占星师的法器碎片，残留着神秘的星火能量。",
+      "type": "special",
+      "effect": {
+        "energy_reduce": 1
+      },
+      "description": "火焰占星师的法器碎片，附在卡牌上使能量消耗降低1点"
+    },
+    {
+      "id": "AU60",
+      "name": "元素余烬",
+      "type": "element",
+      "rarity": "普通",
+      "description": "熔岩元素消散后留下的余烬，附在卡牌上使火元素之力提升10%",
+      "effect": {
+        "element": "火",
+        "element_power": 0.1
+      }
+    },
+    {
+      "id": "AU61",
+      "name": "奴役印记",
+      "type": "element",
+      "rarity": "普通",
+      "description": "支配者留下的奴役契约残片，附在卡牌上使暗元素之力提升10%",
+      "effect": {
+        "element": "暗",
+        "element_power": 0.1
+      }
+    },
+    {
+      "id": "AU62",
+      "name": "蝎尾针",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "熔岩毒蝎尾端的毒针，附在卡牌上使攻击力+1",
+      "effect": {
+        "atk_bonus": 1
+      }
+    },
+    {
+      "id": "AU63",
+      "name": "炎晶蛇牙",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "炎晶蛇的锐利獠牙，附在卡牌上使攻击力+1",
+      "effect": {
+        "atk_bonus": 1
+      }
+    },
+    {
+      "id": "AU64",
+      "name": "熔岩犬爪",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "熔岩猎犬的锋利爪子，附在卡牌上使攻击力+1、生命值+1",
+      "effect": {
+        "atk_bonus": 1,
+        "hp_bonus": 1
+      }
+    },
+    {
+      "id": "AU65",
+      "name": "星火法阵",
+      "type": "element",
+      "rarity": "普通",
+      "description": "火焰占星师绘制的法阵残迹，附在卡牌上使火元素之力提升10%",
+      "effect": {
+        "element": "火",
+        "element_power": 0.1
+      }
+    },
+    {
+      "id": "AU1",
+      "name": "熔岩核心",
+      "type": "protect",
+      "rarity": "稀有",
+      "description": "熔岩巨像体内的能量核心，附在卡牌上使生命值+3",
+      "effect": {
+        "hp_bonus": 3
+      }
+    },
+    {
+      "id": "AU66",
+      "name": "巨像岩甲",
+      "type": "protect",
+      "rarity": "普通",
+      "description": "熔岩巨像的岩甲碎片，附在卡牌上获得2点护盾",
+      "effect": {
+        "shield": 2
+      }
+    },
+    {
+      "id": "AU2",
+      "name": "咒术符文",
+      "type": "element",
+      "rarity": "稀有",
+      "description": "记录着古老咒术的符文石，附在卡牌上使火元素之力提升20%",
+      "effect": {
+        "element": "火",
+        "element_power": 0.2
+      }
+    },
+    {
+      "id": "AU67",
+      "name": "烈焰咒符",
+      "type": "element",
+      "rarity": "普通",
+      "description": "火焰咒术师书写的咒符，附在卡牌上使火元素之力提升10%",
+      "effect": {
+        "element": "火",
+        "element_power": 0.1
+      }
+    },
+    {
+      "id": "AU3",
+      "name": "黑曜碎片",
+      "type": "protect",
+      "rarity": "稀有",
+      "description": "黑曜石傀儡的碎片，附在卡牌上获得3点护盾",
+      "effect": {
+        "shield": 3
+      }
+    },
+    {
+      "id": "AU68",
+      "name": "黑曜石核",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "黑曜石傀儡的核心碎块，附在卡牌上使生命值+2",
+      "effect": {
+        "hp_bonus": 2
+      }
+    },
+    {
+      "id": "AU4",
+      "name": "水母触须",
+      "type": "boost",
+      "rarity": "稀有",
+      "description": "熔岩水母的触须，附在卡牌上使攻击力+2",
+      "effect": {
+        "atk_bonus": 2
+      }
+    },
+    {
+      "id": "AU69",
+      "name": "水母毒囊",
+      "type": "poison",
+      "rarity": "普通",
+      "description": "熔岩水母的剧毒囊，附在卡牌上使攻击附带1层中毒",
+      "effect": {
+        "poison": 1
+      }
+    },
+    {
+      "id": "AU5",
+      "name": "龙鳞碎片",
+      "type": "protect",
+      "rarity": "稀有",
+      "description": "熔岩飞龙掉落的鳞片，附在卡牌上获得3点护盾",
+      "effect": {
+        "shield": 3
+      }
+    },
+    {
+      "id": "AU70",
+      "name": "飞龙火翼",
+      "type": "combo",
+      "rarity": "普通",
+      "description": "熔岩飞龙的炽热火翼，附在卡牌上获得连击能力，一回合可攻击两次",
+      "effect": {
+        "combo": true
+      }
+    },
+    {
+      "id": "AU6",
+      "name": "蠕虫粘液",
+      "type": "boost",
+      "rarity": "稀有",
+      "description": "岩浆蠕虫的分泌物，附在卡牌上使生命值+2",
+      "effect": {
+        "hp_bonus": 2
+      }
+    },
+    {
+      "id": "AU71",
+      "name": "岩浆虫壳",
+      "type": "protect",
+      "rarity": "普通",
+      "description": "岩浆蠕虫的外壳碎片，附在卡牌上获得2点护盾",
+      "effect": {
+        "shield": 2
+      }
+    },
+    {
+      "id": "AU7",
+      "name": "地狱之牙",
+      "type": "combo",
+      "rarity": "稀有",
+      "description": "地狱三头犬的利齿，附在卡牌上获得连击能力，一回合可攻击两次",
+      "effect": {
+        "combo": true
+      }
+    },
+    {
+      "id": "AU72",
+      "name": "地狱硫磺",
+      "type": "element",
+      "rarity": "普通",
+      "description": "地狱三头犬爪下的硫磺矿，附在卡牌上使暗元素之力提升10%",
+      "effect": {
+        "element": "暗",
+        "element_power": 0.1
+      }
+    },
+    {
+      "id": "AU8",
+      "name": "萨满图腾",
+      "type": "special",
+      "rarity": "稀有",
+      "description": "火焰萨满的图腾碎片，附在卡牌上有40%概率复活",
+      "effect": {
+        "revive_chance": 0.4
+      }
+    },
+    {
+      "id": "AU73",
+      "name": "萨满火骨",
+      "type": "element",
+      "rarity": "普通",
+      "description": "火焰萨满祭祀用的火骨，附在卡牌上使火元素之力提升10%",
+      "effect": {
+        "element": "火",
+        "element_power": 0.1
+      }
+    },
+    {
+      "id": "AU9",
+      "name": "幽灵结晶",
+      "type": "special",
+      "rarity": "稀有",
+      "description": "熔岩幽灵的结晶，附在卡牌上获得疾风能力，召唤当回合即可攻击",
+      "effect": {
+        "haste": true
+      }
+    },
+    {
+      "id": "AU74",
+      "name": "幽灵鬼火",
+      "type": "element",
+      "rarity": "普通",
+      "description": "熔岩幽灵燃烧的鬼火，附在卡牌上使暗元素之力提升10%",
+      "effect": {
+        "element": "暗",
+        "element_power": 0.1
+      }
+    },
+    {
+      "id": "AU10",
+      "name": "亡灵骨灰",
+      "type": "special",
+      "rarity": "稀有",
+      "description": "亡灵炼金师遗留的骨灰，附在卡牌上使能量消耗降低1点",
+      "effect": {
+        "energy_reduce": 1
+      }
+    },
+    {
+      "id": "AU75",
+      "name": "炼金药剂",
+      "type": "special",
+      "rarity": "普通",
+      "description": "亡灵炼金师调制的药剂，附在卡牌上有30%概率复活",
+      "effect": {
+        "revive_chance": 0.3
+      }
+    },
+    {
+      "id": "AU11",
+      "name": "深渊之眼",
+      "type": "boost",
+      "rarity": "稀有",
+      "description": "深渊掠夺者的魔眼，附在卡牌上使攻击力+2",
+      "effect": {
+        "atk_bonus": 2
+      }
+    },
+    {
+      "id": "AU76",
+      "name": "掠夺者钩爪",
+      "type": "boost",
+      "rarity": "普通",
+      "description": "深渊掠夺者的钩爪，附在卡牌上使攻击力+1",
+      "effect": {
+        "atk_bonus": 1
+      }
+    },
+    {
+      "id": "AU12",
+      "name": "暗影核心",
+      "type": "element",
+      "rarity": "稀有",
+      "description": "暗影支配者的力量核心，附在卡牌上使暗元素之力提升20%",
+      "effect": {
+        "element": "暗",
+        "element_power": 0.2
+      }
+    },
+    {
+      "id": "AU77",
+      "name": "暗影摄魂珠",
+      "type": "special",
+      "rarity": "普通",
+      "description": "暗影支配者的摄魂法器，附在卡牌上使能量消耗降低1点",
+      "effect": {
+        "energy_reduce": 1
+      }
+    }
+  ]
+}

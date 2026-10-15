@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡师模拟器 - 世界观</title>
+    <style>
+* { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+body {
+  font-family: "Zpix", "Pixel", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: repeating-linear-gradient(
+      0deg,
+      #fef9e7 0px, #fef9e7 32px,
+      #fdf3d8 32px, #fdf3d8 64px
+    );
+  color: #2b2b2b;
+  min-height: 100vh;
+}
+/* 顶部像素彩条 */
+.pixel-top {
+  height: 16px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ff6b57 0 48px, #ffd44d 48px 96px,
+    #7ed321 96px 144px, #66c4ff 144px 192px,
+    #b28dff 192px 240px
+  );
+  border-bottom: 4px solid #2b2b2b;
+}
+.container { max-width: 920px; margin: 0 auto; padding: 40px 20px 60px; }
+/* ===== 像素LOGO ===== */
+.logo-area { text-align: center; margin-bottom: 44px; }
+.logo-badge {
+  display: inline-block;
+  padding: 18px 40px;
+  background: #fff;
+  border: 4px solid #2b2b2b;
+  box-shadow: 8px 8px 0 #2b2b2b;
+  margin-bottom: 20px;
+}
+.logo-title {
+  font-size: 11vw;
+  font-weight: 900;
+  letter-spacing: 0.5vw;
+  color: #2b2b2b;
+  white-space: nowrap;
+  text-shadow:
+    0.08em 0.08em 0 #ffd44d,
+    0.16em 0.16em 0 #ff6b57;
+}
+@media (max-width: 640px) {
+  .logo-title { font-size: 14vw; letter-spacing: 0.6vw; }
+}
+.logo-sub {
+  margin-top: 16px;
+  font-size: 18px;
+  color: #2b2b2b;
+  letter-spacing: 6px;
+  font-weight: 700;
+  background: #ffd44d;
+  display: inline-block;
+  padding: 6px 24px;
+  border: 3px solid #2b2b2b;
+  box-shadow: 4px 4px 0 #2b2b2b;
+}
+.version-badge {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 24px;
+  background: #b28dff;
+  border: 3px solid #2b2b2b;
+  box-shadow: 4px 4px 0 #2b2b2b;
+  font-size: 14px;
+  font-weight: 700;
+  color: #2b2b2b;
+  letter-spacing: 2px;
+}
+/* ===== 下载区 ===== */
+.download-section { text-align: center; margin: 44px 0; }
+.pixel-btn {
+  position: relative;
+  display: inline-block;
+  padding: 16px 46px;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-decoration: none;
+  color: #2b2b2b;
+  border: 4px solid #2b2b2b;
+  transition: none;
+  cursor: pointer;
+}
+.pixel-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: none !important;
+}
+.download-btn {
+  background: #ff6b57;
+  box-shadow: 6px 6px 0 #2b2b2b;
+.taptap-btn-wrap { margin-top: 28px; }
+.taptap-btn {
+  background: #66c4ff;
+  box-shadow: 6px 6px 0 #2b2b2b;
+  padding: 14px 40px;
+}
+.worldview-btn-wrap { margin-top: 20px; }
+.worldview-btn {
+  background: #b28dff;
+  box-shadow: 6px 6px 0 #2b2b2b;
+  padding: 14px 40px;
+}
+.download-hint {
+  margin-top: 18px;
+  font-size: 13px;
+  color: #6b6b6b;
+  font-weight: 700;
+}
+/* ===== 像素卡片 ===== */
+.pixel-card {
+  background: #fff;
+  border: 4px solid #2b2b2b;
+  box-shadow: 8px 8px 0 rgba(43,43,43,0.9);
+  padding: 28px;
+  margin: 28px 0;
+}
+.pixel-card h2 {
+  font-size: 22px;
+  margin-bottom: 14px;
+  color: #2b2b2b;
+  display: inline-block;
+  padding: 4px 14px;
+  background: #ffd44d;
+  border: 3px solid #2b2b2b;
+  box-shadow: 3px 3px 0 #2b2b2b;
+  letter-spacing: 2px;
+}
+.pixel-card p { line-height: 1.9; font-size: 15px; font-weight: 500; }
+/* ===== 特性轮播 ===== */
+.features {
+  margin-bottom: 48px;
+}
+.features h2 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 24px;
+  color: #2b2b2b;
+  letter-spacing: 2px;
+}
+.feature-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.feature-viewport {
+  overflow: hidden;
+  padding: 30px 0;
+  min-height: 240px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.feature-track {
+  width: 100%;
+}
+.feature {
+  display: none;
+  width: 78%;
+  max-width: 560px;
+  padding: 36px 28px;
+  background: #fff;
+  border: 4px solid #2b2b2b;
+  box-shadow: 8px 8px 0 #2b2b2b;
+  box-sizing: border-box;
+  text-align: center;
+  margin: 0 auto;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  opacity: 0;
+  transform: scale(0.94);
+}
+.feature.active {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+}
+.feature .icon {
+  font-size: 48px;
+  margin-bottom: 14px;
+}
+.feature .title {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: #2b2b2b;
+  display: inline-block;
+  padding: 5px 18px;
+  background: #ffd44d;
+  border: 2px solid #2b2b2b;
+}
+.feature .desc, .feature p {
+  line-height: 1.75;
+  color: #4a4a4a;
+  font-size: 16px;
+}
+.feature-dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+.feature-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ccc;
+  border: 2px solid #2b2b2b;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.feature-dot.active {
+  background: #2b2b2b;
+}
+@media (max-width: 640px) {
+  .feature {
+    width: 92%;
+    padding: 24px 16px;
+  }
+  .feature .icon { font-size: 36px; }
+  .feature .title { font-size: 18px; padding: 3px 12px; }
+  .feature .desc, .feature p { font-size: 14px; }
+}
+
+
+/* 移动端 */
+@media (max-width: 600px) {
+  .feature { flex: 0 0 88%; padding: 16px 12px 14px; }
+  .feature .icon { font-size: 36px; margin-bottom: 8px; }
+  .feature .title { font-size: 16px; padding: 2px 10px; }
+  .feature .desc { font-size: 12.5px; line-height: 1.6; }
+  .feature-track { gap: 12px; }
+}
+
+/* ===== 媒体轮播（视频 + 截图）===== */
+.media-section {
+  margin: 20px 0 48px 0;
+}
+.media-section h2 {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 18px;
+  color: #2b2b2b;
+  letter-spacing: 2px;
+}
+.media-viewport {
+  overflow: hidden;
+  padding: 20px 0;
+  min-height: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f0ead6;
+  border: 4px solid #2b2b2b;
+  box-shadow: 8px 8px 0 #2b2b2b;
+}
+.media-item {
+  display: none;
+  width: 92%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.media-item.active {
+  display: block;
+}
+.media-item video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: contain;
+  background: #000;
+  border: 3px solid #2b2b2b;
+}
+.media-item img {
+  display: block;
+  width: 100%;
+  max-height: 560px;
+  object-fit: contain;
+  background: #1a1a1a;
+  border: 3px solid #2b2b2b;
+}
+.media-caption {
+  text-align: center;
+  font-size: 14px;
+  color: #4a4a4a;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.media-thumbs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.media-thumb {
+  width: 84px;
+  height: 54px;
+  border: 3px solid #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #2b2b2b;
+  padding: 0;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+.media-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.media-thumb .thumb-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+}
+.media-thumb.active {
+  border-color: #2b2b2b;
+  transform: scale(1.12);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.media-thumb:hover {
+  transform: scale(1.08);
+}
+.media-thumb.active:hover {
+  transform: scale(1.12);
+}
+@media (max-width: 640px) {
+  .media-viewport { min-height: 260px; padding: 12px 0; }
+  .media-item { width: 96%; }
+  .media-thumb { width: 62px; height: 40px; border-width: 2px; }
+}
+/* ===== 特色列表 ===== */
+.pixel-card ul { padding-left: 28px; }
+.pixel-card li { line-height: 2; font-size: 14.5px; font-weight: 500; }
+/* ===== 公告 ===== */
+.announce {
+  background: #fff7e0;
+  border: 4px dashed #2b2b2b;
+  padding: 24px;
+  margin: 28px 0;
+  font-size: 14.5px;
+  line-height: 1.9;
+  font-weight: 500;
+}
+/* ===== 页脚 ===== */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  font-size: 13px;
+  color: #6b6b6b;
+  font-weight: 700;
+}
+footer a { color: #2b2b2b; text-decoration: none; border-bottom: 3px solid #ffd44d; }
+.social-links { margin-top: 12px; }
+.social-links a { margin: 0 12px; }
+/* 底部像素条 */
+.pixel-bottom {
+  height: 16px;
+  background: repeating-linear-gradient(
+    90deg,
+    #b28dff 0 48px, #66c4ff 48px 96px,
+    #7ed321 96px 144px, #ffd44d 144px 192px,
+    #ff6b57 192px 240px
+  );
+  border-top: 4px solid #2b2b2b;
+}
+</style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="logo-title">卡师模拟器</h1>
+        <p class="subtitle">沧澜古界 · 世界观与卡包总览</p>
+    </div>
+
+    <nav class="nav">
+        <a href="index.html" class="nav-btn">返回首页</a>
+        <a href="worldview.html" class="nav-btn active">世界观</a>
+        <a href="#factions" class="nav-btn">势力总览</a>
+        <a href="#packs" class="nav-btn">卡包详情</a>
+    </nav>
+
+    <div class="container">
+        <section class="section" id="factions">
+            <h2 class="section-title">沧澜古界 · 十大势力</h2>
+            <div class="section-desc">
+                <p>沧澜古界，浩瀚无边。自大雍王朝立国人皇统一中原以来，四方势力并起，各据一方。</p>
+                <p>北境军镇守国门，执律司维护法度；白鹿书院教书育人，太一门卫道除魔；霜月妖庭统御妖族，黄金十二寺普度众生；东澜群岛海神庇佑，南疆巫岭巫蛊传承；青云山剑修问剑，无名者与古战场诉说着古老的传说。</p>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px;">
+                <span class="faction-tag">🏛️ 大雍王朝</span>
+                <span class="faction-tag">📚 白鹿书院</span>
+                <span class="faction-tag">⛩️ 太一门</span>
+                <span class="faction-tag">🌙 霜月妖庭</span>
+                <span class="faction-tag">🙏 黄金十二寺</span>
+                <span class="faction-tag">🌊 东澜群岛</span>
+                <span class="faction-tag">🐍 南疆巫岭</span>
+                <span class="faction-tag">⚔️ 青云山</span>
+                <span class="faction-tag">👤 无名者</span>
+                <span class="faction-tag">⚰️ 古战场</span>
+            </div>
+        </section>
+
+        <section class="section" id="packs">
+            <h2 class="section-title">十五卡包 · 全览</h2>
+            <div class="section-desc">
+                <p>本次更新包含15个卡包，共240张卡牌。全部卡牌费用经能量公式严格计算，白板占比31%-38%，费用曲线平滑，无超过10费的卡牌。</p>
+                <p>每个势力包含1-2个卡包，每个卡包16张卡，分为白板层、轻效果层、中型层和3★传说层。</p>
+            </div>
+
+            <div class="packs-grid">
+                <div class="pack-card">
+                    <div class="pack-header">
+                        <h3 class="pack-name">大雍双壁</h3>
+                        <p class="pack-sub">北境军 & 执律司 · 大雍王朝</p>
+                    </div>
+                    <div class="pack-body">
+                        <p class="pack-desc">北境军镇守沧水防线，执律司维护大雍法度。军旗不倒，国法不废。</p>
+                        <div class="pack-stats">
+                            <span class="stat">34张卡</span>
+                            <span class="stat">上限10费</span>
+                            <span class="stat">约束×1</span>
+                        </div>
+                        <div class="card-list">
+                            <div class="card-item"><span class="card-name">边军刀盾手</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">边军弩手</span><span class="card-cost star-1">2费</span></div>
+                            <div class="card-item"><span class="card-name">雪夜斥候</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name">沧水医师</span><span class="card-cost star-2">4费</span></div>
+                            <div class="card-item"><span class="card-name">军旗手</span><span class="card-cost star-2">5费</span></div>
+                            <div class="card-item"><span class="card-name">督战队</span><span class="card-cost star-2">5费</span></div>
+                            <div class="card-item"><span class="card-name">军法官</span><span class="card-cost star-2">6费</span></div>
+                            <div class="card-item"><span class="card-name">断后死士</span><span class="card-cost star-2">6费</span></div>
+                            <div class="card-item"><span class="card-name">沧水防线</span><span class="card-cost star-2">6费</span></div>
+                            <div class="card-item"><span class="card-name">都尉</span><span class="card-cost star-2">7费</span></div>
+                            <div class="card-item"><span class="card-name">死战督军</span><span class="card-cost star-2">7费</span></div>
+                            <div class="card-item"><span class="card-name star-3">霍惊澜</span><span class="card-cost star-3">10费</span></div>
+                            <div class="card-item"><span class="card-name">执律司书吏</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">执律司捕快</span><span class="card-cost star-1">2费</span></div>
+                            <div class="card-item"><span class="card-name">执律司仵作</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name">执律司文书</span><span class="card-cost star-2">4费</span></div>
+                            <div class="card-item"><span class="card-name">执律司巡察</span><span class="card-cost star-2">5费</span></div>
+                            <div class="card-item"><span class="card-name">执律司提刑</span><span class="card-cost star-2">6费</span></div>
+                            <div class="card-item"><span class="card-name">执律司少卿</span><span class="card-cost star-2">7费</span></div>
+                            <div class="card-item"><span class="card-name star-3">铁面</span><span class="card-cost star-3">9费</span></div>
+                            <div class="card-item"><span class="card-name star-3">量力而行</span><span class="card-cost star-3">7费</span></div>
+                            <div class="card-item"><span class="card-name star-3">无赦令</span><span class="card-cost star-3">6费</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pack-card">
+                    <div class="pack-header">
+                        <h3 class="pack-name">白鹿书院</h3>
+                        <p class="pack-sub">浩然流 & 问溟录 · 教书育人</p>
+                    </div>
+                    <div class="pack-body">
+                        <p class="pack-desc">读书不为功名，只为心安。浩然正气长存，问溟录窥天机。</p>
+                        <div class="pack-stats">
+                            <span class="stat">32张卡</span>
+                            <span class="stat">上限9费</span>
+                            <span class="stat">白板38%</span>
+                        </div>
+                        <div class="card-list">
+                            <div class="card-item"><span class="card-name">书院童子</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">书院讲师</span><span class="card-cost star-1">2费</span></div>
+                            <div class="card-item"><span class="card-name">晨读生</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name">书院琴师</span><span class="card-cost star-2">4费</span></div>
+                            <div class="card-item"><span class="card-name">书院山长</span><span class="card-cost star-2">5费</span></div>
+                            <div class="card-item"><span class="card-name star-3">许观澜</span><span class="card-cost star-3">7费</span></div>
+                            <div class="card-item"><span class="card-name star-3">浩然长歌</span><span class="card-cost star-3">5费</span></div>
+                            <div class="card-item"><span class="card-name">溟渊弟子</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">溟渊占卜师</span><span class="card-cost star-1">4费</span></div>
+                            <div class="card-item"><span class="card-name star-3">白鹿真人</span><span class="card-cost star-3">9费</span></div>
+                            <div class="card-item"><span class="card-name star-3">溟渊之主</span><span class="card-cost star-3">8费</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pack-card">
+                    <div class="pack-header">
+                        <h3 class="pack-name">太一门</h3>
+                        <p class="pack-sub">神钟卫道 & 封山秘录 · 卫道除魔</p>
+                    </div>
+                    <div class="pack-body">
+                        <p class="pack-desc">钟鸣三百里，邪魔不敢近。封山非避世，秘录藏天机。</p>
+                        <div class="pack-stats">
+                            <span class="stat">32张卡</span>
+                            <span class="stat">上限10费</span>
+                            <span class="stat">白板38%</span>
+                        </div>
+                        <div class="card-list">
+                            <div class="card-item"><span class="card-name">钟童</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">晨钟弟子</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name">神钟长老</span><span class="card-cost star-2">5费</span></div>
+                            <div class="card-item"><span class="card-name star-3">太一掌门</span><span class="card-cost star-3">7费</span></div>
+                            <div class="card-item"><span class="card-name">封山弟子</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">封山长老</span><span class="card-cost star-2">7费</span></div>
+                            <div class="card-item"><span class="card-name star-3">封山掌门</span><span class="card-cost star-3">10费</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pack-card">
+                    <div class="pack-header">
+                        <h3 class="pack-name">霜月妖庭</h3>
+                        <p class="pack-sub">极夜北庭 & 月见旧誓 · 妖族传承</p>
+                    </div>
+                    <div class="pack-body">
+                        <p class="pack-desc">极夜之下，妖庭为尊。月见之时，旧誓难忘。</p>
+                        <div class="pack-stats">
+                            <span class="stat">32张卡</span>
+                            <span class="stat">上限9费</span>
+                            <span class="stat">白板38%</span>
+                        </div>
+                        <div class="card-list">
+                            <div class="card-item"><span class="card-name">雪原小妖</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">雪原斥候</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name">北庭将军</span><span class="card-cost star-2">5费</span></div>
+                            <div class="card-item"><span class="card-name star-3">极夜妖皇</span><span class="card-cost star-3">9费</span></div>
+                            <div class="card-item"><span class="card-name">月见小狐</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">月见刺客</span><span class="card-cost star-2">4费</span></div>
+                            <div class="card-item"><span class="card-name star-3">月见狐妃</span><span class="card-cost star-3">8费</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pack-card">
+                    <div class="pack-header">
+                        <h3 class="pack-name">黄金十二寺</h3>
+                        <p class="pack-sub">香火金身 & 苦海往生 · 佛门慈悲</p>
+                    </div>
+                    <div class="pack-body">
+                        <p class="pack-desc">香火千年，金身不坏。苦海无边，回头是岸。</p>
+                        <div class="pack-stats">
+                            <span class="stat">32张卡</span>
+                            <span class="stat">上限10费</span>
+                            <span class="stat">白板38%</span>
+                        </div>
+                        <div class="card-list">
+                            <div class="card-item"><span class="card-name">小沙弥</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">晨钟僧</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name">金身罗汉</span><span class="card-cost star-2">5费</span></div>
+                            <div class="card-item"><span class="card-name star-3">金身佛陀</span><span class="card-cost star-3">10费</span></div>
+                            <div class="card-item"><span class="card-name">苦行僧</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">超度僧</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name star-3">往生之主</span><span class="card-cost star-3">9费</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pack-card">
+                    <div class="pack-header">
+                        <h3 class="pack-name">东澜群岛</h3>
+                        <p class="pack-sub">缘契潮声 & 归墟鲸歌 · 海神庇佑</p>
+                    </div>
+                    <div class="pack-body">
+                        <p class="pack-desc">缘契潮声，海神听之。鲸落归墟，万物重生。</p>
+                        <div class="pack-stats">
+                            <span class="stat">32张卡</span>
+                            <span class="stat">上限10费</span>
+                            <span class="stat">白板38%</span>
+                        </div>
+                        <div class="card-list">
+                            <div class="card-item"><span class="card-name">渔家少年</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">潮声听客</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name">缘契长老</span><span class="card-cost star-2">5费</span></div>
+                            <div class="card-item"><span class="card-name star-3">缘契海神</span><span class="card-cost star-3">8费</span></div>
+                            <div class="card-item"><span class="card-name">深海小妖</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">鲸歌听者</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name star-3">归墟鲸主</span><span class="card-cost star-3">10费</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pack-card">
+                    <div class="pack-header">
+                        <h3 class="pack-name">南疆巫岭</h3>
+                        <p class="pack-sub">祖神百寨 & 无字碑 · 巫蛊传承</p>
+                    </div>
+                    <div class="pack-body">
+                        <p class="pack-desc">百寨祭祖神，巫蛊传千年。无字碑上无字，碑中自有乾坤。</p>
+                        <div class="pack-stats">
+                            <span class="stat">32张卡</span>
+                            <span class="stat">上限10费</span>
+                            <span class="stat">白板38%</span>
+                        </div>
+                        <div class="card-list">
+                            <div class="card-item"><span class="card-name">山寨孩童</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">巫蛊师</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name">百寨长老</span><span class="card-cost star-2">5费</span></div>
+                            <div class="card-item"><span class="card-name star-3">祖神降临</span><span class="card-cost star-3">7费</span></div>
+                            <div class="card-item"><span class="card-name">碑林守护者</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">碑灵低语</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name star-3">无字碑主</span><span class="card-cost star-3">9费</span></div>
+                            <div class="card-item"><span class="card-name star-3">无字碑·终</span><span class="card-cost star-3">10费</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pack-card">
+                    <div class="pack-header">
+                        <h3 class="pack-name">青云山补档</h3>
+                        <p class="pack-sub">九剑图 · 剑修禁地</p>
+                    </div>
+                    <div class="pack-body">
+                        <p class="pack-desc">九剑出鞘，天下无双。青云山禁地，剑主归位。</p>
+                        <div class="pack-stats">
+                            <span class="stat">16张卡</span>
+                            <span class="stat">上限7费</span>
+                            <span class="stat">白板38%</span>
+                        </div>
+                        <div class="card-list">
+                            <div class="card-item"><span class="card-name">剑童</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">听雨剑</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name">苏妙音</span><span class="card-cost star-2">7费</span></div>
+                            <div class="card-item"><span class="card-name">听雨剑主</span><span class="card-cost star-2">6费</span></div>
+                            <div class="card-item"><span class="card-name star-3">归鞘剑主</span><span class="card-cost star-3">7费</span></div>
+                            <div class="card-item"><span class="card-name star-3">九剑图</span><span class="card-cost star-3">7费</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pack-card">
+                    <div class="pack-header">
+                        <h3 class="pack-name">无名者与古战场</h3>
+                        <p class="pack-sub">无名者 & 古战场 · 传说永存</p>
+                    </div>
+                    <div class="pack-body">
+                        <p class="pack-desc">无名者，非无名，乃不愿留名。古战场，战魂不灭，英灵永存。</p>
+                        <div class="pack-stats">
+                            <span class="stat">32张卡</span>
+                            <span class="stat">上限10费</span>
+                            <span class="stat">白板38%</span>
+                        </div>
+                        <div class="card-list">
+                            <div class="card-item"><span class="card-name">流浪者</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">影子</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name">无名者·觉醒</span><span class="card-cost star-3">8费</span></div>
+                            <div class="card-item"><span class="card-name star-3">无名者·终局</span><span class="card-cost star-3">9费</span></div>
+                            <div class="card-item"><span class="card-name star-3">无名者·归来</span><span class="card-cost star-3">10费</span></div>
+                            <div class="card-item"><span class="card-name">断剑</span><span class="card-cost star-1">1费</span></div>
+                            <div class="card-item"><span class="card-name">古战场幽魂</span><span class="card-cost star-1">3费</span></div>
+                            <div class="card-item"><span class="card-name">古战场战魂</span><span class="card-cost star-2">6费</span></div>
+                            <div class="card-item"><span class="card-name star-3">古战场将魂</span><span class="card-cost star-3">9费</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div style="text-align: center;">
+            <a href="index.html" class="back-btn">← 返回首页下载游戏</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 卡师模拟器 · 沧澜古界 · 十五卡包240张卡全部公式验证</p>
+    </div>
+</body>
+</html>

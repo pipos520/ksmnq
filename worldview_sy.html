@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡师模拟器 · 三约纪元·世界观</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+body {
+  font-family: "Zpix", "Pixel", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: repeating-linear-gradient(0deg, #f3ead9 0px, #f3ead9 32px, #e8d9bb 32px, #e8d9bb 64px);
+  color: #3a2a18; min-height: 100vh;
+}
+.pixel-top { height: 16px; background: repeating-linear-gradient(90deg, #8a5a2b 0 48px, #c9a26a 48px 96px, #d9b98a 96px 144px, #6b4423 144px 192px, #a67c3d 192px 240px); border-bottom: 4px solid #3a2a18; }
+.container { max-width: 920px; margin: 0 auto; padding: 40px 20px 60px; }
+.logo-area { text-align: center; margin-bottom: 44px; }
+.logo-badge { display: inline-block; padding: 18px 40px; background: #fff; border: 4px solid #3a2a18; box-shadow: 8px 8px 0 #3a2a18; margin-bottom: 20px; }
+.logo-title { font-size: 11vw; font-weight: 900; letter-spacing: 0.5vw; color: #3a2a18; white-space: nowrap; text-shadow: 0.08em 0.08em 0 #c9a26a, 0.16em 0.16em 0 #8a5a2b; }
+@media (max-width: 640px) { .logo-title { font-size: 14vw; letter-spacing: 0.6vw; } }
+.logo-sub { margin-top: 16px; font-size: 18px; color: #3a2a18; letter-spacing: 6px; font-weight: 700; background: #c9a26a; display: inline-block; padding: 6px 24px; border: 3px solid #3a2a18; box-shadow: 4px 4px 0 #3a2a18; }
+.download-section { text-align: center; margin: 44px 0; }
+.pixel-btn { position: relative; display: inline-block; padding: 16px 46px; font-size: 20px; font-weight: 900; letter-spacing: 2px; text-decoration: none; color: #3a2a18; border: 4px solid #3a2a18; transition: none; cursor: pointer; }
+.pixel-btn:active { transform: translate(4px, 4px); box-shadow: none !important; }
+.back-btn { background: #c9a26a; box-shadow: 6px 6px 0 #3a2a18; }
+.pixel-card { background: #fff; border: 4px solid #3a2a18; box-shadow: 8px 8px 0 rgba(58,42,24,0.9); padding: 28px; margin: 28px 0; }
+.pixel-card h2 { font-size: 22px; margin-bottom: 14px; color: #3a2a18; display: inline-block; padding: 4px 14px; background: #d9b98a; border: 3px solid #3a2a18; box-shadow: 3px 3px 0 #3a2a18; letter-spacing: 2px; }
+.pixel-card p { line-height: 1.9; font-size: 15px; font-weight: 500; }
+.faction-tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+.faction-tag { display: inline-block; padding: 8px 16px; background: #8a5a2b; border: 3px solid #3a2a18; box-shadow: 3px 3px 0 #3a2a18; font-size: 14px; font-weight: 700; color: #fff; text-decoration: none; cursor: pointer; transition: none; }
+.faction-tag:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #3a2a18; }
+.faction-tag:hover { background: #c9a26a; color: #3a2a18; }
+.pack-section { margin-top: 32px; scroll-margin-top: 20px; }
+.pack-section h3 { font-size: 20px; margin-bottom: 12px; color: #3a2a18; display: inline-block; padding: 4px 14px; background: #c9a26a; border: 3px solid #3a2a18; box-shadow: 3px 3px 0 #3a2a18; letter-spacing: 2px; }
+.pack-info { background: #f3ead9; border: 3px solid #3a2a18; padding: 16px; margin-bottom: 16px; font-size: 14px; line-height: 1.8; }
+.pack-info b { color: #8a5a2b; }
+.card-toggle { display: block; width: 100%; padding: 14px 20px; background: #d9b98a; border: 3px solid #3a2a18; box-shadow: 4px 4px 0 #3a2a18; font-family: inherit; font-size: 15px; font-weight: 900; color: #3a2a18; cursor: pointer; text-align: left; letter-spacing: 1px; margin-bottom: 8px; }
+.card-toggle:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #3a2a18; }
+.card-toggle::after { content: "▶"; float: right; transition: transform 0.2s; }
+.card-toggle.open::after { transform: rotate(90deg); }
+.card-content { display: none; border: 3px solid #3a2a18; border-top: none; background: #fff; padding: 16px; margin-bottom: 8px; }
+.card-content.open { display: block; }
+.card-list { display: flex; flex-direction: column; gap: 10px; }
+.card-item { border: 2px solid #3a2a18; background: #fffdf5; padding: 10px 12px; box-shadow: 3px 3px 0 #3a2a18; }
+.ci-line1 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ci-name { font-weight: 900; font-size: 15px; }
+.ci-star { font-size: 13px; letter-spacing: 2px; }
+.ci-cost { margin-left: auto; background: #8a5a2b; color: #fff; border: 2px solid #3a2a18; padding: 2px 10px; font-weight: 900; font-size: 12px; }
+.ci-line2 { margin-top: 4px; font-size: 12px; color: #6b5535; display: flex; gap: 14px; }
+.ci-num { color: #999; }
+.ci-ah { font-weight: 700; }
+.ci-line3 { margin-top: 6px; font-size: 13px; line-height: 1.6; color: #3a2a18; }
+.ci-recipe { margin-top: 4px; padding: 3px 6px; font-size: 12px; color: #5a3a15; background: rgba(201,162,106,0.25); border-top: 1px dashed #8a5a2b; }
+.ci-flavor { margin-top: 4px; padding: 3px 6px; font-size: 12px; color: #5a3a15; background: rgba(217,185,138,0.5); border-top: 1px dashed #c9a26a; font-style: italic; }
+.star-1 { color: #95a5a6; } .star-2 { color: #c9a26a; } .star-3 { color: #8a5a2b; font-weight: 900; }
+@media (max-width: 640px) { .ci-name { font-size: 14px; } .ci-line3 { font-size: 12px; } }
+.lore-toggle { background: #c9a26a; margin-top: 10px; }
+.lore-content { background: #fffdf5; }
+.lore-inner { font-size: 14px; line-height: 1.85; }
+.lore-inner h4 { font-size: 15px; margin: 14px 0 6px; color: #3a2a18; border-left: 5px solid #8a5a2b; padding-left: 10px; letter-spacing: 1px; }
+.lore-inner p { margin: 8px 0; }
+.lore-inner ul { margin: 6px 0 10px 20px; }
+.lore-inner li { margin: 4px 0; }
+.lore-inner table.dt { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 13px; }
+.lore-inner table.dt th, .lore-inner table.dt td { border: 1px solid #3a2a18; padding: 6px 8px; text-align: left; }
+.lore-inner table.dt th { background: #f3ead9; }
+.lore-quote { border-left: 4px solid #8a5a2b; background: #f3ead9; padding: 10px 14px; margin: 10px 0; font-style: italic; }
+.doc-h1 { font-size: 17px; font-weight: 900; margin: 16px 0 6px; color: #3a2a18; border-left: 6px solid #d9b98a; padding-left: 10px; letter-spacing: 1px; }
+.doc-h2 { font-size: 15px; font-weight: 900; margin: 12px 0 4px; color: #3a2a18; border-left: 4px solid #c9a26a; padding-left: 8px; }
+.doc-h3 { margin: 8px 0 2px; }
+.dhr { border: none; border-top: 3px dashed #8a5a2b; margin: 16px 0; }
+.footer { text-align: center; padding: 30px 20px; font-size: 13px; color: #6b5535; border-top: 4px solid #3a2a18; background: #fff; }
+</style>
+</head>
+<body>
+<div class="pixel-top"></div>
+<div class="container">
+  <div class="logo-area">
+    <div class="logo-badge"><div class="logo-title">卡师模拟器</div></div>
+    <div class="logo-sub">三约纪元 · 世界观</div>
+  </div>
+  <div class="download-section">
+    <a class="pixel-btn back-btn" href="index.html">← 返回首页下载游戏</a>
+    <a class="pixel-btn back-btn" href="worldview.html" style="background:#b28dff; color:#2b2b2b; border-color:#2b2b2b; margin-left:12px;">🌐 沧澜古界世界观</a>
+  </div>
+  <div class="faction-tags">
+<a href="#qw" class="faction-tag">🛡️ 七王骑士团</a>
+<a href="#wf" class="faction-tag">🔮 万法塔七学派</a>
+<a href="#sg" class="faction-tag">⚜️ 圣光教廷</a>
+<a href="#sy" class="faction-tag">🌀 深渊猎魔人</a>
+<a href="#lj" class="faction-tag">🐉 龙裔部族</a>
+<a href="#yl" class="faction-tag">🌲 深林精灵</a>
+<a href="#hs" class="faction-tag">⚔️ 冒险者公会</a>
+<a href="#sd" class="faction-tag">🕯️ 塔底守秘人</a>
+  </div>
+  <div class="pixel-card">
+    <h2>📖 卷首 · 世界观总纲</h2>
+    <div class="lore-quote">万物皆标了价——这是这个世界唯一公平的事。</div>
+    <p class="doc-h1">《三约纪元》世界观设定全集</p>
+<p class="doc-h1">版本 v1.0</p>
+<div class="lore-quote">万物皆标了价——这是这个世界唯一公平的事。</div>
+<hr class="dhr">
+<p class="doc-h1">第一卷 · 世界本源</p>
+<h4 class="doc-h2">一、三约</h4>
+<ul><li>这个世界的力量从不施舍，只借贷。一切力量皆来自三份古老的约定：</li><li><b>王约</b>——王权。愿力为证，圣剑为凭。王座不是加冕那刻戴上的，是有人替你弯腰时戴上的。</li><li><b>法约</b>——魔法。借贷为术，世界为账。每一道法术都写着一行小字：此物将从你处扣除——你以为是金币，其实是别的。</li><li><b>光约</b>——圣光。光明与黑暗同源。圣光越亮的地方，影就越长。</li><li>三约共奉一句箴言：<b>「一切力量皆有价，三权皆负债。」</b></li></ul>
+<h4 class="doc-h2">二、起源：龙与初民</h4>
+<ul><li>上古时代，龙与初民共居大陆。龙是最古老的智慧种族，天生魔力，从不借贷。</li><li>第一法师（真名已失）在龙眠峰下创立<b>万法之塔</b>，发明「借贷式魔法」——法力不从天上来，从<b>世界之账</b>里借。</li><li>代价记在借者最柔软处：先是琐碎的记忆，再是一段感情，最后是「你是谁」。</li><li>龙看穿了这真相，从此缄口不再施法，退居龙脊山脉，成为大陆最古老的旁观者。</li></ul>
+<h4 class="doc-h2">三、力量体系：三权分立</h4>
+<p class="doc-h3"><b>王权 · 愿力</b></p>
+<ul><li>圣剑不认血统只认愿力。举剑者越无私，剑越重；「想当王的人，举不起它。」</li><li>王国纹章骑士、龙血战士、游侠箭术、宫廷奥术，皆在王约之下效力。</li></ul>
+<p class="doc-h3"><b>法权 · 借贷</b></p>
+<ul><li>万法塔七大学派：塑能（火水风土）、变形、死灵、预言、附魔、炼金、召唤。</li><li>施法即借贷：每道法术都从世界之账扣除代价；越级施法，代价翻倍。</li></ul>
+<p class="doc-h3"><b>光权 · 圣光</b></p>
+<ul><li>圣光神术：净化、庇护、圣焰。对深渊生物有克制，但圣光用得越深，施放者越接近深渊。</li><li>教义说「光与暗永不相容」——这句教义本身，就是圣战最大的秘密。</li></ul>
+<hr class="dhr">
+<p class="doc-h1">第二卷 · 三约山河</p>
+<h4 class="doc-h2">一、中央废土</h4>
+<ul><li>大陆正中，千年前古王城陨落之地。圣剑沉睡于此，七国皆对此地不语。</li><li>废土尽头是<b>灰冠墟</b>：古王城的王座残骸，至今无人敢坐。</li></ul>
+<h4 class="doc-h2">二、万法之塔</h4>
+<ul><li>大陆最高学府，七大学派逐级向上。塔下是<b>塔下自治城邦</b>，无魔法平民聚居，烟火最盛。</li><li>塔底压着「第一债务人」——法约账本上唯一的名字。</li></ul>
+<h4 class="doc-h2">三、圣光王国与圣战之城</h4>
+<ul><li>圣光教廷的心脏。边境要塞<b>黑崖堡</b>是圣战前线，骑士团世代驻守。</li><li>教会以审判庭支配信仰；忏悔者（被圣光灼伤之人）在城郊苟活。</li></ul>
+<h4 class="doc-h2">四、深渊边境</h4>
+<ul><li>三百年圣战的前线。深渊不是地底的洞，而是<b>世界之账欠债的实体化</b>。</li><li>深不见底，越深越接近真相。最底层坐着一个人。</li></ul>
+<h4 class="doc-h2">五、龙脊山脉</h4>
+<ul><li>龙裔故土，龙眠峰为尊。龙缄口不施法，只旁观；龙焰骑士是唯一与龙共舞的人类。</li></ul>
+<h4 class="doc-h2">六、幽语林</h4>
+<ul><li>精灵故土。深林精灵拒绝三权，守着一句龙语——那句话说，别碰世界之账。</li></ul>
+<hr class="dhr">
+<p class="doc-h1">第三卷 · 王约：七王与圣剑</p>
+<h4 class="doc-h2">一、七国</h4>
+<ul><li>王约之下，大陆裂为七国：<b>雪冠王国</b>（北境雪国）、<b>沙烬王朝</b>（南方沙漠）、<b>河湾公国</b>（富庶水乡）、<b>铁脊王国</b>（矮人铁脉）、<b>鸢尾王国</b>（平原麦田）、<b>黑旗佣兵国</b>（灰色地带）、<b>暮影王国</b>（暗地贵族）。</li><li>七国共祭圣剑，却谁也不肯先踏足中央废土——因为踏上去的人，要么成王，要么消失。</li></ul>
+<h4 class="doc-h2">二、圣剑</h4>
+<ul><li>剑名<b>「不称王」</b>。千年前古王城陨落，圣剑沉睡灰冠墟，只认愿力。</li><li>「想当王的人举不起它」——历代七国最强者皆试过，剑纹丝不动。</li></ul>
+<h4 class="doc-h2">三、王约的裂缝</h4>
+<ul><li>七国表面共约，背地各有算盘。雪冠想北伐，沙烬想南扩，河湾想通商，铁脊想铸王兵。</li><li>而灰冠墟的王座残骸上，刻着一行千年未干的血字：<b>「王冠不是加冕那刻戴上的。」</b></li></ul>
+<hr class="dhr">
+<p class="doc-h1">第四卷 · 法约：万法之塔</p>
+<h4 class="doc-h2">一、七大学派</h4>
+<ul><li><b>塑能</b>（火水风土）、<b>变形</b>、<b>死灵</b>、<b>预言</b>、<b>附魔</b>、<b>炼金</b>、<b>召唤</b>。学派自下而上，塔顶是<b>万法议会</b>。</li><li>每个学徒入学第一课：<b>「万物有价。施法即借贷。」</b>第二课：<b>「代价不会消失，只会迟到。」</b></li></ul>
+<h4 class="doc-h2">二、世界之账</h4>
+<ul><li>塔底藏着一本无人能翻开总账——<b>《万法之账》</b>。每一道法术都在上面记一笔。</li><li>借贷的代价记在借者最柔软处：先琐碎记忆，再一段感情，最后是「你是谁」。</li><li>塔底封印着<b>第一债务人</b>：真名已失的第一法师。千年来所有法师都在花祂的记忆，祂早已忘了自己是谁，只记得要等一个人来写下最后一段账。</li></ul>
+<h4 class="doc-h2">三、塔下自治城邦</h4>
+<ul><li>塔脚下是无魔法平民的城邦，烟火最盛。他们不施法，也就从不欠账。</li><li>流传一句话：<b>「高塔施法，城邦付账。」</b>——不，其实塔不欠城邦，城邦才是塔最怕欠的那笔账。</li></ul>
+<hr class="dhr">
+<p class="doc-h1">第五卷 · 光约：圣光教廷</p>
+<h4 class="doc-h2">一、圣战之城</h4>
+<ul><li>圣光教廷的心脏在黑崖堡。三百年圣战，骑士团世代浴血镇守边境。</li><li>教义三条：<b>「光与暗永不相容」「深渊必除」「圣战至死方休」</b>。</li></ul>
+<h4 class="doc-h2">二、审判庭</h4>
+<ul><li>教会以审判庭支配信仰。异端、叛教者、被圣光灼伤的忏悔者，皆由审判庭定罪。</li><li>忏悔者被逐到城郊，苟活于灰烬区。</li></ul>
+<h4 class="doc-h2">三、光约的真相</h4>
+<ul><li>圣光越亮，影越长。圣光用得越深，施放者越接近深渊。</li><li>深渊不是地底的洞，是<b>世界之账欠债的实体化</b>——是知识的代价显了形，也是圣光烧出的暗影沉淀。</li><li>而深渊最底层，坐着一个人——穿着第一代大圣骑士的铠甲。</li></ul>
+<hr class="dhr">
+<p class="doc-h1">第六卷 · 龙裔与幽语林</p>
+<h4 class="doc-h2">一、龙脊山脉</h4>
+<ul><li>龙眠峰为尊。龙缄口不施法，只旁观——因为施法即借贷，而龙不屑欠账。</li><li>龙裔分两支：<b>古龙裔</b>（纯血，退隐龙眠峰）、<b>龙血民</b>（与龙共舞的人类后代，龙焰骑士）。</li></ul>
+<h4 class="doc-h2">二、龙语</h4>
+<ul><li>龙语是大陆最古老的语言。一句龙语，能抵三道法术。</li><li>精灵守着一句龙语，代代相传，从不外传：<b>「别碰世界之账。」</b></li></ul>
+<h4 class="doc-h2">三、幽语林</h4>
+<ul><li>深林精灵拒绝三权，不施法、不举剑、不拜圣光。他们与古树共生，以自然秘术为生。</li><li>精灵女王<b>银冠·艾兰薇</b>，活了七百年，是少数见过第一法师的人之一。</li></ul>
+<hr class="dhr">
+<p class="doc-h1">第七卷 · 灰色地带：冒险者与佣兵</p>
+<h4 class="doc-h2">一、冒险者公会</h4>
+<ul><li>大陆灰色地带的中枢。佣兵、盗贼、游侠、赏金猎人、探宝者，皆在公会挂单。</li><li>公会规矩三条：<b>「不碰圣剑」「不碰世界之账」「不碰灰冠墟」</b>——三条都是因为碰过的人，没人回来。</li></ul>
+<h4 class="doc-h2">二、黑旗佣兵国</h4>
+<ul><li>七国中最不王约的一个。黑旗佣兵以刀口舔血为生，谁给钱为谁卖命。</li><li>黑旗团长<b>铁面·格里尔</b>，曾孤身进过灰冠墟，出来时少了一只眼睛，也再没说过一句话。</li></ul>
+<h4 class="doc-h2">三、塔下盗贼</h4>
+<ul><li>万法塔下城邦的地底，盘着<b>「账房鼠」</b>盗贼团——专偷塔里的法物去黑市换钱。</li><li>账房鼠有个禁忌：偷什么都可以，别偷《万法之账》的抄本——偷过的人，第二天都会出现在塔底，脸上带着笑。</li></ul>
+<hr class="dhr">
+<p class="doc-h1">第八卷 · 深渊与三约的交汇</p>
+<h4 class="doc-h2">一、深渊的本质</h4>
+<ul><li>深渊不是地底的洞，是<b>世界之账欠债的实体化</b>——知识的代价显了形，圣光烧出的暗影沉淀也汇入其中。</li><li>越深越接近真相。最底层坐着一个人：穿着第一代大圣骑士的铠甲，怀里抱着一本旧账。</li></ul>
+<h4 class="doc-h2">二、第一代大圣骑士</h4>
+<ul><li>名讳已从教廷史册中抹去。三百年前，祂发现「深渊大敌」不是恶魔——是<b>圣光本体烧出的废渣</b>。</li><li>祂没有揭穿，而是穿上铠甲纵身跳入深渊，以「大敌」的身份存在三百年——骗教会继续讨伐，只为没人知道祂在关着的，是圣光本体。</li><li>祂怀里那本旧账，是《万法之账》的最后一页抄本。上面只有一行字，等了三百年：<b>「来写下最后一段账的人，请你先问自己——你是来还债的，还是来讨债的？」</b></li></ul>
+<h4 class="doc-h2">三、三约的铰链</h4>
+<ul><li>王约、法约、光约，三条线在深渊交汇成同一个答案：</li><li><b>圣剑之王亲手劈裂王国</b>——为了「王权神授」断根；第一法师把自己锁进塔底——为了不再有人替世界记账；第一代大圣骑士跳进深渊——为了关住圣光本体。</li><li>三个「不称王」的人，守的是同一件事：<b>这个世界从不施舍，它只借贷。而真正自由的活法，是不欠债。</b></li></ul>
+<hr class="dhr">
+<p class="doc-h1">第十卷 · 时代：三约松动的当代</p>
+<p>当代的澜，不，当代的大陆，三约同时出现裂缝：</p>
+<p>1. <b>圣剑异动</b>：灰冠墟的圣剑在月蚀之夜发出低鸣，七国皆有感应——「不称王」在等人。</p>
+<p>2. <b>塔底震荡</b>：万法之塔的学徒渐渐遗忘一个图书馆学徒的名字——世界之账开始「收账」。</p>
+<p>3. <b>圣光衰微</b>：黑崖堡的圣骑士发现，圣光愈合伤口的速度比从前慢了——光在暗下去。</p>
+<p>4. <b>深渊回响</b>：深渊边境传来哭声，有人说看见深渊最底层那道身影，站了起来。</p>
+<p>5. <b>龙语苏醒</b>：幽语林的精灵女王银冠·艾兰薇是少数见过第一法师的人，她忽然说——「他等的人，来了。」</p>
+<p>6. <b>账房鼠异闻</b>：塔下城邦有人捡到一页《万法之账》的残页，上面写着一行字——<b>「此物将从你处扣除。」</b></p>
+<p>而灰冠墟的王座残骸上，那道千年血字还在等一个人来读完下半句。</p>
+<hr class="dhr">
+  </div>
+  <div class="pixel-card">
+    <h2>📅 总编年史</h2>
+    <p class="doc-h1">第九卷 · 编年史</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>上古</td><td>龙与初民共居大陆；龙眠峰下，第一法师创立万法之塔，「借贷式魔法」问世</td></tr><tr><td>上古末</td><td>龙看穿世界之账真相，缄口退居龙脊山脉，从此不再施法</td></tr><tr><td>千年前</td><td>圣剑「不称王」出世；古王城立，王权神授；古王统一大陆</td></tr><tr><td>千年前·末</td><td>古王亲手劈裂王国，王城陨落为中央废土/灰冠墟，圣剑沉睡</td></tr><tr><td>八百年前</td><td>七国成形；万法之塔七学派鼎立；塔底第一法师自我封存</td></tr><tr><td>三百年前</td><td>圣光教会崛起；深渊浮现；第一代大圣骑士纵身跳入深渊，「圣战」开端</td></tr><tr><td>三百年来</td><td>圣战至今，黑崖堡世代浴血；审判庭支配信仰</td></tr><tr><td>当代（现在）</td><td>圣剑在灰冠墟沉睡；塔底旧账等一个人来写最后一段；深渊最底层有人抱着账本</td></tr></tbody></table>
+<hr class="dhr">
+  </div>
+  <div class="pixel-card">
+    <h2>👤 人物名录</h2>
+    <p class="doc-h1">附录一 · 主要人物名录</p>
+<table class="dt"><thead><tr><th>人物</th><th>身份</th><th>关键词</th></tr></thead><tbody><tr><td><b>无名骑士</b></td><td>主角，边境无名骑士，捡到圣剑</td><td>不称王；愿力；月蚀之夜听见剑鸣</td></tr><tr><td><b>「不称王」</b></td><td>圣剑</td><td>不认血统只认愿力；想当王的人举不起它</td></tr><tr><td><b>第一法师</b></td><td>万法之塔创立者，真名已失</td><td>世界之账唯一债务人；塔底封印；等一个人写最后一段账</td></tr><tr><td><b>第一代大圣骑士</b></td><td>圣光教廷初代圣骑士，名讳被抹</td><td>纵身跳入深渊；以「深渊大敌」身份关住圣光本体三百年</td></tr><tr><td><b>银冠·艾兰薇</b></td><td>幽语林精灵女王</td><td>活了七百年；见过第一法师；「他等的人，来了」</td></tr><tr><td><b>铁面·格里尔</b></td><td>黑旗佣兵团长</td><td>进过灰冠墟；少一只眼；再没说过话</td></tr><tr><td><b>古龙裔·龙眠</b></td><td>龙脊山脉最古老者</td><td>缄口旁观；见过上古一切</td></tr><tr><td><b>审判庭大法官</b></td><td>圣光教廷异端法官</td><td>唯信教义；不知光约真相</td></tr><tr><td><b>账房鼠头目</b></td><td>塔下盗贼团首领</td><td>专偷法物；绝不碰《万法之账》抄本</td></tr><tr><td><b>塔底守秘人</b></td><td>万法塔末代守塔人</td><td>守着塔底的账；等一个人来</td></tr></tbody></table>
+  </div>
+  <div class="pixel-card">
+    <h2>📦 重要事物</h2>
+    <p class="doc-h1">附录二 · 重要事物</p>
+<table class="dt"><thead><tr><th>事物</th><th>说明</th></tr></thead><tbody><tr><td><b>三约</b></td><td>王约/法约/光约；一切力量皆有价，三权皆负债</td></tr><tr><td><b>圣剑「不称王」</b></td><td>只认愿力；想当王的人举不起它；沉睡灰冠墟</td></tr><tr><td><b>万法之塔</b></td><td>七学派，逐级向上；塔底压着第一债务人</td></tr><tr><td><b>《万法之账》</b></td><td>塔底总账；每道法术记一笔；代价记在借者最柔软处</td></tr><tr><td><b>深渊</b></td><td>世界之账欠债的实体化；知识的代价显形；圣光废渣沉淀</td></tr><tr><td><b>灰冠墟</b></td><td>古王城王座残骸；千年前圣战（王约内战）战场</td></tr><tr><td><b>龙语</b></td><td>一句龙语抵三道法术；精灵代代守着「别碰世界之账」</td></tr><tr><td><b>圣战</b></td><td>三百年讨伐「深渊大敌」；真相是第一代大圣骑士的守护</td></tr><tr><td><b>黑崖堡</b></td><td>圣战前线要塞；骑士团世代驻守</td></tr><tr><td><b>塔下自治城邦</b></td><td>无魔法平民聚居；烟火最盛；「城邦才是塔最怕欠的那笔账」</td></tr><tr><td><b>龙眠峰</b></td><td>龙脊山脉主峰；古龙裔退隐之地</td></tr><tr><td><b>幽语林</b></td><td>精灵故土；拒绝三权；以自然秘术共生</td></tr></tbody></table>
+<p><i>「这个世界从不施舍。它只借贷，而且从不上门讨债——它只等你记起来。」</i></p>
+  </div>
+  <div class="pixel-card">
+    <h2>🏛️ 势力与卡包</h2>
+    <div class="pack-section" id="qw">
+<h3>🛡️ 七王骑士团</h3>
+<div class="pack-info"><b>七王骑士团</b><br><div class="lore-quote">七面旗帜，七种纹章，七句不同的誓言。</div><div class="lore-quote">可他们肩上扛的是同一把剑——一把谁都举不起来的剑。</div><div class="lore-quote">以下为七国共存的《守望手札》残卷整理，写入者署名皆被墨迹洇去。</div><br><b>字段：</b>三约纪元/qw | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开七王骑士团卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">守望·白狼骑士</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">雪冠的白狼纹章骑士，霜雪为证，剑不南指。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">守望·沙蝎卫</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">沙烬的沙蝎卫，黄沙为证，剑不北顾。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">守望·银鲤巡</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">河湾的银鲤巡骑，守着水路与税条。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">守望·铁砧卫</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">铁脊的铁砧卫，铸甲为生，剑不回炉。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">守望·夜鸦谍</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 1 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">暮影的夜鸦谍子，见过太多不该见的。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">守望·黑帆佣</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 3 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">黑旗的雇佣兵，谁给钱为谁守墟。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">守望·金穗骑</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 3 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">鸢尾的金穗骑士，麦田尽头是灰冠墟。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">试剑礼·月蚀</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A20(1)/T03</div><div class="ci-flavor">月蚀之夜的试剑礼，剑身落霜又碎。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">灰冠墟·血字</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A33/T02</div><div class="ci-flavor">王座残骸上千年未干的血字。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">圣剑·剑鸣</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：抽1张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR12→A09(1)/T03</div><div class="ci-flavor">月蚀之夜，剑在等人。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">守望长·老烟斗</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 1 · 命 4</span></div><div class="ci-line3">【起效】被攻击时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR10→A02(2)/T03</div><div class="ci-flavor">老守望长的烟斗，点了三次才着。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">圣剑·认主</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：+2攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR01→A20(2)/T05</div><div class="ci-flavor">「我不当王」——剑身轻颤。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">七王之首·雪冠王</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(1)/T05</div><div class="ci-flavor">北境雪国的王，试剑时剑纹丝不动。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">灰冠墟·无归</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：造成2点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR06→A01(2)/T02</div><div class="ci-flavor">踏进灰冠墟又消失的人，没有回来过。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">圣剑·不称王</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 3 · 命 2</span></div><div class="ci-line3">【起效】攻击宣言时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(1)/T03</div><div class="ci-flavor">想当王的人举不起它。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">古王·裂国者</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 9</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 4 · 命 4</span></div><div class="ci-line3">【起效】攻击宣言时：+2攻击（己方单体）；被送去墓地时：造成2点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(2)/T03 + TR06→A01(2)/T02</div><div class="ci-flavor">亲手劈裂王国的古王，王冠不知去向。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">圣剑·觉醒</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 8</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 0 · 命 4</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）；召唤成功时：抽1张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR12→A21(1)/T05 + TR01→A09(1)/T03</div><div class="ci-flavor">睡了千年的剑，终于等到一声「我不当王」。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">无名骑士·取剑</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 4 · 命 4</span></div><div class="ci-line3">【起效】己方回合开始时：+2攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(2)/T05</div><div class="ci-flavor">没有纹章的边境骑士，朝着剑走去。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开七王骑士团编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 七王守望编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>千年前</td><td>古王以圣剑开国，王权神授，统一大陆</td></tr><tr><td>千年前·末</td><td>古王劈裂王国；王城陨落为灰冠墟；圣剑沉睡；守望团立</td></tr><tr><td>八百年前</td><td>七国成形；守望团定「三守」之规；血字引七国震动</td></tr><tr><td>五百年前</td><td>试剑礼成俗；历代最强者皆铩羽</td></tr><tr><td>二百年前</td><td>黑旗佣兵国加入七国称王；守望团出现第一次裂缝</td></tr><tr><td>当代（现在）</td><td>月蚀之夜剑鸣；边境无名骑士入墟；血字等一个人读完下半句</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开七王骑士团当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 守望者当代剧情（剑鸣之夜）</p>
+<div class="lore-quote">时间：月蚀之夜。地点：灰冠墟，守望者营地。</div>
+<p>老守望长站在营地外，看着那道走进墟里的背影。</p>
+<p>身边的年轻守望者低声问：「大人，他连纹章都没有，您为什么让路？」</p>
+<p>老守望长没有回答。他掏出烟斗，点了三次才点着——手在抖。</p>
+<p>「一千年前古王劈完那一剑，把剑插在王座上的时候，也说了四个字。」他说。</p>
+<p>「什么字？」</p>
+<p>「『我不当了。』」</p>
+<p>他吸了一口烟，望着灰冠墟方向：「那小子刚才说的不是这四个字。他说的是『我不当王』——少了一个字，多了一条命。」</p>
+<p>「什么意思？」</p>
+<p>「『我不当了』是卸下，『我不当王』是转身。卸下的人还看着王座，转身的人——是朝着剑走的。」</p>
+<p>灰冠墟深处，传来一声极轻的剑鸣。像有人终于握住了等了千年的手。</p>
+<hr class="dhr">
+<p><i>《守望手札》最后一页，被人用炭笔补了一行字，看不出笔迹：</i></p>
+<p><i>「一千年前古王问剑：'我劈开王国，是不是对的？' 剑没有答。</i></p>
+<p><i>一千年后有人握剑，剑才开口：'你劈开的不是王国。是王冠底下那道影子。'」</i></p>
+<p><i>墨迹到这里断了。页脚有一小块焦痕，像被火舔过。</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="wf">
+<h3>🔮 万法塔七学派</h3>
+<div class="pack-info"><b>万法塔七学派</b><br><div class="lore-quote">塔有多高，账就有多厚。</div><div class="lore-quote">每一道从塔顶落下的法术，都在塔底翻一页。</div><div class="lore-quote">以下整理自万法塔《学派门鉴》，供学徒入学前夜默读。</div><br><b>字段：</b>三约纪元/wf | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开万法塔七学派卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">学徒·塑能</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">塑能学徒，火苗在掌心跳动，记忆渐渐缺棱角。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">学徒·变形</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">变形学徒，变过形的人忘了自己原来什么样。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">学徒·死灵</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">死灵学徒，深夜能听见回答自己的人。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">学徒·预言</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">预言学徒，看见的未来覆盖了过去。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">学徒·附魔</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">附魔学徒，器物会反过来记住主人。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">学徒·炼金</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 3 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">炼金学徒，金子记得它曾是铅。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">学徒·召唤</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 1 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">召唤学徒，镜子里的自己越来越淡。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">塔顶·万法议会</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A20(1)/T03</div><div class="ci-flavor">议会不管法术对错，只管账目平衡。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">塔底·第一课</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A02(2)/T03</div><div class="ci-flavor">「万物有价。施法即借贷。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">塔底·第二课</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：抽1张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR12→A09(1)/T03</div><div class="ci-flavor">「代价不会消失，只会迟到。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">城邦·付账</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【起效】被攻击时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR10→A02(2)/T03</div><div class="ci-flavor">「高塔施法，城邦付账。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">塔顶·大法师</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(1)/T05</div><div class="ci-flavor">议会里最老的塑能大法师，看穿过账的本质。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">塔底·收账</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A33/T02</div><div class="ci-flavor">账滚到一定厚度，会自己开始收账。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">塔底·被遗忘的学徒</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：造成2点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR06→A01(2)/T02</div><div class="ci-flavor">他的名字被世界之账收走了。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">塔底·翻书声</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合结束时：+1生命（己方全体）<div class="ci-recipe">🧬 纹路配方：TR14→A21(1)/T05</div><div class="ci-flavor">塔底传来翻账页的沙沙声，像沙漏。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">塔顶·灯</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 8</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 4</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）；召唤成功时：抽1张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR12→A21(1)/T05 + TR01→A09(1)/T03</div><div class="ci-flavor">塔顶的灯不能熄——等那人想起来。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">七学派·鼎立</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】攻击宣言时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(1)/T03</div><div class="ci-flavor">七学派各占一层，自下而上鼎立。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">第一法师·债务人</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 5 · 命 5</span></div><div class="ci-line3">【起效】攻击宣言时：+2攻击（己方单体）；被送去墓地时：造成2点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(2)/T03 + TR06→A01(2)/T02</div><div class="ci-flavor">真名已失的第一法师，等着写下最后一段账。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开万法塔七学派编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 万法塔编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>上古</td><td>第一法师在龙眠峰下创立万法之塔；借贷式魔法问世</td></tr><tr><td>上古末</td><td>龙看穿世界之账真相，缄口退居龙脊山脉，不再施法</td></tr><tr><td>八百年前</td><td>七学派鼎立；塔顶万法议会成形</td></tr><tr><td>八百年前</td><td>第一法师自我封存于塔底，成第一债务人</td></tr><tr><td>五百年前</td><td>塔下自治城邦形成；「高塔施法，城邦付账」一说流传</td></tr><tr><td>当代（现在）</td><td>学徒被遗忘；塔底翻书声；守秘人听见写字的沙沙声</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开万法塔七学派当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 守秘人当代剧情（翻书之夜）</p>
+<div class="lore-quote">时间：当代某深夜。地点：万法之塔，塔底。</div>
+<p>守秘人提着油灯，一级一级走下最后一段石阶。四十年了，他走过这里无数次，今晚的脚步声格外重——因为塔底有声音。</p>
+<p>《万法之账》躺在石台上，封面蒙着灰。他伸手摸上去，指尖触到书皮的一瞬，听见里面「沙」地翻过一页。</p>
+<p>他缩回手。又听见一页。</p>
+<p>「谁？」他低声问。</p>
+<p>没有回答。只有翻书声，一下，一下，像有人借着塔底的黑暗，在账本里找什么。</p>
+<p>守秘人想了很久，从怀里摸出一页抄本——那是上任守秘人临终前塞给他的，上面只有一行字：</p>
+<p><b>「祂不翻账。祂只等人。你若听见翻书声，那不是祂——是账自己在找祂欠的那一行。」</b></p>
+<p>守秘人捏着抄本，站在账前，忽然明白了。</p>
+<p>千年来，所有法师都在花第一法师的记忆。可没有人想过——<b>祂把自己的记忆借出去的那一刻，账上写的不是「欠」，是「借」。</b></p>
+<p>账一直在数，那个人到底借出去了多少。</p>
+<p>它数了一千年，数完了。现在它在等，等那个人回来，亲自写下「还清」两个字。</p>
+<p>而那个人，还没想起自己是谁。</p>
+<hr class="dhr">
+<p><i>塔底石壁上，不知何时多了一行极浅的刻痕，像用指甲划的：</i></p>
+<p><i>「图书馆学徒，花完最后一个名字那晚，醒来时忘了自己叫什么。</i></p>
+<p><i>他在名册上划掉自己的名字，改成——『等他说还清的人』。」</i></p>
+<p><i>刻痕到此为止。没有署名。</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="sg">
+<h3>⚜️ 圣光教廷</h3>
+<div class="pack-info"><b>圣光教廷</b><br><div class="lore-quote">圣光是光。光与暗同源。</div><div class="lore-quote">这句话写在黑崖堡的基石里——可教会只允许它被刻在看不见的那一面。</div><div class="lore-quote">以下为教廷《圣战录》与城郊忏悔者口述的对照整理。</div><br><b>字段：</b>三约纪元/sg | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开圣光教廷卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">教廷·圣焰新兵</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">入团先过圣焰试，站一夜不退缩者留下。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">教廷·护教兵</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">黑崖堡城门的护教兵，圣徽擦得锃亮。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">教廷·忏悔者</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 1 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">被圣光灼伤之人，在城郊种灰白色的花。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">教廷·灰烬花</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 0 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">只开在被圣光照过又熄灭的地方。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">教廷·圣战骑士</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 3 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">世代驻守黑崖堡的圣战骑士。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">教廷·巡夜执事</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">夜里巡查圣火祭坛的执事，脚步很轻。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">教廷·黑崖堡卫</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">黑崖堡的常驻卫队，盔甲从不离身。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">圣焰·洗礼</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A02(2)/T03</div><div class="ci-flavor">圣焰不伤真心求护之人。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">审判庭·定罪</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A33/T02</div><div class="ci-flavor">异端、叛教者，皆由审判庭定罪。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">圣光·庇护</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A21(1)/T05</div><div class="ci-flavor">圣光庇护之下，影也一同生长。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">教廷·黑崖堡</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 0 · 命 4</span></div><div class="ci-line3">【起效】被攻击时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR10→A02(2)/T03</div><div class="ci-flavor">三百年圣战前线，城墙是黑的，圣火是白的。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">圣战·讨伐令</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：抽1张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR12→A09(1)/T03</div><div class="ci-flavor">讨伐令一出，全城骑士披甲。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">圣骑士·团座</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(1)/T05</div><div class="ci-flavor">圣骑士团座，「以身为盾，以光为剑」。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">审判庭·大法官</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 1 · 命 4</span></div><div class="ci-line3">【起效】对方发动效果时：禁用效果（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR16→A33/T02</div><div class="ci-flavor">唯信教义，判案只读《圣战录》。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">圣光·衰微</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：造成2点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR06→A01(2)/T02</div><div class="ci-flavor">圣光愈合伤口的速度，比从前慢了。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">忏悔者·种花</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方单体）；被送去墓地时：造成1点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A02(2)/T03 + TR06→A01(1)/T02</div><div class="ci-flavor">忏悔者种花不是赎罪，是替光记着。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">圣骑士·黑崖堡主</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 3 · 命 4</span></div><div class="ci-line3">【起效】攻击宣言时：+2攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(2)/T03</div><div class="ci-flavor">圣战之城的城主，剑锋永远朝着深渊。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">第一代大圣骑士·跳渊</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 4 · 命 5</span></div><div class="ci-line3">【起效】己方回合开始时：+2攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(2)/T05</div><div class="ci-flavor">祂纵身跳入深渊，以「大敌」之名关住圣光本体三百年。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开圣光教廷编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 圣光教廷编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>上古末</td><td>龙缄口退隐；大陆仍有散落的光术传承</td></tr><tr><td>三百年前</td><td>圣光教会崛起；深渊浮现；黑崖堡筑成</td></tr><tr><td>三百年前</td><td>第一代大圣骑士纵身跳入深渊，「圣战」开端</td></tr><tr><td>二百五十年前</td><td>审判庭建立；《圣战录》成书；初代大圣骑士之名被抹去</td></tr><tr><td>一百年前</td><td>忏悔者城郊灰烬区形成；黑色晶石开始「添火」</td></tr><tr><td>当代（现在）</td><td>圣光愈合变慢；圣骑士「自首」；深渊传来起身的动静</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开圣光教廷当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 忏悔者当代剧情（添火之夜）</p>
+<div class="lore-quote">时间：当代。地点：黑崖堡，圣火祭坛下。</div>
+<p>城郊的忏悔者阿姊，今夜被召进堡——因为她是灰烬区唯一一个「见过圣火底下影子」却没被灼瞎眼的人。</p>
+<p>圣火祭坛下，她看见骑士们往火里添一种黑色晶石。火舌舔上去，瞬间亮得刺眼。</p>
+<p>「你们知道吗？」她轻声说，「这种石头，我见过。在灰烬区的地里，开那种灰白色花的地方，底下全是这种石头。」</p>
+<p>领头的骑士脸色一变：「这是教廷的圣物，深渊边境运来的。你怎么会见过？」</p>
+<p>「因为那种花，只在被圣光照过又熄灭的地方开。」阿姊说，「花底下埋着的，是圣光不要的东西。」</p>
+<p>骑士的手按上剑柄。阿姊没有退，她抬起头，看着那团越烧越亮的圣火：</p>
+<p>「三百年前跳下去的那个人，是不是把圣光不要的东西，都一个人扛下去了？」</p>
+<p>祭坛下安静了很久。只有圣火在烧，噼啪作响，像有什么东西在火里翻身。</p>
+<p>骑士最终没有拔剑。他后退一步，轻声说：</p>
+<p>「这句话……你从来没说过。今晚你也没说过。你——回去吧。」</p>
+<p>阿姊转身往外走。走到门口，她停下来，没有回头：</p>
+<p>「骑士老爷，我最后说一次——忏悔者种花不是赎罪。我们在替你们记着：<b>光底下有个人，还在替我们关着那道门。</b>」</p>
+<hr class="dhr">
+<p><i>灰烬区的花田边，立着一块被风雨磨平的无字碑。</i></p>
+<p><i>碑的背面，深深刻着一行字，字迹像用剑尖刻的：</i></p>
+<p><i>「三百年前我跳下去，不是因为我看见了真相。</i></p>
+<p><i>是因为教会需要一个大敌，而圣光需要一个不说破的人。</i>/</p>
+<p><i>碑的主人没有名字。只有碑顶的圣火，在三百年来第一个无风之夜，轻轻晃了一下。</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="sy">
+<h3>🌀 深渊猎魔人</h3>
+<div class="pack-info"><b>深渊猎魔人</b><br><div class="lore-quote">别人问猎魔人：「深渊里有什么？」</div><div class="lore-quote">猎魔人答：「深渊里没有怪物。深渊里只有账。」</div><div class="lore-quote">这是猎魔人行会代代相传的第一课，也是唯一没人敢反驳的一课。</div><br><b>字段：</b>三约纪元/sy | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开深渊猎魔人卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">猎魔·灰白兽</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">深渊里唯一不攻击人的兽，默默吃废渣。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">猎魔·皮甲</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">灰白兽皮做的甲，轻而韧。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">猎魔·边境猎人</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">第一批下深渊的猎人，成了账目的证人。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">猎魔·小秤</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 0 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">腰间的小秤，用来称代价。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">猎魔·向导</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 1 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">熟悉前六层的向导，绝不踏足第七层。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">猎魔·守渊人</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">守在裂缝边的守渊人，一夜换一班。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">猎魔·废渣地</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 0 · 命 4</span></div><div class="ci-line3">【白板】<div class="ci-flavor">圣光烧出的暗影沉淀，堆成软软的地。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">深渊·第一层</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：造成1点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A01(1)/T02</div><div class="ci-flavor">废渣区，灰白兽出没之地。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">猎魔·称代价</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：抽1张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR06→A09(1)/T03</div><div class="ci-flavor">称那块废渣值多少，称那条命还清了没有。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">深渊·回声区</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：抽1张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR12→A09(1)/T03</div><div class="ci-flavor">第六层能听见还账的沙沙声。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">猎魔·三规</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A33/T02</div><div class="ci-flavor">不下最底层、不念账上名字、不点火。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">深渊·欠账区</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 1 · 命 4</span></div><div class="ci-line3">【起效】被攻击时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR10→A02(2)/T03</div><div class="ci-flavor">壁上全是法师的名字，路过从不抬头。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">猎魔·会长</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(1)/T05</div><div class="ci-flavor">「剑会偏，秤不会。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">深渊·第六层</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：造成2点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR06→A01(2)/T02</div><div class="ci-flavor">回声区，账页翻动如风声。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">猎魔·兽群</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 2 · 命 3</span></div><div class="ci-line3">【起效】攻击宣言时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(1)/T03</div><div class="ci-flavor">灰白兽列队向深处走，像在等什么。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">深渊·最底层</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 5</span></div><div class="ci-line3">【起效】己方回合结束时：+1生命（己方全体）<div class="ci-recipe">🧬 纹路配方：TR14→A21(1)/T05</div><div class="ci-flavor">没有字，没有废渣，只有一个人抱着旧账。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">猎魔·见证者</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 8</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 2 · 命 4</span></div><div class="ci-line3">【起效】对方发动效果时：禁用效果（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR16→A33/T02</div><div class="ci-flavor">行会最硬的一杆秤，见证过最深的账。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">深渊大敌·还债者</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 9</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 4 · 命 4</span></div><div class="ci-line3">【起效】攻击宣言时：+2攻击（己方单体）；被送去墓地时：造成2点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(2)/T03 + TR06→A01(2)/T02</div><div class="ci-flavor">穿着第一代大圣骑士铠甲的人，怀里抱着旧账。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开深渊猎魔人编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 猎魔人行会编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>三百年前</td><td>深渊裂开；猎户首次下深渊；猎魔人行会立</td></tr><tr><td>三百年前</td><td>行会定「三规」；灰白兽首次被记录</td></tr><tr><td>二百年前</td><td>教廷与行会划界：圣战归教廷，深渊归行会</td></tr><tr><td>一百年前</td><td>回声区被发现；过半猎魔人下过第六层后退役</td></tr><tr><td>当代（现在）</td><td>深渊传来哭声；最底层的身影站起；灰白兽列队向深处走</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开深渊猎魔人当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 猎魔人当代剧情（兽群入渊之夜）</p>
+<div class="lore-quote">时间：当代。地点：深渊边境，裂缝前。</div>
+<p>会长站在裂缝边缘，脚下是成列的灰白兽，无声地往黑暗里走。</p>
+<p>年轻的猎魔人攥着腰间的秤，手在抖：「会长……它们这是去干吗？」</p>
+<p>「去等人的。」会长说。</p>
+<p>「等谁？」</p>
+<p>「等一个来还账的人。」会长望着裂缝深处，那里黑得吞光，「三百年前跳下去那位，等了三百年。今晚灰白兽动了——说明那个人，到了。」</p>
+<p>年轻猎魔人脱口而出：「那我们下不下去？」</p>
+<p>会长沉默了很久。</p>
+<p>「下。」他说，「我们不入最底层。我们就在第六层——替祂看着账页，别让任何念名字的声音惊醒祂。」</p>
+<p>「为什么是第六层？」</p>
+<p>会长笑了笑，那笑在火光里看不出是哭是笑：</p>
+<p>「因为最底层那道门，不该由我们推开。该由那个欠了世界三百年的人，自己走进去。」</p>
+<p>远处，最底层极深处，传来一声极轻的、像铠甲重新落座的声音。</p>
+<p>灰白兽群停在第六层边缘，齐齐蹲坐下来。</p>
+<p>像是整个世界，都安静了下来，等那扇门自己打开。</p>
+<hr class="dhr">
+<p><i>《猎魔人手册》最后一页，夹着一片干燥的灰白兽皮，兽皮下压着一行字：</i></p>
+<p><i>「三百年来我们以为自己在见证深渊。</i></p>
+<p><i>直到今夜才明白——深渊也在见证我们。</i></p>
+<p><i>它等着看，这个世界上，还有没有人记得：</i></p>
+<p><i>还债的人，比讨债的人，更需要一道门。</i>」</p>
+<p><i>墨迹到这里。后面的字被水渍洇了，像哭过。</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="lj">
+<h3>🐉 龙裔部族</h3>
+<div class="pack-info"><b>龙裔部族</b><br><div class="lore-quote">龙缄口不施法，只旁观。</div><div class="lore-quote">可旁观不是不管——是看完了整个大陆的账，才决定一个字都不说。</div><div class="lore-quote">以下为龙脊山脉《龙眠谱》的整理，由古龙裔口述、龙血民代笔。</div><br><b>字段：</b>三约纪元/lj | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开龙裔部族卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙脊·初民</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">上古与龙共居的初民，敬畏又羡慕龙。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙脊·龙血民</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">血液里混着龙血的人类后代，力大耐寒。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙脊·龙鳞甲</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 0 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">龙鳞铸的甲，火光不灼。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙脊·龙焰骑士</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 3 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">大陆唯一与龙共舞的骑士。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙脊·龙语碑</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 0 · 命 4</span></div><div class="ci-line3">【白板】<div class="ci-flavor">峰顶雪下埋着上古龙语碑文。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙脊·雪线</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 0 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">龙眠峰的雪线，常年不化。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙脊·缄口</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A02(2)/T03</div><div class="ci-flavor">龙缄口不施法，只旁观。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙语·借据</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：抽1张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A09(1)/T03</div><div class="ci-flavor">龙语里的每一个字，都是一笔借据。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙脊·旁观</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被攻击时：造成2点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR10→A01(2)/T02</div><div class="ci-flavor">龙看了整个大陆的账，决定不说。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙语·一句</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(1)/T03</div><div class="ci-flavor">一句龙语，能抵三道法术。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙血民·长老</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 1 · 命 4</span></div><div class="ci-line3">【起效】被攻击时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR10→A02(2)/T03</div><div class="ci-flavor">龙血民的长老，听得懂龙语。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙焰·共舞</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(1)/T05</div><div class="ci-flavor">龙焰骑士与龙共舞，火不伤他们。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙脊·古龙裔</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】攻击宣言时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(1)/T03</div><div class="ci-flavor">纯血龙族，退隐龙眠峰，只旁观。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙语·苏醒</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A33/T02</div><div class="ci-flavor">群龙低吟，像翻书页的气音。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙脊·龙眠峰</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 9</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 0 · 命 6</span></div><div class="ci-line3">【起效】己方回合开始时：+1生命（己方全体）；被攻击时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR12→A21(1)/T05 + TR10→A02(2)/T03</div><div class="ci-flavor">龙脊山脉主峰，古龙裔精神之巅。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙语·等</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：抽2张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR06→A09(2)/T03</div><div class="ci-flavor">龙不还情。龙只等人。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙焰·骑士长</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 3 · 命 4</span></div><div class="ci-line3">【起效】攻击宣言时：+2攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(2)/T03</div><div class="ci-flavor">龙焰骑士长，铠甲上的龙鳞已经熔过三次。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">古龙裔·龙眠</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 4 · 命 5</span></div><div class="ci-line3">【起效】己方回合开始时：+2攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(2)/T05</div><div class="ci-flavor">记得最久者，见过上古的一切。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开龙裔部族编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 龙裔编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>上古</td><td>龙与初民共居大陆；龙天生魔力，从不借贷</td></tr><tr><td>上古</td><td>第一法师独上龙眠峰；龙眠以「谁来付这笔账」相询</td></tr><tr><td>上古末</td><td>第一法师建塔；龙缄口退居龙脊山脉，立缄口之誓</td></tr><tr><td>千年前</td><td>龙血民兴盛；龙焰骑士成军；精灵携龙语迁幽语林</td></tr><tr><td>八百年前</td><td>龙眠见证七国成形；龙裔彻底不问外事</td></tr><tr><td>当代（现在）</td><td>群龙低吟；龙语苏醒；龙眠说出「他等的人，到了」</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开龙裔部族当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 龙眠当代剧情（峰顶之夜）</p>
+<div class="lore-quote">时间：当代某夜。地点：龙脊山脉，龙眠峰顶。</div>
+<p>龙眠趴在峰顶，雪落满它的鳞甲，它一动不动，像一块亘古的岩石。</p>
+<p>龙血民的小祭司爬上来，喘着气：「长老，西边的龙都在低吟——那是龙语。它们从不说龙语的。」</p>
+<p>「龙语不是说的。」龙眠开口，声音像雪崩前的闷响，「龙语是记的。它们低吟，不是想说话，是账上的字在动——它们听见了。」</p>
+<p>小祭司愣住：「账上的字……在动？」</p>
+<p>「那个写了第一笔账的人，快想起来了。」龙眠缓缓抬起眼，望向西南方，深渊的方向，「他忘了自己是谁三千年。今晚，龙语替他记起了一个字。」</p>
+<p>「什么字？」</p>
+<p>龙眠沉默了很久，久到小祭司以为它不会答了。</p>
+<p>「『还』。」龙眠说，「他记起来的第一个字，是『还』。」</p>
+<p>「还什么？」</p>
+<p>「还账。」龙眠闭上眼，声音轻得像雪落，「他等了三千年，不是等谁来救他。是等自己想起来——当年那笔账，他写的时候就没打算让人还。」</p>
+<p>小祭司一震：「那……他为什么要写下《万法之账》？」</p>
+<p>龙眠睁开眼，那眼里映着整片大陆的雪，和一道极深的、像旧账本一样的影子：</p>
+<p><b>「他写下那本账，是为了让凡人不欠龙的情。可他忘了——龙从不要人还情。龙要的，是人记得自己是谁。」</b></p>
+<p>峰顶的雪，落得更密了。</p>
+<p>远处的龙吟，一声接一声，像一整座山脉在替一个忘了自己三千年的人，念他写下的第一行字。</p>
+<hr class="dhr">
+<p><i>龙眠峰的雪线下，有一块被苔藓盖住的石碑，碑文是上古龙语，龙血民译了一千年才译出半句：</i></p>
+<p><i>「他问龙：借来的力量，会吃掉借的人吗？</i></p>
+<p><i>龙答：会。</i></p>
+<p><i>他说：那就让我先吃。</i></p>
+<p><i>龙从此不再施法——不是因为怕账，是因为它见过一个人，为了不让别人欠自己，把自己整个写进了账里。</i></p>
+<p><i>那笔账，龙替他记了三千年。</i>」</p>
+<p><i>碑的末尾，龙语刻着一行极小的字：</i></p>
+<p><i>「龙不还情。龙只等人。」</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="yl">
+<h3>🌲 深林精灵</h3>
+<div class="pack-info"><b>深林精灵</b><br><div class="lore-quote">精灵拒绝三权：不施法、不举剑、不拜圣光。</div><div class="lore-quote">可拒绝不是害怕——是她们见过三权的尽头，都是同一个地方。</div><div class="lore-quote">以下为幽语林《古树年轮》的整理，由精灵女王银冠·艾兰薇口述。</div><br><b>字段：</b>三约纪元/yl | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开深林精灵卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·古树苗</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">幽语林入口的古树苗，见证过七百年。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·溪语</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">会说话的溪水，流过每一圈年轮。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·精灵弓手</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">深林精灵的弓手，箭不沾血。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·自然秘术</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 1 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">与古树共生的秘术，谁也不欠谁。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·银冠叶</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 0 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">女王银冠上的一片叶子，百年不落。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·古树根</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">古树的根须，比幽语林的边界还深。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·精灵哨兵</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 3 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">站在树冠上的哨兵，望得见整片林。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·共生</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A02(2)/T03</div><div class="ci-flavor">古树借根须力气，精灵借年轮记忆。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·年轮</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：抽1张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR12→A09(1)/T03</div><div class="ci-flavor">每百年描一遍刻着龙语的年轮。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·龙语</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：禁用效果（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A33/T02</div><div class="ci-flavor">精灵守着一句龙语，从不外传。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·拒权</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被攻击时：造成2点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR10→A01(2)/T02</div><div class="ci-flavor">王冠、法杖、圣徽，入林者皆放下。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·古树长老</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 1 · 命 4</span></div><div class="ci-line3">【起效】被攻击时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR10→A02(2)/T03</div><div class="ci-flavor">活了一万年的古树，把话刻进年轮。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·精灵女王</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(1)/T05</div><div class="ci-flavor">银冠·艾兰薇，活了七百年。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·不欠账</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方全体）<div class="ci-recipe">🧬 纹路配方：TR01→A02(2)/T05</div><div class="ci-flavor">精灵不欠账，影子追不到幽语林。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·记名叶</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：造成2点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR06→A01(2)/T02</div><div class="ci-flavor">落叶是精灵替世界写进年轮的名字。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·守林</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 5</span></div><div class="ci-line3">【起效】己方回合结束时：+1生命（己方全体）<div class="ci-recipe">🧬 纹路配方：TR14→A21(1)/T05</div><div class="ci-flavor">古树挡在门外，七国使节都进不来。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">幽语·银冠女王</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 3 · 命 4</span></div><div class="ci-line3">【起效】攻击宣言时：+2攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(2)/T03</div><div class="ci-flavor">「他等的人，来了。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">银冠·艾兰薇</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 4 · 命 5</span></div><div class="ci-line3">【起效】己方回合开始时：+2攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(2)/T05</div><div class="ci-flavor">见过第一法师的精灵女王，守着那句龙语七百年。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开深林精灵编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 深林精灵编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>上古末</td><td>精灵携龙语迁幽语林；与古树共生</td></tr><tr><td>上古末</td><td>第一法师独访幽语林；留下「别碰世界之账」</td></tr><tr><td>千年前</td><td>精灵见证古王劈裂王国；拒绝七国结盟</td></tr><tr><td>八百年前</td><td>艾兰薇继位；第一法师入塔底前最后一面</td></tr><tr><td>三百年前</td><td>深渊浮现；精灵边缘古树开始「记名」</td></tr><tr><td>当代（现在）</td><td>艾兰薇宣布「他等的人来了」；古树年轮低语</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开深林精灵当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 精灵女王当代剧情（年轮之夜）</p>
+<div class="lore-quote">时间：当代某夜。地点：幽语林，最老古树下。</div>
+<p>银冠·艾兰薇站在古树前，指尖抚过那圈刻着龙语的年轮。七百年了，她每百年描一次，笔划已深得刻进树心。</p>
+<p>「你等的人，到了。」她轻声说，像在跟老友说话，「我能感觉到。塔底那个人，快想起来了。」</p>
+<p>古树没有答。风穿过树冠，落下一片叶子，正好落在她手心的银冠上。</p>
+<p>「你问我值不值得。」艾兰薇继续说，「七百年前我问他，值不值得。他答了——他说划算。」</p>
+<p>她顿了顿，声音很轻：「可我现在觉得，他骗了我。」</p>
+<p>「他没有把账算进去。他把『他自己』也算进去了。他把整个人都借了出去，借到连自己是谁都不记得——然后他在塔底等，等一个人来写下最后一段账。」</p>
+<p>「可他等的那个人……其实就是他自己啊。」</p>
+<p>风停了。古树深处传来一声极轻的、像叹息的气音。</p>
+<p>艾兰薇抬头，望着那棵活了一万年的树，眼泪顺着银冠滑下来：</p>
+<p>「龙眠说，龙不还情，龙只等人。精灵也一样——我们不还账，我们只替他记着，他到底是谁。」</p>
+<p>「等他想起自己是谁那天，他会回幽语林来的。」</p>
+<p>「因为他临走前，最后一句龙语，是跟我说的——」</p>
+<p>古树深处，那声叹息化作一句古老的龙语，清清楚楚地，在月光里响起：</p>
+<p><b>「别碰世界之账。除非你记得自己是谁——而你，一定记得我。」</b></p>
+<hr class="dhr">
+<p><i>幽语林入口的古树上，不知何时多了一行新刻的字，字迹与七百年前一模一样：</i></p>
+<p><i>「艾兰薇，等我记起来。</i></p>
+<p><i>等我记起来，我会回来告诉你——</i></p>
+<p><i>那笔账的第一行，写的是『借』，不是『欠』。</i></p>
+<p><i>而我最想还的，不是世界。是你。</i>」</p>
+<p><i>落款处没有名字，只有一个符号——像一本合上的账本。</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="hs">
+<h3>⚔️ 冒险者公会</h3>
+<div class="pack-info"><b>冒险者公会</b><br><div class="lore-quote">公会有三条规矩：不碰圣剑、不碰世界之账、不碰灰冠墟。</div><div class="lore-quote">三条规矩都写在同一个牌子上，牌子的主人说——三条都不是规矩，是三条「回来过的教训」。</div><div class="lore-quote">以下为公会大厅《挂单簿》的整理。</div><br><b>字段：</b>三约纪元/hs | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开冒险者公会卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">佣兵·刀口</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">刀口舔血的人，命是借的，账是本。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">佣兵·旧伤</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">旧伤比勋章诚实，能数出欠过谁。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">冒险者·酒馆</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 0 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">大陆传说都在酒馆的桌腿下面。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">赏金·悬赏榜</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">榜上的名字没人敢揭，除了自己人。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">盗贼·轻靴</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 1 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">鞋底垫了账房鼠偷来的法物碎片。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">游侠·短弓</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 3 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">弓弦是用灰冠墟路边捡的线绞的。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">探宝·罗盘</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">罗盘不指北，指着最近一笔欠账。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">公会·入会</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A02(2)/T03</div><div class="ci-flavor">入会先签字，签的是自己的名字。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">悬赏·盯梢</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：抽1张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A09(1)/T03</div><div class="ci-flavor">盯梢的人，连影子都学会躲账。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">佣兵·结账</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(1)/T03</div><div class="ci-flavor">打完这一单，把命钱结清。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">账房鼠·头目</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 1 · 命 4</span></div><div class="ci-line3">【起效】被攻击时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR10→A02(2)/T03</div><div class="ci-flavor">专偷法物的鼠头目，绝不碰《万法之账》。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">冒险者·老团长</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 7</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(1)/T05</div><div class="ci-flavor">「三条规矩，碰过的人没人回来。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">黑旗·铁面格里尔</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】攻击宣言时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(1)/T03</div><div class="ci-flavor">铁面·格里尔，灰冠墟里出来的独眼。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">灰冠墟·归来</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：造成2点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR06→A01(2)/T02</div><div class="ci-flavor">从灰冠墟出来的人，都没再开口。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">黑旗·佣兵团</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 2 · 命 3</span></div><div class="ci-line3">【起效】攻击宣言时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(1)/T03</div><div class="ci-flavor">谁给钱为谁卖命，账不赊。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">账房鼠·夜行</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 5</span></div><div class="ci-line3">【起效】己方回合结束时：+1生命（己方全体）<div class="ci-recipe">🧬 纹路配方：TR14→A21(1)/T05</div><div class="ci-flavor">塔下盗贼团夜行，专踩灯影。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">铁面·灰冠墟独眼</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 8</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 2 · 命 4</span></div><div class="ci-line3">【起效】对方发动效果时：禁用效果（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR16→A33/T02</div><div class="ci-flavor">那只丢在灰冠墟的眼睛，还在看。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">黑旗·团长</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 4 · 命 5</span></div><div class="ci-line3">【起效】己方回合开始时：+2攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(2)/T05</div><div class="ci-flavor">铁面·格里尔，从灰冠墟走出来后再没说过一句话。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开冒险者公会编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 冒险者公会编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>八百年前</td><td>七国成形；冒险者公会立；「三不碰」刻牌</td></tr><tr><td>五百年前</td><td>黑旗佣兵国加入七国；公会与黑旗结盟</td></tr><tr><td>三百年前</td><td>深渊浮现；公会封杀「讨债」类单子</td></tr><tr><td>二百年前</td><td>铁面·格里尔继任黑旗团长</td></tr><tr><td>三年前</td><td>格里尔孤身进灰冠墟；出墟时少一只眼、再不说话</td></tr><tr><td>当代（现在）</td><td>剑鸣；塔底震荡；格里尔退团再入灰冠墟</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开冒险者公会当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 老游侠当代剧情（最后一杯酒）</p>
+<div class="lore-quote">时间：当代。地点：冒险者公会大厅，酒馆角落。</div>
+<p>老游侠把最后一口酒喝完，杯子在桌上转了半圈，停住了。</p>
+<p>「你们说，塔在收账。」他望着杯底，「可你们有没有想过——那本账，谁写的？」</p>
+<p>没人接话。酒馆里只有炭火噼啪。</p>
+<p>「我年轻时接过一单，送信进塔底。收信的是守秘人。」老游侠说，「信里只有一句话——是给第一法师的：『你欠我的那杯酒，还没还。』」</p>
+<p>「守秘人看完信，笑了一下，说：『他记不得了。但他欠的每一笔，账上都记着。你走吧，等他想起你那天，他会来找你还这杯酒的。』」</p>
+<p>老游侠说到这里，站了起来，把一枚铜币压在杯底：</p>
+<p>「我等了三十年，他没来。现在塔在收账——我猜，他快想起来了。」</p>
+<p>他走到门口，回头看了一眼公会的木牌，那三行字在火光里发亮：</p>
+<p>「账这东西，最怕的不是还不起。是欠的人忘了，自己欠过什么。」</p>
+<p>「我去塔下城邦等着。他要是真醒了，我请他喝一杯——就当，替这个世界，先垫一笔。」</p>
+<p>门外，雪开始落了。</p>
+<hr class="dhr">
+<p><i>公会大厅的炭火边，不知何时多了一枚压着的铜币，币面朝上，刻着一行极小的字：</i></p>
+<p><i>「公会三不碰，其实还有第四条，没写上去——</i></p>
+<p><i>不碰『忘了自己欠过什么的人』。</i></p>
+<p><i>因为那种人，一碰，就勾出三千年的账。</i>」</p>
+<p><i>铜币下面，压着一张旧单子，收件人一栏写着：</i></p>
+<p><i>「第一法师（真名待考）」。</i></p>
+<p><i>寄件人一栏空着。只有一枚血红的手印。</i></p>
+</div></div>
+</div>
+<div class="pack-section" id="sd">
+<h3>🕯️ 塔底守秘人</h3>
+<div class="pack-info"><b>塔底守秘人</b><br><div class="lore-quote">守秘人不是法师，不会任何法术。</div><div class="lore-quote">他们是塔里唯一一群「从不借贷」的人——所以他们才能在塔底，守着那本全世界都不敢翻开的总账。</div><div class="lore-quote">以下为塔底守秘人一脉代代相传的口述记录。</div><br><b>字段：</b>三约纪元/sd | <b>卡数：</b>18张 | <b>章节：</b>正文+编年史+当代剧情</div>
+<button class="card-toggle" onclick="toggleCards(this)">🃏 展开塔底守秘人卡牌（18张）</button>
+<div class="card-content"><div class="card-list">
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">当代·月蚀</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#1</span><span class="ci-ah">攻 2 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">月蚀之夜，七国都听见了那声低鸣。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">当代·低鸣</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#2</span><span class="ci-ah">攻 1 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">圣剑在灰冠墟发出低鸣，像在等人。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">当代·旧钟</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 1</span></div><div class="ci-line2"><span class="ci-num">#3</span><span class="ci-ah">攻 0 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">塔顶的钟慢了半拍，学徒都没发现。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">当代·城墙</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#4</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">黑崖堡的城墙，圣光愈合伤口慢了。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">当代·圣火</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#5</span><span class="ci-ah">攻 1 · 命 3</span></div><div class="ci-line3">【白板】<div class="ci-flavor">祭坛的圣火，比从前暗了一度。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">当代·回响</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#6</span><span class="ci-ah">攻 3 · 命 1</span></div><div class="ci-line3">【白板】<div class="ci-flavor">深渊边境传来哭声，像旧账翻页。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">当代·残页</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#7</span><span class="ci-ah">攻 2 · 命 2</span></div><div class="ci-line3">【白板】<div class="ci-flavor">捡到的《万法之账》残页：「此物将从你处扣除。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">圣剑·异动</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#8</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A02(2)/T03</div><div class="ci-flavor">「不称王」在月蚀之夜等一个人。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">塔底·震荡</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 2</span></div><div class="ci-line2"><span class="ci-num">#9</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】召唤成功时：抽1张牌（己方单体）<div class="ci-recipe">🧬 纹路配方：TR01→A09(1)/T03</div><div class="ci-flavor">学徒渐渐遗忘一个图书馆学徒的名字。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">圣光·衰微</span><span class="ci-star star-1">★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#10</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(1)/T03</div><div class="ci-flavor">光在暗下去——圣光本体被关了三百年。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">深渊·回响</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#11</span><span class="ci-ah">攻 1 · 命 4</span></div><div class="ci-line3">【起效】被攻击时：恢复2点生命（己方单体）<div class="ci-recipe">🧬 纹路配方：TR10→A02(2)/T03</div><div class="ci-flavor">有人看见最底层那道身影，站了起来。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">龙语·苏醒</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 8</span></div><div class="ci-line2"><span class="ci-num">#12</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】己方回合开始时：+1攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(1)/T05</div><div class="ci-flavor">银冠·艾兰薇忽然说：「他等的人，来了。」</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">账房鼠·异闻</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 5</span></div><div class="ci-line2"><span class="ci-num">#13</span><span class="ci-ah">攻 3 · 命 3</span></div><div class="ci-line3">【起效】攻击宣言时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(1)/T03</div><div class="ci-flavor">偷过抄本的人，第二天都出现在塔底。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">灰冠墟·下半句</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 3</span></div><div class="ci-line2"><span class="ci-num">#14</span><span class="ci-ah">攻 0 · 命 0</span></div><div class="ci-line3">【起效】被送去墓地时：造成2点伤害（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR06→A01(2)/T02</div><div class="ci-flavor">千年血字，还差一个人来读完下半句。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">塔底·遗忘的名字</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 4</span></div><div class="ci-line2"><span class="ci-num">#15</span><span class="ci-ah">攻 2 · 命 3</span></div><div class="ci-line3">【起效】攻击宣言时：+1攻击（己方单体）<div class="ci-recipe">🧬 纹路配方：TR09→A20(1)/T03</div><div class="ci-flavor">名字被收进账里，人还在塔底翻书。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">圣光·暗下去</span><span class="ci-star star-2">★★</span><span class="ci-cost">能量 6</span></div><div class="ci-line2"><span class="ci-num">#16</span><span class="ci-ah">攻 0 · 命 5</span></div><div class="ci-line3">【起效】己方回合结束时：+1生命（己方全体）<div class="ci-recipe">🧬 纹路配方：TR14→A21(1)/T05</div><div class="ci-flavor">圣光越亮的地方，影就越长。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">深渊最底层·站起</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 8</span></div><div class="ci-line2"><span class="ci-num">#17</span><span class="ci-ah">攻 2 · 命 4</span></div><div class="ci-line3">【起效】对方发动效果时：禁用效果（敌方单体）<div class="ci-recipe">🧬 纹路配方：TR16→A33/T02</div><div class="ci-flavor">穿着初代大圣骑士铠甲的人，站起来了。</div></div></div>
+<div class="card-item"><div class="ci-line1"><span class="ci-name ">三约·铰链</span><span class="ci-star star-3">★★★</span><span class="ci-cost">能量 10</span></div><div class="ci-line2"><span class="ci-num">#18</span><span class="ci-ah">攻 4 · 命 5</span></div><div class="ci-line3">【起效】己方回合开始时：+2攻击（己方全体）<div class="ci-recipe">🧬 纹路配方：TR12→A20(2)/T05</div><div class="ci-flavor">三个「不称王」的人，守的是同一件事：不欠债。</div></div></div>
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">📜 展开塔底守秘人编年史</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录甲 · 守秘人编年史（节略）</p>
+<table class="dt"><thead><tr><th>纪元</th><th>事件</th></tr></thead><tbody><tr><td>八百年前</td><td>第一法师自我封存；杂役成第一代守秘人</td></tr><tr><td>八百年前</td><td>守秘人三祖训立：不施法、不给看账、记住第一法师</td></tr><tr><td>五百年前</td><td>塔下城邦形成；守秘人与账房鼠「井边放页」成惯例</td></tr><tr><td>二百年前</td><td>上一任守秘人继位；留下「祂不翻账」抄本</td></tr><tr><td>当代（现在）</td><td>塔底翻书声；守秘人越矩下底；塔底第一次回应</td></tr></tbody></table>
+<hr class="dhr">
+</div></div>
+<button class="card-toggle lore-toggle" onclick="toggleCards(this)">✒️ 展开塔底守秘人当代剧情</button>
+<div class="card-content lore-content"><div class="lore-inner">
+<p class="doc-h1">附录乙 · 守秘人当代剧情（石阶之上）</p>
+<div class="lore-quote">时间：当代某夜。地点：万法之塔，塔底九十九级石阶。</div>
+<p>守秘人一级一级往上走。身后的黑暗里，那声叹息还在回荡。</p>
+<p>走到第七十三级，他停下来，扶着石壁，忽然想起祖训里的另一句——那是上任临终前说的，他没太在意：</p>
+<p><b>「我们守的不是账。我们守的是『等』。八百年来，全世界都在等那个人想起来——可我们忘了，我们也在等。等一个让那个人想起来的声音。」</b></p>
+<p>他想：刚才那句话，算不算那个声音？</p>
+<p>他不知道。他只知道，八百年来，塔底第一次有回应。</p>
+<p>他继续往上走。走到第九十九级，塔顶的光照下来，他眯起眼。</p>
+<p>塔顶议会的人等在那里，为首的大法师问：「守秘人，塔底有动静？」</p>
+<p>他沉默了很久，说：</p>
+<p>「有。」</p>
+<p>「什么动静？」</p>
+<p>「有人在清点。」他说，「八百年来第一次——那本账，在清点它欠那个人的。」</p>
+<p>大法师的脸色变了：「那……那个人是谁？」</p>
+<p>守秘人望着塔底的方向，说了一句三百年后会被刻在塔顶的话：</p>
+<p><b>「等他想起来，他会自己走上来的。我们要做的，不是去拉他——是别让塔顶的灯，熄了。」</b></p>
+<hr class="dhr">
+<p><i>塔底石阶第七十三级的石壁上，不知何时多了一行刻痕，极浅，像用指甲划的：</i></p>
+<p><i>「八百年前他问我：谁来守着这本账？</i></p>
+<p><i>我说：我来。</i></p>
+<p><i>他说：你不是什么都不是。你是第一个敢站在账前、却不欠它一分的人。</i></p>
+<p><i>八百年后我想问他：</i></p>
+<p><i>我守了八百年，一分没欠。</i></p>
+<p><i>可你欠我的那声『嗯』，什么时候还？</i>」</p>
+<p><i>刻痕到此为止。没有署名——但笔迹，和第一代守秘人传下的那份手抄，一模一样。</i></p>
+</div></div>
+</div>
+  </div>
+  <div class="download-section">
+    <a class="pixel-btn back-btn" href="index.html">← 返回首页下载游戏</a>
+  </div>
+</div>
+<div class="footer">© 2026 卡师模拟器 · 三约纪元 · 首期8包144张卡全部公式验证</div>
+<script>
+function toggleCards(btn) { btn.classList.toggle('open'); var content = btn.nextElementSibling; content.classList.toggle('open'); }
+</script>
+</body>
+</html>

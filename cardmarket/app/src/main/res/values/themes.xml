@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.CardMarket" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/card_bg</item>
+        <item name="android:statusBarColor">@color/card_bg</item>
+        <item name="android:navigationBarColor">@color/card_surface</item>
+    </style>
+</resources>

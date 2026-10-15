@@ -1,0 +1,7246 @@
+{
+ "maps": {
+  "misty_forest": {
+   "terrains": {
+    "forest": {
+     "monsters": [
+      {
+       "id": "MF_FOREST_M1",
+       "name": "🌱 树苗精",
+       "level": 2,
+       "hp": 20,
+       "max_hp": 20,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "地",
+       "desc": "迷雾森林中最常见的低阶精灵，由古木精华凝聚而成。",
+       "aux_drops": [
+        {
+         "id": "AU16",
+         "prob": 0.05
+        },
+        {
+         "id": "AU17",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr01_sapling",
+        "tr01_sapling",
+        "tr01_sapling",
+        "tr02_tree_elf",
+        "tr02_tree_elf",
+        "tr02_tree_elf",
+        "tr03_forest_heal",
+        "tr03_forest_heal",
+        "tr03_forest_heal",
+        "tr04_vine",
+        "tr04_vine",
+        "tr04_vine",
+        "tr05_wood_shield",
+        "tr05_wood_shield",
+        "tr05_wood_shield",
+        "tr06_life_drop",
+        "tr06_life_drop",
+        "tr06_life_drop",
+        "tr07_grass_ball",
+        "tr07_grass_ball",
+        "tr07_grass_ball",
+        "tr08_leaf_blade",
+        "tr08_leaf_blade",
+        "tr08_leaf_blade",
+        "tr09_nature_whisper",
+        "tr09_nature_whisper",
+        "tr09_nature_whisper",
+        "tr10_root_tangle",
+        "tr10_root_tangle",
+        "tr10_root_tangle"
+       ]
+      },
+      {
+       "id": "MF_FOREST_M2",
+       "name": "🦌 雾角鹿",
+       "level": 3,
+       "hp": 25,
+       "max_hp": 25,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "风",
+       "desc": "沐浴在迷雾中生长的灵鹿，双角能凝聚雾气形成幻影。",
+       "aux_drops": [
+        {
+         "id": "AU18",
+         "prob": 0.05
+        },
+        {
+         "id": "AU19",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr11_fog_deer",
+        "tr11_fog_deer",
+        "tr11_fog_deer",
+        "tr12_fawn",
+        "tr12_fawn",
+        "tr12_fawn",
+        "tr13_wind_seed",
+        "tr13_wind_seed",
+        "tr13_wind_seed",
+        "tr14_light_hoof",
+        "tr14_light_hoof",
+        "tr14_light_hoof",
+        "tr15_forest_hop",
+        "tr15_forest_hop",
+        "tr15_forest_hop",
+        "tr16_swift_wind",
+        "tr16_swift_wind",
+        "tr16_swift_wind",
+        "tr17_antler_charge",
+        "tr17_antler_charge",
+        "tr17_antler_charge",
+        "tr18_leaf_cyclone",
+        "tr18_leaf_cyclone",
+        "tr18_leaf_cyclone",
+        "tr19_forest_friend",
+        "tr19_forest_friend",
+        "tr19_forest_friend",
+        "tr20_fog_breath",
+        "tr20_fog_breath",
+        "tr20_fog_breath"
+       ]
+      },
+      {
+       "id": "MF_FOREST_M3",
+       "name": "🍄 蘑菇人",
+       "level": 4,
+       "hp": 30,
+       "max_hp": 30,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "地",
+       "desc": "寄宿在古树根部的蘑菇精灵，擅长用毒孢子折磨对手。",
+       "aux_drops": [
+        {
+         "id": "AU20",
+         "prob": 0.05
+        },
+        {
+         "id": "AU21",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr21_mushroom",
+        "tr21_mushroom",
+        "tr21_mushroom",
+        "tr22_poison_spore",
+        "tr22_poison_spore",
+        "tr22_poison_spore",
+        "tr23_heal_shroom",
+        "tr23_heal_shroom",
+        "tr23_heal_shroom",
+        "tr24_spore_powder",
+        "tr24_spore_powder",
+        "tr24_spore_powder",
+        "tr25_mushroom_shield",
+        "tr25_mushroom_shield",
+        "tr25_mushroom_shield",
+        "tr26_poison_fog",
+        "tr26_poison_fog",
+        "tr27_small_mushroom",
+        "tr27_small_mushroom",
+        "tr27_small_mushroom",
+        "tr28_mycelium",
+        "tr28_mycelium",
+        "tr28_mycelium",
+        "tr29_mushroom_bomb",
+        "tr29_mushroom_bomb",
+        "tr29_mushroom_bomb",
+        "tr30_mushroom_king",
+        "tr30_mushroom_king"
+       ]
+      }
+     ]
+    },
+    "grass": {
+     "monsters": [
+      {
+       "id": "MF_GRASS_M1",
+       "name": "🦎 草蜥蜴",
+       "level": 5,
+       "hp": 30,
+       "max_hp": 30,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "火",
+       "desc": "草丛中潜伏的火焰蜥蜴，喜欢在阳光下晒鳞片，被激怒时会喷出炽热的气息。",
+       "aux_drops": [
+        {
+         "id": "AU22",
+         "prob": 0.05
+        },
+        {
+         "id": "AU23",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr31_grass_lizard",
+        "tr31_grass_lizard",
+        "tr31_grass_lizard",
+        "tr32_lizard_tail",
+        "tr32_lizard_tail",
+        "tr32_lizard_tail",
+        "tr33_ember_bite",
+        "tr33_ember_bite",
+        "tr33_ember_bite",
+        "tr34_lizard_scale",
+        "tr34_lizard_scale",
+        "tr34_lizard_scale",
+        "tr35_sun_bask",
+        "tr35_sun_bask",
+        "tr35_sun_bask",
+        "tr04_vine",
+        "tr04_vine",
+        "tr04_vine",
+        "tr07_grass_ball",
+        "tr07_grass_ball",
+        "tr07_grass_ball",
+        "tr08_leaf_blade",
+        "tr08_leaf_blade",
+        "tr08_leaf_blade",
+        "tr09_nature_whisper",
+        "tr09_nature_whisper",
+        "tr09_nature_whisper",
+        "tr10_root_tangle",
+        "tr10_root_tangle",
+        "tr10_root_tangle"
+       ]
+      },
+      {
+       "id": "MF_GRASS_M2",
+       "name": "🦗 螳螂刀客",
+       "level": 6,
+       "hp": 35,
+       "max_hp": 35,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "风",
+       "desc": "草丛中的顶级猎手，双臂如镰刀般锋利，擅长以迅雷不及掩耳之势发动连击。",
+       "aux_drops": [
+        {
+         "id": "AU24",
+         "prob": 0.05
+        },
+        {
+         "id": "AU25",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr36_mantis_warrior",
+        "tr36_mantis_warrior",
+        "tr36_mantis_warrior",
+        "tr37_blade_strike",
+        "tr37_blade_strike",
+        "tr37_blade_strike",
+        "tr38_swift_wings",
+        "tr38_swift_wings",
+        "tr38_swift_wings",
+        "tr39_wind_cutter",
+        "tr39_wind_cutter",
+        "tr39_wind_cutter",
+        "tr40_mantis_prayer",
+        "tr40_mantis_prayer",
+        "tr40_mantis_prayer",
+        "tr13_wind_seed",
+        "tr13_wind_seed",
+        "tr13_wind_seed",
+        "tr14_light_hoof",
+        "tr14_light_hoof",
+        "tr14_light_hoof",
+        "tr16_swift_wind",
+        "tr16_swift_wind",
+        "tr16_swift_wind",
+        "tr17_antler_charge",
+        "tr17_antler_charge",
+        "tr17_antler_charge",
+        "tr18_leaf_cyclone",
+        "tr18_leaf_cyclone",
+        "tr18_leaf_cyclone"
+       ]
+      },
+      {
+       "id": "MF_GRASS_M3",
+       "name": "🐍 青鳞蛇",
+       "level": 7,
+       "hp": 40,
+       "max_hp": 40,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "水",
+       "desc": "草丛深处的剧毒之蛇，翠绿的鳞片让它完美融入草丛，毒液足以麻痹最勇猛的冒险者。",
+       "aux_drops": [
+        {
+         "id": "AU26",
+         "prob": 0.05
+        },
+        {
+         "id": "AU27",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr41_green_snake",
+        "tr41_green_snake",
+        "tr41_green_snake",
+        "tr42_venom_spit",
+        "tr42_venom_spit",
+        "tr42_venom_spit",
+        "tr43_snake_shed",
+        "tr43_snake_shed",
+        "tr43_snake_shed",
+        "tr44_coil_bind",
+        "tr44_coil_bind",
+        "tr44_coil_bind",
+        "tr45_water_veil",
+        "tr45_water_veil",
+        "tr45_water_veil",
+        "tr23_heal_shroom",
+        "tr23_heal_shroom",
+        "tr23_heal_shroom",
+        "tr24_spore_powder",
+        "tr24_spore_powder",
+        "tr24_spore_powder",
+        "tr25_mushroom_shield",
+        "tr25_mushroom_shield",
+        "tr25_mushroom_shield",
+        "tr28_mycelium",
+        "tr28_mycelium",
+        "tr28_mycelium",
+        "tr29_mushroom_bomb",
+        "tr29_mushroom_bomb",
+        "tr29_mushroom_bomb"
+       ]
+      }
+     ]
+    },
+    "mine": {
+     "monsters": [
+      {
+       "id": "MF_MINE_M1",
+       "name": "🪨 岩石傀儡",
+       "level": 8,
+       "hp": 50,
+       "max_hp": 50,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "地",
+       "desc": "矿区深处的岩石守卫，由矿脉中的灵晶驱动，身躯坚硬如铁。",
+       "aux_drops": [
+        {
+         "id": "AU28",
+         "prob": 0.05
+        },
+        {
+         "id": "AU29",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr46_rock_golem",
+        "tr46_rock_golem",
+        "tr46_rock_golem",
+        "tr47_boulder_throw",
+        "tr47_boulder_throw",
+        "tr47_boulder_throw",
+        "tr48_stone_armor",
+        "tr48_stone_armor",
+        "tr48_stone_armor",
+        "tr49_rock_shield",
+        "tr49_rock_shield",
+        "tr49_rock_shield",
+        "tr50_quake",
+        "tr50_quake",
+        "tr50_quake",
+        "tr05_wood_shield",
+        "tr05_wood_shield",
+        "tr05_wood_shield",
+        "tr07_grass_ball",
+        "tr07_grass_ball",
+        "tr07_grass_ball",
+        "tr09_nature_whisper",
+        "tr09_nature_whisper",
+        "tr09_nature_whisper",
+        "tr10_root_tangle",
+        "tr10_root_tangle",
+        "tr10_root_tangle",
+        "tr25_mushroom_shield",
+        "tr25_mushroom_shield",
+        "tr25_mushroom_shield"
+       ]
+      },
+      {
+       "id": "MF_MINE_M2",
+       "name": "🔥 熔岩蠕虫",
+       "level": 9,
+       "hp": 50,
+       "max_hp": 50,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "火",
+       "desc": "盘踞在矿区岩浆裂隙中的巨型蠕虫，浑身流淌着熔岩，触碰即被灼伤。",
+       "aux_drops": [
+        {
+         "id": "AU30",
+         "prob": 0.05
+        },
+        {
+         "id": "AU31",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr51_lava_worm",
+        "tr51_lava_worm",
+        "tr51_lava_worm",
+        "tr52_magma_spit",
+        "tr52_magma_spit",
+        "tr52_magma_spit",
+        "tr53_heat_wave",
+        "tr53_heat_wave",
+        "tr53_heat_wave",
+        "tr54_lava_burst",
+        "tr54_lava_burst",
+        "tr54_lava_burst",
+        "tr55_molten_skin",
+        "tr55_molten_skin",
+        "tr55_molten_skin",
+        "tr04_vine",
+        "tr04_vine",
+        "tr04_vine",
+        "tr08_leaf_blade",
+        "tr08_leaf_blade",
+        "tr08_leaf_blade",
+        "tr14_light_hoof",
+        "tr14_light_hoof",
+        "tr14_light_hoof",
+        "tr17_antler_charge",
+        "tr17_antler_charge",
+        "tr17_antler_charge",
+        "tr18_leaf_cyclone",
+        "tr18_leaf_cyclone",
+        "tr18_leaf_cyclone"
+       ]
+      },
+      {
+       "id": "MF_MINE_M3",
+       "name": "🦂 暗晶蝎",
+       "level": 10,
+       "hp": 55,
+       "max_hp": 55,
+       "energy": 4,
+       "max_energy": 4,
+       "element": "暗",
+       "desc": "矿区深处吸收暗晶能量变异而成的巨蝎，尾针蕴含剧毒，能腐蚀一切生机。",
+       "aux_drops": [
+        {
+         "id": "AU32",
+         "prob": 0.05
+        },
+        {
+         "id": "AU33",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr56_dark_scorpion",
+        "tr56_dark_scorpion",
+        "tr56_dark_scorpion",
+        "tr57_poison_sting",
+        "tr57_poison_sting",
+        "tr57_poison_sting",
+        "tr58_dark_curse",
+        "tr58_dark_curse",
+        "tr58_dark_curse",
+        "tr59_crystal_shard",
+        "tr59_crystal_shard",
+        "tr59_crystal_shard",
+        "tr60_darkness_veil",
+        "tr60_darkness_veil",
+        "tr60_darkness_veil",
+        "tr10_root_tangle",
+        "tr10_root_tangle",
+        "tr10_root_tangle",
+        "tr13_wind_seed",
+        "tr13_wind_seed",
+        "tr13_wind_seed",
+        "tr24_spore_powder",
+        "tr24_spore_powder",
+        "tr24_spore_powder",
+        "tr28_mycelium",
+        "tr28_mycelium",
+        "tr28_mycelium",
+        "tr29_mushroom_bomb",
+        "tr29_mushroom_bomb",
+        "tr29_mushroom_bomb"
+       ]
+      }
+     ]
+    },
+    "valley": {
+     "monsters": [
+      {
+       "id": "MF_VALLEY_M1",
+       "name": "💧 水元素",
+       "level": 11,
+       "hp": 55,
+       "max_hp": 55,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "水",
+       "desc": "溪谷深处的纯净水元素，由千年流水凝聚而成，拥有治愈万物的力量。",
+       "aux_drops": [
+        {
+         "id": "AU34",
+         "prob": 0.05
+        },
+        {
+         "id": "AU35",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr61_water_elemental",
+        "tr61_water_elemental",
+        "tr61_water_elemental",
+        "tr62_water_heal",
+        "tr62_water_heal",
+        "tr62_water_heal",
+        "tr63_ice_shard",
+        "tr63_ice_shard",
+        "tr63_ice_shard",
+        "tr64_water_barrier",
+        "tr64_water_barrier",
+        "tr64_water_barrier",
+        "tr65_tidal_wave",
+        "tr65_tidal_wave",
+        "tr65_tidal_wave",
+        "tr06_life_drop",
+        "tr06_life_drop",
+        "tr06_life_drop",
+        "tr23_heal_shroom",
+        "tr23_heal_shroom",
+        "tr23_heal_shroom",
+        "tr25_mushroom_shield",
+        "tr25_mushroom_shield",
+        "tr25_mushroom_shield",
+        "tr34_lizard_scale",
+        "tr34_lizard_scale",
+        "tr34_lizard_scale",
+        "tr45_water_veil",
+        "tr45_water_veil",
+        "tr45_water_veil"
+       ]
+      },
+      {
+       "id": "MF_VALLEY_M2",
+       "name": "🦋 风灵蝶",
+       "level": 12,
+       "hp": 55,
+       "max_hp": 55,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "风",
+       "desc": "在溪谷上空翩翩起舞的精灵蝴蝶，翅膀卷起的微风能撕裂钢铁。",
+       "aux_drops": [
+        {
+         "id": "AU36",
+         "prob": 0.05
+        },
+        {
+         "id": "AU37",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr66_wind_fairy",
+        "tr66_wind_fairy",
+        "tr66_wind_fairy",
+        "tr67_gust",
+        "tr67_gust",
+        "tr67_gust",
+        "tr68_wind_draw",
+        "tr68_wind_draw",
+        "tr68_wind_draw",
+        "tr69_cyclone",
+        "tr69_cyclone",
+        "tr69_cyclone",
+        "tr70_wind_blade",
+        "tr70_wind_blade",
+        "tr70_wind_blade",
+        "tr13_wind_seed",
+        "tr13_wind_seed",
+        "tr13_wind_seed",
+        "tr14_light_hoof",
+        "tr14_light_hoof",
+        "tr14_light_hoof",
+        "tr17_antler_charge",
+        "tr17_antler_charge",
+        "tr17_antler_charge",
+        "tr37_blade_strike",
+        "tr37_blade_strike",
+        "tr37_blade_strike",
+        "tr39_wind_cutter",
+        "tr39_wind_cutter",
+        "tr39_wind_cutter"
+       ]
+      },
+      {
+       "id": "MF_VALLEY_M3",
+       "name": "🔮 光棱镜",
+       "level": 13,
+       "hp": 65,
+       "max_hp": 65,
+       "energy": 4,
+       "max_energy": 4,
+       "element": "光",
+       "desc": "溪谷深处的水晶棱镜，折射着千年不灭的光芒，蕴含着神圣的力量。",
+       "aux_drops": [
+        {
+         "id": "AU38",
+         "prob": 0.05
+        },
+        {
+         "id": "AU39",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr71_light_prism",
+        "tr71_light_prism",
+        "tr71_light_prism",
+        "tr72_light_beam",
+        "tr72_light_beam",
+        "tr72_light_beam",
+        "tr73_light_heal",
+        "tr73_light_heal",
+        "tr73_light_heal",
+        "tr74_light_buff",
+        "tr74_light_buff",
+        "tr74_light_buff",
+        "tr75_light_ray",
+        "tr75_light_ray",
+        "tr75_light_ray",
+        "tr34_lizard_scale",
+        "tr34_lizard_scale",
+        "tr34_lizard_scale",
+        "tr44_coil_bind",
+        "tr44_coil_bind",
+        "tr44_coil_bind",
+        "tr48_stone_armor",
+        "tr48_stone_armor",
+        "tr48_stone_armor",
+        "tr55_molten_skin",
+        "tr55_molten_skin",
+        "tr55_molten_skin",
+        "tr60_darkness_veil",
+        "tr60_darkness_veil",
+        "tr60_darkness_veil"
+       ]
+      }
+     ]
+    },
+    "mountain": {
+     "monsters": [
+      {
+       "id": "MF_MOUNTAIN_M1",
+       "name": "🗻 岩石巨人",
+       "level": 14,
+       "hp": 65,
+       "max_hp": 65,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "地",
+       "desc": "山道上的巨型岩石构造体，由崩落的巨石凝聚而成，一拳能砸碎最坚硬的盔甲。",
+       "aux_drops": [
+        {
+         "id": "AU40",
+         "prob": 0.05
+        },
+        {
+         "id": "AU41",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr76_rock_giant",
+        "tr76_rock_giant",
+        "tr76_rock_giant",
+        "tr77_boulder_toss",
+        "tr77_boulder_toss",
+        "tr77_boulder_toss",
+        "tr78_granite_armor",
+        "tr78_granite_armor",
+        "tr78_granite_armor",
+        "tr79_earth_split",
+        "tr79_earth_split",
+        "tr79_earth_split",
+        "tr80_landslide",
+        "tr80_landslide",
+        "tr80_landslide",
+        "tr46_rock_golem",
+        "tr46_rock_golem",
+        "tr46_rock_golem",
+        "tr48_stone_armor",
+        "tr48_stone_armor",
+        "tr48_stone_armor",
+        "tr49_rock_shield",
+        "tr49_rock_shield",
+        "tr49_rock_shield",
+        "tr50_quake",
+        "tr50_quake",
+        "tr50_quake",
+        "tr64_water_barrier",
+        "tr64_water_barrier",
+        "tr64_water_barrier"
+       ]
+      },
+      {
+       "id": "MF_MOUNTAIN_M2",
+       "name": "🐦‍⬛ 暗影鸦",
+       "level": 15,
+       "hp": 60,
+       "max_hp": 60,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "暗",
+       "desc": "盘旋在山道暗影中的漆黑巨鸦，双翼如暗影般无声，喙如利刃般致命。",
+       "aux_drops": [
+        {
+         "id": "AU42",
+         "prob": 0.05
+        },
+        {
+         "id": "AU43",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr81_shadow_crow",
+        "tr81_shadow_crow",
+        "tr81_shadow_crow",
+        "tr82_dark_feather",
+        "tr82_dark_feather",
+        "tr82_dark_feather",
+        "tr83_night_beak",
+        "tr83_night_beak",
+        "tr83_night_beak",
+        "tr84_shadow_ambush",
+        "tr84_shadow_ambush",
+        "tr84_shadow_ambush",
+        "tr85_dark_curtain",
+        "tr85_dark_curtain",
+        "tr85_dark_curtain",
+        "tr56_dark_scorpion",
+        "tr56_dark_scorpion",
+        "tr56_dark_scorpion",
+        "tr57_poison_sting",
+        "tr57_poison_sting",
+        "tr57_poison_sting",
+        "tr58_dark_curse",
+        "tr58_dark_curse",
+        "tr58_dark_curse",
+        "tr59_crystal_shard",
+        "tr59_crystal_shard",
+        "tr59_crystal_shard",
+        "tr10_root_tangle",
+        "tr10_root_tangle",
+        "tr10_root_tangle"
+       ]
+      },
+      {
+       "id": "MF_MOUNTAIN_M3",
+       "name": "🦅 风暴鹰",
+       "level": 16,
+       "hp": 70,
+       "max_hp": 70,
+       "energy": 4,
+       "max_energy": 4,
+       "element": "风",
+       "desc": "山道之巅的风暴之王，双翼展翅时卷起狂风，眼中闪烁着雷电的光芒。",
+       "aux_drops": [
+        {
+         "id": "AU44",
+         "prob": 0.05
+        },
+        {
+         "id": "AU45",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr86_storm_eagle",
+        "tr86_storm_eagle",
+        "tr86_storm_eagle",
+        "tr87_wind_slash",
+        "tr87_wind_slash",
+        "tr87_wind_slash",
+        "tr88_storm_blast",
+        "tr88_storm_blast",
+        "tr88_storm_blast",
+        "tr89_gale_step",
+        "tr89_gale_step",
+        "tr89_gale_step",
+        "tr90_wind_whisper",
+        "tr90_wind_whisper",
+        "tr90_wind_whisper",
+        "tr66_wind_fairy",
+        "tr66_wind_fairy",
+        "tr66_wind_fairy",
+        "tr67_gust",
+        "tr67_gust",
+        "tr67_gust",
+        "tr69_cyclone",
+        "tr69_cyclone",
+        "tr69_cyclone",
+        "tr70_wind_blade",
+        "tr70_wind_blade",
+        "tr70_wind_blade",
+        "tr39_wind_cutter",
+        "tr39_wind_cutter",
+        "tr39_wind_cutter"
+       ]
+      }
+     ]
+    },
+    "cave": {
+     "monsters": [
+      {
+       "id": "MF_CAVE_M1",
+       "name": "🕷️ 暗穴蜘蛛",
+       "level": 17,
+       "hp": 70,
+       "max_hp": 70,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "暗",
+       "desc": "暗穴深处编织巨网的巨型蜘蛛，蛛网能束缚灵魂，毒液能溶解一切。",
+       "aux_drops": [
+        {
+         "id": "AU46",
+         "prob": 0.05
+        },
+        {
+         "id": "AU47",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr91_cave_spider",
+        "tr91_cave_spider",
+        "tr91_cave_spider",
+        "tr92_web_trap",
+        "tr92_web_trap",
+        "tr92_web_trap",
+        "tr93_venom_bite",
+        "tr93_venom_bite",
+        "tr93_venom_bite",
+        "tr94_dark_weave",
+        "tr94_dark_weave",
+        "tr94_dark_weave",
+        "tr95_spider_swarm",
+        "tr95_spider_swarm",
+        "tr95_spider_swarm",
+        "tr56_dark_scorpion",
+        "tr56_dark_scorpion",
+        "tr56_dark_scorpion",
+        "tr57_poison_sting",
+        "tr57_poison_sting",
+        "tr57_poison_sting",
+        "tr58_dark_curse",
+        "tr58_dark_curse",
+        "tr58_dark_curse",
+        "tr59_crystal_shard",
+        "tr59_crystal_shard",
+        "tr59_crystal_shard",
+        "tr85_dark_curtain",
+        "tr85_dark_curtain",
+        "tr85_dark_curtain"
+       ]
+      },
+      {
+       "id": "MF_CAVE_M2",
+       "name": "🐢 熔岩龟",
+       "level": 18,
+       "hp": 75,
+       "max_hp": 75,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "火",
+       "desc": "暗穴地底岩浆池中沉睡的远古巨龟，龟壳上的熔岩纹路能迸发出毁灭性的火焰。",
+       "aux_drops": [
+        {
+         "id": "AU48",
+         "prob": 0.05
+        },
+        {
+         "id": "AU49",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr96_lava_turtle",
+        "tr96_lava_turtle",
+        "tr96_lava_turtle",
+        "tr97_flame_breath",
+        "tr97_flame_breath",
+        "tr97_flame_breath",
+        "tr98_magma_shell",
+        "tr98_magma_shell",
+        "tr98_magma_shell",
+        "tr99_fire_spike",
+        "tr99_fire_spike",
+        "tr99_fire_spike",
+        "tr100_inferno",
+        "tr100_inferno",
+        "tr100_inferno",
+        "tr51_lava_worm",
+        "tr51_lava_worm",
+        "tr51_lava_worm",
+        "tr52_magma_spit",
+        "tr52_magma_spit",
+        "tr52_magma_spit",
+        "tr53_heat_wave",
+        "tr53_heat_wave",
+        "tr53_heat_wave",
+        "tr54_lava_burst",
+        "tr54_lava_burst",
+        "tr54_lava_burst",
+        "tr55_molten_skin",
+        "tr55_molten_skin",
+        "tr55_molten_skin"
+       ]
+      },
+      {
+       "id": "MF_CAVE_M3",
+       "name": "🦋 幻光蝶",
+       "level": 19,
+       "hp": 80,
+       "max_hp": 80,
+       "energy": 4,
+       "max_energy": 4,
+       "element": "光",
+       "desc": "暗穴中最神秘的存在，幻光蝶的翅膀散发着柔和的光芒，能治愈一切伤痛。",
+       "aux_drops": [
+        {
+         "id": "AU50",
+         "prob": 0.05
+        },
+        {
+         "id": "AU51",
+         "prob": 0.05
+        }
+       ],
+       "deck": [
+        "tr101_light_moth",
+        "tr101_light_moth",
+        "tr101_light_moth",
+        "tr102_light_dust",
+        "tr102_light_dust",
+        "tr102_light_dust",
+        "tr103_moon_ray",
+        "tr103_moon_ray",
+        "tr103_moon_ray",
+        "tr104_light_boost",
+        "tr104_light_boost",
+        "tr104_light_boost",
+        "tr105_light_heal_all",
+        "tr105_light_heal_all",
+        "tr105_light_heal_all",
+        "tr71_light_prism",
+        "tr71_light_prism",
+        "tr71_light_prism",
+        "tr72_light_beam",
+        "tr72_light_beam",
+        "tr72_light_beam",
+        "tr73_light_heal",
+        "tr73_light_heal",
+        "tr73_light_heal",
+        "tr74_light_buff",
+        "tr74_light_buff",
+        "tr74_light_buff",
+        "tr75_light_ray",
+        "tr75_light_ray",
+        "tr75_light_ray"
+       ]
+      }
+     ]
+    }
+   },
+   "boss": [
+    {
+     "id": "MF_BOSS_1",
+     "name": "👑 迷雾守护者·古木",
+     "level": 20,
+     "hp": 100,
+     "max_hp": 100,
+     "energy": 4,
+     "max_energy": 4,
+     "element": "地",
+     "desc": "迷雾森林的远古守护者，以大地之力铸就不可撼动的防御。",
+     "aux_drops": [
+      {
+       "id": "AU52",
+       "prob": 0.05
+      },
+      {
+       "id": "AU53",
+       "prob": 0.05
+      }
+     ],
+     "deck": [
+      "tr106_boss_ancient",
+      "tr106_boss_ancient",
+      "tr106_boss_ancient",
+      "tr110_boss_bless",
+      "tr110_boss_bless",
+      "tr05_wood_shield",
+      "tr05_wood_shield",
+      "tr05_wood_shield",
+      "tr76_rock_giant",
+      "tr76_rock_giant",
+      "tr09_nature_whisper",
+      "tr09_nature_whisper",
+      "tr46_rock_golem",
+      "tr46_rock_golem",
+      "tr48_stone_armor",
+      "tr48_stone_armor",
+      "tr98_magma_shell",
+      "tr98_magma_shell",
+      "tr47_boulder_throw",
+      "tr47_boulder_throw",
+      "tr61_water_elemental",
+      "tr61_water_elemental"
+     ]
+    },
+    {
+     "id": "MF_BOSS_2",
+     "name": "👑 迷雾守护者·烈焰",
+     "level": 20,
+     "hp": 100,
+     "max_hp": 100,
+     "energy": 4,
+     "max_energy": 4,
+     "element": "火",
+     "desc": "迷雾森林的狂暴守护者，以烈焰之力焚烧一切闯入者。",
+     "aux_drops": [
+      {
+       "id": "AU52",
+       "prob": 0.05
+      },
+      {
+       "id": "AU53",
+       "prob": 0.05
+      }
+     ],
+     "deck": [
+      "tr107_boss_flame",
+      "tr107_boss_flame",
+      "tr107_boss_flame",
+      "tr108_boss_storm",
+      "tr108_boss_storm",
+      "tr96_lava_turtle",
+      "tr96_lava_turtle",
+      "tr97_flame_breath",
+      "tr97_flame_breath",
+      "tr97_flame_breath",
+      "tr99_fire_spike",
+      "tr99_fire_spike",
+      "tr100_inferno",
+      "tr100_inferno",
+      "tr86_storm_eagle",
+      "tr86_storm_eagle",
+      "tr88_storm_blast",
+      "tr88_storm_blast",
+      "tr87_wind_slash",
+      "tr87_wind_slash",
+      "tr51_lava_worm",
+      "tr51_lava_worm"
+     ]
+    },
+    {
+     "id": "MF_BOSS_3",
+     "name": "👑 迷雾守护者·暗影",
+     "level": 20,
+     "hp": 100,
+     "max_hp": 100,
+     "energy": 4,
+     "max_energy": 4,
+     "element": "暗",
+     "desc": "迷雾森林的诡秘守护者，以暗影之力操控战局、蚕食生命。",
+     "aux_drops": [
+      {
+       "id": "AU52",
+       "prob": 0.05
+      },
+      {
+       "id": "AU53",
+       "prob": 0.05
+      }
+     ],
+     "deck": [
+      "tr109_boss_dark",
+      "tr109_boss_dark",
+      "tr109_boss_dark",
+      "tr91_cave_spider",
+      "tr91_cave_spider",
+      "tr92_web_trap",
+      "tr92_web_trap",
+      "tr92_web_trap",
+      "tr93_venom_bite",
+      "tr93_venom_bite",
+      "tr94_dark_weave",
+      "tr94_dark_weave",
+      "tr95_spider_swarm",
+      "tr95_spider_swarm",
+      "tr81_shadow_crow",
+      "tr81_shadow_crow",
+      "tr57_poison_sting",
+      "tr57_poison_sting",
+      "tr60_darkness_veil",
+      "tr60_darkness_veil",
+      "tr103_moon_ray",
+      "tr103_moon_ray",
+      "tr85_dark_curtain",
+      "tr85_dark_curtain"
+     ]
+    }
+   ]
+  },
+  "flame_cavern": {
+   "terrains": {
+    "forest": {
+     "monsters": [
+      {
+       "id": "FC_FOREST_M1",
+       "name": "🔥 熔岩元素",
+       "level": 5,
+       "hp": 35,
+       "max_hp": 35,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "火",
+       "desc": "火焰洞穴外围凝聚的火焰元素，体内奔涌着炽热的岩浆，攻击狂暴而缺乏防御。",
+       "aux_drops": [
+        {
+         "id": "AU54",
+         "prob": 0.05
+        },
+        {
+         "id": "AU60",
+         "prob": 0.03
+        }
+       ],
+       "deck": [
+        "tr_fc01_fire_elemental",
+        "tr_fc01_fire_elemental",
+        "tr_fc01_fire_elemental",
+        "tr_fc02_fire_blast",
+        "tr_fc02_fire_blast",
+        "tr_fc03_ember_shot",
+        "tr_fc03_ember_shot",
+        "tr_fc03_ember_shot",
+        "tr_fc04_flame_servant",
+        "tr_fc04_flame_servant",
+        "tr_fc04_flame_servant",
+        "tr_fc11_volcanic_rage",
+        "tr_fc11_volcanic_rage",
+        "tr_fc12_lava_imp",
+        "tr_fc12_lava_imp",
+        "tr_fc12_lava_imp",
+        "tr_fc04_flame_servant",
+        "tr_fc04_flame_servant",
+        "tr_fc12_lava_imp",
+        "tr_fc12_lava_imp",
+        "tr_fc01_fire_elemental",
+        "tr_fc01_fire_elemental",
+        "tr_fc12_lava_imp",
+        "tr_fc12_lava_imp",
+        "tr_fc02_fire_blast",
+        "tr_fc02_fire_blast",
+        "tr_fc04_flame_servant",
+        "tr_fc04_flame_servant"
+       ]
+      },
+      {
+       "id": "FC_FOREST_M2",
+       "name": "👑 熔岩支配者",
+       "level": 6,
+       "hp": 35,
+       "max_hp": 35,
+       "energy": 4,
+       "max_energy": 4,
+       "element": "暗",
+       "desc": "潜伏在火焰洞穴外围的暗黑支配者，擅长夺取敌人的控制权为己所用。",
+       "aux_drops": [
+        {
+         "id": "AU55",
+         "prob": 0.05
+        },
+        {
+         "id": "AU61",
+         "prob": 0.03
+        }
+       ],
+       "deck": [
+        "tr_fc05_dominator",
+        "tr_fc05_dominator",
+        "tr_fc05_dominator",
+        "tr_fc06_slave_brand",
+        "tr_fc06_slave_brand",
+        "tr_fc07_lava_guard",
+        "tr_fc07_lava_guard",
+        "tr_fc07_lava_guard",
+        "tr_fc08_dark_pact",
+        "tr_fc08_dark_pact",
+        "tr_fc08_dark_pact",
+        "tr_fc13_soul_offering",
+        "tr_fc13_soul_offering",
+        "tr_fc14_dominator_guard",
+        "tr_fc14_dominator_guard",
+        "tr_fc14_dominator_guard",
+        "tr_fc07_lava_guard",
+        "tr_fc07_lava_guard",
+        "tr_fc08_dark_pact",
+        "tr_fc08_dark_pact",
+        "tr_fc14_dominator_guard",
+        "tr_fc05_dominator",
+        "tr_fc13_soul_offering",
+        "tr_fc07_lava_guard",
+        "tr_fc07_lava_guard",
+        "tr_fc08_dark_pact",
+        "tr_fc14_dominator_guard",
+        "tr_fc14_dominator_guard"
+       ]
+      },
+      {
+       "id": "FC_FOREST_M3",
+       "name": "🦂 熔岩毒蝎",
+       "level": 6,
+       "hp": 40,
+       "max_hp": 40,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "火",
+       "desc": "火焰洞穴外围的剧毒蝎子，尾针能持续灼伤敌人，生命力顽强。",
+       "aux_drops": [
+        {
+         "id": "AU56",
+         "prob": 0.05
+        },
+        {
+         "id": "AU62",
+         "prob": 0.03
+        }
+       ],
+       "deck": [
+        "tr_fc09_lava_scorpion",
+        "tr_fc09_lava_scorpion",
+        "tr_fc09_lava_scorpion",
+        "tr_fc10_burn_sting",
+        "tr_fc10_burn_sting",
+        "tr_fc10_burn_sting",
+        "tr_fc15_scorching_trail",
+        "tr_fc15_scorching_trail",
+        "tr_fc15_scorching_trail",
+        "tr_fc16_venom_dot",
+        "tr_fc16_venom_dot",
+        "tr_fc16_venom_dot",
+        "tr_fc17_poison_fumes",
+        "tr_fc17_poison_fumes",
+        "tr_fc17_poison_fumes",
+        "tr_fc18_scorpion_armor",
+        "tr_fc18_scorpion_armor",
+        "tr_fc18_scorpion_armor",
+        "tr_fc09_lava_scorpion",
+        "tr_fc09_lava_scorpion",
+        "tr_fc10_burn_sting",
+        "tr_fc10_burn_sting",
+        "tr_fc15_scorching_trail",
+        "tr_fc16_venom_dot",
+        "tr_fc17_poison_fumes",
+        "tr_fc18_scorpion_armor",
+        "tr_fc09_lava_scorpion",
+        "tr_fc10_burn_sting"
+       ]
+      }
+     ]
+    },
+    "grass": {
+     "monsters": [
+      {
+       "id": "FC_GRASS_M1",
+       "name": "🐍 炎晶蛇",
+       "level": 7,
+       "hp": 45,
+       "max_hp": 45,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "火",
+       "desc": "火焰洞穴草丛中潜伏的炎晶蛇，鳞片由熔岩结晶构成，能一口咬碎最坚硬的护甲。",
+       "aux_drops": [
+        {
+         "id": "AU57",
+         "prob": 0.05
+        },
+        {
+         "id": "AU63",
+         "prob": 0.03
+        }
+       ],
+       "deck": [
+        "tr_fc19_heat_crystal",
+        "tr_fc19_heat_crystal",
+        "tr_fc19_heat_crystal",
+        "tr_fc20_burning_coil",
+        "tr_fc20_burning_coil",
+        "tr_fc20_burning_coil",
+        "tr_fc21_magma_fang_p",
+        "tr_fc21_magma_fang_p",
+        "tr_fc22_snake_scale",
+        "tr_fc22_snake_scale",
+        "tr_fc22_snake_scale",
+        "tr_fc23_lava_cobra",
+        "tr_fc23_lava_cobra",
+        "tr_fc23_lava_cobra",
+        "tr_fc24_ash_adder",
+        "tr_fc24_ash_adder",
+        "tr_fc24_ash_adder",
+        "tr_fc23_lava_cobra",
+        "tr_fc23_lava_cobra",
+        "tr_fc24_ash_adder",
+        "tr_fc24_ash_adder",
+        "tr_fc19_heat_crystal",
+        "tr_fc19_heat_crystal",
+        "tr_fc22_snake_scale",
+        "tr_fc20_burning_coil",
+        "tr_fc24_ash_adder",
+        "tr_fc24_ash_adder",
+        "tr_fc23_lava_cobra"
+       ]
+      },
+      {
+       "id": "FC_GRASS_M2",
+       "name": "🐕 熔岩猎犬",
+       "level": 7,
+       "hp": 45,
+       "max_hp": 45,
+       "energy": 3,
+       "max_energy": 3,
+       "element": "火",
+       "desc": "成群出没的熔岩猎犬，头狼的嚎叫能激发全群的战斗意志，越战越勇。",
+       "aux_drops": [
+        {
+         "id": "AU58",
+         "prob": 0.05
+        },
+        {
+         "id": "AU64",
+         "prob": 0.03
+        }
+       ],
+       "deck": [
+        "tr_fc25_lava_hound",
+        "tr_fc25_lava_hound",
+        "tr_fc25_lava_hound",
+        "tr_fc26_alpha_hound",
+        "tr_fc26_alpha_hound",
+        "tr_fc26_alpha_hound",
+        "tr_fc27_hunt_call",
+        "tr_fc27_hunt_call",
+        "tr_fc27_hunt_call",
+        "tr_fc28_flame_howl",
+        "tr_fc28_flame_howl",
+        "tr_fc28_flame_howl",
+        "tr_fc29_magma_pup",
+        "tr_fc29_magma_pup",
+        "tr_fc29_magma_pup",
+        "tr_fc30_fire_fang",
+        "tr_fc30_fire_fang",
+        "tr_fc30_fire_fang",
+        "tr_fc25_lava_hound",
+        "tr_fc25_lava_hound",
+        "tr_fc29_magma_pup",
+        "tr_fc29_magma_pup",
+        "tr_fc30_fire_fang",
+        "tr_fc30_fire_fang",
+        "tr_fc27_hunt_call",
+        "tr_fc28_flame_howl",
+        "tr_fc26_alpha_hound",
+        "tr_fc25_lava_hound"
+       ]
+      },
+      {
+       "id": "FC_GRASS_M3",
+       "name": "🔮 火焰占星师",
+       "level": 8,
+       "hp": 50,
+       "max_hp": 50,
+       "energy": 4,
+       "max_energy": 4,
+       "element": "火",
+       "desc": "火焰洞穴深处的占星师，能召唤星辰之火焚尽一切，法术威力惊人。",
+       "aux_drops": [
+        {
+         "id": "AU59",
+         "prob": 0.05
+        },
+        {
+         "id": "AU65",
+         "prob": 0.03
+        }
+       ],
+       "deck": [
+        "tr_fc31_fire_astrologer",
+        "tr_fc31_fire_astrologer",
+        "tr_fc31_fire_astrologer",
+        "tr_fc32_astral_fire",
+        "tr_fc32_astral_fire",
+        "tr_fc32_astral_fire",
+        "tr_fc33_doom_fire",
+        "tr_fc33_doom_fire",
+        "tr_fc33_doom_fire",
+        "tr_fc34_starfall",
+        "tr_fc34_starfall",
+        "tr_fc34_starfall",
+        "tr_fc35_fire_barrier",
+        "tr_fc35_fire_barrier",
+        "tr_fc35_fire_barrier",
+        "tr_fc36_fire_spirit",
+        "tr_fc36_fire_spirit",
+        "tr_fc36_fire_spirit",
+        "tr_fc37_ember_guard",
+        "tr_fc37_ember_guard",
+        "tr_fc37_ember_guard",
+        "tr_fc31_fire_astrologer",
+        "tr_fc36_fire_spirit",
+        "tr_fc37_ember_guard",
+        "tr_fc32_astral_fire",
+        "tr_fc33_doom_fire",
+        "tr_fc34_starfall",
+        "tr_fc35_fire_barrier"
+       ]
+      }
+     ]
+    },
+    "mine": {
+     "monsters": [
+      {
+       "name": "🪨 熔岩巨像",
+       "level": 9,
+       "hp": 55,
+       "energy": 4,
+       "element": "火",
+       "deck": [
+        "tr_fc1_lava_golem",
+        "tr_fc1_lava_golem",
+        "tr_fc1_lava_golem",
+        "tr_fc2_lava_bulwark",
+        "tr_fc2_lava_bulwark",
+        "tr_fc2_lava_bulwark",
+        "tr_fc3_lava_shield",
+        "tr_fc3_lava_shield",
+        "tr_fc4_earth_heal",
+        "tr_fc4_earth_heal",
+        "tr_fc4_earth_heal",
+        "tr_fc5_ore_heal",
+        "tr_fc5_ore_heal",
+        "tr_fc5_ore_heal",
+        "tr_fc6_lava_spring",
+        "tr_fc6_lava_spring",
+        "tr_fc7_rock_shield",
+        "tr_fc7_rock_shield",
+        "tr_fc7_rock_shield",
+        "tr_fc8_lava_core",
+        "tr_fc8_lava_core",
+        "tr_fc1_lava_golem",
+        "tr_fc2_lava_bulwark",
+        "tr_fc4_earth_heal",
+        "tr_fc7_rock_shield",
+        "tr_fc3_lava_shield",
+        "tr_fc5_ore_heal",
+        "tr_fc8_lava_core",
+        "tr_fc6_lava_spring"
+       ],
+       "aux_drops": [
+        {
+         "id": "AU1",
+         "prob": 0.05
+        },
+        {
+         "id": "AU66",
+         "prob": 0.03
+        }
+       ],
+       "id": "FC_MINE_M1",
+       "max_hp": 55,
+       "max_energy": 4,
+       "desc": ""
+      },
+      {
+       "name": "🔮 火焰咒术师",
+       "level": 9,
+       "hp": 50,
+       "energy": 4,
+       "element": "火",
+       "deck": [
+        "tr_fc9_flame_sorcerer",
+        "tr_fc9_flame_sorcerer",
+        "tr_fc9_flame_sorcerer",
+        "tr_fc10_flame_tongue",
+        "tr_fc10_flame_tongue",
+        "tr_fc11_apprentice",
+        "tr_fc11_apprentice",
+        "tr_fc11_apprentice",
+        "tr_fc12_power_swap",
+        "tr_fc12_power_swap",
+        "tr_fc12_power_swap",
+        "tr_fc13_flame_impact",
+        "tr_fc13_flame_impact",
+        "tr_fc13_flame_impact",
+        "tr_fc14_heat_wave_s",
+        "tr_fc14_heat_wave_s",
+        "tr_fc15_weakness_curse",
+        "tr_fc15_weakness_curse",
+        "tr_fc15_weakness_curse",
+        "tr_fc16_spell_barrage",
+        "tr_fc16_spell_barrage",
+        "tr_fc9_flame_sorcerer",
+        "tr_fc10_flame_tongue",
+        "tr_fc12_power_swap",
+        "tr_fc13_flame_impact",
+        "tr_fc11_apprentice",
+        "tr_fc15_weakness_curse",
+        "tr_fc14_heat_wave_s",
+        "tr_fc16_spell_barrage"
+       ],
+       "aux_drops": [
+        {
+         "id": "AU2",
+         "prob": 0.05
+        },
+        {
+         "id": "AU67",
+         "prob": 0.03
+        }
+       ],
+       "id": "FC_MINE_M2",
+       "max_hp": 50,
+       "max_energy": 4,
+       "desc": ""
+      },
+      {
+       "name": "🪨 黑曜石傀儡",
+       "level": 10,
+       "hp": 55,
+       "energy": 5,
+       "element": "暗",
+       "deck": [
+        "tr_fc17_obsidian_golem",
+        "tr_fc17_obsidian_golem",
+        "tr_fc17_obsidian_golem",
+        "tr_fc18_obsidian_shard",
+        "tr_fc18_obsidian_shard",
+        "tr_fc18_obsidian_shard",
+        "tr_fc19_shadow_statue",
+        "tr_fc19_shadow_statue",
+        "tr_fc20_silence_seal",
+        "tr_fc20_silence_seal",
+        "tr_fc20_silence_seal",
+        "tr_fc21_energy_suppress",
+        "tr_fc21_energy_suppress",
+        "tr_fc22_obsidian_spike",
+        "tr_fc22_obsidian_spike",
+        "tr_fc22_obsidian_spike",
+        "tr_fc23_shadow_barrier",
+        "tr_fc23_shadow_barrier",
+        "tr_fc24_obsidian_blast",
+        "tr_fc24_obsidian_blast",
+        "tr_fc17_obsidian_golem",
+        "tr_fc18_obsidian_shard",
+        "tr_fc20_silence_seal",
+        "tr_fc22_obsidian_spike",
+        "tr_fc19_shadow_statue",
+        "tr_fc23_shadow_barrier",
+        "tr_fc21_energy_suppress",
+        "tr_fc24_obsidian_blast"
+       ],
+       "aux_drops": [
+        {
+         "id": "AU3",
+         "prob": 0.05
+        },
+        {
+         "id": "AU68",
+         "prob": 0.03
+        }
+       ],
+       "id": "FC_MINE_M3",
+       "max_hp": 55,
+       "max_energy": 5,
+       "desc": ""
+      }
+     ]
+    },
+    "valley": {
+     "monsters": [
+      {
+       "name": "🪼 熔岩水母",
+       "level": 10,
+       "hp": 50,
+       "energy": 4,
+       "element": "火",
+       "deck": [
+        "tr_fc38_lava_jelly",
+        "tr_fc38_lava_jelly",
+        "tr_fc38_lava_jelly",
+        "tr_fc39_lava_float",
+        "tr_fc39_lava_float",
+        "tr_fc39_lava_float",
+        "tr_fc40_lava_bubble",
+        "tr_fc40_lava_bubble",
+        "tr_fc41_fiery_counter",
+        "tr_fc41_fiery_counter",
+        "tr_fc41_fiery_counter",
+        "tr_fc42_lava_splash",
+        "tr_fc42_lava_splash",
+        "tr_fc43_flame_shield",
+        "tr_fc43_flame_shield",
+        "tr_fc43_flame_shield",
+        "tr_fc44_lava_geyser",
+        "tr_fc44_lava_geyser",
+        "tr_fc38_lava_jelly",
+        "tr_fc39_lava_float",
+        "tr_fc41_fiery_counter",
+        "tr_fc43_flame_shield",
+        "tr_fc40_lava_bubble",
+        "tr_fc44_lava_geyser",
+        "tr_fc42_lava_splash",
+        "tr_fc41_fiery_counter",
+        "tr_fc39_lava_float",
+        "tr_fc43_flame_shield"
+       ],
+       "aux_drops": [
+        {
+         "id": "AU4",
+         "prob": 0.05
+        },
+        {
+         "id": "AU69",
+         "prob": 0.03
+        }
+       ],
+       "id": "FC_VALLEY_M1",
+       "max_hp": 50,
+       "max_energy": 4,
+       "desc": ""
+      },
+      {
+       "name": "🐉 熔岩飞龙",
+       "level": 11,
+       "hp": 55,
+       "energy": 5,
+       "element": "火",
+       "deck": [
+        "tr_fc45_lava_drake",
+        "tr_fc45_lava_drake",
+        "tr_fc45_lava_drake",
+        "tr_fc46_lava_ptera",
+        "tr_fc46_lava_ptera",
+        "tr_fc47_lava_whelp",
+        "tr_fc47_lava_whelp",
+        "tr_fc47_lava_whelp",
+        "tr_fc48_flame_breath_v",
+        "tr_fc48_flame_breath_v",
+        "tr_fc48_flame_breath_v",
+        "tr_fc49_dragon_aura",
+        "tr_fc49_dragon_aura",
+        "tr_fc50_dragon_scale",
+        "tr_fc50_dragon_scale",
+        "tr_fc50_dragon_scale",
+        "tr_fc51_dragon_burn",
+        "tr_fc51_dragon_burn",
+        "tr_fc45_lava_drake",
+        "tr_fc46_lava_ptera",
+        "tr_fc48_flame_breath_v",
+        "tr_fc50_dragon_scale",
+        "tr_fc47_lava_whelp",
+        "tr_fc51_dragon_burn",
+        "tr_fc49_dragon_aura",
+        "tr_fc48_flame_breath_v",
+        "tr_fc45_lava_drake",
+        "tr_fc47_lava_whelp"
+       ],
+       "aux_drops": [
+        {
+         "id": "AU5",
+         "prob": 0.05
+        },
+        {
+         "id": "AU70",
+         "prob": 0.03
+        }
+       ],
+       "id": "FC_VALLEY_M2",
+       "max_hp": 55,
+       "max_energy": 5,
+       "desc": ""
+      },
+      {
+       "name": "🐛 岩浆蠕虫",
+       "level": 11,
+       "hp": 60,
+       "energy": 5,
+       "element": "火",
+       "deck": [
+        "tr_fc52_magma_worm",
+        "tr_fc52_magma_worm",
+        "tr_fc52_magma_worm",
+        "tr_fc53_magma_larva",
+        "tr_fc53_magma_larva",
+        "tr_fc53_magma_larva",
+        "tr_fc54_lava_worm",
+        "tr_fc54_lava_worm",
+        "tr_fc55_burrow_strike",
+        "tr_fc55_burrow_strike",
+        "tr_fc55_burrow_strike",
+        "tr_fc56_magma_erupt",
+        "tr_fc56_magma_erupt",
+        "tr_fc57_energy_drain",
+        "tr_fc57_energy_drain",
+        "tr_fc58_lava_drill",
+        "tr_fc58_lava_drill",
+        "tr_fc58_lava_drill",
+        "tr_fc52_magma_worm",
+        "tr_fc53_magma_larva",
+        "tr_fc55_burrow_strike",
+        "tr_fc58_lava_drill",
+        "tr_fc54_lava_worm",
+        "tr_fc56_magma_erupt",
+        "tr_fc57_energy_drain",
+        "tr_fc55_burrow_strike",
+        "tr_fc52_magma_worm",
+        "tr_fc53_magma_larva"
+       ],
+       "aux_drops": [
+        {
+         "id": "AU6",
+         "prob": 0.05
+        },
+        {
+         "id": "AU71",
+         "prob": 0.03
+        }
+       ],
+       "id": "FC_VALLEY_M3",
+       "max_hp": 60,
+       "max_energy": 5,
+       "desc": ""
+      }
+     ]
+    },
+    "mountain": {
+     "monsters": [
+      {
+       "name": "🐕 地狱三头犬",
+       "level": 11,
+       "hp": 55,
+       "energy": 5,
+       "element": "火",
+       "deck": [
+        "tr_fc59_hell_hound",
+        "tr_fc59_hell_hound",
+        "tr_fc59_hell_hound",
+        "tr_fc60_two_head",
+        "tr_fc60_two_head",
+        "tr_fc60_two_head",
+        "tr_fc61_puppy",
+        "tr_fc61_puppy",
+        "tr_fc62_hell_flame",
+        "tr_fc62_hell_flame",
+        "tr_fc62_hell_flame",
+        "tr_fc63_demon_pact",
+        "tr_fc63_demon_pact",
+        "tr_fc64_abyss_call",
+        "tr_fc64_abyss_call",
+        "tr_fc65_hell_bite",
+        "tr_fc65_hell_bite",
+        "tr_fc65_hell_bite",
+        "tr_fc59_hell_hound",
+        "tr_fc60_two_head",
+        "tr_fc62_hell_flame",
+        "tr_fc65_hell_bite",
+        "tr_fc61_puppy",
+        "tr_fc63_demon_pact",
+        "tr_fc64_abyss_call",
+        "tr_fc62_hell_flame",
+        "tr_fc59_hell_hound",
+        "tr_fc60_two_head"
+       ],
+       "aux_drops": [
+        {
+         "id": "AU7",
+         "prob": 0.05
+        },
+        {
+         "id": "AU72",
+         "prob": 0.03
+        }
+       ],
+       "id": "FC_MOUNTAIN_M1",
+       "max_hp": 55,
+       "max_energy": 5,
+       "desc": ""
+      },
+      {
+       "name": "🔥 火焰萨满",
+       "level": 12,
+       "hp": 55,
+       "energy": 5,
+       "element": "火",
+       "deck": [
+        "tr_fc66_flame_shaman",
+        "tr_fc66_flame_shaman",
+        "tr_fc66_flame_shaman",
+        "tr_fc67_shaman_priest",
+        "tr_fc67_shaman_priest",
+        "tr_fc68_fire_totem",
+        "tr_fc68_fire_totem",
+        "tr_fc68_fire_totem",
+        "tr_fc69_fire_storm",
+        "tr_fc69_fire_storm",
+        "tr_fc69_fire_storm",
+        "tr_fc70_element_power",
+        "tr_fc70_element_power",
+        "tr_fc71_energy_infusion",
+        "tr_fc71_energy_infusion",
+        "tr_fc72_shaman_rage",
+        "tr_fc72_shaman_rage",
+        "tr_fc72_shaman_rage",
+        "tr_fc66_flame_shaman",
+        "tr_fc67_shaman_priest",
+        "tr_fc69_fire_storm",
+        "tr_fc72_shaman_rage",
+        "tr_fc68_fire_totem",
+        "tr_fc70_element_power",
+        "tr_fc71_energy_infusion",
+        "tr_fc69_fire_storm",
+        "tr_fc66_flame_shaman",
+        "tr_fc68_fire_totem"
+       ],
+       "aux_drops": [
+        {
+         "id": "AU8",
+         "prob": 0.05
+        },
+        {
+         "id": "AU73",
+         "prob": 0.03
+        }
+       ],
+       "id": "FC_MOUNTAIN_M2",
+       "max_hp": 55,
+       "max_energy": 5,
+       "desc": ""
+      },
+      {
+       "name": "👻 熔岩幽灵",
+       "level": 12,
+       "hp": 60,
+       "energy": 5,
+       "element": "火",
+       "deck": [
+        "tr_fc73_lava_ghost",
+        "tr_fc73_lava_ghost",
+        "tr_fc73_lava_ghost",
+        "tr_fc74_fire_spirit",
+        "tr_fc74_fire_spirit",
+        "tr_fc74_fire_spirit",
+        "tr_fc75_lava_essence",
+        "tr_fc75_lava_essence",
+        "tr_fc76_soul_drain",
+        "tr_fc76_soul_drain",
+        "tr_fc76_soul_drain",
+        "tr_fc77_energy_burst",
+        "tr_fc77_energy_burst",
+        "tr_fc78_demon_realm",
+        "tr_fc78_demon_realm",
+        "tr_fc79_ghost_burn",
+        "tr_fc79_ghost_burn",
+        "tr_fc79_ghost_burn",
+        "tr_fc73_lava_ghost",
+        "tr_fc74_fire_spirit",
+        "tr_fc76_soul_drain",
+        "tr_fc79_ghost_burn",
+        "tr_fc75_lava_essence",
+        "tr_fc77_energy_burst",
+        "tr_fc78_demon_realm",
+        "tr_fc76_soul_drain",
+        "tr_fc73_lava_ghost",
+        "tr_fc75_lava_essence"
+       ],
+       "aux_drops": [
+        {
+         "id": "AU9",
+         "prob": 0.05
+        },
+        {
+         "id": "AU74",
+         "prob": 0.03
+        }
+       ],
+       "id": "FC_MOUNTAIN_M3",
+       "max_hp": 60,
+       "max_energy": 5,
+       "desc": ""
+      }
+     ]
+    },
+    "cave": {
+     "monsters": [
+      {
+       "name": "💀 亡灵炼金师",
+       "level": 12,
+       "hp": 60,
+       "energy": 5,
+       "element": "暗",
+       "deck": [
+        "tr_fc80_necromancer",
+        "tr_fc80_necromancer",
+        "tr_fc80_necromancer",
+        "tr_fc81_skeleton_mage",
+        "tr_fc81_skeleton_mage",
+        "tr_fc81_skeleton_mage",
+        "tr_fc82_undead_soldier",
+        "tr_fc82_undead_soldier",
+        "tr_fc83_undead_revive",
+        "tr_fc83_undead_revive",
+        "tr_fc83_undead_revive",
+        "tr_fc84_grave_explosion",
+        "tr_fc84_grave_explosion",
+        "tr_fc85_soul_reap",
+        "tr_fc85_soul_reap",
+        "tr_fc85_soul_reap",
+        "tr_fc86_bone_sacrifice",
+        "tr_fc86_bone_sacrifice",
+        "tr_fc80_necromancer",
+        "tr_fc81_skeleton_mage",
+        "tr_fc83_undead_revive",
+        "tr_fc85_soul_reap",
+        "tr_fc82_undead_soldier",
+        "tr_fc84_grave_explosion",
+        "tr_fc86_bone_sacrifice",
+        "tr_fc83_undead_revive",
+        "tr_fc80_necromancer",
+        "tr_fc82_undead_soldier"
+       ],
+       "aux_drops": [
+        {
+         "id": "AU10",
+         "prob": 0.05
+        },
+        {
+         "id": "AU75",
+         "prob": 0.03
+        }
+       ],
+       "id": "FC_CAVE_M1",
+       "max_hp": 60,
+       "max_energy": 5,
+       "desc": ""
+      },
+      {
+       "name": "👁️ 深渊掠夺者",
+       "level": 13,
+       "hp": 60,
+       "energy": 5,
+       "element": "暗",
+       "deck": [
+        "tr_fc87_abyss_raider",
+        "tr_fc87_abyss_raider",
+        "tr_fc87_abyss_raider",
+        "tr_fc88_abyss_stalker",
+        "tr_fc88_abyss_stalker",
+        "tr_fc89_abyss_eye",
+        "tr_fc89_abyss_eye",
+        "tr_fc89_abyss_eye",
+        "tr_fc90_deck_erode",
+        "tr_fc90_deck_erode",
+        "tr_fc90_deck_erode",
+        "tr_fc91_abyss_draw",
+        "tr_fc91_abyss_draw",
+        "tr_fc92_grave_plunder",
+        "tr_fc92_grave_plunder",
+        "tr_fc93_shadow_strike",
+        "tr_fc93_shadow_strike",
+        "tr_fc93_shadow_strike",
+        "tr_fc87_abyss_raider",
+        "tr_fc88_abyss_stalker",
+        "tr_fc90_deck_erode",
+        "tr_fc93_shadow_strike",
+        "tr_fc89_abyss_eye",
+        "tr_fc91_abyss_draw",
+        "tr_fc92_grave_plunder",
+        "tr_fc90_deck_erode",
+        "tr_fc87_abyss_raider",
+        "tr_fc89_abyss_eye"
+       ],
+       "aux_drops": [
+        {
+         "id": "AU11",
+         "prob": 0.05
+        },
+        {
+         "id": "AU76",
+         "prob": 0.03
+        }
+       ],
+       "id": "FC_CAVE_M2",
+       "max_hp": 60,
+       "max_energy": 5,
+       "desc": ""
+      },
+      {
+       "name": "👿 暗影支配者",
+       "level": 13,
+       "hp": 65,
+       "energy": 6,
+       "element": "暗",
+       "deck": [
+        "tr_fc94_shadow_lord",
+        "tr_fc94_shadow_lord",
+        "tr_fc94_shadow_lord",
+        "tr_fc95_shadow_fiend",
+        "tr_fc95_shadow_fiend",
+        "tr_fc96_shadow_imp",
+        "tr_fc96_shadow_imp",
+        "tr_fc96_shadow_imp",
+        "tr_fc97_dominate_touch",
+        "tr_fc97_dominate_touch",
+        "tr_fc97_dominate_touch",
+        "tr_fc98_eternal_bondage",
+        "tr_fc98_eternal_bondage",
+        "tr_fc99_chaos_impact",
+        "tr_fc99_chaos_impact",
+        "tr_fc100_shadow_dominate",
+        "tr_fc100_shadow_dominate",
+        "tr_fc94_shadow_lord",
+        "tr_fc95_shadow_fiend",
+        "tr_fc97_dominate_touch",
+        "tr_fc99_chaos_impact",
+        "tr_fc96_shadow_imp",
+        "tr_fc98_eternal_bondage",
+        "tr_fc100_shadow_dominate",
+        "tr_fc97_dominate_touch",
+        "tr_fc94_shadow_lord",
+        "tr_fc96_shadow_imp"
+       ],
+       "aux_drops": [
+        {
+         "id": "AU12",
+         "prob": 0.05
+        },
+        {
+         "id": "AU77",
+         "prob": 0.03
+        }
+       ],
+       "id": "FC_CAVE_M3",
+       "max_hp": 65,
+       "max_energy": 6,
+       "desc": ""
+      }
+     ]
+    }
+   },
+   "boss": [
+    {
+     "id": "FC_BOSS_1",
+     "name": "👑 熔岩支配者·炎帝",
+     "level": 28,
+     "hp": 140,
+     "max_hp": 140,
+     "energy": 5,
+     "max_energy": 5,
+     "element": "火",
+     "desc": "火焰洞穴的支配者，以无上意志夺取一切控制权。",
+     "aux_drops": [
+      {
+       "id": "AU10",
+       "prob": 0.1
+      },
+      {
+       "id": "AU11",
+       "prob": 0.1
+      },
+      {
+       "id": "AU12",
+       "prob": 0.05
+      }
+     ],
+     "deck": [
+      "tr_fc101_boss_dominator_steal",
+      "tr_fc101_boss_dominator_steal",
+      "tr_fc101_boss_dominator_steal",
+      "tr_fc102_boss_dominator_burn",
+      "tr_fc102_boss_dominator_burn",
+      "tr_fc102_boss_dominator_burn",
+      "tr_fc103_boss_dominator_ritual",
+      "tr_fc103_boss_dominator_ritual",
+      "tr_fc104_boss_dominator_vassal",
+      "tr_fc104_boss_dominator_vassal",
+      "tr_fc104_boss_dominator_vassal",
+      "tr_fc105_boss_dominator_chain",
+      "tr_fc105_boss_dominator_chain",
+      "tr_fc105_boss_dominator_chain",
+      "tr_fc96_lava_turtle",
+      "tr_fc96_lava_turtle",
+      "tr_fc97_flame_breath",
+      "tr_fc97_flame_breath",
+      "tr_fc99_fire_spike",
+      "tr_fc99_fire_spike",
+      "tr_fc100_inferno",
+      "tr_fc100_inferno"
+     ]
+    },
+    {
+     "id": "FC_BOSS_2",
+     "name": "👑 熔核巨人·格隆",
+     "level": 30,
+     "hp": 150,
+     "max_hp": 150,
+     "energy": 4,
+     "max_energy": 4,
+     "element": "地",
+     "desc": "火焰洞穴深处的远古巨人，以不灭之躯守护洞窟。",
+     "aux_drops": [
+      {
+       "id": "AU7",
+       "prob": 0.1
+      },
+      {
+       "id": "AU8",
+       "prob": 0.1
+      },
+      {
+       "id": "AU9",
+       "prob": 0.05
+      }
+     ],
+     "deck": [
+      "tr_fc106_boss_giant_armor",
+      "tr_fc106_boss_giant_armor",
+      "tr_fc106_boss_giant_armor",
+      "tr_fc107_boss_giant_quake",
+      "tr_fc107_boss_giant_quake",
+      "tr_fc107_boss_giant_quake",
+      "tr_fc108_boss_giant_body",
+      "tr_fc108_boss_giant_body",
+      "tr_fc108_boss_giant_body",
+      "tr_fc109_boss_giant_roar",
+      "tr_fc109_boss_giant_roar",
+      "tr_fc94_lava_serpent",
+      "tr_fc94_lava_serpent",
+      "tr_fc95_magma_shell",
+      "tr_fc95_magma_shell",
+      "tr_fc95_magma_shell",
+      "tr_fc88_rock_armor",
+      "tr_fc88_rock_armor",
+      "tr_fc89_stone_giant",
+      "tr_fc89_stone_giant",
+      "tr_fc90_earth_spike",
+      "tr_fc90_earth_spike"
+     ]
+    },
+    {
+     "id": "FC_BOSS_3",
+     "name": "👑 炎魔领主·萨弗隆",
+     "level": 26,
+     "hp": 120,
+     "max_hp": 120,
+     "energy": 6,
+     "max_energy": 6,
+     "element": "火",
+     "desc": "混沌中诞生的炎魔领主，以毁灭之力焚烧一切。",
+     "aux_drops": [
+      {
+       "id": "AU4",
+       "prob": 0.1
+      },
+      {
+       "id": "AU5",
+       "prob": 0.1
+      },
+      {
+       "id": "AU6",
+       "prob": 0.05
+      }
+     ],
+     "deck": [
+      "tr_fc110_boss_sulfuron_blast",
+      "tr_fc110_boss_sulfuron_blast",
+      "tr_fc110_boss_sulfuron_blast",
+      "tr_fc111_boss_sulfuron_heal",
+      "tr_fc111_boss_sulfuron_heal",
+      "tr_fc111_boss_sulfuron_heal",
+      "tr_fc112_boss_sulfuron_energy",
+      "tr_fc112_boss_sulfuron_energy",
+      "tr_fc113_boss_sulfuron_body",
+      "tr_fc113_boss_sulfuron_body",
+      "tr_fc113_boss_sulfuron_body",
+      "tr_fc91_fire_imp",
+      "tr_fc91_fire_imp",
+      "tr_fc92_flame_spirit",
+      "tr_fc92_flame_spirit",
+      "tr_fc93_fire_arrow",
+      "tr_fc93_fire_arrow",
+      "tr_fc97_flame_breath",
+      "tr_fc97_flame_breath",
+      "tr_fc99_fire_spike",
+      "tr_fc99_fire_spike",
+      "tr_fc100_inferno"
+     ]
+    }
+   ]
+  }
+ },
+ "card_templates": {
+  "tr01_sapling": {
+   "name": "小树苗",
+   "cost": 1,
+   "atk": 1,
+   "hp": 2,
+   "element": "地",
+   "fields": [
+    "植物"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr02_tree_elf": {
+   "name": "树精",
+   "cost": 2,
+   "atk": 2,
+   "hp": 3,
+   "element": "地",
+   "fields": [
+    "植物"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr03_forest_heal": {
+   "name": "森林治疗",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "自然"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T03",
+     "value": 2,
+     "desc": "入场：回复己方一名随机随从2点生命"
+    }
+   ]
+  },
+  "tr04_vine": {
+   "name": "藤蔓",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "植物"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr05_wood_shield": {
+   "name": "小木盾",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "防御"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 2,
+     "desc": "入场：使己方一名随机随从生命值+2"
+    }
+   ]
+  },
+  "tr06_life_drop": {
+   "name": "生命水滴",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "治愈"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T03",
+     "value": 3,
+     "desc": "入场：回复己方一名随机随从3点生命"
+    }
+   ]
+  },
+  "tr07_grass_ball": {
+   "name": "草球",
+   "cost": 1,
+   "atk": 1,
+   "hp": 1,
+   "element": "地",
+   "fields": [
+    "植物"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr08_leaf_blade": {
+   "name": "叶刃",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "自然"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr09_nature_whisper": {
+   "name": "自然低语",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "自然"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 1,
+     "desc": "入场：抽1张牌"
+    }
+   ]
+  },
+  "tr10_root_tangle": {
+   "name": "根须缠绕",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "植物"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T02",
+     "value": -1,
+     "desc": "入场：使敌方随机随从攻击力-1"
+    }
+   ]
+  },
+  "tr11_fog_deer": {
+   "name": "雾角鹿",
+   "cost": 3,
+   "atk": 3,
+   "hp": 4,
+   "element": "风",
+   "fields": [
+    "灵兽"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr12_fawn": {
+   "name": "小鹿",
+   "cost": 1,
+   "atk": 1,
+   "hp": 1,
+   "element": "风",
+   "fields": [
+    "灵兽"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr13_wind_seed": {
+   "name": "风之种",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "自然"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 1,
+     "desc": "入场：抽1张牌"
+    }
+   ]
+  },
+  "tr14_light_hoof": {
+   "name": "轻蹄",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "灵兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T03",
+     "value": 2,
+     "desc": "入场：使己方一名随机随从攻击力+2"
+    }
+   ]
+  },
+  "tr15_forest_hop": {
+   "name": "林间跳跃",
+   "cost": 1,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "灵兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 1,
+     "desc": "入场：召唤1个衍生物"
+    }
+   ]
+  },
+  "tr16_swift_wind": {
+   "name": "迅捷之风",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "灵兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T03",
+     "value": 1,
+     "desc": "入场：使己方一名随机随从攻击力+1"
+    }
+   ]
+  },
+  "tr17_antler_charge": {
+   "name": "鹿角冲撞",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "灵兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr18_leaf_cyclone": {
+   "name": "落叶旋风",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "自然"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "desc": "入场：对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr19_forest_friend": {
+   "name": "森林之友",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "自然"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T03",
+     "value": 3,
+     "desc": "入场：回复己方一名随机随从3点生命"
+    }
+   ]
+  },
+  "tr20_fog_breath": {
+   "name": "雾之呼吸",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "自然"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T03",
+     "value": 3,
+     "desc": "入场：回复己方一名随机随从3点生命"
+    }
+   ]
+  },
+  "tr21_mushroom": {
+   "name": "蘑菇人",
+   "cost": 3,
+   "atk": 2,
+   "hp": 4,
+   "element": "地",
+   "fields": [
+    "真菌"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr22_poison_spore": {
+   "name": "毒孢菇",
+   "cost": 4,
+   "atk": 1,
+   "hp": 1,
+   "element": "暗",
+   "fields": [
+    "真菌"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR06",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "被破坏时：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr23_heal_shroom": {
+   "name": "治愈菇",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "真菌"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T03",
+     "value": 3,
+     "desc": "入场：回复己方一名随机随从3点生命"
+    }
+   ]
+  },
+  "tr24_spore_powder": {
+   "name": "孢子粉",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "真菌"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr25_mushroom_shield": {
+   "name": "蘑菇盾",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "真菌"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 3,
+     "desc": "入场：使己方一名随机随从生命值+3"
+    }
+   ]
+  },
+  "tr26_poison_fog": {
+   "name": "毒雾",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "真菌"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "desc": "入场：对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr27_small_mushroom": {
+   "name": "小蘑菇",
+   "cost": 1,
+   "atk": 1,
+   "hp": 1,
+   "element": "地",
+   "fields": [
+    "真菌"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr28_mycelium": {
+   "name": "菌丝缠绕",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "真菌"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T02",
+     "value": -1,
+     "desc": "入场：使敌方随机随从攻击力-1"
+    }
+   ]
+  },
+  "tr29_mushroom_bomb": {
+   "name": "蘑菇炸弹",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "真菌"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr30_mushroom_king": {
+   "name": "蘑菇王",
+   "cost": 4,
+   "atk": 4,
+   "hp": 5,
+   "element": "地",
+   "fields": [
+    "真菌"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr31_grass_lizard": {
+   "name": "草蜥蜴",
+   "cost": 2,
+   "atk": 2,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "爬虫"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr32_lizard_tail": {
+   "name": "蜥蜴尾",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "爬虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr33_ember_bite": {
+   "name": "炽热撕咬",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "爬虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr34_lizard_scale": {
+   "name": "鳞甲",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "爬虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 3,
+     "desc": "入场：使己方一名随机随从生命值+3"
+    }
+   ]
+  },
+  "tr35_sun_bask": {
+   "name": "日光浴",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "爬虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T03",
+     "value": 3,
+     "desc": "入场：回复己方一名随机随从3点生命"
+    }
+   ]
+  },
+  "tr36_mantis_warrior": {
+   "name": "螳螂刀客",
+   "cost": 3,
+   "atk": 3,
+   "hp": 3,
+   "element": "风",
+   "fields": [
+    "昆虫"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr37_blade_strike": {
+   "name": "刀锋斩",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "昆虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr38_swift_wings": {
+   "name": "疾风翼",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "昆虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T03",
+     "value": 2,
+     "desc": "入场：使己方一名随机随从攻击力+2"
+    }
+   ]
+  },
+  "tr39_wind_cutter": {
+   "name": "风切",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "昆虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "desc": "入场：对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr40_mantis_prayer": {
+   "name": "螳螂祈",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "昆虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 1,
+     "desc": "入场：抽1张牌"
+    }
+   ]
+  },
+  "tr41_green_snake": {
+   "name": "青鳞蛇",
+   "cost": 3,
+   "atk": 2,
+   "hp": 5,
+   "element": "水",
+   "fields": [
+    "爬虫"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr42_venom_spit": {
+   "name": "毒液喷吐",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "爬虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr43_snake_shed": {
+   "name": "蛇蜕",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "爬虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T03",
+     "value": 4,
+     "desc": "入场：回复己方一名随机随从4点生命"
+    }
+   ]
+  },
+  "tr44_coil_bind": {
+   "name": "蛇缠",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "爬虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T02",
+     "value": -1,
+     "desc": "入场：使敌方随机随从攻击力-1"
+    }
+   ]
+  },
+  "tr45_water_veil": {
+   "name": "水幕",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "爬虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 3,
+     "desc": "入场：使己方一名随机随从生命值+3"
+    }
+   ]
+  },
+  "tr46_rock_golem": {
+   "name": "岩石傀儡",
+   "cost": 3,
+   "atk": 2,
+   "hp": 5,
+   "element": "地",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr47_boulder_throw": {
+   "name": "投石",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr48_stone_armor": {
+   "name": "石肤术",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 3,
+     "desc": "入场：使己方一名随机随从生命值+3"
+    }
+   ]
+  },
+  "tr49_rock_shield": {
+   "name": "岩盾",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr50_quake": {
+   "name": "震地",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "desc": "入场：对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr51_lava_worm": {
+   "name": "熔岩蠕虫",
+   "cost": 3,
+   "atk": 4,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr52_magma_spit": {
+   "name": "岩浆喷吐",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr53_heat_wave": {
+   "name": "热浪",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "desc": "入场：对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr54_lava_burst": {
+   "name": "熔岩爆裂",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr55_molten_skin": {
+   "name": "熔岩甲",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T03",
+     "value": 2,
+     "desc": "入场：使己方一名随机随从攻击力+2"
+    }
+   ]
+  },
+  "tr56_dark_scorpion": {
+   "name": "暗晶蝎",
+   "cost": 3,
+   "atk": 3,
+   "hp": 4,
+   "element": "暗",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr57_poison_sting": {
+   "name": "毒刺",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr58_dark_curse": {
+   "name": "暗之咒",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T02",
+     "value": -1,
+     "desc": "入场：使敌方随机随从攻击力-1"
+    }
+   ]
+  },
+  "tr59_crystal_shard": {
+   "name": "晶刺",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr60_darkness_veil": {
+   "name": "暗幕",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 1,
+     "desc": "入场：抽1张牌"
+    }
+   ]
+  },
+  "tr61_water_elemental": {
+   "name": "水元素",
+   "cost": 3,
+   "atk": 2,
+   "hp": 5,
+   "element": "水",
+   "fields": [
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr62_water_heal": {
+   "name": "水疗术",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T03",
+     "value": 4,
+     "desc": "入场：回复己方一名随机随从4点生命"
+    }
+   ]
+  },
+  "tr63_ice_shard": {
+   "name": "冰锥",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr64_water_barrier": {
+   "name": "水之屏障",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 4,
+     "desc": "入场：使己方一名随机随从生命值+4"
+    }
+   ]
+  },
+  "tr65_tidal_wave": {
+   "name": "潮汐",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T06",
+     "value": 2,
+     "desc": "入场：回复己方全体单位2点生命"
+    }
+   ]
+  },
+  "tr66_wind_fairy": {
+   "name": "风灵蝶",
+   "cost": 3,
+   "atk": 4,
+   "hp": 3,
+   "element": "风",
+   "fields": [
+    "精灵"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr67_gust": {
+   "name": "疾风",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "精灵"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr68_wind_draw": {
+   "name": "风之低语",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "精灵"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 1,
+     "desc": "入场：抽1张牌"
+    }
+   ]
+  },
+  "tr69_cyclone": {
+   "name": "旋风",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "精灵"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "desc": "入场：对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr70_wind_blade": {
+   "name": "风刃",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "精灵"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr71_light_prism": {
+   "name": "光棱镜",
+   "cost": 3,
+   "atk": 3,
+   "hp": 4,
+   "element": "光",
+   "fields": [
+    "灵体"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr72_light_beam": {
+   "name": "光束",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "光",
+   "fields": [
+    "灵体"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr73_light_heal": {
+   "name": "圣光治愈",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "光",
+   "fields": [
+    "灵体"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T03",
+     "value": 4,
+     "desc": "入场：回复己方一名随机随从4点生命"
+    }
+   ]
+  },
+  "tr74_light_buff": {
+   "name": "光之祝福",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "光",
+   "fields": [
+    "灵体"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A23",
+     "target": "T03",
+     "value": 2,
+     "desc": "入场：使己方一名随机随从攻击力+2、生命值+2"
+    }
+   ]
+  },
+  "tr75_light_ray": {
+   "name": "光射线",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "光",
+   "fields": [
+    "灵体"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr76_rock_giant": {
+   "name": "岩石巨人",
+   "cost": 4,
+   "atk": 3,
+   "hp": 6,
+   "element": "地",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr77_boulder_toss": {
+   "name": "巨石投掷",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr78_granite_armor": {
+   "name": "花岗岩甲",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 4,
+     "desc": "入场：使己方一名随机随从生命值+4"
+    }
+   ]
+  },
+  "tr79_earth_split": {
+   "name": "地裂",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "desc": "入场：对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr80_landslide": {
+   "name": "山崩",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr81_shadow_crow": {
+   "name": "暗影鸦",
+   "cost": 3,
+   "atk": 4,
+   "hp": 3,
+   "element": "暗",
+   "fields": [
+    "鸟兽"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr82_dark_feather": {
+   "name": "暗羽",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "鸟兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr83_night_beak": {
+   "name": "夜喙",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "鸟兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr84_shadow_ambush": {
+   "name": "暗影突袭",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "鸟兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T03",
+     "value": 2,
+     "desc": "入场：使己方一名随机随从攻击力+2"
+    }
+   ]
+  },
+  "tr85_dark_curtain": {
+   "name": "暗幕",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "鸟兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 1,
+     "desc": "入场：抽1张牌"
+    }
+   ]
+  },
+  "tr86_storm_eagle": {
+   "name": "风暴鹰",
+   "cost": 4,
+   "atk": 4,
+   "hp": 4,
+   "element": "风",
+   "fields": [
+    "鸟兽"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr87_wind_slash": {
+   "name": "风刃斩",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "鸟兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr88_storm_blast": {
+   "name": "暴风冲击",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "鸟兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "desc": "入场：对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr89_gale_step": {
+   "name": "疾风步",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "鸟兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T03",
+     "value": 2,
+     "desc": "入场：使己方一名随机随从攻击力+2"
+    }
+   ]
+  },
+  "tr90_wind_whisper": {
+   "name": "风语",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "鸟兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 1,
+     "desc": "入场：抽1张牌"
+    }
+   ]
+  },
+  "tr91_cave_spider": {
+   "name": "暗穴蜘蛛",
+   "cost": 4,
+   "atk": 3,
+   "hp": 5,
+   "element": "暗",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr92_web_trap": {
+   "name": "蛛网陷阱",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T02",
+     "value": -1,
+     "desc": "入场：使敌方随机随从攻击力-1"
+    }
+   ]
+  },
+  "tr93_venom_bite": {
+   "name": "毒咬",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr94_dark_weave": {
+   "name": "暗织",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "desc": "入场：对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr95_spider_swarm": {
+   "name": "蜘蛛群",
+   "cost": 1,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 1,
+     "desc": "入场：召唤1个衍生物"
+    }
+   ]
+  },
+  "tr96_lava_turtle": {
+   "name": "熔岩龟",
+   "cost": 4,
+   "atk": 3,
+   "hp": 6,
+   "element": "火",
+   "fields": [
+    "龟"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr97_flame_breath": {
+   "name": "火焰吐息",
+   "cost": 6,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "龟"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 3,
+     "desc": "入场：对所有敌方单位造成3点伤害"
+    }
+   ]
+  },
+  "tr98_magma_shell": {
+   "name": "熔岩壳",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "龟"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 4,
+     "desc": "入场：使己方一名随机随从生命值+4"
+    }
+   ]
+  },
+  "tr99_fire_spike": {
+   "name": "火刺",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "龟"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr100_inferno": {
+   "name": "地狱火",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "龟"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr101_light_moth": {
+   "name": "幻光蝶",
+   "cost": 4,
+   "atk": 3,
+   "hp": 5,
+   "element": "光",
+   "fields": [
+    "精灵"
+   ],
+   "quality": "标准",
+   "star": 2
+  },
+  "tr102_light_dust": {
+   "name": "光尘",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "光",
+   "fields": [
+    "精灵"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T03",
+     "value": 4,
+     "desc": "入场：回复己方一名随机随从4点生命"
+    }
+   ]
+  },
+  "tr103_moon_ray": {
+   "name": "月光射线",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "光",
+   "fields": [
+    "精灵"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr104_light_boost": {
+   "name": "光之强化",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "光",
+   "fields": [
+    "精灵"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A23",
+     "target": "T03",
+     "value": 2,
+     "desc": "入场：使己方一名随机随从攻击力+2、生命值+2"
+    }
+   ]
+  },
+  "tr105_light_heal_all": {
+   "name": "圣光普照",
+   "cost": 5,
+   "atk": 0,
+   "hp": 0,
+   "element": "光",
+   "fields": [
+    "精灵"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T06",
+     "value": 3,
+     "desc": "入场：回复己方全体单位3点生命"
+    }
+   ]
+  },
+  "tr106_boss_ancient": {
+   "name": "远古守卫",
+   "cost": 5,
+   "atk": 4,
+   "hp": 6,
+   "element": "地",
+   "fields": [
+    "远古"
+   ],
+   "quality": "卓越",
+   "star": 3
+  },
+  "tr107_boss_flame": {
+   "name": "灭世烈焰",
+   "cost": 7,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "远古"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 4,
+     "desc": "入场：对所有敌方单位造成4点伤害"
+    }
+   ]
+  },
+  "tr108_boss_storm": {
+   "name": "风暴之眼",
+   "cost": 6,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "远古"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 6,
+     "desc": "入场：对敌方随机单体造成6点伤害"
+    }
+   ]
+  },
+  "tr109_boss_dark": {
+   "name": "暗影吞噬",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "远古"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T03",
+     "value": 5,
+     "desc": "入场：回复己方一名随机随从5点生命"
+    }
+   ]
+  },
+  "tr110_boss_bless": {
+   "name": "远古祝福",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "光",
+   "fields": [
+    "远古"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A23",
+     "target": "T03",
+     "value": 3,
+     "desc": "入场：使己方一名随机随从攻击力+3、生命值+3"
+    }
+   ]
+  },
+  "tr_fc01_fire_elemental": {
+   "name": "熔岩元素",
+   "cost": 6,
+   "atk": 4,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 3,
+     "desc": "入场：对敌方随机单体造成3点伤害"
+    }
+   ]
+  },
+  "tr_fc02_fire_blast": {
+   "name": "烈焰爆发",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "desc": "入场：对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr_fc03_ember_shot": {
+   "name": "余烬射击",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 3,
+     "desc": "入场：支付3生命，对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr_fc04_flame_servant": {
+   "name": "火焰仆从",
+   "cost": 2,
+   "atk": 2,
+   "hp": 2,
+   "element": "火",
+   "fields": [
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc11_volcanic_rage": {
+   "name": "火山之怒",
+   "cost": 5,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 5,
+     "desc": "入场：对敌方随机单体造成5点伤害"
+    }
+   ]
+  },
+  "tr_fc12_lava_imp": {
+   "name": "熔岩小鬼",
+   "cost": 1,
+   "atk": 2,
+   "hp": 1,
+   "element": "火",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc05_dominator": {
+   "name": "支配者",
+   "cost": 8,
+   "atk": 3,
+   "hp": 3,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A31",
+     "target": "T02",
+     "desc": "入场：夺取敌方1个随机随从的控制权（一回合）"
+    }
+   ]
+  },
+  "tr_fc06_slave_brand": {
+   "name": "奴役烙印",
+   "cost": 6,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A32",
+     "target": "T02",
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 5,
+     "desc": "入场：支付5生命，永久夺取敌方1个随机随从的控制权"
+    }
+   ]
+  },
+  "tr_fc07_lava_guard": {
+   "name": "熔岩守卫",
+   "cost": 3,
+   "atk": 3,
+   "hp": 4,
+   "element": "火",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc08_dark_pact": {
+   "name": "暗之契约",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T03",
+     "value": 2,
+     "desc": "入场：使己方一名随机随从攻击力+2"
+    }
+   ]
+  },
+  "tr_fc13_soul_offering": {
+   "name": "灵魂献祭",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 2,
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 4,
+     "desc": "入场：支付4生命，抽2张牌"
+    }
+   ]
+  },
+  "tr_fc14_dominator_guard": {
+   "name": "支配守卫",
+   "cost": 4,
+   "atk": 4,
+   "hp": 5,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc09_lava_scorpion": {
+   "name": "熔岩毒蝎",
+   "cost": 3,
+   "atk": 4,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc10_burn_sting": {
+   "name": "灼烧毒刺",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 1,
+     "desc": "入场：对敌方随机单体造成1点伤害"
+    }
+   ]
+  },
+  "tr_fc15_scorching_trail": {
+   "name": "焦灼轨迹",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 1,
+     "desc": "召唤时：对敌方随机单体造成1点伤害"
+    }
+   ],
+   "desc": "召唤时：对敌方随机单体造成1点伤害"
+  },
+  "tr_fc16_venom_dot": {
+   "name": "持续灼毒",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 1,
+     "desc": "召唤时：对所有敌方单位造成1点伤害"
+    }
+   ],
+   "desc": "召唤时：对所有敌方单位造成1点伤害"
+  },
+  "tr_fc17_poison_fumes": {
+   "name": "毒雾",
+   "cost": 1,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T02",
+     "value": -1,
+     "desc": "入场：使敌方随机随从攻击力-1"
+    }
+   ]
+  },
+  "tr_fc18_scorpion_armor": {
+   "name": "蝎壳",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 3,
+     "desc": "入场：使己方一名随机随从生命值+3"
+    }
+   ]
+  },
+  "tr_fc19_heat_crystal": {
+   "name": "炎晶蛇",
+   "cost": 7,
+   "atk": 3,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "蛇"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A03",
+     "target": "T02",
+     "desc": "入场：破坏敌方1个随机随从"
+    }
+   ]
+  },
+  "tr_fc20_burning_coil": {
+   "name": "灼热缠绕",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "蛇"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A06",
+     "target": "T02",
+     "desc": "入场：将敌方1个随机随从弹回手牌"
+    }
+   ]
+  },
+  "tr_fc21_magma_fang_p": {
+   "name": "熔岩毒牙",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "蛇"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A07",
+     "target": "T02",
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 3,
+     "desc": "入场：支付3生命，无效破坏敌方1个随机随从"
+    }
+   ]
+  },
+  "tr_fc22_snake_scale": {
+   "name": "蛇鳞甲",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "蛇"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 3,
+     "desc": "入场：使己方一名随机随从生命值+3"
+    }
+   ]
+  },
+  "tr_fc23_lava_cobra": {
+   "name": "熔岩眼镜蛇",
+   "cost": 4,
+   "atk": 4,
+   "hp": 4,
+   "element": "火",
+   "fields": [
+    "蛇"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc24_ash_adder": {
+   "name": "灰烬蝰蛇",
+   "cost": 2,
+   "atk": 2,
+   "hp": 2,
+   "element": "火",
+   "fields": [
+    "蛇"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc25_lava_hound": {
+   "name": "熔岩猎犬",
+   "cost": 3,
+   "atk": 4,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "兽"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc26_alpha_hound": {
+   "name": "头狼",
+   "cost": 6,
+   "atk": 3,
+   "hp": 4,
+   "element": "火",
+   "fields": [
+    "兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T05",
+     "value": 1,
+     "desc": "入场：使己方全体随从攻击力+1"
+    }
+   ]
+  },
+  "tr_fc27_hunt_call": {
+   "name": "狩猎号令",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 1,
+     "desc": "入场：抽1张牌"
+    }
+   ]
+  },
+  "tr_fc28_flame_howl": {
+   "name": "火焰嚎叫",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A23",
+     "target": "T05",
+     "value": 1,
+     "desc": "入场：使己方全体随从攻击力+1、生命值+1（本回合）"
+    }
+   ]
+  },
+  "tr_fc29_magma_pup": {
+   "name": "熔岩幼犬",
+   "cost": 2,
+   "atk": 2,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "兽"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc30_fire_fang": {
+   "name": "火牙",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "兽"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "入场：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr_fc31_fire_astrologer": {
+   "name": "火焰占星师",
+   "cost": 3,
+   "atk": 3,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc32_astral_fire": {
+   "name": "星火燎原",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "desc": "入场：对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr_fc33_doom_fire": {
+   "name": "终末之火",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 5,
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 3,
+     "desc": "入场：支付3生命，对敌方随机单体造成5点伤害"
+    }
+   ]
+  },
+  "tr_fc34_starfall": {
+   "name": "流星火雨",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 3,
+     "desc": "入场：支付3生命，对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr_fc35_fire_barrier": {
+   "name": "火焰屏障",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T05",
+     "value": 2,
+     "desc": "入场：使己方全体随从生命值+2"
+    }
+   ]
+  },
+  "tr_fc36_fire_spirit": {
+   "name": "火精灵",
+   "cost": 2,
+   "atk": 2,
+   "hp": 2,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc37_ember_guard": {
+   "name": "余烬守卫",
+   "cost": 4,
+   "atk": 3,
+   "hp": 5,
+   "element": "火",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc1_lava_golem": {
+   "name": "熔岩巨像",
+   "cost": 4,
+   "atk": 4,
+   "hp": 5,
+   "element": "火",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc2_lava_bulwark": {
+   "name": "熔岩壁垒",
+   "cost": 5,
+   "atk": 4,
+   "hp": 6,
+   "element": "火",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc3_lava_shield": {
+   "name": "熔岩盾卫",
+   "cost": 4,
+   "atk": 3,
+   "hp": 5,
+   "element": "火",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc4_earth_heal": {
+   "name": "大地治愈",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "自然"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T05",
+     "value": 2,
+     "desc": "入场：使己方全体恢复2点生命"
+    }
+   ]
+  },
+  "tr_fc5_ore_heal": {
+   "name": "矿石愈合",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "自然"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T03",
+     "value": 4,
+     "desc": "入场：使己方一名随机随从恢复4点生命"
+    }
+   ]
+  },
+  "tr_fc6_lava_spring": {
+   "name": "熔岩温泉",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "水",
+   "fields": [
+    "自然"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A02",
+     "target": "T05",
+     "value": 3,
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 4,
+     "desc": "入场：支付4生命，使己方全体恢复3点生命"
+    }
+   ]
+  },
+  "tr_fc7_rock_shield": {
+   "name": "岩石护盾",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 4,
+     "desc": "入场：使己方一名随机随从生命值+4"
+    }
+   ]
+  },
+  "tr_fc8_lava_core": {
+   "name": "熔岩核心",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T05",
+     "value": 2,
+     "desc": "入场：使己方全体随从生命值+2"
+    }
+   ]
+  },
+  "tr_fc9_flame_sorcerer": {
+   "name": "火焰咒术师",
+   "cost": 3,
+   "atk": 3,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc10_flame_tongue": {
+   "name": "火舌巫师",
+   "cost": 2,
+   "atk": 2,
+   "hp": 2,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc11_apprentice": {
+   "name": "咒术学徒",
+   "cost": 2,
+   "atk": 2,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc12_power_swap": {
+   "name": "力量转换",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "风",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A25",
+     "target": "T02",
+     "desc": "入场：交换敌方1个随机随从的攻击力和生命值"
+    }
+   ]
+  },
+  "tr_fc13_flame_impact": {
+   "name": "火焰冲击",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 3,
+     "desc": "入场：对敌方随机单体造成3点伤害"
+    }
+   ]
+  },
+  "tr_fc14_heat_wave_s": {
+   "name": "灼热波动",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "desc": "入场：对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr_fc15_weakness_curse": {
+   "name": "虚弱诅咒",
+   "cost": 1,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T02",
+     "value": -2,
+     "desc": "入场：使敌方随机随从攻击力-2"
+    }
+   ]
+  },
+  "tr_fc16_spell_barrage": {
+   "name": "咒术连弹",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 3,
+     "desc": "入场：支付3生命，对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr_fc17_obsidian_golem": {
+   "name": "黑曜石傀儡",
+   "cost": 5,
+   "atk": 5,
+   "hp": 5,
+   "element": "暗",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc18_obsidian_shard": {
+   "name": "黑曜石碎片",
+   "cost": 3,
+   "atk": 3,
+   "hp": 4,
+   "element": "暗",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc19_shadow_statue": {
+   "name": "暗影石像",
+   "cost": 3,
+   "atk": 4,
+   "hp": 3,
+   "element": "暗",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc20_silence_seal": {
+   "name": "沉默之印",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "光",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A33",
+     "target": "T02",
+     "desc": "入场：禁用敌方1个随机随从的效果（一回合）"
+    }
+   ]
+  },
+  "tr_fc21_energy_suppress": {
+   "name": "能量压制",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "光",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A33",
+     "target": "T13",
+     "desc": "入场：禁用对方攻击最高随从的效果（一回合）"
+    }
+   ]
+  },
+  "tr_fc22_obsidian_spike": {
+   "name": "黑曜尖刺",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "入场：对敌方随机单体造成4点伤害"
+    }
+   ]
+  },
+  "tr_fc23_shadow_barrier": {
+   "name": "暗影屏障",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T05",
+     "value": 3,
+     "desc": "入场：使己方全体随从生命值+3"
+    }
+   ]
+  },
+  "tr_fc24_obsidian_blast": {
+   "name": "黑曜爆破",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 3,
+     "desc": "入场：支付3生命，对所有敌方单位造成2点伤害"
+    }
+   ]
+  },
+  "tr_fc38_lava_jelly": {
+   "name": "熔岩水母",
+   "cost": 3,
+   "atk": 3,
+   "hp": 4,
+   "element": "火",
+   "fields": [
+    "水",
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc39_lava_float": {
+   "name": "熔岩浮游",
+   "cost": 2,
+   "atk": 2,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "水",
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc40_lava_bubble": {
+   "name": "熔岩泡",
+   "cost": 1,
+   "atk": 1,
+   "hp": 2,
+   "element": "火",
+   "fields": [
+    "水",
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc41_fiery_counter": {
+   "name": "炽热反击",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "水",
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "召唤时：对敌方随机单体造成2点伤害"
+    }
+   ],
+   "desc": "召唤时：对敌方随机单体造成2点伤害"
+  },
+  "tr_fc42_lava_splash": {
+   "name": "熔岩溅射",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "水",
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 1,
+     "desc": "召唤时：对所有敌方单位造成1点伤害"
+    }
+   ],
+   "desc": "召唤时：对所有敌方单位造成1点伤害"
+  },
+  "tr_fc43_flame_shield": {
+   "name": "火焰护盾",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "水",
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 2,
+     "desc": "召唤时：使己方一名随机随从生命值+2"
+    }
+   ],
+   "desc": "召唤时：使己方一名随机随从生命值+2"
+  },
+  "tr_fc44_lava_geyser": {
+   "name": "熔岩喷涌",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "水",
+    "元素"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 3,
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 3,
+     "desc": "召唤时：对敌方随机单体造成3点伤害"
+    }
+   ],
+   "desc": "召唤时：对敌方随机单体造成3点伤害"
+  },
+  "tr_fc45_lava_drake": {
+   "name": "熔岩飞龙",
+   "cost": 4,
+   "atk": 5,
+   "hp": 4,
+   "element": "火",
+   "fields": [
+    "龙"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc46_lava_ptera": {
+   "name": "熔岩翼龙",
+   "cost": 3,
+   "atk": 4,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "龙"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc47_lava_whelp": {
+   "name": "熔岩幼龙",
+   "cost": 2,
+   "atk": 3,
+   "hp": 2,
+   "element": "火",
+   "fields": [
+    "龙"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc48_flame_breath_v": {
+   "name": "烈焰吐息",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "龙"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "desc": "召唤时：对所有敌方单位造成2点伤害"
+    }
+   ],
+   "desc": "召唤时：对所有敌方单位造成2点伤害"
+  },
+  "tr_fc49_dragon_aura": {
+   "name": "龙威",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "龙"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T05",
+     "value": 1,
+     "desc": "召唤时：使己方全体随从攻击力+1"
+    }
+   ],
+   "desc": "召唤时：使己方全体随从攻击力+1"
+  },
+  "tr_fc50_dragon_scale": {
+   "name": "龙鳞",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "龙"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 3,
+     "desc": "召唤时：使己方一名随机随从生命值+3"
+    }
+   ],
+   "desc": "召唤时：使己方一名随机随从生命值+3"
+  },
+  "tr_fc51_dragon_burn": {
+   "name": "龙焰灼烧",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "龙"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 3,
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 3,
+     "desc": "召唤时：对敌方随机单体造成3点伤害"
+    }
+   ],
+   "desc": "召唤时：对敌方随机单体造成3点伤害"
+  },
+  "tr_fc52_magma_worm": {
+   "name": "岩浆蠕虫",
+   "cost": 4,
+   "atk": 4,
+   "hp": 5,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc53_magma_larva": {
+   "name": "岩浆幼体",
+   "cost": 3,
+   "atk": 3,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc54_lava_worm": {
+   "name": "熔岩虫",
+   "cost": 3,
+   "atk": 2,
+   "hp": 4,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc55_burrow_strike": {
+   "name": "地底突袭",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 5,
+     "conditions": [
+      {
+       "id": "C02",
+       "value": 3,
+       "operator": ">="
+      }
+     ],
+     "desc": "入场：若己方场上怪兽≥3，对敌方随机单体造成5点伤害"
+    }
+   ]
+  },
+  "tr_fc56_magma_erupt": {
+   "name": "岩浆爆发",
+   "cost": 1,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 3,
+     "conditions": [
+      {
+       "id": "C04",
+       "value": 50,
+       "operator": "<="
+      }
+     ],
+     "desc": "入场：若己方生命值≤50%，对所有敌方单位造成3点伤害"
+    }
+   ]
+  },
+  "tr_fc57_energy_drain": {
+   "name": "能量汲取",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 2,
+     "conditions": [
+      {
+       "id": "C07",
+       "value": 3,
+       "operator": "<="
+      }
+     ],
+     "desc": "入场：若己方手牌数≤3，抽2张牌"
+    }
+   ]
+  },
+  "tr_fc58_lava_drill": {
+   "name": "熔岩钻刺",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "虫"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 3,
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 3,
+     "desc": "入场：支付3生命，对敌方随机单体造成3点伤害"
+    }
+   ]
+  },
+  "tr_fc59_hell_hound": {
+   "name": "地狱犬",
+   "cost": 5,
+   "atk": 5,
+   "hp": 5,
+   "element": "火",
+   "fields": [
+    "兽",
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc60_two_head": {
+   "name": "双头犬",
+   "cost": 4,
+   "atk": 4,
+   "hp": 4,
+   "element": "火",
+   "fields": [
+    "兽",
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc61_puppy": {
+   "name": "幼犬",
+   "cost": 2,
+   "atk": 2,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "兽",
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc62_hell_flame": {
+   "name": "地狱烈焰",
+   "cost": 5,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 3,
+     "constraints": [
+      "CO04"
+     ],
+     "CO04": 1,
+     "desc": "入场：舍弃1张手牌，对所有敌方单位造成3点伤害"
+    }
+   ]
+  },
+  "tr_fc63_demon_pact": {
+   "name": "恶魔契约",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T05",
+     "value": 2,
+     "constraints": [
+      "CO04"
+     ],
+     "CO04": 2,
+     "desc": "入场：舍弃2张手牌，使己方全体攻击力+2"
+    }
+   ]
+  },
+  "tr_fc64_abyss_call": {
+   "name": "深渊呼唤",
+   "cost": 5,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 3,
+     "constraints": [
+      "CO04"
+     ],
+     "CO04": 1,
+     "desc": "入场：舍弃1张手牌，抽3张牌"
+    }
+   ]
+  },
+  "tr_fc65_hell_bite": {
+   "name": "地狱犬之咬",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "constraints": [
+      "CO04"
+     ],
+     "CO04": 1,
+     "desc": "入场：舍弃1张手牌，对敌方单体造成4点伤害"
+    }
+   ]
+  },
+  "tr_fc66_flame_shaman": {
+   "name": "火焰萨满",
+   "cost": 4,
+   "atk": 4,
+   "hp": 4,
+   "element": "火",
+   "fields": [
+    "魔法使",
+    "兽"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc67_shaman_priest": {
+   "name": "萨满祭司",
+   "cost": 3,
+   "atk": 3,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "魔法使",
+    "兽"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc68_fire_totem": {
+   "name": "火焰图腾",
+   "cost": 3,
+   "atk": 2,
+   "hp": 4,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc69_fire_storm": {
+   "name": "火焰风暴",
+   "cost": 6,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 4,
+     "constraints": [
+      "CO05"
+     ],
+     "CO05": 2,
+     "desc": "入场：消耗2能量，对所有敌方单位造成4点伤害"
+    }
+   ]
+  },
+  "tr_fc70_element_power": {
+   "name": "元素之力",
+   "cost": 7,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T05",
+     "value": 3,
+     "constraints": [
+      "CO05"
+     ],
+     "CO05": 3,
+     "desc": "入场：消耗3能量，使己方全体攻击力+3"
+    },
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T05",
+     "value": 3,
+     "desc": "入场：使己方全体生命值+3"
+    }
+   ]
+  },
+  "tr_fc71_energy_infusion": {
+   "name": "能量灌注",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T05",
+     "value": 4,
+     "constraints": [
+      "CO05"
+     ],
+     "CO05": 2,
+     "desc": "入场：消耗2能量，使己方全体生命值+4"
+    }
+   ]
+  },
+  "tr_fc72_shaman_rage": {
+   "name": "萨满之怒",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "魔法使"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 5,
+     "constraints": [
+      "CO05"
+     ],
+     "CO05": 1,
+     "desc": "入场：消耗1能量，对敌方单体造成5点伤害"
+    }
+   ]
+  },
+  "tr_fc73_lava_ghost": {
+   "name": "熔岩幽灵",
+   "cost": 4,
+   "atk": 4,
+   "hp": 4,
+   "element": "火",
+   "fields": [
+    "幽灵",
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc74_fire_spirit": {
+   "name": "火焰之灵",
+   "cost": 3,
+   "atk": 3,
+   "hp": 3,
+   "element": "火",
+   "fields": [
+    "幽灵",
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc75_lava_essence": {
+   "name": "熔岩精魄",
+   "cost": 3,
+   "atk": 3,
+   "hp": 4,
+   "element": "火",
+   "fields": [
+    "幽灵",
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc76_soul_drain": {
+   "name": "灵魂汲取",
+   "cost": 1,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "幽灵",
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "conditions": [
+      {
+       "id": "C06",
+       "value": 10,
+       "operator": ">="
+      }
+     ],
+     "desc": "入场：若己方生命值比对方多≥10，造成4点伤害"
+    }
+   ]
+  },
+  "tr_fc77_energy_burst": {
+   "name": "能量爆发",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "幽灵",
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 3,
+     "conditions": [
+      {
+       "id": "C08",
+       "value": 3,
+       "operator": ">="
+      }
+     ],
+     "desc": "入场：若己方能量≥3，对所有敌方造成3点伤害"
+    }
+   ]
+  },
+  "tr_fc78_demon_realm": {
+   "name": "恶魔领域",
+   "cost": 6,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "幽灵",
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T05",
+     "value": 2,
+     "conditions": [
+      {
+       "id": "C01",
+       "field": "恶魔"
+      }
+     ],
+     "desc": "入场：若场上存在恶魔字段"
+    },
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T05",
+     "value": 2,
+     "desc": "入场：使己方全体攻+2、命+2"
+    }
+   ]
+  },
+  "tr_fc79_ghost_burn": {
+   "name": "幽灵灼烧",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "幽灵",
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "constraints": [
+      "CO04"
+     ],
+     "CO04": 1,
+     "desc": "入场：舍弃1张手牌，对敌方单体造成2点伤害"
+    }
+   ]
+  },
+  "tr_fc80_necromancer": {
+   "name": "亡灵炼金师",
+   "cost": 4,
+   "atk": 4,
+   "hp": 5,
+   "element": "暗",
+   "fields": [
+    "魔法使",
+    "不死"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc81_skeleton_mage": {
+   "name": "骷髅法师",
+   "cost": 3,
+   "atk": 3,
+   "hp": 4,
+   "element": "暗",
+   "fields": [
+    "不死"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc82_undead_soldier": {
+   "name": "亡灵士兵",
+   "cost": 3,
+   "atk": 3,
+   "hp": 3,
+   "element": "暗",
+   "fields": [
+    "不死"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc83_undead_revive": {
+   "name": "亡者复苏",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "不死"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR06",
+     "action": "A02",
+     "target": "T03",
+     "value": 4,
+     "desc": "被送去墓地时：使己方一名随机随从恢复4点生命"
+    }
+   ]
+  },
+  "tr_fc84_grave_explosion": {
+   "name": "墓地爆发",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "不死"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 3,
+     "conditions": [
+      {
+       "id": "C09",
+       "value": 5,
+       "operator": ">="
+      }
+     ],
+     "desc": "入场：若己方墓地≥5张，对所有敌方造成3点伤害"
+    }
+   ]
+  },
+  "tr_fc85_soul_reap": {
+   "name": "灵魂收割",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "不死"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR06",
+     "action": "A01",
+     "target": "T02",
+     "value": 2,
+     "desc": "被送去墓地时：对敌方随机单体造成2点伤害"
+    }
+   ]
+  },
+  "tr_fc86_bone_sacrifice": {
+   "name": "骸骨献祭",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "不死"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T05",
+     "value": 2,
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 4,
+     "CO04": 1,
+     "desc": "入场：支付4生命，使己方全体攻击力+2"
+    }
+   ]
+  },
+  "tr_fc87_abyss_raider": {
+   "name": "深渊掠夺者",
+   "cost": 5,
+   "atk": 5,
+   "hp": 5,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc88_abyss_stalker": {
+   "name": "深渊潜伏者",
+   "cost": 4,
+   "atk": 4,
+   "hp": 4,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc89_abyss_eye": {
+   "name": "深渊魔眼",
+   "cost": 4,
+   "atk": 3,
+   "hp": 5,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc90_deck_erode": {
+   "name": "卡组侵蚀",
+   "cost": 1,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 5,
+     "conditions": [
+      {
+       "id": "C12",
+       "value": 15,
+       "operator": "<="
+      }
+     ],
+     "desc": "入场：若对方卡组≤15张，造成5点伤害"
+    }
+   ]
+  },
+  "tr_fc91_abyss_draw": {
+   "name": "深渊抽吸",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A09",
+     "target": "T03",
+     "value": 4,
+     "conditions": [
+      {
+       "id": "C12",
+       "value": 10,
+       "operator": ">="
+      }
+     ],
+     "desc": "入场：若己方卡组≥10张，抽4张牌"
+    }
+   ]
+  },
+  "tr_fc92_grave_plunder": {
+   "name": "墓地掠夺",
+   "cost": 1,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 2,
+     "conditions": [
+      {
+       "id": "C09",
+       "value": 8,
+       "operator": ">="
+      }
+     ],
+     "desc": "入场：若己方墓地≥8张，对所有敌方造成2点伤害"
+    }
+   ]
+  },
+  "tr_fc93_shadow_strike": {
+   "name": "暗影突袭",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 3,
+     "constraints": [
+      "CO05"
+     ],
+     "CO05": 3,
+     "CO03": 3,
+     "desc": "入场：消耗3能量，对敌方单体造成3点伤害"
+    }
+   ]
+  },
+  "tr_fc94_shadow_lord": {
+   "name": "暗影支配者",
+   "cost": 5,
+   "atk": 5,
+   "hp": 6,
+   "element": "暗",
+   "fields": [
+    "恶魔",
+    "暗"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc95_shadow_fiend": {
+   "name": "暗影魔",
+   "cost": 4,
+   "atk": 4,
+   "hp": 4,
+   "element": "暗",
+   "fields": [
+    "恶魔",
+    "暗"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc96_shadow_imp": {
+   "name": "暗影小鬼",
+   "cost": 3,
+   "atk": 3,
+   "hp": 3,
+   "element": "暗",
+   "fields": [
+    "恶魔",
+    "暗"
+   ],
+   "quality": "标准",
+   "star": 1
+  },
+  "tr_fc97_dominate_touch": {
+   "name": "支配之触",
+   "cost": 5,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "恶魔",
+    "暗"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A31",
+     "target": "T02",
+     "desc": "入场：夺取敌方1个随机随从的控制权（一回合）"
+    }
+   ]
+  },
+  "tr_fc98_eternal_bondage": {
+   "name": "永久奴役",
+   "cost": 6,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "恶魔",
+    "暗"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A32",
+     "target": "T02",
+     "constraints": [
+      "CO03"
+     ],
+     "CO03": 5,
+     "desc": "入场：支付5生命，永久夺取敌方1个随机随从的控制权"
+    }
+   ]
+  },
+  "tr_fc99_chaos_impact": {
+   "name": "异动冲击",
+   "cost": 5,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "恶魔",
+    "暗"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 3,
+     "conditions": [
+      {
+       "id": "C16",
+       "value": 1,
+       "operator": ">="
+      }
+     ],
+     "desc": "入场：若场上有控制权异动的卡，对所有敌方造成3点伤害"
+    }
+   ]
+  },
+  "tr_fc100_shadow_dominate": {
+   "name": "暗影支配",
+   "cost": 8,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "恶魔",
+    "暗"
+   ],
+   "quality": "标准",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T05",
+     "value": 3,
+     "conditions": [
+      {
+       "id": "C16",
+       "value": 2,
+       "operator": ">="
+      }
+     ],
+     "desc": "入场：若控制权异动卡≥2"
+    },
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T05",
+     "value": 3,
+     "desc": "入场：使己方全体攻+3、命+3"
+    }
+   ]
+  },
+  "tr_fc101_boss_dominator_steal": {
+   "name": "支配夺取",
+   "cost": 7,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "支配者"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR18",
+     "action": "A32",
+     "target": "T02",
+     "value": 0,
+     "conditions": [
+      {
+       "id": "C01",
+       "字段名": "支配者",
+       "field": "支配者"
+      }
+     ],
+     "constraints": [
+      "CO03"
+     ],
+     "constraint_params": {
+      "CO03": 5
+     }
+    }
+   ]
+  },
+  "tr_fc102_boss_dominator_burn": {
+   "name": "支配烈焰",
+   "cost": 7,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "支配者"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 4,
+     "conditions": [
+      {
+       "id": "C01",
+       "字段名": "支配者",
+       "field": "支配者"
+      }
+     ]
+    }
+   ]
+  },
+  "tr_fc103_boss_dominator_ritual": {
+   "name": "支配契约",
+   "cost": 5,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "支配者"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A32",
+     "target": "T02",
+     "value": 0,
+     "conditions": [
+      {
+       "id": "C16",
+       "value": 1,
+       "compare": "≥",
+       "comparison": "≥"
+      }
+     ],
+     "constraints": [
+      "CO05"
+     ],
+     "constraint_params": {
+      "CO05": 3
+     },
+     "desc": "召唤时：夺取敌方单体控制权（需消耗3能量）"
+    }
+   ],
+   "desc": "召唤时：夺取敌方单体控制权（需消耗3能量）"
+  },
+  "tr_fc104_boss_dominator_vassal": {
+   "name": "支配仆从",
+   "cost": 5,
+   "atk": 5,
+   "hp": 6,
+   "element": "火",
+   "fields": [
+    "支配者"
+   ],
+   "quality": "卓越",
+   "star": 3
+  },
+  "tr_fc105_boss_dominator_chain": {
+   "name": "支配锁链",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "暗",
+   "fields": [
+    "支配者"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A31",
+     "target": "T02",
+     "value": 0,
+     "conditions": [
+      {
+       "id": "C01",
+       "字段名": "支配者",
+       "field": "支配者"
+      }
+     ],
+     "constraints": [
+      "CO04"
+     ],
+     "constraint_params": {
+      "CO04": 1
+     }
+    }
+   ]
+  },
+  "tr_fc106_boss_giant_armor": {
+   "name": "熔核铠甲",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "巨人"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A23",
+     "target": "T03",
+     "value": 3,
+     "constraints": [
+      "CO03"
+     ],
+     "constraint_params": {
+      "CO03": 3
+     },
+     "desc": "召唤时：己方单体本回合攻命+3"
+    }
+   ],
+   "desc": "召唤时：己方单体本回合攻命+3"
+  },
+  "tr_fc107_boss_giant_quake": {
+   "name": "熔核震击",
+   "cost": 6,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "巨人"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 3,
+     "conditions": [
+      {
+       "id": "C01",
+       "字段名": "巨人",
+       "field": "巨人"
+      }
+     ],
+     "desc": "召唤时：对所有敌方单位造成3点伤害"
+    }
+   ],
+   "desc": "召唤时：对所有敌方单位造成3点伤害"
+  },
+  "tr_fc108_boss_giant_body": {
+   "name": "熔核巨体",
+   "cost": 6,
+   "atk": 4,
+   "hp": 8,
+   "element": "地",
+   "fields": [
+    "巨人"
+   ],
+   "quality": "卓越",
+   "star": 3
+  },
+  "tr_fc109_boss_giant_roar": {
+   "name": "熔核咆哮",
+   "cost": 1,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "巨人"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A20",
+     "target": "T02",
+     "value": -3,
+     "desc": "召唤时：敌方单体攻击力-3"
+    }
+   ],
+   "desc": "召唤时：敌方单体攻击力-3"
+  },
+  "tr_fc110_boss_sulfuron_blast": {
+   "name": "炎魔爆裂",
+   "cost": 9,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "炎魔"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 5
+    }
+   ]
+  },
+  "tr_fc111_boss_sulfuron_heal": {
+   "name": "炎魔再生",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "炎魔"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR06",
+     "action": "A02",
+     "target": "T03",
+     "value": 4
+    }
+   ]
+  },
+  "tr_fc112_boss_sulfuron_energy": {
+   "name": "炎魔能量",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "炎魔"
+   ],
+   "quality": "卓越",
+   "star": 1,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A23",
+     "target": "T05",
+     "value": 2,
+     "desc": "召唤时：己方全体本回合攻命+2"
+    }
+   ],
+   "desc": "召唤时：己方全体本回合攻命+2"
+  },
+  "tr_fc113_boss_sulfuron_body": {
+   "name": "炎魔领主",
+   "cost": 6,
+   "atk": 6,
+   "hp": 7,
+   "element": "火",
+   "fields": [
+    "炎魔"
+   ],
+   "quality": "卓越",
+   "star": 3
+  },
+  "tr_fc88_rock_armor": {
+   "name": "岩石护甲",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 5,
+     "desc": "召唤时：己方随机随从生命+5"
+    }
+   ],
+   "desc": "召唤时：己方随机随从生命+5"
+  },
+  "tr_fc89_stone_giant": {
+   "name": "石头巨人",
+   "cost": 6,
+   "atk": 5,
+   "hp": 7,
+   "element": "地",
+   "fields": [
+    "巨人"
+   ],
+   "quality": "卓越",
+   "star": 2
+  },
+  "tr_fc90_earth_spike": {
+   "name": "地刺",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "地",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 5,
+     "desc": "召唤时：对敌方随机单体造成5点伤害"
+    }
+   ],
+   "desc": "召唤时：对敌方随机单体造成5点伤害"
+  },
+  "tr_fc91_fire_imp": {
+   "name": "火焰小鬼",
+   "cost": 2,
+   "atk": 3,
+   "hp": 2,
+   "element": "火",
+   "fields": [
+    "恶魔"
+   ],
+   "quality": "卓越",
+   "star": 2
+  },
+  "tr_fc92_flame_spirit": {
+   "name": "火焰之灵",
+   "cost": 4,
+   "atk": 4,
+   "hp": 4,
+   "element": "火",
+   "fields": [
+    "精灵"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A23",
+     "target": "T05",
+     "value": 1,
+     "desc": "召唤时：己方全体本回合攻+1"
+    }
+   ],
+   "desc": "召唤时：己方全体本回合攻+1"
+  },
+  "tr_fc93_fire_arrow": {
+   "name": "火焰箭",
+   "cost": 2,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "元素"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 3,
+     "desc": "召唤时：对敌方随机单体造成3点伤害"
+    }
+   ],
+   "desc": "召唤时：对敌方随机单体造成3点伤害"
+  },
+  "tr_fc94_lava_serpent": {
+   "name": "熔岩蛇",
+   "cost": 4,
+   "atk": 5,
+   "hp": 4,
+   "element": "火",
+   "fields": [
+    "蛇"
+   ],
+   "quality": "卓越",
+   "star": 2
+  },
+  "tr_fc95_magma_shell": {
+   "name": "岩浆甲壳",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "岩石"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A21",
+     "target": "T03",
+     "value": 5,
+     "desc": "召唤时：己方随机随从生命+5"
+    }
+   ],
+   "desc": "召唤时：己方随机随从生命+5"
+  },
+  "tr_fc96_lava_turtle": {
+   "name": "熔岩龟",
+   "cost": 3,
+   "atk": 3,
+   "hp": 6,
+   "element": "火",
+   "fields": [
+    "龟"
+   ],
+   "quality": "卓越",
+   "star": 2
+  },
+  "tr_fc97_flame_breath": {
+   "name": "烈焰吐息",
+   "cost": 4,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "龙"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 3,
+     "desc": "召唤时：对所有敌方单位造成3点伤害"
+    }
+   ],
+   "desc": "召唤时：对所有敌方单位造成3点伤害"
+  },
+  "tr_fc99_fire_spike": {
+   "name": "火焰尖刺",
+   "cost": 3,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "元素"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T02",
+     "value": 4,
+     "desc": "召唤时：对敌方随机单体造成4点伤害"
+    }
+   ],
+   "desc": "召唤时：对敌方随机单体造成4点伤害"
+  },
+  "tr_fc100_inferno": {
+   "name": "炼狱",
+   "cost": 8,
+   "atk": 0,
+   "hp": 0,
+   "element": "火",
+   "fields": [
+    "元素"
+   ],
+   "quality": "卓越",
+   "star": 2,
+   "effects": [
+    {
+     "trigger": "TR01",
+     "action": "A01",
+     "target": "T04",
+     "value": 5,
+     "desc": "召唤时：对所有敌方单位造成5点伤害"
+    }
+   ],
+   "desc": "召唤时：对所有敌方单位造成5点伤害"
+  }
+ }
+}

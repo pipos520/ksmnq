@@ -1,0 +1,101 @@
+[gd_scene load_steps=5 format=3 uid="uid://guildmain001"]
+
+[ext_resource type="Script" path="res://Guild.gd" id="1_script"]
+[ext_resource type="Theme" path="res://assets/theme/pixel_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" path="res://assets/theme/bg_night.png" id="3_bg_night"]
+[ext_resource type="Texture2D" path="res://assets/theme/bg_day.png" id="4_bg_day"]
+
+[node name="Guild" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("2_theme")
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("3_bg_night")
+stretch_mode = 6
+
+[node name="TopBar" type="ColorRect" parent="."]
+anchor_right = 1.0
+offset_bottom = 160.0
+color = Color(0.08, 0.08, 0.12, 0.9)
+
+[node name="TopBarLine" type="ColorRect" parent="."]
+anchor_right = 1.0
+offset_top = 156.0
+offset_bottom = 160.0
+color = Color(0.91, 0.659, 0.22, 0.6)
+
+[node name="Title" type="Label" parent="."]
+anchor_right = 1.0
+offset_top = 10.0
+offset_bottom = 160.0
+theme_override_font_sizes/font_size = 100
+text = "卡师公会"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackBtn" type="Button" parent="."]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 272.0
+offset_bottom = 112.0
+theme_override_font_sizes/font_size = 50
+text = "← 返回"
+
+[node name="StatusBar" type="ColorRect" parent="."]
+anchor_right = 1.0
+offset_top = 160.0
+offset_bottom = 285.0
+color = Color(0.08, 0.08, 0.12, 0.9)
+
+[node name="StatusLine" type="ColorRect" parent="."]
+anchor_right = 1.0
+offset_top = 282.0
+offset_bottom = 285.0
+color = Color(0.91, 0.659, 0.22, 0.6)
+
+[node name="StatusLabel" type="Label" parent="."]
+anchor_right = 1.0
+offset_top = 160.0
+offset_bottom = 285.0
+theme_override_font_sizes/font_size = 50
+theme_override_colors/font_color = Color(1, 0.843, 0, 1)
+text = "🏛️ Lv.1 见习制卡师"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnPlayerInfo" type="Button" parent="."]
+anchor_left = 0.1
+anchor_top = 0.22
+anchor_right = 0.9
+anchor_bottom = 0.34
+theme_override_font_sizes/font_size = 55
+text = "👤 个人信息"
+
+[node name="BtnGuildTasks" type="Button" parent="."]
+anchor_left = 0.1
+anchor_top = 0.38
+anchor_right = 0.9
+anchor_bottom = 0.5
+theme_override_font_sizes/font_size = 55
+text = "📋 公会任务"
+
+[node name="BottomBar" type="ColorRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -160.0
+color = Color(0.08, 0.08, 0.12, 0.9)
+
+[node name="BottomBarLine" type="ColorRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -160.0
+offset_bottom = -156.0
+color = Color(0.91, 0.659, 0.22, 0.6)

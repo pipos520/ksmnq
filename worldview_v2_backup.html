@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡师模拟器 · 世界观</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; image-rendering: pixelated; }
+body {
+  font-family: "Zpix", "Pixel", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: repeating-linear-gradient(
+      0deg,
+      #fef9e7 0px, #fef9e7 32px,
+      #fdf3d8 32px, #fdf3d8 64px
+    );
+  color: #2b2b2b;
+  min-height: 100vh;
+}
+/* 顶部像素彩条 */
+.pixel-top {
+  height: 16px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ff6b57 0 48px, #ffd44d 48px 96px,
+    #7ed321 96px 144px, #66c4ff 144px 192px,
+    #b28dff 192px 240px
+  );
+  border-bottom: 4px solid #2b2b2b;
+}
+.container { max-width: 920px; margin: 0 auto; padding: 40px 20px 60px; }
+/* ===== 像素LOGO ===== */
+.logo-area { text-align: center; margin-bottom: 44px; }
+.logo-badge {
+  display: inline-block;
+  padding: 18px 40px;
+  background: #fff;
+  border: 4px solid #2b2b2b;
+  box-shadow: 8px 8px 0 #2b2b2b;
+  margin-bottom: 20px;
+}
+.logo-title {
+  font-size: 11vw;
+  font-weight: 900;
+  letter-spacing: 0.5vw;
+  color: #2b2b2b;
+  white-space: nowrap;
+  text-shadow:
+    0.08em 0.08em 0 #ffd44d,
+    0.16em 0.16em 0 #ff6b57;
+}
+@media (max-width: 640px) {
+  .logo-title { font-size: 14vw; letter-spacing: 0.6vw; }
+}
+.logo-sub {
+  margin-top: 16px;
+  font-size: 18px;
+  color: #2b2b2b;
+  letter-spacing: 6px;
+  font-weight: 700;
+  background: #ffd44d;
+  display: inline-block;
+  padding: 6px 24px;
+  border: 3px solid #2b2b2b;
+  box-shadow: 4px 4px 0 #2b2b2b;
+}
+/* ===== 按钮区 ===== */
+.download-section { text-align: center; margin: 44px 0; }
+.pixel-btn {
+  position: relative;
+  display: inline-block;
+  padding: 16px 46px;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-decoration: none;
+  color: #2b2b2b;
+  border: 4px solid #2b2b2b;
+  transition: none;
+  cursor: pointer;
+}
+.pixel-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: none !important;
+}
+.back-btn {
+  background: #66c4ff;
+  box-shadow: 6px 6px 0 #2b2b2b;
+}
+/* ===== 像素卡片 ===== */
+.pixel-card {
+  background: #fff;
+  border: 4px solid #2b2b2b;
+  box-shadow: 8px 8px 0 rgba(43,43,43,0.9);
+  padding: 28px;
+  margin: 28px 0;
+}
+.pixel-card h2 {
+  font-size: 22px;
+  margin-bottom: 14px;
+  color: #2b2b2b;
+  display: inline-block;
+  padding: 4px 14px;
+  background: #ffd44d;
+  border: 3px solid #2b2b2b;
+  box-shadow: 3px 3px 0 #2b2b2b;
+  letter-spacing: 2px;
+}
+.pixel-card p { line-height: 1.9; font-size: 15px; font-weight: 500; }
+/* ===== 势力标签 ===== */
+.faction-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+.faction-tag {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #b28dff;
+  border: 3px solid #2b2b2b;
+  box-shadow: 3px 3px 0 #2b2b2b;
+  font-size: 14px;
+  font-weight: 700;
+  color: #2b2b2b;
+  text-decoration: none;
+  cursor: pointer;
+  transition: none;
+}
+.faction-tag:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #2b2b2b;
+}
+.faction-tag:hover {
+  background: #ffd44d;
+}
+/* ===== 卡包区域 ===== */
+.pack-section {
+  margin-top: 32px;
+  scroll-margin-top: 20px;
+}
+.pack-section h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #2b2b2b;
+  display: inline-block;
+  padding: 4px 14px;
+  background: #66c4ff;
+  border: 3px solid #2b2b2b;
+  box-shadow: 3px 3px 0 #2b2b2b;
+  letter-spacing: 2px;
+}
+.pack-info {
+  background: #f0f0f0;
+  border: 3px solid #2b2b2b;
+  padding: 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.pack-info b { color: #ff6b57; }
+/* ===== 卡牌折叠 ===== */
+.card-toggle {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  background: #7ed321;
+  border: 3px solid #2b2b2b;
+  box-shadow: 4px 4px 0 #2b2b2b;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 900;
+  color: #2b2b2b;
+  cursor: pointer;
+  text-align: left;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.card-toggle:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 #2b2b2b;
+}
+.card-toggle::after {
+  content: "▶";
+  float: right;
+  transition: transform 0.2s;
+}
+.card-toggle.open::after {
+  transform: rotate(90deg);
+}
+.card-content {
+  display: none;
+  border: 3px solid #2b2b2b;
+  border-top: none;
+  background: #fff;
+  padding: 16px;
+  margin-bottom: 8px;
+}
+.card-content.open {
+  display: block;
+}
+/* ===== 卡牌详情表格 ===== */
+.card-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.card-table th {
+  background: #ffd44d;
+  border: 2px solid #2b2b2b;
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.card-table td {
+  border: 2px solid #2b2b2b;
+  padding: 8px 10px;
+  font-weight: 500;
+}
+.card-table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+.card-table .star-1 { color: #95a5a6; }
+.card-table .star-2 { color: #66c4ff; }
+.card-table .star-3 { color: #ff6b57; font-weight: 900; }
+.card-table .cost { color: #ff6b57; font-weight: 900; }
+.card-table .effect { font-size: 12px; color: #666; }
+/* ===== 底部 ===== */
+.footer {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 14px;
+  font-weight: 700;
+}
+@media (max-width: 640px) {
+  .card-table { font-size: 11px; }
+  .card-table th, .card-table td { padding: 4px 6px; }
+}
+</style>
+</head>
+<body>
+<div class="pixel-top"></div>
+<div class="container">
+
+  <div class="logo-area">
+    <div class="logo-badge">
+      <div class="logo-title">卡师模拟器</div>
+    </div>
+    <div class="logo-sub">沧澜古界 · 世界观</div>
+  </div>
+
+  <div class="download-section">
+    <a class="pixel-btn back-btn" href="index.html">← 返回首页</a>
+  </div>
+
+  <div class="pixel-card">
+    <h2>🌍 沧澜古界 · 十大势力</h2>
+    <p>
+      沧澜古界，浩瀚无边。自大雍王朝立国人皇统一中原以来，四方势力并起，各据一方。
+      北境军镇守国门，执律司维护法度；白鹿书院教书育人，太一门卫道除魔；
+      霜月妖庭统御妖族，黄金十二寺普度众生；东澜群岛海神庇佑，南疆巫岭巫蛊传承；
+      青云山剑修问剑，无名者与古战场诉说着古老的传说。
+    </p>
+    <p>点击下方势力标签，快速跳转到对应卡包：</p>
+    <div class="faction-tags">
+      <a href="#dayong" class="faction-tag">🏛️ 大雍王朝</a>
+      <a href="#bailu" class="faction-tag">📚 白鹿书院</a>
+      <a href="#taiyi" class="faction-tag">⛩️ 太一门</a>
+      <a href="#shuangyue" class="faction-tag">🌙 霜月妖庭</a>
+      <a href="#huangjin" class="faction-tag">🙏 黄金十二寺</a>
+      <a href="#donglan" class="faction-tag">🌊 东澜群岛</a>
+      <a href="#nanjiang" class="faction-tag">🐍 南疆巫岭</a>
+      <a href="#qingyun" class="faction-tag">⚔️ 青云山</a>
+      <a href="#wuming" class="faction-tag">👤 无名者</a>
+      <a href="#guzhan" class="faction-tag">⚰️ 古战场</a>
+    </div>
+  </div>
+
+  <!-- ===== 大雍王朝 ===== -->
+  <div class="pack-section" id="dayong">
+    <h3>🏛️ 大雍王朝 · 大雍双壁</h3>
+    <div class="pack-info">
+      <b>北境军 & 执律司</b><br>
+      北境军镇守沧水防线，执律司维护大雍法度。军旗不倒，国法不废。<br>
+      <b>卡数：</b>34张 | <b>费用上限：</b>10 | <b>白板占比：</b>38% | <b>约束卡：</b>仅死战督军1张
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开北境军卡牌（18张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>边军刀盾手</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 基础刀盾兵</td></tr>
+        <tr><td>2</td><td>边军长枪兵</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 基础长枪兵</td></tr>
+        <tr><td>3</td><td>边军弩手</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 远程弩手</td></tr>
+        <tr><td>4</td><td>边军辅兵</td><td>0/4</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 后勤辅助</td></tr>
+        <tr><td>5</td><td>边军骑兵</td><td>3/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 快速机动</td></tr>
+        <tr><td>6</td><td>边军医护兵</td><td>1/4</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 战场救护</td></tr>
+        <tr><td>7</td><td>边军重甲兵</td><td>4/3</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">白板 · 重装步兵</td></tr>
+        <tr><td>8</td><td>雪夜斥候</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR01入场打1 · 雪夜突袭</td></tr>
+        <tr><td>9</td><td>铁蒺藜防线</td><td>0/0</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">法术 · TR01入场打2</td></tr>
+        <tr><td>10</td><td>沧水医师</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR10受伤回血1 · 沧水治愈</td></tr>
+        <tr><td>11</td><td>军旗手</td><td>3/3</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR12回合开始增益全体1攻 · 军旗不倒</td></tr>
+        <tr><td>12</td><td>督战队</td><td>3/4</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR09攻宣打2 · 督战冲锋</td></tr>
+        <tr><td>13</td><td>军法官</td><td>2/5</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR01入场锁1回合 · 军法如山</td></tr>
+        <tr><td>14</td><td>断后死士</td><td>4/4</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR06送墓打2 · 断后阻敌</td></tr>
+        <tr><td>15</td><td>沧水防线</td><td>0/0</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">法术 · TR12回合开始增益全体1命</td></tr>
+        <tr><td>16</td><td>都尉</td><td>4/4</td><td class="cost">7</td><td class="star-2">2</td><td class="effect">TR01入场增益全体1攻1命 · 都尉领军</td></tr>
+        <tr><td>17</td><td>死战督军</td><td>4/5</td><td class="cost">7</td><td class="star-3">3</td><td class="effect">TR01入场增益全体2攻+CO04弃2 · 死战不退</td></tr>
+        <tr><td>18</td><td class="star-3">霍惊澜</td><td>5/6</td><td class="cost">10</td><td class="star-3">3</td><td class="effect">TR01入场增益全体1攻+TR06送墓增益全体1命 · 北境军神</td></tr>
+      </table>
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开执律司卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>执律司书吏</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 文书工作</td></tr>
+        <tr><td>2</td><td>执律司捕快</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 缉拿犯人</td></tr>
+        <tr><td>3</td><td>执律司仵作</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 验尸查案</td></tr>
+        <tr><td>4</td><td>执律司番役</td><td>3/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 暗中查访</td></tr>
+        <tr><td>5</td><td>执律司狱卒</td><td>2/3</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">白板 · 看守大牢</td></tr>
+        <tr><td>6</td><td>执律司文书</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR01入场抽1 · 文书调档</td></tr>
+        <tr><td>7</td><td>执律司捕头</td><td>3/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR09攻宣打1 · 缉拿要犯</td></tr>
+        <tr><td>8</td><td>执律司巡察</td><td>2/4</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR10受伤回血1 · 巡察四方</td></tr>
+        <tr><td>9</td><td>执律司提刑</td><td>3/4</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR01入场打2 · 提审犯人</td></tr>
+        <tr><td>10</td><td>执律司少卿</td><td>4/4</td><td class="cost">7</td><td class="star-2">2</td><td class="effect">TR01入场增益全体1命 · 少卿断案</td></tr>
+        <tr><td>11</td><td>执律司刑讯</td><td>0/0</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">法术 · TR01入场打3</td></tr>
+        <tr><td>12</td><td>执律司通缉令</td><td>0/0</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">法术 · TR01入场锁1回合</td></tr>
+        <tr><td>13</td><td>执律司大牢</td><td>0/0</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">法术 · TR12回合开始锁1回合</td></tr>
+        <tr><td>14</td><td class="star-3">铁面</td><td>5/5</td><td class="cost">9</td><td class="star-3">3</td><td class="effect">TR01入场锁全体1回合 · 铁面无私</td></tr>
+        <tr><td>15</td><td class="star-3">量力而行</td><td>0/0</td><td class="cost">7</td><td class="star-3">3</td><td class="effect">法术 · TR01入场打4+抽1</td></tr>
+        <tr><td>16</td><td class="star-3">无赦令</td><td>0/0</td><td class="cost">6</td><td class="star-3">3</td><td class="effect">法术 · TR01入场打3+锁1回合</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 白鹿书院 ===== -->
+  <div class="pack-section" id="bailu">
+    <h3>📚 白鹿书院 · 浩然流 & 问溟录</h3>
+    <div class="pack-info">
+      <b>浩然流 & 问溟录</b><br>
+      读书不为功名，只为心安。浩然正气长存，问溟录窥天机。<br>
+      <b>卡数：</b>32张 | <b>费用上限：</b>9 | <b>白板占比：</b>38%/31% | <b>约束卡：</b>0张
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开浩然流卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>书院童子</td><td>1/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 扫地背书</td></tr>
+        <tr><td>2</td><td>书院仆役</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 端茶送水</td></tr>
+        <tr><td>3</td><td>书院生员</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 刚入学</td></tr>
+        <tr><td>4</td><td>书院讲师</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 授课讲师</td></tr>
+        <tr><td>5</td><td>书院藏书吏</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 看守藏书楼</td></tr>
+        <tr><td>6</td><td>书院护卫</td><td>3/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 巡逻武师</td></tr>
+        <tr><td>7</td><td>晨读生</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR01入场抽1 · 一日之计</td></tr>
+        <tr><td>8</td><td>问难生</td><td>2/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR09攻宣打1 · 每问必得</td></tr>
+        <tr><td>9</td><td>书院厨娘</td><td>0/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">TR12回合开始回血1 · 热汤暖心</td></tr>
+        <tr><td>10</td><td>抄书人</td><td>1/3</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR01入场抽1 · 抄胜读十遍</td></tr>
+        <tr><td>11</td><td>书院琴师</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR12回合开始增益1攻 · 琴音养气</td></tr>
+        <tr><td>12</td><td>书院山长</td><td>3/4</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR01入场增益全体1命 · 庇护学子</td></tr>
+        <tr><td>13</td><td>藏书楼守</td><td>2/5</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR10受伤抽1 · 书在人在</td></tr>
+        <tr><td>14</td><td>浩然正气</td><td>0/0</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">法术 · TR01入场打2+增益全体1命</td></tr>
+        <tr><td>15</td><td class="star-3">许观澜</td><td>4/5</td><td class="cost">7</td><td class="star-3">3</td><td class="effect">TR01入场增益全体2命 · 书院山长</td></tr>
+        <tr><td>16</td><td class="star-3">浩然长歌</td><td>0/0</td><td class="cost">5</td><td class="star-3">3</td><td class="effect">法术 · TR01入场增益全体2攻2命</td></tr>
+      </table>
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开问溟录卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>溟渊弟子</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 初入溟渊</td></tr>
+        <tr><td>2</td><td>溟渊侍者</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 侍奉问溟师</td></tr>
+        <tr><td>3</td><td>溟渊书生</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 研读溟录</td></tr>
+        <tr><td>4</td><td>溟渊守卫</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 守护入口</td></tr>
+        <tr><td>5</td><td>溟渊行者</td><td>3/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 行走四方</td></tr>
+        <tr><td>6</td><td>溟渊引路人</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR01入场抽1 · 指引问心</td></tr>
+        <tr><td>7</td><td>溟渊占卜师</td><td>2/2</td><td class="cost">4</td><td class="star-1">1</td><td class="effect">TR01入场打1+抽1 · 以溟为镜</td></tr>
+        <tr><td>8</td><td>溟渊药童</td><td>0/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">TR12回合开始回血1 · 溟水疗伤</td></tr>
+        <tr><td>9</td><td>溟渊琴师</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR12回合开始增益1命 · 润物无声</td></tr>
+        <tr><td>10</td><td>溟渊剑客</td><td>3/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR09攻宣打1 · 剑问本心</td></tr>
+        <tr><td>11</td><td>溟渊长老</td><td>3/4</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR01入场增益全体1攻1命 · 窥见门径</td></tr>
+        <tr><td>12</td><td>溟渊大祭司</td><td>2/5</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR01入场回血3 · 溟水愈人</td></tr>
+        <tr><td>13</td><td>溟渊问心</td><td>0/0</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">法术 · TR01入场打3</td></tr>
+        <tr><td>14</td><td class="star-3">白鹿真人</td><td>3/5</td><td class="cost">9</td><td class="star-3">3</td><td class="effect">TR01入场打2+增益全体2命 · 问溟创始人</td></tr>
+        <tr><td>15</td><td class="star-3">溟渊之主</td><td>4/4</td><td class="cost">8</td><td class="star-3">3</td><td class="effect">TR01入场打2+抽1 · 溟渊深处</td></tr>
+        <tr><td>16</td><td class="star-3">问溟大典</td><td>0/0</td><td class="cost">6</td><td class="star-3">3</td><td class="effect">法术 · TR01入场增益全体2攻+抽1</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 太一门 ===== -->
+  <div class="pack-section" id="taiyi">
+    <h3>⛩️ 太一门 · 神钟卫道 & 封山秘录</h3>
+    <div class="pack-info">
+      <b>神钟卫道 & 封山秘录</b><br>
+      钟鸣三百里，邪魔不敢近。封山非避世，秘录藏天机。<br>
+      <b>卡数：</b>32张 | <b>费用上限：</b>10 | <b>白板占比：</b>38%/31% | <b>约束卡：</b>0张
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开神钟卫道卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>钟童</td><td>1/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 扫钟小童</td></tr>
+        <tr><td>2</td><td>卫道弟子</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 入门弟子</td></tr>
+        <tr><td>3</td><td>钟阁守卫</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 守卫神钟阁</td></tr>
+        <tr><td>4</td><td>传功弟子</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 传授功法</td></tr>
+        <tr><td>5</td><td>钟阁执事</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 管理日常</td></tr>
+        <tr><td>6</td><td>卫道剑客</td><td>3/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 佩剑巡逻</td></tr>
+        <tr><td>7</td><td>晨钟弟子</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR12回合开始回血1 · 晨钟暮鼓</td></tr>
+        <tr><td>8</td><td>暮鼓弟子</td><td>2/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR12回合开始增益1攻 · 鼓声震邪</td></tr>
+        <tr><td>9</td><td>神钟守卫</td><td>0/4</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR10受伤回血1 · 钟在人在</td></tr>
+        <tr><td>10</td><td>卫道先锋</td><td>3/2</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR09攻宣打1 · 冲锋在前</td></tr>
+        <tr><td>11</td><td>神钟共鸣</td><td>0/0</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">法术 · TR01入场增益全体1命</td></tr>
+        <tr><td>12</td><td>神钟长老</td><td>3/4</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR01入场增益全体1命 · 镇守多年</td></tr>
+        <tr><td>13</td><td>卫道统领</td><td>4/3</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR09攻宣打2 · 统领弟子</td></tr>
+        <tr><td>14</td><td>神钟九响</td><td>0/0</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">法术 · TR01入场打3</td></tr>
+        <tr><td>15</td><td class="star-3">太一掌门</td><td>4/5</td><td class="cost">7</td><td class="star-3">3</td><td class="effect">TR01入场增益全体2命 · 神钟之主</td></tr>
+        <tr><td>16</td><td class="star-3">神钟天降</td><td>0/0</td><td class="cost">6</td><td class="star-3">3</td><td class="effect">法术 · TR01入场打2+增益全体2命</td></tr>
+      </table>
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开封山秘录卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>封山弟子</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 守山弟子</td></tr>
+        <tr><td>2</td><td>封山杂役</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 打理禁地</td></tr>
+        <tr><td>3</td><td>封山剑客</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 练剑弟子</td></tr>
+        <tr><td>4</td><td>封山药师</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 采集灵药</td></tr>
+        <tr><td>5</td><td>封山行者</td><td>3/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 巡山行者</td></tr>
+        <tr><td>6</td><td>封山引路人</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR01入场抽1 · 带你入山</td></tr>
+        <tr><td>7</td><td>封山守林人</td><td>2/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR12回合开始回血1 · 山林守护</td></tr>
+        <tr><td>8</td><td>封山猎人</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR09攻宣打1 · 山中猎手</td></tr>
+        <tr><td>9</td><td>封山隐士</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR01入场增益1命 · 山中隐士</td></tr>
+        <tr><td>10</td><td>封山禁制</td><td>0/0</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">法术 · TR01入场锁1回合</td></tr>
+        <tr><td>11</td><td>封山长老</td><td>3/4</td><td class="cost">7</td><td class="star-2">2</td><td class="effect">TR01入场锁单体1回合 · 封山锁人</td></tr>
+        <tr><td>12</td><td>封山秘术师</td><td>2/5</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR01入场增益全体1命 · 秘术护体</td></tr>
+        <tr><td>13</td><td>封山剑阵</td><td>0/0</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">法术 · TR01入场打2+锁1回合</td></tr>
+        <tr><td>14</td><td>封山传承</td><td>0/0</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">法术 · TR01入场抽2</td></tr>
+        <tr><td>15</td><td class="star-3">封山掌门</td><td>3/5</td><td class="cost">10</td><td class="star-3">3</td><td class="effect">TR01入场破坏+TR06送墓增益全体1命 · 封山之主</td></tr>
+        <tr><td>16</td><td class="star-3">封山绝学</td><td>0/0</td><td class="cost">7</td><td class="star-3">3</td><td class="effect">法术 · TR01入场打3+锁1回合</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 霜月妖庭 ===== -->
+  <div class="pack-section" id="shuangyue">
+    <h3>🌙 霜月妖庭 · 极夜北庭 & 月见旧誓</h3>
+    <div class="pack-info">
+      <b>极夜北庭 & 月见旧誓</b><br>
+      极夜之下，妖庭为尊。月见之时，旧誓难忘。<br>
+      <b>卡数：</b>32张 | <b>费用上限：</b>9 | <b>白板占比：</b>38%/31% | <b>约束卡：</b>0张
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开极夜北庭卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>雪原小妖</td><td>1/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 北庭底层</td></tr>
+        <tr><td>2</td><td>冰原狼妖</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 雪原狼化</td></tr>
+        <tr><td>3</td><td>北庭侍卫</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 守卫庭帐</td></tr>
+        <tr><td>4</td><td>冰窟苦力</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 挖掘冰窟</td></tr>
+        <tr><td>5</td><td>北庭猎手</td><td>3/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 雪原狩猎</td></tr>
+        <tr><td>6</td><td>冰甲卫士</td><td>1/4</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 冰甲护身</td></tr>
+        <tr><td>7</td><td>雪原斥候</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR01入场打1 · 斥候突袭</td></tr>
+        <tr><td>8</td><td>冰锥妖</td><td>2/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR09攻宣打1 · 冰锥刺骨</td></tr>
+        <tr><td>9</td><td>雪原萨满</td><td>0/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">TR12回合开始回血1 · 萨满疗伤</td></tr>
+        <tr><td>10</td><td>北庭妖姬</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR01入场增益1攻 · 妖姬魅惑</td></tr>
+        <tr><td>11</td><td>冰原风暴</td><td>0/0</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">法术 · TR01入场打2</td></tr>
+        <tr><td>12</td><td>北庭将军</td><td>4/3</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR09攻宣打2 · 北庭猛将</td></tr>
+        <tr><td>13</td><td>雪原大萨满</td><td>2/5</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR12回合开始回血2 · 大萨满祈福</td></tr>
+        <tr><td>14</td><td>极夜降临</td><td>0/0</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">法术 · TR01入场打2+增益全体1攻</td></tr>
+        <tr><td>15</td><td class="star-3">极夜妖皇</td><td>5/5</td><td class="cost">9</td><td class="star-3">3</td><td class="effect">TR01入场打3+增益全体1攻 · 北庭之主</td></tr>
+        <tr><td>16</td><td class="star-3">永夜降临</td><td>0/0</td><td class="cost">7</td><td class="star-3">3</td><td class="effect">法术 · TR01入场打4</td></tr>
+      </table>
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开月见旧誓卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>月见小狐</td><td>1/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 狐族幼崽</td></tr>
+        <tr><td>2</td><td>月见侍女</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 侍奉狐族</td></tr>
+        <tr><td>3</td><td>月见猎手</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 月下狩猎</td></tr>
+        <tr><td>4</td><td>月见守卫</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 守卫月见台</td></tr>
+        <tr><td>5</td><td>月见行者</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 行走四方</td></tr>
+        <tr><td>6</td><td>月见琴师</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR12回合开始增益1命 · 琴音惑心</td></tr>
+        <tr><td>7</td><td>月见舞姬</td><td>2/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR12回合开始增益1攻 · 月下起舞</td></tr>
+        <tr><td>8</td><td>月见药师</td><td>0/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">TR12回合开始回血1 · 狐族灵药</td></tr>
+        <tr><td>9</td><td>月见刺客</td><td>3/2</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR09攻宣打1 · 月下刺杀</td></tr>
+        <tr><td>10</td><td>月见幻术</td><td>0/0</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">法术 · TR01入场锁1回合</td></tr>
+        <tr><td>11</td><td>月见长老</td><td>3/4</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR01入场增益全体1命 · 狐族长老</td></tr>
+        <tr><td>12</td><td>月见大祭司</td><td>2/5</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR01入场回血3 · 大祭司祈福</td></tr>
+        <tr><td>13</td><td>月见誓约</td><td>0/0</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">法术 · TR01入场增益全体2攻</td></tr>
+        <tr><td>14</td><td class="star-3">月见狐妃</td><td>3/4</td><td class="cost">8</td><td class="star-3">3</td><td class="effect">TR01入场夺权1回合 · 狐妃夺权</td></tr>
+        <tr><td>15</td><td class="star-3">月见狐王</td><td>4/4</td><td class="cost">7</td><td class="star-3">3</td><td class="effect">TR01入场打2+增益全体1攻 · 狐族之王</td></tr>
+        <tr><td>16</td><td class="star-3">月见大典</td><td>0/0</td><td class="cost">6</td><td class="star-3">3</td><td class="effect">法术 · TR01入场增益全体2攻2命</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 黄金十二寺 ===== -->
+  <div class="pack-section" id="huangjin">
+    <h3>🙏 黄金十二寺 · 香火金身 & 苦海往生</h3>
+    <div class="pack-info">
+      <b>香火金身 & 苦海往生</b><br>
+      香火千年，金身不坏。苦海无边，回头是岸。<br>
+      <b>卡数：</b>32张 | <b>费用上限：</b>10 | <b>白板占比：</b>38%/31% | <b>约束卡：</b>0张
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开香火金身卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>小沙弥</td><td>1/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 扫地小和尚</td></tr>
+        <tr><td>2</td><td>香火僧</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 管理香火</td></tr>
+        <tr><td>3</td><td>武僧</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 练武僧人</td></tr>
+        <tr><td>4</td><td>知客僧</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 接待香客</td></tr>
+        <tr><td>5</td><td>藏经僧</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 看守藏经阁</td></tr>
+        <tr><td>6</td><td>护法武僧</td><td>3/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 护法金刚</td></tr>
+        <tr><td>7</td><td>晨钟僧</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR12回合开始回血1 · 晨钟暮鼓</td></tr>
+        <tr><td>8</td><td>诵经僧</td><td>2/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR12回合开始增益1命 · 诵经祈福</td></tr>
+        <tr><td>9</td><td>香火旺盛</td><td>0/0</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">法术 · TR01入场回血2</td></tr>
+        <tr><td>10</td><td>金身护法</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR10受伤回血1 · 金身护体</td></tr>
+        <tr><td>11</td><td>寺院长老</td><td>3/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR01入场增益全体1命 · 长老祈福</td></tr>
+        <tr><td>12</td><td>金身罗汉</td><td>3/4</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR10受伤回血2 · 罗汉金身</td></tr>
+        <tr><td>13</td><td>香火鼎盛</td><td>0/0</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">法术 · TR01入场增益全体1攻1命</td></tr>
+        <tr><td>14</td><td>寺院主持</td><td>2/5</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR01入场回血3 · 主持方丈</td></tr>
+        <tr><td>15</td><td class="star-3">金身佛陀</td><td>4/5</td><td class="cost">10</td><td class="star-3">3</td><td class="effect">TR10受伤回血2+TR12回合开始增益1命 · 佛陀转世</td></tr>
+        <tr><td>16</td><td class="star-3">佛光普照</td><td>0/0</td><td class="cost">6</td><td class="star-3">3</td><td class="effect">法术 · TR01入场增益全体2攻2命</td></tr>
+      </table>
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开苦海往生卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>苦行僧</td><td>1/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 苦修僧人</td></tr>
+        <tr><td>2</td><td>往生者</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 等待往生</td></tr>
+        <tr><td>3</td><td>苦海行者</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 行走苦海</td></tr>
+        <tr><td>4</td><td>摆渡人</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 渡人过苦海</td></tr>
+        <tr><td>5</td><td>守墓僧</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 看守往生塔</td></tr>
+        <tr><td>6</td><td>超度僧</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR06送墓回血1 · 超度亡魂</td></tr>
+        <tr><td>7</td><td>苦海引路人</td><td>2/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR01入场抽1 · 引路往生</td></tr>
+        <tr><td>8</td><td>往生咒</td><td>0/0</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">法术 · TR01入场打1</td></tr>
+        <tr><td>9</td><td>苦海摆渡</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR06送墓打1 · 摆渡亡魂</td></tr>
+        <tr><td>10</td><td>轮回僧</td><td>3/3</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR06送墓增益1攻 · 轮回转世</td></tr>
+        <tr><td>11</td><td>苦海长老</td><td>3/4</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR06送墓打2 · 长老超度</td></tr>
+        <tr><td>12</td><td>往生大典</td><td>0/0</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">法术 · TR01入场增益全体1攻1命</td></tr>
+        <tr><td>13</td><td>轮回之门</td><td>0/0</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">法术 · TR01入场复活1</td></tr>
+        <tr><td>14</td><td class="star-3">苦海菩萨</td><td>3/5</td><td class="cost">8</td><td class="star-3">3</td><td class="effect">TR06送墓回血3 · 菩萨慈悲</td></tr>
+        <tr><td>15</td><td class="star-3">往生之主</td><td>4/4</td><td class="cost">9</td><td class="star-3">3</td><td class="effect">TR06送墓打2+增益全体1命 · 往生之主</td></tr>
+        <tr><td>16</td><td class="star-3">轮回转世</td><td>0/0</td><td class="cost">7</td><td class="star-3">3</td><td class="effect">法术 · TR01入场复活2</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 东澜群岛 ===== -->
+  <div class="pack-section" id="donglan">
+    <h3>🌊 东澜群岛 · 缘契潮声 & 归墟鲸歌</h3>
+    <div class="pack-info">
+      <b>缘契潮声 & 归墟鲸歌</b><br>
+      缘契潮声，海神听之。鲸落归墟，万物重生。<br>
+      <b>卡数：</b>32张 | <b>费用上限：</b>10 | <b>白板占比：</b>38%/31% | <b>约束卡：</b>0张
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开缘契潮声卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>渔家少年</td><td>1/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 海边少年</td></tr>
+        <tr><td>2</td><td>渔家少女</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 织网少女</td></tr>
+        <tr><td>3</td><td>船夫</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 摆渡船夫</td></tr>
+        <tr><td>4</td><td>渔民</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 出海打渔</td></tr>
+        <tr><td>5</td><td>船匠</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 造船修船</td></tr>
+        <tr><td>6</td><td>海神信徒</td><td>3/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 信奉海神</td></tr>
+        <tr><td>7</td><td>潮声听客</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR01入场抽1 · 听潮知天命</td></tr>
+        <tr><td>8</td><td>缘契祭司</td><td>2/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR12回合开始回血1 · 祭司祈福</td></tr>
+        <tr><td>9</td><td>海浪冲击</td><td>0/0</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">法术 · TR01入场打2</td></tr>
+        <tr><td>10</td><td>缘契守护者</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR10受伤回血1 · 守护缘契</td></tr>
+        <tr><td>11</td><td>海神祝福</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR01入场增益1命 · 海神赐福</td></tr>
+        <tr><td>12</td><td>缘契长老</td><td>3/4</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR01入场增益全体1命 · 长老主持</td></tr>
+        <tr><td>13</td><td>海神祭司</td><td>2/5</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR01入场回血3 · 大祭司祈福</td></tr>
+        <tr><td>14</td><td>缘契大典</td><td>0/0</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">法术 · TR01入场增益全体1攻1命</td></tr>
+        <tr><td>15</td><td class="star-3">缘契海神</td><td>3/5</td><td class="cost">8</td><td class="star-3">3</td><td class="effect">TR01入场回血2+增益全体1命 · 海神显灵</td></tr>
+        <tr><td>16</td><td class="star-3">潮声漫天</td><td>0/0</td><td class="cost">6</td><td class="star-3">3</td><td class="effect">法术 · TR01入场打3+增益全体1命</td></tr>
+      </table>
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开归墟鲸歌卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>深海小妖</td><td>1/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 深海小妖</td></tr>
+        <tr><td>2</td><td>归墟引路者</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 引路归墟</td></tr>
+        <tr><td>3</td><td>鲸落拾荒者</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 拾取鲸落</td></tr>
+        <tr><td>4</td><td>深海猎手</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 深海狩猎</td></tr>
+        <tr><td>5</td><td>归墟守卫</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 守卫归墟</td></tr>
+        <tr><td>6</td><td>鲸歌听者</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR01入场抽1 · 听鲸歌知天机</td></tr>
+        <tr><td>7</td><td>深海潜行者</td><td>2/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR09攻宣打1 · 深海潜行</td></tr>
+        <tr><td>8</td><td>鲸落滋养</td><td>0/0</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">法术 · TR06送墓回血2</td></tr>
+        <tr><td>9</td><td>归墟探索者</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR01入场打1 · 探索归墟</td></tr>
+        <tr><td>10</td><td>鲸歌共鸣</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR12回合开始增益1命 · 鲸歌共鸣</td></tr>
+        <tr><td>11</td><td>归墟长老</td><td>3/4</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR01入场增益全体1命 · 长老守护</td></tr>
+        <tr><td>12</td><td>鲸落祭司</td><td>2/5</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR06送墓增益全体1攻 · 祭司献祭</td></tr>
+        <tr><td>13</td><td>归墟深渊</td><td>0/0</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">法术 · TR01入场打3</td></tr>
+        <tr><td>14</td><td class="star-3">归墟鲸主</td><td>3/4</td><td class="cost">10</td><td class="star-3">3</td><td class="effect">TR01入场抽2+打1 · 鲸主苏醒</td></tr>
+        <tr><td>15</td><td class="star-3">深海之主</td><td>4/4</td><td class="cost">8</td><td class="star-3">3</td><td class="effect">TR01入场打2+增益全体1命 · 深海霸主</td></tr>
+        <tr><td>16</td><td class="star-3">鲸落万物生</td><td>0/0</td><td class="cost">7</td><td class="star-3">3</td><td class="effect">法术 · TR06送墓复活1+增益全体1攻</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 南疆巫岭 ===== -->
+  <div class="pack-section" id="nanjiang">
+    <h3>🐍 南疆巫岭 · 祖神百寨 & 无字碑</h3>
+    <div class="pack-info">
+      <b>祖神百寨 & 无字碑</b><br>
+      百寨祭祖神，巫蛊传千年。无字碑上无字，碑中自有乾坤。<br>
+      <b>卡数：</b>32张 | <b>费用上限：</b>10 | <b>白板占比：</b>38%/31% | <b>约束卡：</b>0张
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开祖神百寨卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>山寨孩童</td><td>1/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 百寨孩童</td></tr>
+        <tr><td>2</td><td>巫岭猎手</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 山中猎手</td></tr>
+        <tr><td>3</td><td>采药人</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 采集巫药</td></tr>
+        <tr><td>4</td><td>山寨守卫</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 守卫山寨</td></tr>
+        <tr><td>5</td><td>巫蛊学徒</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 学习巫蛊</td></tr>
+        <tr><td>6</td><td>百寨战士</td><td>3/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 百寨勇士</td></tr>
+        <tr><td>7</td><td>巫蛊师</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR01入场打1 · 巫蛊伤人</td></tr>
+        <tr><td>8</td><td>祖神祭司</td><td>2/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR12回合开始回血1 · 祭司祈福</td></tr>
+        <tr><td>9</td><td>巫毒蛊虫</td><td>0/0</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">法术 · TR01入场打1+锁1回合</td></tr>
+        <tr><td>10</td><td>百寨巫医</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR12回合开始回血1 · 巫医治病</td></tr>
+        <tr><td>11</td><td>祖神赐福</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR01入场增益1命 · 祖神庇佑</td></tr>
+        <tr><td>12</td><td>百寨长老</td><td>3/4</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR01入场增益全体1命 · 长老议事</td></tr>
+        <tr><td>13</td><td>祖神大祭司</td><td>2/5</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR01入场回血3 · 大祭司祈福</td></tr>
+        <tr><td>14</td><td>巫蛊大阵</td><td>0/0</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">法术 · TR01入场打2+锁1回合</td></tr>
+        <tr><td>15</td><td class="star-3">祖神降临</td><td>4/5</td><td class="cost">7</td><td class="star-3">3</td><td class="effect">TR01入场增益全体2命 · 祖神显灵</td></tr>
+        <tr><td>16</td><td class="star-3">百寨盛典</td><td>0/0</td><td class="cost">6</td><td class="star-3">3</td><td class="effect">法术 · TR01入场增益全体2攻2命</td></tr>
+      </table>
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开无字碑卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>碑林守护者</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 守护碑林</td></tr>
+        <tr><td>2</td><td>无字碑信徒</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 信奉碑灵</td></tr>
+        <tr><td>3</td><td>碑林行者</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 行走碑林</td></tr>
+        <tr><td>4</td><td>守碑人</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 世代守碑</td></tr>
+        <tr><td>5</td><td>碑林猎手</td><td>3/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 碑林狩猎</td></tr>
+        <tr><td>6</td><td>碑灵低语</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR01入场抽1 · 碑灵指引</td></tr>
+        <tr><td>7</td><td>碑林祭司</td><td>2/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR12回合开始回血1 · 祭司祈福</td></tr>
+        <tr><td>8</td><td>无字碑影</td><td>0/0</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">法术 · TR01入场打2</td></tr>
+        <tr><td>9</td><td>碑灵附体</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR01入场增益1攻 · 碑灵附体</td></tr>
+        <tr><td>10</td><td>碑林共鸣</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR12回合开始增益1命 · 碑林共鸣</td></tr>
+        <tr><td>11</td><td>碑林长老</td><td>3/4</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR01入场增益全体1命 · 长老守护</td></tr>
+        <tr><td>12</td><td>无字碑祭司</td><td>2/5</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR01入场回血3 · 大祭司祈福</td></tr>
+        <tr><td>13</td><td>碑灵觉醒</td><td>0/0</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">法术 · TR01入场打2+增益全体1攻</td></tr>
+        <tr><td>14</td><td class="star-3">无字碑主</td><td>4/4</td><td class="cost">9</td><td class="star-3">3</td><td class="effect">TR01入场打2+增益全体1命 · 碑灵之主</td></tr>
+        <tr><td>15</td><td class="star-3">碑林之主</td><td>3/5</td><td class="cost">8</td><td class="star-3">3</td><td class="effect">TR01入场增益全体2命 · 碑林守护者</td></tr>
+        <tr><td>16</td><td class="star-3">无字碑·终</td><td>0/0</td><td class="cost">10</td><td class="star-3">3</td><td class="effect">法术 · TR01入场打4+增益全体2攻</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 青云山 ===== -->
+  <div class="pack-section" id="qingyun">
+    <h3>⚔️ 青云山补档 · 九剑图</h3>
+    <div class="pack-info">
+      <b>九剑图</b><br>
+      九剑出鞘，天下无双。青云山禁地，剑主归位。<br>
+      <b>卡数：</b>16张 | <b>费用上限：</b>7 | <b>白板占比：</b>38% | <b>约束卡：</b>0张
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开九剑图卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>剑童</td><td>1/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 磨剑小童</td></tr>
+        <tr><td>2</td><td>剑侍</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 侍奉剑主</td></tr>
+        <tr><td>3</td><td>剑奴</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 为奴练剑</td></tr>
+        <tr><td>4</td><td>铸剑师</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 铸剑为业</td></tr>
+        <tr><td>5</td><td>藏剑童子</td><td>0/3</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 看守剑庐</td></tr>
+        <tr><td>6</td><td>剑庐守卫</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 守卫剑庐</td></tr>
+        <tr><td>7</td><td>听雨剑</td><td>0/0</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">法术 · TR01入场打3</td></tr>
+        <tr><td>8</td><td>问道剑</td><td>0/0</td><td class="cost">4</td><td class="star-1">1</td><td class="effect">法术 · TR01入场抽2</td></tr>
+        <tr><td>9</td><td>归鞘剑</td><td>0/0</td><td class="cost">4</td><td class="star-1">1</td><td class="effect">法术 · TR01入场回血1</td></tr>
+        <tr><td>10</td><td>剑图残页</td><td>0/0</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">法术 · TR01入场抽1</td></tr>
+        <tr><td>11</td><td>剑庐禁制</td><td>0/0</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">法术 · TR12回合开始锁1回合</td></tr>
+        <tr><td>12</td><td>苏妙音</td><td>2/3</td><td class="cost">7</td><td class="star-2">2</td><td class="effect">TR16回合结束锁1回合 · 剑图守护者</td></tr>
+        <tr><td>13</td><td>听雨剑主</td><td>4/3</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR09攻宣打2 · 听雨剑主</td></tr>
+        <tr><td>14</td><td>问道剑主</td><td>3/4</td><td class="cost">7</td><td class="star-2">2</td><td class="effect">TR01入场抽2 · 问道剑主</td></tr>
+        <tr><td>15</td><td class="star-3">归鞘剑主</td><td>3/4</td><td class="cost">7</td><td class="star-3">3</td><td class="effect">TR06送墓打3 · 归鞘剑主</td></tr>
+        <tr><td>16</td><td class="star-3">九剑图</td><td>0/0</td><td class="cost">7</td><td class="star-3">3</td><td class="effect">法术 · TR01入场打1+抽2</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 无名者 ===== -->
+  <div class="pack-section" id="wuming">
+    <h3>👤 无名者</h3>
+    <div class="pack-info">
+      <b>无名者</b><br>
+      无名者，非无名，乃不愿留名。<br>
+      <b>卡数：</b>16张 | <b>费用上限：</b>10 | <b>白板占比：</b>31% | <b>约束卡：</b>0张
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开无名者卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>流浪者</td><td>1/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 无名流浪</td></tr>
+        <tr><td>2</td><td>拾荒者</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 拾荒为生</td></tr>
+        <tr><td>3</td><td>失忆人</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 失忆之人</td></tr>
+        <tr><td>4</td><td>无家可归者</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 无家可归</td></tr>
+        <tr><td>5</td><td>无名旅人</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 无名旅人</td></tr>
+        <tr><td>6</td><td>影子</td><td>1/1</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR01入场抽1 · 影子随形</td></tr>
+        <tr><td>7</td><td>面具人</td><td>2/2</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">TR01入场锁1回合 · 面具之下</td></tr>
+        <tr><td>8</td><td>无名者的剑</td><td>0/0</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">法术 · TR01入场打3</td></tr>
+        <tr><td>9</td><td>无名者的眼</td><td>0/0</td><td class="cost">4</td><td class="star-1">1</td><td class="effect">法术 · TR01入场抽2</td></tr>
+        <tr><td>10</td><td>无面剑客</td><td>3/2</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR09攻宣打1 · 无面剑客</td></tr>
+        <tr><td>11</td><td>无影人</td><td>2/3</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR10受伤锁1回合 · 无影无形</td></tr>
+        <tr><td>12</td><td>夺舍</td><td>0/0</td><td class="cost">5</td><td class="star-2">2</td><td class="effect">法术 · TR01入场夺权1回合</td></tr>
+        <tr><td>13</td><td class="star-3">无名者·觉醒</td><td>3/3</td><td class="cost">8</td><td class="star-3">3</td><td class="effect">TR01入场夺权1回合 · 觉醒时刻</td></tr>
+        <tr><td>14</td><td class="star-3">无名者·终局</td><td>4/4</td><td class="cost">9</td><td class="star-3">3</td><td class="effect">TR01入场夺权1回合 · 终局之战</td></tr>
+        <tr><td>15</td><td class="star-3">无名者的故事</td><td>0/0</td><td class="cost">6</td><td class="star-3">3</td><td class="effect">法术 · TR06送墓抽3</td></tr>
+        <tr><td>16</td><td class="star-3">无名者·归来</td><td>3/4</td><td class="cost">10</td><td class="star-3">3</td><td class="effect">TR01入场复活1 · 无名者归来</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 古战场 ===== -->
+  <div class="pack-section" id="guzhan">
+    <h3>⚰️ 古战场</h3>
+    <div class="pack-info">
+      <b>古战场</b><br>
+      古战场，战魂不灭，英灵永存。<br>
+      <b>卡数：</b>16张 | <b>费用上限：</b>9 | <b>白板占比：</b>38% | <b>约束卡：</b>0张
+    </div>
+    <button class="card-toggle" onclick="toggleCards(this)">🃏 展开古战场卡牌（16张）</button>
+    <div class="card-content">
+      <table class="card-table">
+        <tr><th>#</th><th>卡名</th><th>攻/命</th><th>cost</th><th>★</th><th>效果/说明</th></tr>
+        <tr><td>1</td><td>断剑</td><td>1/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 断剑残刃</td></tr>
+        <tr><td>2</td><td>残盾</td><td>0/3</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 残破盾牌</td></tr>
+        <tr><td>3</td><td>锈甲</td><td>1/2</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 锈蚀铠甲</td></tr>
+        <tr><td>4</td><td>白骨</td><td>1/3</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 白骨累累</td></tr>
+        <tr><td>5</td><td>战旗</td><td>2/1</td><td class="cost">1</td><td class="star-1">1</td><td class="effect">白板 · 残破战旗</td></tr>
+        <tr><td>6</td><td>断矛</td><td>2/2</td><td class="cost">2</td><td class="star-1">1</td><td class="effect">白板 · 断裂长矛</td></tr>
+        <tr><td>7</td><td>古战场幽魂</td><td>1/2</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">TR06送墓打1 · 幽魂不散</td></tr>
+        <tr><td>8</td><td>古战场遗迹</td><td>0/0</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">法术 · TR06送墓抽1</td></tr>
+        <tr><td>9</td><td>英魂不散</td><td>0/0</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">法术 · TR06送墓增益全体1命</td></tr>
+        <tr><td>10</td><td>古战场号角</td><td>0/0</td><td class="cost">3</td><td class="star-1">1</td><td class="effect">法术 · TR06送墓增益全体1攻</td></tr>
+        <tr><td>11</td><td>古战场守灵人</td><td>2/3</td><td class="cost">4</td><td class="star-2">2</td><td class="effect">TR06送墓回血2 · 守灵人</td></tr>
+        <tr><td>12</td><td>古战场战魂</td><td>3/3</td><td class="cost">6</td><td class="star-2">2</td><td class="effect">TR06送墓打2 · 战魂觉醒</td></tr>
+        <tr><td>13</td><td class="star-3">古战场将魂</td><td>4/4</td><td class="cost">9</td><td class="star-3">3</td><td class="effect">TR06送墓打2 · 将魂不灭</td></tr>
+        <tr><td>14</td><td class="star-3">古战场英灵</td><td>3/5</td><td class="cost">8</td><td class="star-3">3</td><td class="effect">TR06送墓增益全体2命 · 英灵庇护</td></tr>
+        <tr><td>15</td><td class="star-3">古战场终焉</td><td>0/0</td><td class="cost">9</td><td class="star-3">3</td><td class="effect">法术 · TR06送墓打3+增益全体2命</td></tr>
+        <tr><td>16</td><td class="star-3">古战场·醒</td><td>0/0</td><td class="cost">6</td><td class="star-3">3</td><td class="effect">法术 · TR12回合开始打2</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="download-section">
+    <a class="pixel-btn back-btn" href="index.html">← 返回首页下载游戏</a>
+  </div>
+
+</div>
+
+<div class="footer">
+  © 2025 卡师模拟器 · 沧澜古界 · 十五卡包240张卡全部公式验证
+</div>
+
+<script>
+function toggleCards(btn) {
+  btn.classList.toggle('open');
+  var content = btn.nextElementSibling;
+  content.classList.toggle('open');
+}
+</script>
+</body>
+</html>
