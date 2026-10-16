@@ -21,8 +21,13 @@ audio/driver/output_latency=1
 
 [autoload]
 
-Global="*res://Global.gd"
 SaveManager="*res://SaveManager.gd"
+ThemeManager="*res://core/ThemeManager.gd"
+SceneManager="*res://core/SceneManager.gd"
+AudioManager="*res://core/AudioManager.gd"
+DataCache="*res://core/DataCache.gd"
+CircuitDatabase="*res://core/CircuitDatabase.gd"
+Global="*res://Global.gd"
 WarehouseManager="*res://WarehouseManager.gd"
 CardManager="*res://CardManager.gd"
 CircuitManager="*res://CircuitManager.gd"
