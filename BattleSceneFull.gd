@@ -284,7 +284,7 @@ func _on_turn_changed(turn: int) -> void:
 
 func _on_battle_ended(result: int) -> void:
 	if result == 1:
-		_show_battle_result(true)
+		_handle_victory_rewards()
 	elif result == 0:
 		_show_battle_result(false)
 
@@ -551,6 +551,99 @@ func _on_phase_btn_pressed() -> void:
 func _on_back() -> void:
 	get_tree().change_scene_to_file("res://Main.tscn")
 
+# ===== 输入处理 =====
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			_on_hand_touch_start(event)
+		else:
+			_on_hand_touch_end(event)
+	elif event is InputEventScreenDrag:
+		_on_hand_touch_drag(event)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.pressed:
+			_on_mouse_click(event)
+
+func _on_hand_touch_start(event: InputEventScreenTouch) -> void:
+	var pos = event.position
+	if _discard_mode:
+		_on_discard_click(pos)
+		return
+	# 检查是否点击手牌
+	for i in range(_player_hand_nodes.size()):
+		if _player_hand_nodes[i]:
+			var card_pos = _screen_to_3d_pos(pos)
+			var card_world = _player_hand_nodes[i].global_position
+			var dist = Vector2(card_world.x, card_world.z).distance_to(Vector2(card_pos.x, card_pos.z))
+			if dist < 0.8:
+				_hand_press_time = Time.get_ticks_msec() / 1000.0
+				_hand_press_index = i
+				_long_press_triggered = false
+				break
+
+func _on_hand_touch_end(event: InputEventScreenTouch) -> void:
+	if _hand_press_index >= 0 and not _long_press_triggered:
+		var press_duration = Time.get_ticks_msec() / 1000.0 - _hand_press_time
+		if press_duration < 0.5:
+			_on_hand_clicked(_hand_press_index)
+	_hand_press_index = -1
+
+func _on_hand_touch_drag(_event: InputEventScreenDrag) -> void:
+	pass
+
+func _on_mouse_click(event: InputEventMouseButton) -> void:
+	var pos = event.position
+	if _discard_mode:
+		_on_discard_click(pos)
+		return
+
+func _on_hand_clicked(hand_idx: int) -> void:
+	if _game == null:
+		return
+	if _game.phase == 0:  # MAIN phase
+		if hand_idx < _player_hand_cards.size() and _player_hand_cards[hand_idx]:
+			var card = _player_hand_cards[hand_idx]
+			var cost = card.get("cost", 0) if card.has_method("get") else 0
+			if _player_energy >= cost:
+				_game.request_play_card(hand_idx, 0)
+				_selected_hand_index = hand_idx
+				_layout_player_hand(true)
+
+func _on_discard_click(pos: Vector2) -> void:
+	for i in range(_player_hand_nodes.size()):
+		if _player_hand_nodes[i]:
+			var card_pos = _screen_to_3d_pos(pos)
+			var card_world = _player_hand_nodes[i].global_position
+			var dist = Vector2(card_world.x, card_world.z).distance_to(Vector2(card_pos.x, card_pos.z))
+			if dist < 0.8:
+				_toggle_discard_selection(i)
+				break
+
+func _toggle_discard_selection(hand_index: int) -> void:
+	if hand_index in _discard_selected:
+		_discard_selected.erase(hand_index)
+	else:
+		if _discard_selected.size() < _discard_need:
+			_discard_selected.append(hand_index)
+
+func _screen_to_3d_pos(screen_pos: Vector2) -> Vector3:
+	if _cam == null:
+		return Vector3.ZERO
+	var ray_origin = _cam.project_ray_origin(screen_pos)
+	var ray_dir = _cam.project_ray_dir(screen_pos)
+	var t = -ray_origin.y / ray_dir.y if ray_dir.y != 0 else 0
+	return ray_origin + ray_dir * t
+
+func _process(delta: float) -> void:
+	if _hand_press_time >= 0 and _hand_press_index >= 0:
+		var press_duration = Time.get_ticks_msec() / 1000.0 - _hand_press_time
+		if press_duration > LONG_PRESS_TIME and not _long_press_triggered:
+			_long_press_triggered = true
+			_on_hand_long_pressed(_hand_press_index)
+
 # ===== 弃牌UI =====
 
 func _show_discard_ui(reason: String) -> void:
@@ -642,6 +735,249 @@ func _show_battle_result(win: bool) -> void:
 	
 	var btn = Button.new()
 	btn.text = "返回地图"
+	btn.position = Vector2(800, 900)
+	btn.size = Vector2(300, 60)
+	btn.pressed.connect(func():
+		overlay.queue_free()
+		_on_back())
+	overlay.add_child(btn)
+
+# ===== 卡牌详情面板 =====
+
+const FONT_SIZE_DETAIL = 40
+var _font_detail: Font = null
+
+func _show_card_detail(data: Dictionary) -> void:
+	if _detail_panel:
+		_detail_panel.queue_free()
+		_detail_panel = null
+	
+	if _font_detail == null:
+		_font_detail = load("res://assets/share/font_pixel.ttf")
+	
+	var overlay = ColorRect.new()
+	overlay.color = Color(0, 0, 0, 0.5)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(overlay)
+	
+	var panel = Panel.new()
+	var sb = StyleBoxFlat.new()
+	sb.bg_color = Color(0.08, 0.06, 0.14, 0.95)
+	sb.border_width_left = 4
+	sb.border_color = Color(0.976, 0.827, 0.443, 0.8)
+	panel.add_theme_stylebox_override("panel", sb)
+	panel.anchor_left = 0.5
+	panel.anchor_top = 0.0
+	panel.anchor_right = 1.0
+	panel.anchor_bottom = 1.0
+	overlay.add_child(panel)
+	
+	var scroll = ScrollContainer.new()
+	scroll.set_anchors_preset(Control.PRESET_FULL_RECT)
+	scroll.offset_left = 40.0
+	scroll.offset_top = 100.0
+	scroll.offset_right = -40.0
+	scroll.offset_bottom = -40.0
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	panel.add_child(scroll)
+	
+	var vbox = VBoxContainer.new()
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vbox.add_theme_constant_override("separation", 15)
+	scroll.add_child(vbox)
+	
+	var name = data.get("name", data.get("card_name", "未命名"))
+	var name_lbl = _make_detail_label(name, _font_detail, FONT_SIZE_DETAIL, Color(0.976, 0.827, 0.443, 1.0))
+	vbox.add_child(name_lbl)
+	
+	var fields: Array = data.get("fields", [])
+	var field_text = " · ".join(fields) if fields.size() > 0 else "无"
+	vbox.add_child(_make_detail_label("字段: " + field_text, _font_detail, FONT_SIZE_DETAIL - 8, Color(0.63, 0.71, 0.86, 0.9)))
+	
+	var stats = HBoxContainer.new()
+	stats.add_theme_constant_override("separation", 30)
+	var atk = data.get("atk", data.get("attack", 0))
+	var hp = data.get("hp", data.get("health", 0))
+	var cost = data.get("cost", data.get("energy_cost", 0))
+	stats.add_child(_make_stat_box("攻击", str(atk), Color(0.86, 0.24, 0.24, 1.0)))
+	stats.add_child(_make_stat_box("生命", str(hp), Color(0.24, 0.86, 0.31, 1.0)))
+	stats.add_child(_make_stat_box("费用", str(cost), Color(0.24, 0.47, 0.86, 1.0)))
+	vbox.add_child(stats)
+	
+	var qual = data.get("quality", data.get("rarity", "普通"))
+	var element = data.get("element", "")
+	var elem_map := {"火": "[火]", "水": "[水]", "风": "[风]", "暗": "[暗]", "光": "[光]", "地": "[地]"}
+	if element != "" and elem_map.has(element):
+		qual += "  " + elem_map[element]
+	var star = data.get("star", 1)
+	var star_str = ""
+	for i in range(star):
+		star_str += "★"
+	qual += "  " + star_str
+	vbox.add_child(_make_detail_label(qual, _font_detail, FONT_SIZE_DETAIL - 8, Color(0.7, 0.7, 0.7, 1.0)))
+	
+	vbox.add_child(_make_detail_label("效果", _font_detail, FONT_SIZE_DETAIL - 8, Color(0.78, 0.63, 0.25, 1.0)))
+	var effects: Array = data.get("effects", [])
+	var eff_text = "无"
+	if effects.size() > 0:
+		var lines = []
+		for e in effects:
+			if e is Dictionary:
+				lines.append(e.get("desc", ""))
+			elif e is String:
+				lines.append(e)
+		eff_text = "\n".join(lines)
+	vbox.add_child(_make_detail_label(eff_text, _font_detail, FONT_SIZE_DETAIL - 12, Color(0.85, 0.85, 0.85, 1.0)))
+	
+	var close_btn = Button.new()
+	close_btn.text = "关闭"
+	close_btn.position = Vector2(40, 40)
+	close_btn.size = Vector2(200, 60)
+	close_btn.pressed.connect(func():
+		overlay.queue_free()
+		_detail_panel = null)
+	overlay.add_child(close_btn)
+	
+	overlay.gui_input.connect(func(ev):
+		if ev is InputEventScreenTouch and not ev.pressed:
+			overlay.queue_free()
+			_detail_panel = null)
+	
+	_detail_panel = overlay
+
+func _make_detail_label(text: String, font: Font, font_size: int, color: Color) -> Label:
+	var label = Label.new()
+	label.text = text
+	label.add_theme_font_override("font", font)
+	label.add_theme_font_size_override("font_size", font_size)
+	label.add_theme_color_override("font_color", color)
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD
+	return label
+
+func _make_stat_box(label_text: String, value: String, color: Color) -> Panel:
+	var panel = Panel.new()
+	var sb = StyleBoxFlat.new()
+	sb.bg_color = Color(0.12, 0.1, 0.2)
+	sb.border_width_all = 2
+	sb.border_color = color
+	sb.corner_radius_all = 8
+	panel.add_theme_stylebox_override("panel", sb)
+	panel.custom_minimum_size = Vector2(100, 80)
+	
+	var box = VBoxContainer.new()
+	box.alignment = BoxContainer.ALIGNMENT_CENTER
+	box.set_anchors_preset(Control.PRESET_FULL_RECT)
+	panel.add_child(box)
+	
+	var lbl = Label.new()
+	lbl.text = label_text
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.add_theme_font_size_override("font_size", 24)
+	lbl.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
+	box.add_child(lbl)
+	
+	var val = Label.new()
+	val.text = value
+	val.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	val.add_theme_font_size_override("font_size", 36)
+	val.add_theme_color_override("font_color", color)
+	box.add_child(val)
+	
+	return panel
+
+func _on_hand_long_pressed(hand_idx: int) -> void:
+	if _game == null or _game.player_self == null:
+		return
+	var hand = _game.player_self.hand
+	if hand_idx >= 0 and hand_idx < hand.size():
+		var card = hand[hand_idx]
+		var data = _card_to_dict(card)
+		_show_card_detail(data)
+
+func _get_player_hand_card_data(hand_idx: int) -> Dictionary:
+	if _game == null or _game.player_self == null:
+		return {}
+	var hand = _game.player_self.hand
+	if hand_idx >= 0 and hand_idx < hand.size():
+		return _card_to_dict(hand[hand_idx])
+	return {}
+
+# ===== 墓地面板 =====
+
+func _show_grave_panel(is_player: bool) -> void:
+	if _game == null:
+		return
+	var grave = _game.player_self.grave if is_player else _game.player_opponent.grave
+	var grave_count = grave.size() if grave else 0
+	
+	var overlay = ColorRect.new()
+	overlay.color = Color(0, 0, 0, 0.7)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(overlay)
+	
+	var label = Label.new()
+	label.text = "🪦 墓地 (%d张)" % grave_count
+	if is_player:
+		label.text = "🪦 我方墓地 (%d张)" % grave_count
+	else:
+		label.text = "🪦 敌方墓地 (%d张)" % grave_count
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.add_child(label)
+	
+	var close_btn = Button.new()
+	close_btn.text = "关闭"
+	close_btn.position = Vector2(850, 900)
+	close_btn.size = Vector2(200, 60)
+	close_btn.pressed.connect(func():
+		overlay.queue_free())
+	overlay.add_child(close_btn)
+
+func _on_grave_clicked(is_player: bool) -> void:
+	_show_grave_panel(is_player)
+
+func _card_to_dict(card) -> Dictionary:
+	if card == null:
+		return {}
+	return {
+		"id": card.get("id", "") if card.has_method("get") else "",
+		"name": card.get("name", "") if card.has_method("get") else "",
+		"cost": card.get("cost", 0) if card.has_method("get") else 0,
+		"atk": card.get("atk", 0) if card.has_method("get") else 0,
+		"hp": card.get("hp", 0) if card.has_method("get") else 0,
+		"desc": card.get("desc", "") if card.has_method("get") else "",
+		"element": card.get("element", "") if card.has_method("get") else "",
+		"effects": card.get("effects", []) if card.has_method("get") else [],
+		"rarity": card.get("rarity", "普通") if card.has_method("get") else "普通",
+		"fields": card.get("fields", []) if card.has_method("get") else [],
+		"star": card.get("star", 1) if card.has_method("get") else 1
+	}
+
+# ===== 战斗奖励 =====
+
+func _handle_victory_rewards() -> void:
+	if _game == null:
+		return
+	var enemy_data = _load_enemy_data(_enemy_name)
+	var aux_drops = enemy_data.get("aux_drops", [])
+	
+	var overlay = ColorRect.new()
+	overlay.name = "RewardOverlay"
+	overlay.color = Color(0, 0, 0, 0.8)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(overlay)
+	
+	var label = Label.new()
+	label.text = "🎁 战斗奖励\n\n击败 %s 获得辅助物品！" % _enemy_name
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.add_child(label)
+	
+	var btn = Button.new()
+	btn.text = "领取奖励"
 	btn.position = Vector2(800, 900)
 	btn.size = Vector2(300, 60)
 	btn.pressed.connect(func():
