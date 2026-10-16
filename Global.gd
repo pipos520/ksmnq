@@ -9,6 +9,9 @@ extends Node
 ##  本文件仅做一行转发，保持 Global.xxx API 不变
 ## ============================================================
 
+# ===== 战斗系统配置 =====
+const USE_NEW_BATTLE_SYSTEM: bool = false  # true=使用battle_new/新架构, false=使用旧BattleManager
+
 # ===== 枚举（保留在 Global 以兼容 Global.ThemeMode / Global.Phase）=====
 enum ThemeMode { NIGHT, DAY }
 enum Phase { NONE, DRAW, READY, MAIN, BATTLE, END, DISCARD }
