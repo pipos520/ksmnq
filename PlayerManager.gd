@@ -9,8 +9,8 @@ const SAVE_PATH := "user://player_data.json"
 func _get_local_date() -> String:
 	var d = Time.get_datetime_dict_from_system()
 	return "%04d-%02d-%02d" % [d["year"], d["month"], d["day"]]
-# 品质等级顺序 — 引用 Global.QUALITY_LEVELS（六档统一常量）
-const QUALITY_LEVELS := Global.QUALITY_LEVELS
+# 品质等级顺序 — 引用 QualityConfig.QUALITY_LEVELS（六档统一常量）
+var QUALITY_LEVELS := QualityConfig.QUALITY_LEVELS
 # ---------- 公会等级数据 ----------
 const GUILD_LEVELS := [
 	{"title": "见习制卡师",  "level": 1,  "cards_needed": 0,   "quality_needed": "",        "map_needed": ""},

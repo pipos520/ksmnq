@@ -51,8 +51,8 @@ var _ai_ctrl: BattleAINew = null
 
 # ===== 战斗参数 =====
 var _player_name: String = "卡师"
-var _enemy_name: String = "树苗精"
-var _deck_id: String = "beginner_deck"
+var _enemy_name: String = ""
+var _deck_id: String = ""
 var _player_hp: int = 30
 var _player_max_hp: int = 30
 var _player_energy: int = 3
@@ -225,29 +225,16 @@ func _connect_signals() -> void:
 		_game.banish_changed.connect(_on_banish_changed)
 
 func _start_battle() -> void:
-	var enemy_data = _load_enemy_data(_enemy_name)
-	_game.start_battle(_deck_id, enemy_data)
+	# 从 Global 获取战斗参数
+	_deck_id = Global.current_deck_id
+	if _deck_id == "":
+		_deck_id = "deck_0"
+	_enemy_name = ""
+	var enemy_data = Global.current_enemy_data
+	if enemy_data.size() > 0:
+		_enemy_name = enemy_data.get("name", "")
 	_update_all_info_labels()
-
-func _load_enemy_data(enemy_name: String) -> Dictionary:
-	var enemy = Global.get_enemy_by_plain_name(enemy_name)
-	if enemy.is_empty():
-		enemy = Global.get_enemy_by_name(enemy_name)
-	if enemy.is_empty():
-		return {
-			"id": "default_enemy",
-			"name": enemy_name,
-			"level": 1,
-			"hp": 100,
-			"max_hp": 100,
-			"energy": 3,
-			"max_energy": 3,
-			"element": "暗",
-			"desc": "默认敌人",
-			"aux_drops": [],
-			"deck": []
-		}
-	return enemy
+	_game.start_battle(_deck_id, enemy_data)
 
 # ===== 信号回调 =====
 
@@ -968,7 +955,7 @@ func _card_to_dict(card: BattleCardNew) -> Dictionary:
 func _handle_victory_rewards() -> void:
 	if _game == null:
 		return
-	var enemy_data = _load_enemy_data(_enemy_name)
+	var enemy_data = Global.current_enemy_data
 	var aux_drops = enemy_data.get("aux_drops", [])
 	
 	var overlay = ColorRect.new()
