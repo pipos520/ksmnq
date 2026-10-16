@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cakded6blximy"
-path.etc2="res://.godot/imported/card_back.png-de0bbd61d3b68a5d3ba65cc06b6c6b29.etc2.ctex"
+path="res://.godot/imported/card_back.png-de0bbd61d3b68a5d3ba65cc06b6c6b29.ctex"
 metadata={
-"imported_formats": ["etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/3d/card_back.png"
-dest_files=["res://.godot/imported/card_back.png-de0bbd61d3b68a5d3ba65cc06b6c6b29.etc2.ctex"]
+dest_files=["res://.godot/imported/card_back.png-de0bbd61d3b68a5d3ba65cc06b6c6b29.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

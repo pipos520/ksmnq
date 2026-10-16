@@ -35,10 +35,10 @@ func set_camera(cam: Camera3D) -> void:
 
 func switch_camera(target_state: int) -> void:
 	camera_state = target_state
-	# 相机切换逻辑由具体场景实现
+	pass
 
 func restore_camera() -> void:
-	# 恢复相机逻辑由具体场景实现
+	pass
 
 # ===== 卡牌动画 =====
 
@@ -105,7 +105,7 @@ func show_poison_tick(is_player: bool, source_slot: int, damage: int, stacks: in
 # ===== 工具方法 =====
 
 func wait_for_animation_completion() -> void:
-	# 等待动画完成逻辑由具体场景实现
+	pass
 
 func is_busy() -> bool:
 	return is_animating
