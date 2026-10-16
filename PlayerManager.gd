@@ -9,14 +9,14 @@ const SAVE_PATH := "user://player_data.json"
 func _get_local_date() -> String:
 	var d = Time.get_datetime_dict_from_system()
 	return "%04d-%02d-%02d" % [d["year"], d["month"], d["day"]]
-# 品质等级顺序（用于晋级条件向上兼容判断）
-const QUALITY_LEVELS := {"废品": 0, "瑕疵": 1, "普通": 2, "优秀": 3, "卓越": 4, "完美": 5}
+# 品质等级顺序 — 引用 Global.QUALITY_LEVELS（六档统一常量）
+const QUALITY_LEVELS := Global.QUALITY_LEVELS
 # ---------- 公会等级数据 ----------
 const GUILD_LEVELS := [
 	{"title": "见习制卡师",  "level": 1,  "cards_needed": 0,   "quality_needed": "",        "map_needed": ""},
 	{"title": "初级制卡师",  "level": 2,  "cards_needed": 3,   "quality_needed": "",        "map_needed": ""},
 	{"title": "中级制卡师",  "level": 3,  "cards_needed": 10,  "quality_needed": "",        "map_needed": ""},
-	{"title": "高级制卡师",  "level": 4,  "cards_needed": 20,  "quality_needed": "优秀",    "map_needed": ""},
+	{"title": "高级制卡师",  "level": 4,  "cards_needed": 20,  "quality_needed": "精良",    "map_needed": ""},
 	{"title": "精英制卡师",  "level": 5,  "cards_needed": 40,  "quality_needed": "",        "map_needed": "迷雾森林"},
 	{"title": "卓越制卡师",  "level": 6,  "cards_needed": 60,  "quality_needed": "卓越",    "map_needed": ""},
 	{"title": "大师制卡师",  "level": 7,  "cards_needed": 80,  "quality_needed": "",        "map_needed": "火焰洞穴"},
@@ -53,7 +53,12 @@ func load_data() -> void:
 		print("[PlayerManager] 数据解析错误：", json.get_error_message())
 		_init_default_data()
 		return
-	_data = json.get_data()
+	var parsed = json.get_data()
+	if not (parsed is Dictionary):
+		print("[PlayerManager] 数据格式错误：期望 Dictionary，实际为类型 ", parsed.get_type())
+		_init_default_data()
+		return
+	_data = parsed
 	_ensure_defaults()
 	print("[PlayerManager] 玩家数据加载成功")
 	print("[PlayerManager] 当前称号：Lv.", get_guild_level(), " ", get_guild_title())
@@ -77,11 +82,7 @@ func reset_data() -> void:
 func _init_default_data() -> void:
 	_data = {
 		"profile": {
-			"name": "卡师",
-			"level": 1,
-			"exp": 0,
-			"gold": 100,
-			"diamonds": 50
+			"name": "卡师"
 		},
 		"crafting": {
 			"cards_created": 0,
@@ -123,7 +124,7 @@ func _init_default_data() -> void:
 	}
 
 func _ensure_defaults() -> void:
-	if not _data.has("profile"): _data["profile"] = {"name":"卡师","level":1,"exp":0,"gold":100,"diamonds":50}
+	if not _data.has("profile"): _data["profile"] = {"name":"卡师"}
 	if not _data.has("crafting"): _data["crafting"] = {"cards_created":0,"highest_quality":"","cards_by_quality":{}}
 	if not _data.has("progress"): _data["progress"] = {"misty_forest":false,"flame_cavern":false,"storm_tower":false,"shadow_swamp":false,"legendary_ruins":false}
 	if not _data.has("guild"): _data["guild"] = {"level":1,"title":"见习制卡师"}
@@ -132,10 +133,6 @@ func _ensure_defaults() -> void:
 	if not _data.has("guild_tasks"): _data["guild_tasks"] = {"data": null}
 	var p = _data["profile"]
 	if not p.has("name"): p["name"] = "卡师"
-	if not p.has("level"): p["level"] = 1
-	if not p.has("exp"): p["exp"] = 0
-	if not p.has("gold"): p["gold"] = 100
-	if not p.has("diamonds"): p["diamonds"] = 50
 	var c = _data["crafting"]
 	if not c.has("cards_created"): c["cards_created"] = 0
 	if not c.has("highest_quality"): c["highest_quality"] = ""
@@ -407,9 +404,8 @@ func record_card_creation(quality: String = "") -> void:
 	set_cards_created(count)
 	if quality != "":
 		var current_highest = get_highest_quality()
-		var quality_order = {"普通": 0, "优秀": 1, "卓越": 2, "完美": 3}
-		var new_rank = quality_order.get(quality, 0)
-		var old_rank = quality_order.get(current_highest, -1)
+		var new_rank = Global.QUALITY_LEVELS.get(quality, 0)
+		var old_rank = Global.QUALITY_LEVELS.get(current_highest, -1)
 		if new_rank > old_rank:
 			set_highest_quality(quality)
 		# 记录各品质数量

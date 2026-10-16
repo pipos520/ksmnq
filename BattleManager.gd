@@ -80,6 +80,8 @@ var _trigger_registry: Array = []
 var chain_stack: Array = []  # 连锁栈，格式: [{owner, card, effect, slot, chain_id}]
 var chain_counter: int = 0  # 连锁编号计数器
 const MAX_CHAIN_LENGTH := 10  # 连锁最大长度（防死循环）
+const MAX_EFFECT_RECURSION := 50  # 效果递归深度上限（防 TR16→TR16 栈溢出）
+var _effect_recursion_depth: int = 0  # 当前效果递归深度
 var _chain_resolving: bool = false  # 正在结算连锁中
 var _chain_response_callback_id: int = -1  # 当前等待响应的连锁ID
 var _chain_timer: float = 0.0  # 连锁响应计时
@@ -112,8 +114,37 @@ var _ai_combo_plan_partner_desc: String = ""  # 等待的配套牌描述（日�
 func _init():
 	pass
 
+## 清理上次战斗残留（断开信号、清空状态）
+func _teardown_battle() -> void:
+	# 断开玩家信号
+	if player_self:
+		if player_self.card_summoned.is_connected(_on_player_card_summoned):
+			player_self.card_summoned.disconnect(_on_player_card_summoned)
+		if player_self.card_sent_to_grave.is_connected(_on_player_card_sent_to_grave):
+			player_self.card_sent_to_grave.disconnect(_on_player_card_sent_to_grave)
+	if player_opponent:
+		if player_opponent.card_summoned.is_connected(_on_player_card_summoned):
+			player_opponent.card_summoned.disconnect(_on_player_card_summoned)
+		if player_opponent.card_sent_to_grave.is_connected(_on_player_card_sent_to_grave):
+			player_opponent.card_sent_to_grave.disconnect(_on_player_card_sent_to_grave)
+	
+	# 清空连锁系统
+	chain_stack.clear()
+	chain_counter = 0
+	_chain_resolving = false
+	_ignore_chain = false
+	_chain_response_callback_id = -1
+	_chain_timer = 0.0
+	
+	# 清空玩家引用
+	player_self = null
+	player_opponent = null
+
 ## 开始战斗
 func start_battle(deck_id: String, enemy_name: String = "暗影法师", auto_start: bool = true) -> void:
+	# 清理上次战斗残留
+	_teardown_battle()
+	
 	var deck_data = CardManager.get_deck(deck_id)
 	var card_ids = deck_data.get("cards", [])
 	var card_datas = _load_card_datas_by_ids(card_ids)
@@ -246,15 +277,7 @@ func start_first_turn(player_wins_rps: bool) -> void:
 
 ## 根据卡牌ID列表加载完整卡牌数据
 func _load_card_datas_by_ids(card_ids: Array) -> Array:
-	var all_cards = CardManager.get_all_cards()
-	var result := []
-	for cid in card_ids:
-		for card_data in all_cards:
-			# ★ 同时匹配 id 和 template_id
-			if card_data.get("id", "") == cid or card_data.get("template_id", "") == cid:
-				result.append(card_data.duplicate())
-				break
-	return result
+	return CardManager.get_cards_by_ids(card_ids)
 
 ## ★ 从「服务器卡组池(Global.server_decks) + 本地卡组」随机选一套作为AI对手卡组
 ## 参数：
@@ -623,6 +646,7 @@ func _switch_turn() -> void:
 # ===== 敌方AI操作 =====
 
 ## 构建敌方AI队列：主要阶段
+# TODO: 超长函数，建议拆分为多个子函数
 func _build_ai_main_phase_queue() -> void:
 	ai_action_queue.clear()
 	ai_phase_completed = false
@@ -1217,6 +1241,7 @@ func _execute_pending_enemy_attack() -> void:
 			_check_win_condition()
 
 
+# TODO: 超长函数（317行），建议拆分为多个子函数
 ## AI评估单一效果的价值（覆盖全部24种动作类型）
 func _evaluate_effect_for_ai(effect: Dictionary, enemy: BattlePlayer, self_p: BattlePlayer,
 	enemy_field_count: int, self_field_count: int) -> Dictionary:
@@ -2526,8 +2551,6 @@ func do_action(action_type: String, params: Dictionary = {}) -> Dictionary:
 				_check_win_condition()
 		
 		"end_turn":
-			current_phase = Phase.END
-			phase_changed.emit(Phase.END, current_player_index)
 			_enter_phase(Phase.END)
 			result.success = true
 		# "discard_done" 已废弃 → 改用 request_discard + _on_discard_result 回调机制
@@ -2717,6 +2740,17 @@ func _trigger_card_trigger(trigger_id: String, owner: BattlePlayer, card: Battle
 			_execute_effect_with_chain(owner, card, effect, slot)
 ## 执行单个效果（使用全局纹路系统）
 func _execute_effect(owner: BattlePlayer, source_card: BattleCard, effect: Dictionary, source_slot: int) -> void:
+	# 递归深度保护（防 TR16→TR16 无限递归栈溢出）
+	_effect_recursion_depth += 1
+	if _effect_recursion_depth > MAX_EFFECT_RECURSION:
+		_effect_recursion_depth -= 1
+		if OS.is_debug_build():
+			print("[效果] 递归深度超限(", MAX_EFFECT_RECURSION, ")，强制终止")
+		return
+	_do_execute_effect(owner, source_card, effect, source_slot)
+	_effect_recursion_depth -= 1
+
+func _do_execute_effect(owner: BattlePlayer, source_card: BattleCard, effect: Dictionary, source_slot: int) -> void:
 	# 解析纹路效果（支持新格式和旧格式兼容）
 	var parsed = Global.parse_circuit(effect)
 	if not parsed.is_valid:
@@ -2880,6 +2914,7 @@ func _execute_effect(owner: BattlePlayer, source_card: BattleCard, effect: Dicti
 		_execute_constraint_effects(owner, source_card, effect, parsed)
 		_dispatch_effect_action(owner, opponent, source_card, source_slot, action_id, target_id, target_slot, value, desc, parsed, is_player)
 
+# TODO: 超长函数（207行），建议拆分为多个子函数
 ## 根据动作ID分发执行效果（供 CO04 弃牌弹窗回调后继续执行）
 func _dispatch_effect_action(owner: BattlePlayer, opponent: BattlePlayer, source_card: BattleCard, source_slot: int, action_id: String, target_id: String, target_slot: int, value: int, desc: String, parsed: Dictionary, is_player: bool) -> void:
 	# 根据动作ID分发执行
@@ -3029,6 +3064,10 @@ func _dispatch_effect_action(owner: BattlePlayer, opponent: BattlePlayer, source
 		# === 全场增减 ===
 		"A24":
 			var final_value = value
+			if target_id not in ["T04", "T05", "T06"]:
+				if OS.is_debug_build():
+					print("[效果] A24 仅支持全场目标(T04/T05/T06)，当前: ", target_id)
+				return
 			_execute_all_field_stat_change(owner, opponent, target_id, final_value)
 		
 		# === 交换攻防 ===
@@ -3481,6 +3520,23 @@ func _execute_stat_buff(owner: BattlePlayer, source_card: BattleCard, target_id:
 						effect_line_fromto.emit(from_slot, is_player, i, is_player, "A20")
 					if OS.is_debug_build():
 						print("  → 己方 ", target_card.get_display_name(), " ", stat_type, "+", value)
+		"T06":  # 全场
+			for i in range(owner.max_field_size):
+				var target_card = owner.field[i]
+				if target_card != null and target_card.is_alive():
+					target_card.add_buff(stat_type, value)
+					if from_slot >= 0:
+						effect_line_fromto.emit(from_slot, is_player, i, is_player, "A20")
+					if OS.is_debug_build():
+						print("  → 己方 ", target_card.get_display_name(), " ", stat_type, "+", value)
+			for i in range(opponent.max_field_size):
+				var target_card = opponent.field[i]
+				if target_card != null and target_card.is_alive():
+					target_card.add_buff(stat_type, value)
+					if from_slot >= 0:
+						effect_line_fromto.emit(from_slot, is_player, i, not is_player, "A20")
+					if OS.is_debug_build():
+						print("  → 敌方 ", target_card.get_display_name(), " ", stat_type, value)
 
 ## 弹回手牌动作
 func _execute_bounce_to_hand(owner: BattlePlayer, opponent: BattlePlayer, source_card: BattleCard, target_id: String, target_slot: int = -1) -> void:
@@ -3780,7 +3836,7 @@ func _execute_mill_from_deck(owner: BattlePlayer, target_id: String, count: int)
 func _execute_special_summon_from_hand(owner: BattlePlayer, source_card: BattleCard, target_id: String, count: int) -> void:
 	# 从手牌特殊召唤到场上（不消耗能量）
 	var summoned = 0
-	for hi in range(owner.hand.size()):
+	for hi in range(owner.hand.size() - 1, -1, -1):
 		if summoned >= count:
 			break
 		var card = owner.hand[hi] as BattleCard
@@ -3801,7 +3857,7 @@ func _execute_special_summon_from_hand(owner: BattlePlayer, source_card: BattleC
 func _execute_special_summon_from_grave(owner: BattlePlayer, target_id: String, count: int) -> void:
 	# 从墓地特殊召唤到场上
 	var summoned = 0
-	for gi in range(owner.grave.size()):
+	for gi in range(owner.grave.size() - 1, -1, -1):
 		if summoned >= count:
 			break
 		var card = owner.grave[gi] as BattleCard
@@ -3829,7 +3885,7 @@ func _execute_special_summon_from_grave(owner: BattlePlayer, target_id: String, 
 func _execute_special_summon_from_banish(owner: BattlePlayer, target_id: String, count: int) -> void:
 	# 从除外区特殊召唤到场上
 	var summoned = 0
-	for bi in range(owner.banished.size()):
+	for bi in range(owner.banished.size() - 1, -1, -1):
 		if summoned >= count:
 			break
 		var card = owner.banished[bi] as BattleCard
@@ -3951,25 +4007,21 @@ func _execute_all_field_stat_change(owner: BattlePlayer, opponent: BattlePlayer,
 			print("  → 全场攻命", value)
 ## 交换攻防
 func _execute_swap_atk_hp(owner: BattlePlayer, opponent: BattlePlayer, target_id: String, target_slot: int = -1) -> void:
-	if target_id == "T02" and target_slot >= 0:
+	if target_id == "T02" and target_slot >= 0 and target_slot < opponent.max_field_size:
 		var card = opponent.field[target_slot]
 		if card != null and card.is_alive():
 			var old_atk = card.current_atk
 			var old_hp = card.current_hp
-			card.base_atk = old_hp
-			card.base_hp = old_atk
 			card.current_atk = old_hp
 			card.current_hp = old_atk
 			if OS.is_debug_build():
 				print("  → 交换攻防: ", card.get_display_name(), " (", old_atk, "/", old_hp, " → ", card.current_atk, "/", card.current_hp, ")")
 			opponent.field_changed.emit()
-	elif target_id == "T03" and target_slot >= 0:
+	elif target_id == "T03" and target_slot >= 0 and target_slot < owner.max_field_size:
 		var card = owner.field[target_slot]
 		if card != null and card.is_alive():
 			var old_atk = card.current_atk
 			var old_hp = card.current_hp
-			card.base_atk = old_hp
-			card.base_hp = old_atk
 			card.current_atk = old_hp
 			card.current_hp = old_atk
 			if OS.is_debug_build():
@@ -3991,8 +4043,6 @@ func _execute_swap_atk_hp(owner: BattlePlayer, opponent: BattlePlayer, target_id
 				if card != null and card.is_alive():
 					var old_atk = card.current_atk
 					var old_hp = card.current_hp
-					card.base_atk = old_hp
-					card.base_hp = old_atk
 					card.current_atk = old_hp
 					card.current_hp = old_atk
 					if OS.is_debug_build():
@@ -4004,7 +4054,7 @@ func _execute_take_control_temporary(owner: BattlePlayer, opponent: BattlePlayer
 	"""A26: 夺取对方场上卡牌的控制权，回合结束时归还"""
 	var target = opponent if target_id in ["T02", "T04"] else owner
 	var slot = target_slot if target_id in ["T02", "T03"] and target_slot >= 0 else -1
-	if slot >= 0:
+	if slot >= 0 and slot < target.max_field_size:
 		var card = target.field[slot]
 		if card != null and card.is_alive():
 			var success = owner.take_control_of(card, target, slot, true)
@@ -4019,14 +4069,15 @@ func _execute_take_control_temporary(owner: BattlePlayer, opponent: BattlePlayer
 				if success:
 					if OS.is_debug_build():
 						print("[控制权] 暂时夺取: ", card.get_display_name(), " (回合结束时归还)")
-				break
+				if target_id in ["T02", "T03"]:
+					break
 
 ## 永久夺取控制权
 func _execute_take_control_permanent(owner: BattlePlayer, opponent: BattlePlayer, target_id: String, target_slot: int = -1) -> void:
 	"""A27: 永久夺取对方场上卡牌的控制权"""
 	var target = opponent if target_id in ["T02", "T04"] else owner
 	var slot = target_slot if target_id in ["T02", "T03"] and target_slot >= 0 else -1
-	if slot >= 0:
+	if slot >= 0 and slot < target.max_field_size:
 		var card = target.field[slot]
 		if card != null and card.is_alive():
 			var success = owner.take_control_of(card, target, slot, false)
@@ -4041,7 +4092,8 @@ func _execute_take_control_permanent(owner: BattlePlayer, opponent: BattlePlayer
 				if success:
 					if OS.is_debug_build():
 						print("[控制权] 永久夺取: ", card.get_display_name())
-				break
+				if target_id in ["T02", "T03"]:
+					break
 
 ## 控制权变更（A31 一回合 / A32 永久）——方向由目标决定：
 ## 目标指向敌方（T02/T04/T13/T14）→ 把对方场上的卡夺到我方；目标指向己方（T03/T05/T15/T16）→ 把我方场上的卡送对方

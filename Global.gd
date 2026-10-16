@@ -16,6 +16,45 @@ static func ph(ratio: float) -> float:
 static func pw(ratio: float) -> float:
 	return REF_W * ratio
 
+## 品质体系统一常量（六档，全项目共用）
+const QUALITY_ORDER := ["废品", "瑕疵", "标准", "精良", "卓越", "完美"]
+const QUALITY_MULTS := [0.7, 0.9, 1.0, 1.05, 1.1, 1.2]
+const QUALITY_LEVELS := {"废品": 0, "瑕疵": 1, "标准": 2, "精良": 3, "卓越": 4, "完美": 5}
+const QUALITY_COLORS := {
+	"废品": Color("#9E9E9E"),
+	"瑕疵": Color("#4FC3F7"),
+	"标准": Color("#81C784"),
+	"精良": Color("#60a5fa"),
+	"卓越": Color("#c084fc"),
+	"完美": Color("#f9d371"),
+}
+## 分享码品质编码（单字压缩）
+const QUALITY_ENCODE := {"废品": "5", "瑕疵": "6", "标准": "7", "精良": "8", "卓越": "3", "完美": "4"}
+const QUALITY_DECODE := {"3": "卓越", "4": "完美", "5": "废品", "6": "瑕疵", "7": "标准", "8": "精良"}
+
+static func get_quality_rank(quality: String) -> int:
+	var q = quality
+	if " ~ " in q:
+		var parts = q.split(" ~ ")
+		q = parts[parts.size() - 1].strip_edges()
+	return QUALITY_LEVELS.get(q, 0)
+
+static func get_quality_color(quality: String) -> Color:
+	var q = quality
+	if " ~ " in q:
+		var parts = q.split(" ~ ")
+		q = parts[parts.size() - 1].strip_edges()
+	return QUALITY_COLORS.get(q, Color("#a0a0b0"))
+
+static func get_quality_mult(quality: String) -> float:
+	var idx = QUALITY_ORDER.find(quality)
+	if idx >= 0:
+		return QUALITY_MULTS[idx]
+	return 1.0
+
+## 战斗阶段枚举（全项目共用）
+enum Phase { NONE, DRAW, READY, MAIN, BATTLE, END, DISCARD }
+
 ## 获取元素emoji
 static func get_element_emoji(element: String) -> String:
 	match element:
@@ -715,19 +754,19 @@ var initial_unlocked := ["TR01", "A01", "T02"]
 # 14.2 解锁路径（已废弃，改用公会等级系统）
 var unlock_paths := [{"condition": "首次制卡", "guild_level": 1, "unlock": ["C07", "A20", "T03"]},{"condition": "制作3张卡", "guild_level": 2, "unlock": ["C01", "A02", "A09"]},{"condition": "制作10张卡", "guild_level": 3, "unlock": ["TR12", "C02", "CO04", "C12"]},{"condition": "制作20张卡", "guild_level": 4, "unlock": ["TR14", "TR15", "C04", "A21"]},{"condition": "首张卓越品质", "guild_level": 4, "unlock": ["C10"]},{"condition": "首张完美品质", "guild_level": 6, "unlock": ["TR16"]},{"condition": "累计造成500点伤害", "guild_level": 4, "unlock": ["TR09", "TR11", "A03"]},{"condition": "累计恢复500点生命", "guild_level": 4, "unlock": ["C06", "A23", "T04"]},{"condition": "累计消耗100点能量", "guild_level": 3, "unlock": ["C08", "CO05"]},{"condition": "累计特召30次", "guild_level": 4, "unlock": ["TR06", "TR18"]},{"condition": "累计破坏20张卡", "guild_level": 4, "unlock": ["A07", "T06", "A33"]},{"condition": "通关迷雾森林", "guild_level": 5, "unlock": ["C04", "A06", "CO03", "TR10"]},{"condition": "通关火焰洞穴", "guild_level": 7, "unlock": ["TR06", "C09", "T10", "A25"]},{"condition": "完成5次公会任务", "guild_level": 3, "unlock": ["T13", "T14"]},{"condition": "完成20次公会任务", "guild_level": 5, "unlock": ["T15", "T16", "A31", "A32"]},{"condition": "通关暗影沼泽", "guild_level": 9, "unlock": ["T05"]},{"condition": "通关传说遗迹", "guild_level": 10, "unlock": ["TR17"]},{"condition": "卡牌图鉴收集50张", "guild_level": 5, "unlock": ["TR13", "C04", "C16"]},]
 func get_all_triggers() -> Array:
-	return circuit_triggers.duplicate()
+	return circuit_triggers
 
 func get_all_conditions() -> Array:
-	return circuit_conditions.duplicate()
+	return circuit_conditions
 
 func get_all_actions() -> Array:
-	return circuit_actions.duplicate()
+	return circuit_actions
 
 func get_all_targets() -> Array:
-	return circuit_targets.duplicate()
+	return circuit_targets
 
 func get_all_constraints() -> Array:
-	return circuit_constraints.duplicate()
+	return circuit_constraints
 
 func get_circuit_by_id(id: String) -> Dictionary:
 	return _circuit_map.get(id, {})
@@ -925,6 +964,7 @@ func get_aux_list() -> Array:
 func get_aux_by_id(id: String) -> Dictionary:
 	return _aux_item_map.get(id, {})
 
+# TODO: 超长函数（260行），建议拆分为多个子函数
 func _load_aux_data() -> void:
 	var file = FileAccess.open("res://Data/aux_items.json", FileAccess.READ)
 	if file == null:
@@ -1166,9 +1206,9 @@ static func check_constraint(constraint_id: String, owner, battle_state: int, cu
 		"CO09":  # 仅对方回合
 			return player_index == 1
 		"CO10":  # 仅主要阶段
-			return current_phase == 3  # Phase.MAIN
+			return current_phase == Phase.MAIN
 		"CO11":  # 仅战斗阶段
-			return current_phase == 4  # Phase.BATTLE
+			return current_phase == Phase.BATTLE
 		"CO13":  # 不可被连锁
 			# 这个标记效果，不影响是否可发动
 			return true
@@ -1262,6 +1302,25 @@ static func get_constraint_param(effect: Dictionary, cid: String, fallback: int 
 		var iv = int(v)
 		return iv if iv > 0 else fallback
 	return fallback
+
+## 获取约束参数（字符串版本，用于元素等字符串类型的约束）
+static func get_constraint_param_str(effect: Dictionary, cid: String, fallback: String = "") -> String:
+	var params = effect.get("constraint_params", {})
+	if params is Dictionary and params.has(cid):
+		var p = params[cid]
+		if p is Dictionary:
+			# 元素可能存在 "元素" 或 "element" 键
+			for key in ["元素", "element", "field"]:
+				if p.has(key):
+					return str(p[key])
+		elif p is String:
+			return p
+	# 兼容旧卡：约束ID对应的元素存在效果field里
+	var f = effect.get("field", fallback)
+	if f is String and f != "":
+		return f
+	return fallback
+
 ## 格式化效果描述（用于显示）
 func format_effect_description(parsed_effect: Dictionary) -> String:
 	"""生成自然语言效果描述，供飘窗显示"""
@@ -1701,6 +1760,14 @@ func make_back_btn() -> Button:
 # ============================================================
 var circuit_row_pool: Array[Panel] = []
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_EXIT_TREE:
+		# 游戏退出时清理行池，避免内存泄漏
+		for row in circuit_row_pool:
+			if is_instance_valid(row):
+				row.queue_free()
+		circuit_row_pool.clear()
+
 func _build_circuit_row_template() -> void:
 	"""预构建90个纹路图鉴行，放入池子，并临时挂到树上触发 _ready()"""
 	# 创建临时容器，挂到Global上（Global在场景树中），触发子节点的 _ready()
@@ -1826,478 +1893,6 @@ func _generate_player_uuid() -> String:
 		id += chars[randi() % chars.length()]
 	return id
 
-## 通用HTTP请求函数（已注释：PvP/卡牌交易功能已移除过审，无调用方）
-# func supabase_request(method: int, path: String, body: String = "") -> Dictionary:
-# 	print("[supabase] 开始请求: ", method, " ", path)
-# 	var http = HTTPRequest.new()
-# 	add_child(http)
-# 	
-# 	var headers = [
-# 		"apikey: " + SUPABASE_ANON_KEY,
-# 		"Content-Type: application/json"
-# 	]
-# 	# POST/PATCH 时要求返回完整数据（获取插入/更新后的行）
-# 	if method == HTTPClient.METHOD_POST or method == HTTPClient.METHOD_PATCH:
-# 		headers.append("Prefer: return=representation")
-# 	
-# 	var url = SUPABASE_URL + path
-# 	print("[supabase] 请求URL: ", url)
-# 	var err = http.request(url, headers, method, body)
-# 	print("[supabase] http.request 返回: ", err)
-# 	if err != OK:
-# 		remove_child(http)
-# 		http.queue_free()
-# 		return {"error": "HTTP请求失败: " + str(err)}
-# 	
-# 	print("[supabase] 等待 request_completed 信号...")
-# 	var response = await http.request_completed
-# 	print("[supabase] request_completed 收到！")
-# 	remove_child(http)
-# 	http.queue_free()
-# 	
-# 	var result_code = response[1]
-# 	var response_body = response[3].get_string_from_utf8()
-# 	print("[supabase] 响应码: ", result_code, " 响应体长度: ", response_body.length())
-# 	
-# 	if result_code != 200 and result_code != 201 and result_code != 204:
-# 		return {"error": "HTTP " + str(result_code), "body": response_body}
-# 	
-# 	var json = JSON.new()
-# 	if result_code == 204 or response_body == "":
-# 		return {"data": [], "code": result_code}
-# 	json.parse(response_body)
-# 	return {"data": json.get_data(), "code": result_code}
-
-## ===== 卡牌同步（已注释：卡牌交易功能已移除过审） =====
-## 上传本地卡牌到云端
-# func upload_card(card_data: Dictionary) -> Dictionary:
-# 	var body = JSON.stringify({
-# 		"player_id": get_player_id(),
-# 		"card_data": card_data,
-# 		"is_tradable": true
-# 	})
-# 	return await supabase_request(HTTPClient.METHOD_POST, "/rest/v1/cards", body)
-
-## 获取我的卡牌列表
-# func get_my_cards() -> Dictionary:
-# 	var path = "/rest/v1/cards?player_id=eq." + get_player_id() + "&select=*"
-# 	return await supabase_request(HTTPClient.METHOD_GET, path)
-
-## ===== 交换发布（A发布） =====
-## 上架：上传卡牌到服务器 → 删除本地 → 创建发布
-#func publish_trade_offer(offer_card_id: String, want_description: String, card_data: Dictionary) -> Dictionary:
-#	# 1. 上传卡牌到服务器cards表
-#	var upload_result = await upload_card(card_data)
-#	if upload_result.has("error"):
-#		return {"error": "上传卡牌失败: " + str(upload_result.error)}
-#	
-#	# 获取服务器返回的卡牌ID
-#	var server_card_id = ""
-#	var resp_data = upload_result.get("data", [])
-#	if resp_data is Array and resp_data.size() > 0:
-#		server_card_id = resp_data[0].get("id", "")
-#	elif resp_data is Dictionary:
-#		server_card_id = resp_data.get("id", "")
-#	if server_card_id == "":
-#		return {"error": "无法获取服务器卡牌ID"}
-#	
-#	# 2. 删除本地卡牌
-#	CardManager.remove_card_by_id(offer_card_id)
-#	
-#	# 3. 创建发布
-#	var exchange_code = _generate_exchange_code()
-#	var body = JSON.stringify({
-#		"creator_id": get_player_id(),
-#		"offer_card_id": server_card_id,
-#		"want_description": want_description,
-#		"exchange_code": exchange_code,
-#		"card_data": card_data,
-#		"status": "open"
-#	})
-#	return await supabase_request(HTTPClient.METHOD_POST, "/rest/v1/trade_offers", body)
-#
-### 生成8位交换码
-#func _generate_exchange_code() -> String:
-#	var chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
-#	var code = ""
-#	for i in range(8):
-#		code += chars[randi() % chars.length()]
-#		if i == 3:
-#			code += "-"
-#	return code
-#
-### 获取我的上架
-#func get_my_offers() -> Dictionary:
-#	var path = "/rest/v1/trade_offers?creator_id=eq." + get_player_id() + "&select=*"
-#	return await supabase_request(HTTPClient.METHOD_GET, path)
-#
-### 获取所有开放的上架
-#func get_open_offers() -> Dictionary:
-#	return await supabase_request(HTTPClient.METHOD_GET, "/rest/v1/trade_offers?status=eq.open&select=*")
-#
-### 通过交换码查找发布
-#func get_offer_by_code(code: String) -> Dictionary:
-#	var path = "/rest/v1/trade_offers?exchange_code=eq." + code + "&select=*"
-#	return await supabase_request(HTTPClient.METHOD_GET, path)
-#
-### ===== 提交卡牌（B提交） =====
-### 提交提案：上传卡牌到服务器 → 删除本地 → 创建提案
-#func submit_card_to_offer(offer_id: String, my_card_id: String, card_data: Dictionary) -> Dictionary:
-#	# 0. 先检查offer状态是否还是open，防止对已关闭的提交提案
-#	var check_offer = await supabase_request(HTTPClient.METHOD_GET, "/rest/v1/trade_offers?id=eq." + offer_id + "&select=status")
-#	if not check_offer.has("error"):
-#		var offer_data = check_offer.get("data", [])
-#		if offer_data is Array and offer_data.size() > 0:
-#			var offer_status = offer_data[0].get("status", "")
-#			if offer_status != "open":
-#				return {"error": "该上架已关闭，无法提交提案"}
-#	
-#	# 1. 上传卡牌到服务器cards表
-#	var upload_result = await upload_card(card_data)
-#	if upload_result.has("error"):
-#		return {"error": "上传卡牌失败: " + str(upload_result.error)}
-#	
-#	# 获取服务器返回的卡牌ID
-#	var server_card_id = ""
-#	var resp_data = upload_result.get("data", [])
-#	if resp_data is Array and resp_data.size() > 0:
-#		server_card_id = resp_data[0].get("id", "")
-#	elif resp_data is Dictionary:
-#		server_card_id = resp_data.get("id", "")
-#	if server_card_id == "":
-#		return {"error": "无法获取服务器卡牌ID"}
-#	
-#	# 1.5 再次检查offer状态（上传卡牌后可能已被关闭）
-#	var recheck = await supabase_request(HTTPClient.METHOD_GET, "/rest/v1/trade_offers?id=eq." + offer_id + "&select=status")
-#	if not recheck.has("error"):
-#		var re_data = recheck.get("data", [])
-#		if re_data is Array and re_data.size() > 0:
-#			var re_status = re_data[0].get("status", "")
-#			if re_status != "open":
-#				# 上传的卡牌要删掉，不然卡在服务器上
-#				await delete_server_card(server_card_id)
-#				return {"error": "该上架已被关闭，卡牌已退还"}
-#	
-#	# 2. 删除本地卡牌
-#	CardManager.remove_card_by_id(my_card_id)
-#	
-#	# 3. 创建提案
-#	var body = JSON.stringify({
-#		"offer_id": offer_id,
-#		"proposer_id": get_player_id(),
-#		"offered_card_id": server_card_id,
-#		"card_data": card_data,
-#		"status": "pending"
-#	})
-#	return await supabase_request(HTTPClient.METHOD_POST, "/rest/v1/trade_proposals", body)
-#
-### 从服务器下载卡牌（根据server_card_id查cards表，获取card_data）
-#func download_card_from_server(server_card_id: String) -> Dictionary:
-#	var path = "/rest/v1/cards?id=eq." + server_card_id + "&select=*"
-#	return await supabase_request(HTTPClient.METHOD_GET, path)
-#
-### 从服务器删除卡牌
-#func delete_server_card(server_card_id: String) -> Dictionary:
-#	return await supabase_request(HTTPClient.METHOD_DELETE, "/rest/v1/cards?id=eq." + server_card_id)
-#
-### 获取我收到的提案（A查看收到的提案）
-### 先拿自己的发布列表，再查这些发布对应的提案
-#func get_incoming_proposals() -> Dictionary:
-#	var offers_result = await get_my_offers()
-#	if offers_result.has("error") or not offers_result.has("data"):
-#		return {"data": []}
-#	var offers = offers_result["data"]
-#	if offers.size() == 0:
-#		return {"data": []}
-#	var ids = []
-#	for offer in offers:
-#		ids.append(offer.get("id", ""))
-#	var path = "/rest/v1/trade_proposals?select=*&offer_id=in.(" + ",".join(ids) + ")"
-#	return await supabase_request(HTTPClient.METHOD_GET, path)
-#
-### 获取我提交的提案（B查看自己提交的提案）
-#func get_my_proposals() -> Dictionary:
-#	var path = "/rest/v1/trade_proposals?proposer_id=eq." + get_player_id() + "&select=*"
-#	return await supabase_request(HTTPClient.METHOD_GET, path)
-#
-### ===== 同意/拒绝交换 =====
-### A同意交换：服务器换卡 → 双方下载新卡
-### A同意交换：服务器换卡 → A下载对方卡牌
-### 返回: {"success": true, "my_card_name": "...", "their_card_name": "..."}
-### 或 {"error": "失败原因"}
-#func accept_trade(proposal_id: String, offer_id: String, my_server_card_id: String, their_server_card_id: String, their_player_id: String) -> Dictionary:
-#	# 0. 先检查offer状态是否还是open，防止重复同意
-#	var check_offer = await supabase_request(HTTPClient.METHOD_GET, "/rest/v1/trade_offers?id=eq." + offer_id + "&select=status")
-#	if not check_offer.has("error"):
-#		var offer_data = check_offer.get("data", [])
-#		if offer_data is Array and offer_data.size() > 0:
-#			var offer_status = offer_data[0].get("status", "")
-#			if offer_status != "open":
-#				return {"error": "该上架已关闭，无法重复交换"}
-#	
-#	# 0.1 检查提案状态是否还是pending
-#	var check_prop = await supabase_request(HTTPClient.METHOD_GET, "/rest/v1/trade_proposals?id=eq." + proposal_id + "&select=status")
-#	if not check_prop.has("error"):
-#		var prop_data = check_prop.get("data", [])
-#		if prop_data is Array and prop_data.size() > 0:
-#			var prop_status = prop_data[0].get("status", "")
-#			if prop_status != "pending":
-#				return {"error": "该提案已处理，无法重复操作"}
-#	# 1. 更新提案状态为accepted（条件更新：只有status=pending才能更新成功）
-#	var body1 = JSON.stringify({"status": "accepted", "responded_at": "now()"})
-#	var r1 = await supabase_request(HTTPClient.METHOD_PATCH, "/rest/v1/trade_proposals?id=eq." + proposal_id + "&status=eq.pending", body1)
-#	if r1.has("error"):
-#		return {"error": "更新提案状态失败: " + str(r1.error)}
-#	# 检查是否真的更新了（如果返回0行，说明状态已不是pending）
-#	var r1_data = r1.get("data", [])
-#	if r1_data is Array and r1_data.size() == 0:
-#		return {"error": "该提案已被其他请求处理"}
-#	
-#	# 2. 更新发布状态为closed（条件更新：只有status=open才能更新成功）
-#	var body2 = JSON.stringify({"status": "closed"})
-#	var r2 = await supabase_request(HTTPClient.METHOD_PATCH, "/rest/v1/trade_offers?id=eq." + offer_id + "&status=eq.open", body2)
-#	if r2.has("error"):
-#		return {"error": "关闭发布失败: " + str(r2.error)}
-#	
-#	# 2.5 自动拒绝该发布的其他 pending 提案（防止同一张卡被多次交换）
-#	# 只把提案标记为 rejected，保留提案记录和卡牌在服务器上，
-#	# 让提案方(B)在"提交的提案"里看到被拒绝的提案，点"取回卡牌"自己下载
-#	var others_result = await supabase_request(HTTPClient.METHOD_GET, "/rest/v1/trade_proposals?offer_id=eq." + offer_id + "&status=eq.pending&id=neq." + proposal_id + "&select=id,offered_card_id")
-#	if not others_result.has("error") and others_result.has("data"):
-#		var others = others_result["data"]
-#		for other in others:
-#			var oth_id = other.get("id", "")
-#			if oth_id != "":
-#				var reject_body = JSON.stringify({"status": "rejected", "responded_at": "now()"})
-#				await supabase_request(HTTPClient.METHOD_PATCH, "/rest/v1/trade_proposals?id=eq." + oth_id + "&status=eq.pending", reject_body)
-#				print("[Global] ↩️ 自动拒绝了其他提案: ", oth_id)
-#	
-#	# 3. 交换卡牌所有权：我的卡给对方
-#	var body3 = JSON.stringify({"player_id": their_player_id})
-#	var r3 = await supabase_request(HTTPClient.METHOD_PATCH, "/rest/v1/cards?id=eq." + my_server_card_id, body3)
-#	if r3.has("error"):
-#		return {"error": "转移我的卡牌失败: " + str(r3.error)}
-#	
-#	# 4. 对方的卡给我
-#	var body4 = JSON.stringify({"player_id": get_player_id()})
-#	var r4 = await supabase_request(HTTPClient.METHOD_PATCH, "/rest/v1/cards?id=eq." + their_server_card_id, body4)
-#	if r4.has("error"):
-#		return {"error": "接收对方卡牌失败: " + str(r4.error)}
-#	
-#	# 5. A下载对方卡牌到本地
-#	var download_result = await download_card_from_server(their_server_card_id)
-#	if download_result.has("error"):
-#		return {"error": "下载对方卡牌失败: " + str(download_result.error)}
-#	
-#	var resp_data = download_result.get("data", [])
-#	if resp_data is Array and resp_data.size() > 0:
-#		var their_card_data = resp_data[0].get("card_data", {})
-#		if not their_card_data.is_empty():
-#			CardManager.add_card(their_card_data)
-#			var their_name = their_card_data.get("name", "未知")
-#			# 删除服务器上的卡牌（已下载到本地，不留副本）
-#			await delete_server_card(their_server_card_id)
-#			print("[Global] ✅ 交换成功，下载并删除服务器卡牌: ", their_name)
-#			# 也查一下我给了对方什么卡（用于展示）
-#			var my_card_info = "未知"
-#			var my_card_req = await download_card_from_server(my_server_card_id)
-#			if not my_card_req.has("error"):
-#				var my_data = my_card_req.get("data", [])
-#				if my_data is Array and my_data.size() > 0:
-#					my_card_info = my_data[0].get("card_data", {}).get("name", "未知")
-#			return {"success": true, "my_card_name": my_card_info, "their_card_name": their_name}
-#	
-#	return {"error": "下载卡牌数据为空"}
-#
-### B领取交换到的卡牌（B刷新提案页时调用）
-### 传入被接受的提案，自动下载对方的卡牌到本地
-#func claim_trade_card(proposal: Dictionary) -> Dictionary:
-#	var offer_id = proposal.get("offer_id", "")
-#	var proposal_id = proposal.get("id", "")
-#	var status = proposal.get("status", "")
-#	if status != "accepted":
-#		return {"error": "提案状态不是accepted"}
-#	
-#	# 0. 检查提案是否还在服务器上（防止重复领取）
-#	var check_prop = await supabase_request(HTTPClient.METHOD_GET, "/rest/v1/trade_proposals?id=eq." + proposal_id + "&select=status")
-#	if not check_prop.has("error"):
-#		var prop_data = check_prop.get("data", [])
-#		if prop_data is Array and prop_data.size() == 0:
-#			return {"error": "该提案已不存在，可能已被领取"}
-#	
-#	# 查发布信息，获取对方的卡牌服务器ID
-#	var offer_result = await supabase_request(HTTPClient.METHOD_GET, "/rest/v1/trade_offers?id=eq." + offer_id + "&select=*")
-#	if offer_result.has("error"):
-#		return {"error": "查询发布信息失败: " + str(offer_result.error)}
-#	
-#	var offer_data = offer_result.get("data", [])
-#	if offer_data is not Array or offer_data.size() == 0:
-#		return {"error": "找不到发布信息"}
-#	
-#	var my_new_card_id = offer_data[0].get("offer_card_id", "")
-#	if my_new_card_id == "":
-#		return {"error": "发布信息中卡牌ID为空"}
-#	
-#	# 下载这张卡牌到本地
-#	var download_result = await download_card_from_server(my_new_card_id)
-#	if download_result.has("error"):
-#		return {"error": "下载卡牌失败: " + str(download_result.error)}
-#	
-#	var resp_data = download_result.get("data", [])
-#	if resp_data is Array and resp_data.size() > 0:
-#		var card_data = resp_data[0].get("card_data", {})
-#		if not card_data.is_empty():
-#			CardManager.add_card(card_data)
-#			# 删除服务器上的卡牌（已下载到本地，不留副本）
-#			await delete_server_card(my_new_card_id)
-#			# 交易完成，删除服务器上的提案和发布记录
-#			await supabase_request(HTTPClient.METHOD_DELETE, "/rest/v1/trade_proposals?id=eq." + proposal_id)
-#			await supabase_request(HTTPClient.METHOD_DELETE, "/rest/v1/trade_offers?id=eq." + offer_id)
-#			var card_name = card_data.get("name", "未知")
-#			print("[Global] 🎉 B领取交换卡牌，已删除服务器副本及交易记录: ", card_name)
-#			return {"success": true, "card_name": card_name}
-#	
-#	return {"error": "卡牌数据为空"}
-#
-### A拒绝提案：拒绝后返回卡牌给提案方
-#func reject_proposal(proposal_id: String, offered_server_card_id: String) -> Dictionary:
-#	# 0. 检查提案是否还在服务器上
-#	var check_prop = await supabase_request(HTTPClient.METHOD_GET, "/rest/v1/trade_proposals?id=eq." + proposal_id + "&select=status")
-#	if not check_prop.has("error"):
-#		var prop_data = check_prop.get("data", [])
-#		if prop_data is Array and prop_data.size() == 0:
-#			return {"error": "该提案已不存在，无法重复操作"}
-#	
-#	# 1. 下载提案方的卡牌（从服务器取回）
-#	var download_result = await download_card_from_server(offered_server_card_id)
-#	if not download_result.has("error"):
-#		var resp_data = download_result.get("data", [])
-#		if resp_data is Array and resp_data.size() > 0:
-#			var card_data = resp_data[0].get("card_data", {})
-#			if not card_data.is_empty():
-#				# 把卡牌还给提案方（加到本地CardManager）
-#				CardManager.add_card(card_data)
-#				print("[Global] ↩️ 拒绝提案，返回卡牌: ", card_data.get("name", "未知"))
-#	
-#	# 2. 删除服务器上的卡牌
-#	await delete_server_card(offered_server_card_id)
-#	
-#	# 3. 删除提案记录
-#	return await supabase_request(HTTPClient.METHOD_DELETE, "/rest/v1/trade_proposals?id=eq." + proposal_id)
-### B取消自己的提案：取消后取回自己的卡牌
-#func cancel_proposal(proposal_id: String, offered_server_card_id: String) -> Dictionary:
-#	# 0. 检查提案是否还在服务器上
-#	var check_prop = await supabase_request(HTTPClient.METHOD_GET, "/rest/v1/trade_proposals?id=eq." + proposal_id + "&select=status")
-#	if not check_prop.has("error"):
-#		var prop_data = check_prop.get("data", [])
-#		if prop_data is Array and prop_data.size() == 0:
-#			return {"error": "该提案已不存在，无法重复操作"}
-#	
-#	# 1. 下载自己的卡牌
-#	var download_result = await download_card_from_server(offered_server_card_id)
-#	if not download_result.has("error"):
-#		var resp_data = download_result.get("data", [])
-#		if resp_data is Array and resp_data.size() > 0:
-#			var card_data = resp_data[0].get("card_data", {})
-#			if not card_data.is_empty():
-#				CardManager.add_card(card_data)
-#				print("[Global] ↩️ 取消提案，取回卡牌: ", card_data.get("name", "未知"))
-#	
-#	# 2. 删除服务器上的卡牌
-#	await delete_server_card(offered_server_card_id)
-#	
-#	# 3. 删除提案记录
-#	return await supabase_request(HTTPClient.METHOD_DELETE, "/rest/v1/trade_proposals?id=eq." + proposal_id)
-#
-#
-### 撤销上架：拒绝所有pending提案 → 下载卡牌回本地 → 删除服务器卡牌 → 删除上架记录
-#func cancel_offer(offer_id: String, offer_card_id: String) -> Dictionary:
-#	# 0. 检查上架是否还在服务器上
-#	var check_offer = await supabase_request(HTTPClient.METHOD_GET, "/rest/v1/trade_offers?id=eq." + offer_id + "&select=status")
-#	if not check_offer.has("error"):
-#		var offer_data = check_offer.get("data", [])
-#		if offer_data is Array and offer_data.size() == 0:
-#			return {"error": "该上架已不存在"}
-#	
-#	# 1. 拒绝所有pending提案
-#	var props_result = await supabase_request(HTTPClient.METHOD_GET, "/rest/v1/trade_proposals?offer_id=eq." + offer_id + "&status=eq.pending&select=id,offered_card_id")
-#	if not props_result.has("error") and props_result.has("data"):
-#		var props = props_result["data"]
-#		for prop in props:
-#			var prop_id = prop.get("id", "")
-#			var offered_card_id = prop.get("offered_card_id", "")
-#			if prop_id != "" and offered_card_id != "":
-#				await reject_proposal(prop_id, offered_card_id)
-#				print("[Global] ↩️ 撤销上架时拒绝提案: ", prop_id)
-#	
-#	# 2. 下载卡牌回本地
-#	var download_result = await download_card_from_server(offer_card_id)
-#	if not download_result.has("error"):
-#		var resp_data = download_result.get("data", [])
-#		if resp_data is Array and resp_data.size() > 0:
-#			var card_data = resp_data[0].get("card_data", {})
-#			if not card_data.is_empty():
-#				CardManager.add_card(card_data)
-#				print("[Global] ↩️ 撤销上架，取回卡牌: ", card_data.get("name", "未知"))
-#	
-#	# 3. 删除服务器上的卡牌
-#	await delete_server_card(offer_card_id)
-#	
-#	# 4. 删除上架记录
-#	return await supabase_request(HTTPClient.METHOD_DELETE, "/rest/v1/trade_offers?id=eq." + offer_id)
-#
-### 清理交易数据：重置游戏时调用，删除当前玩家在服务器上的所有交易记录
-#func cleanup_trade_data() -> void:
-#	var pid = get_player_id()
-#	print("[Global] 🧹 清理交易数据，玩家ID: ", pid)
-#	
-#	# 1. 处理我收到的pending提案：按拒绝处理，把卡还给提案方
-#	var offers_result = await get_my_offers()
-#	if not offers_result.has("error") and offers_result.has("data"):
-#		var offers = offers_result["data"]
-#		for offer in offers:
-#			var offer_id = offer.get("id", "")
-#			if offer_id == "": continue
-#			# 查这个上架的所有pending提案
-#			var props_result = await supabase_request(HTTPClient.METHOD_GET, "/rest/v1/trade_proposals?offer_id=eq." + offer_id + "&status=eq.pending&select=id,offered_card_id")
-#			if props_result.has("error") or not props_result.has("data"): continue
-#			var props = props_result["data"]
-#			for prop in props:
-#				var prop_id = prop.get("id", "")
-#				var offered_card_id = prop.get("offered_card_id", "")
-#				if prop_id != "" and offered_card_id != "":
-#					await reject_proposal(prop_id, offered_card_id)
-#					print("[Global] ↩️ 已拒绝提案: ", prop_id)
-#			# 删除上架关联的卡牌（我的卡）
-#			var offer_card_id = offer.get("offer_card_id", "")
-#			if offer_card_id != "":
-#				await delete_server_card(offer_card_id)
-#		print("[Global] ✅ 已拒绝所有收到的提案，卡牌已归还提案方")
-#	
-#	# 2. 删除我提交的所有pending提案（我自己的卡，重置不要了，直接删）
-#	await supabase_request(HTTPClient.METHOD_DELETE, "/rest/v1/trade_proposals?proposer_id=eq." + pid)
-#	print("[Global] ✅ 已清理提交的提案")
-#	
-#	# 3. 删除我的上架（已处理完关联数据）
-#	await supabase_request(HTTPClient.METHOD_DELETE, "/rest/v1/trade_offers?creator_id=eq." + pid)
-#	print("[Global] ✅ 已清理上架记录")
-#	
-#	# 4. 删除我的服务器卡牌
-#	await supabase_request(HTTPClient.METHOD_DELETE, "/rest/v1/cards?player_id=eq." + pid)
-#	print("[Global] ✅ 已清理服务器卡牌")
-#	print("[Global] 🎉 交易数据清理完成")
-#
-### ============================================================
-###  卡组区（decks）—— 虚拟匹配用，全局共享
-###  玩家上传多套卡组，匹配时随机拉取一套作为对手卡组
-### ============================================================
-### 上传一套卡组到服务器（供虚拟匹配使用）
-#func upload_deck(deck_data: Dictionary) -> Dictionary:
-#	var body = JSON.stringify({
-#		"player_id": get_player_id(),
-#		"deck_data": deck_data
-#	})
-#	return await supabase_request(HTTPClient.METHOD_POST, "/rest/v1/decks", body)
 ### 通用本地JSON读取（返回 {data: [...]}，与服务器返回结构一致）
 func _load_local_json(path: String) -> Dictionary:
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -2317,7 +1912,9 @@ func _load_local_json(path: String) -> Dictionary:
 	return {"data": []}
 ## 获取所有玩家上传的卡组（虚拟匹配池）
 func get_all_decks() -> Dictionary:
-	# 本地读取AI卡组池（原为Supabase联网拉取，已本地化以过隐私合规）
+	# 优先使用缓存（LoadingScreen 已加载）
+	if server_decks_loaded:
+		return {"data": server_decks}
 	return _load_local_json("res://Data/local_ai_decks.json")
 ## 随机拉取一套卡组（虚拟匹配：从所有上传的卡组中随机取一套）
 func get_random_deck() -> Dictionary:
@@ -2345,11 +1942,19 @@ func get_random_deck() -> Dictionary:
 #	return await supabase_request(HTTPClient.METHOD_POST, "/rest/v1/card_packs", body)
 ### 获取所有预制卡包
 func get_all_card_packs() -> Dictionary:
-	# 本地读取卡包数据（原为Supabase联网拉取，已本地化以过隐私合规）
+	# 优先使用缓存（LoadingScreen 已加载）
+	if server_card_packs_loaded:
+		return {"data": server_card_packs}
 	return _load_local_json("res://Data/local_card_packs.json")
 ## 获取指定卡包（按 pack_id）
 func get_server_card_pack(pack_id: String) -> Dictionary:
-	# 本地读取指定卡包（原为Supabase联网查询）
+	# 优先使用缓存
+	if server_card_packs_loaded:
+		var found = []
+		for p in server_card_packs:
+			if p.get("pack_id") == pack_id:
+				found.append(p)
+		return {"data": found}
 	var result = _load_local_json("res://Data/local_card_packs.json")
 	if result.has("error"):
 		return result

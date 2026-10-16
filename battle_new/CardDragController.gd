@@ -547,14 +547,34 @@ func _play_hit_flash_at(pos: Vector3) -> void:
 	)
 
 
+## 越界安全地取己方槽位全局位置（slot 非法时返回 Vector3()）
+func _player_slot_global_pos(slot_idx: int) -> Vector3:
+	if slot_idx < 0 or slot_idx >= _player_slots.size():
+		return Vector3()
+	var slot_node = _player_slots[slot_idx]
+	if not slot_node:
+		return Vector3()
+	return slot_node.global_position
+
+
+## 攻击结束后判断攻击卡是否仍归它自己所有。
+## 动画中 do_action 会让攻击卡受反击/自伤而进墓地，此时 _on_card_sent_to_grave
+## 已把引用表置空并接管该节点；若这里再 reparent 回槽位，场上会多留一张鬼影卡
+func _attacker_still_owns_slot(slot_idx: int, card_node: Node) -> bool:
+	if slot_idx < 0 or slot_idx >= _player_card_nodes.size():
+		return false
+	return _player_card_nodes[slot_idx] == card_node
+
+
 ## 攻击动画：卡牌飞向目标→撞击(被攻击卡后退)→闪烁→飞回
 func _play_attack_animation(attacker_slot: int, target_slot: int, card_node: Node) -> void:
-	if not card_node:
-		return
 	# 串行锁
 	_is_attack_animating = true
+	if not card_node:
+		_is_attack_animating = false
+		return
 	# 攻击方位置
-	var attacker_pos = _player_slots[attacker_slot].global_position if _player_slots[attacker_slot] else Vector3()
+	var attacker_pos = _player_slot_global_pos(attacker_slot)
 	# 目标位置（敌方卡位或敌方英雄区）
 	var target_pos: Vector3
 	var is_hero = false
@@ -599,7 +619,7 @@ func _play_attack_animation(attacker_slot: int, target_slot: int, card_node: Nod
 
 ## 攻击英雄动画（相机追踪卡牌，保持卡牌在屏幕中心）
 func _play_hero_attack_animation(attacker_slot: int, target_pos: Vector3, card_node: Node, mesh: MeshInstance3D, orig_mat: Material, target_card: Node) -> void:
-	var attacker_pos = _player_slots[attacker_slot].global_position if _player_slots[attacker_slot] else Vector3()
+	var attacker_pos = _player_slot_global_pos(attacker_slot)
 	
 	# 更新相机状态
 	_scene._cam_state = 0
@@ -700,7 +720,12 @@ func _play_hero_attack_animation(attacker_slot: int, target_pos: Vector3, card_n
 		if _cam:
 			_cam.global_position = Vector3(_scene.CAM_POS_X, _scene.CAM_POS_Y, _scene.CAM_POS_Z[2])
 			_cam.rotation_degrees = Vector3(-90, 0, 0)
-		if card_node and is_instance_valid(card_node) and _player_slots[attacker_slot]:
+		# 只有攻击卡仍存活在原槽位时才 reparent 回去；
+		# 受反击/自伤死掉时它已被送墓动画接管（节点已挂在场景根下飞行），
+		# 硬塞回槽位会在场上多留一张鬼影卡
+		if card_node and is_instance_valid(card_node) \
+				and _attacker_still_owns_slot(attacker_slot, card_node) \
+				and attacker_slot < _player_slots.size() and _player_slots[attacker_slot]:
 			card_node.reparent(_player_slots[attacker_slot], true)
 			card_node.position = Vector3(0, 0.15, 0.0)
 		if _scene and _scene.has_method("_refresh_player_field_display"):
@@ -713,7 +738,7 @@ func _play_hero_attack_animation(attacker_slot: int, target_pos: Vector3, card_n
 
 ## 攻击卡牌动画（固定视角切换）
 func _play_card_attack_animation(attacker_slot: int, target_pos: Vector3, card_node: Node, mesh: MeshInstance3D, orig_mat: Material, target_card: Node) -> void:
-	var attacker_pos = _player_slots[attacker_slot].global_position if _player_slots[attacker_slot] else Vector3()
+	var attacker_pos = _player_slot_global_pos(attacker_slot)
 	var target_cam_z = _scene.CAM_POS_Z[1]  # 中间视角
 	_scene._cam_state = 1
 	if _scene._view_btn:
@@ -802,7 +827,10 @@ func _play_card_attack_animation(attacker_slot: int, target_pos: Vector3, card_n
 		var cam_labels = ["敌方", "中", "己方"]
 		if _scene._view_btn:
 			_scene._view_btn.text = "📷 视角: " + cam_labels[2]
-		if card_node and is_instance_valid(card_node) and _player_slots[attacker_slot]:
+		# 只有攻击卡仍存活在原槽位时才 reparent 回去
+		if card_node and is_instance_valid(card_node) \
+				and _attacker_still_owns_slot(attacker_slot, card_node) \
+				and attacker_slot < _player_slots.size() and _player_slots[attacker_slot]:
 			card_node.reparent(_player_slots[attacker_slot], true)
 			card_node.position = Vector3(0, 0.15, 0.0)
 		if _scene and _scene.has_method("_refresh_player_field_display"):
@@ -925,11 +953,7 @@ func _highlight_target_slot(slot_idx: int) -> void:
 		if slot:
 			var face = slot.get_node_or_null("SlotFace") as MeshInstance3D
 			if face:
-				var mat = StandardMaterial3D.new()
-				mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-				mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-				mat.albedo_color = SLOT_HIGHLIGHT_COLOR
-				face.material_override = mat
+				face.material_override = null
 	# 高亮新的
 	if slot_idx >= 0 and slot_idx < 5:
 		var slot = _player_slots[slot_idx]
@@ -1007,7 +1031,7 @@ func _fly_card_to_slot_ext(hand_idx: int, slot_idx: int, card_node: Node, card_d
 		return
 	# 检查卡牌是否已被 _on_card_sent_to_grave 处理过（已在墓地数组里）
 	var already_in_grave = false
-	var grave_arr = _scene._player_grave_cards if true else _scene._enemy_grave_cards  # 玩家召唤
+	var grave_arr = _scene._player_grave_cards  # 玩家召唤
 	for c in grave_arr:
 		if c == card_node:
 			already_in_grave = true

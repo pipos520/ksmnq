@@ -2456,49 +2456,8 @@ func _build_make_button(parent: VBoxContainer):
 # ============================
 #  品质随机（封卡时根据卡基区间+称号+卡墨确定最终品质）
 # ============================
-const QUALITY_NAMES := ["废品", "瑕疵", "标准", "卓越", "完美"]
-const QUALITY_MULTS := [0.7, 0.9, 1.0, 1.1, 1.2]
-
-func _roll_quality(q_range: String, title_level: int, quality_stab: float) -> String:
-	var parts = q_range.split(" ~ ")
-	var lower = QUALITY_NAMES.find(parts[0])
-	var upper = QUALITY_NAMES.find(parts[1])
-	if lower < 0 or upper < 0 or lower > upper:
-		return "标准"
-	
-	var range_size = max(1, upper - lower)
-	var mid = (lower + upper) / 2.0
-	var weights := []
-	
-	for i in range(5):
-		if i < lower or i > upper:
-			weights.append(0.0)
-		else:
-			# 基础概率：三角分布，中间最高，两端递减
-			var dist = 1.0 - abs(float(i) - mid) / float(range_size + 1) * 2.0
-			var w = max(0.01, 1.0 + dist)
-			
-			# 称号增幅：每级向高品质偏移约0.05
-			var title_shift = float(title_level - 1) * 0.05 / float(range_size + 1)
-			w += title_shift * (float(i) - mid)
-			
-			# 卡墨稳定性：越高越集中在平均值附近
-			var stab_factor = quality_stab / 20.0 * 0.5
-			w *= (1.0 + stab_factor * (1.0 - abs(float(i) - mid) / float(range_size + 1)))
-			
-			weights.append(max(0.01, w))
-	
-	# 按权重随机抽取
-	var total = 0.0
-	for w in weights:
-		total += w
-	var r = randf() * total
-	var cum = 0.0
-	for i in range(5):
-		cum += weights[i]
-		if r <= cum:
-			return QUALITY_NAMES[i]
-	return QUALITY_NAMES[upper]
+const QUALITY_NAMES := Global.QUALITY_ORDER
+const QUALITY_MULTS := Global.QUALITY_MULTS
 
 func _calc_energy_cost() -> int:
 	# 基础能量 = 按攻防计算（可为0）
@@ -2623,18 +2582,8 @@ func _update_preview():
 		var parts = q_range.split(" ~ ")
 		var q_lower = parts[0] if parts.size() > 0 else ""
 		var q_upper = parts[1] if parts.size() > 1 else q_lower
-		match q_lower:
-			"废品": quality_mult_low = 0.7
-			"瑕疵": quality_mult_low = 0.9
-			"标准": quality_mult_low = 1.0
-			"卓越": quality_mult_low = 1.1
-			"完美": quality_mult_low = 1.2
-		match q_upper:
-			"废品": quality_mult_high = 0.7
-			"瑕疵": quality_mult_high = 0.9
-			"标准": quality_mult_high = 1.0
-			"卓越": quality_mult_high = 1.1
-			"完美": quality_mult_high = 1.2
+		quality_mult_low = Global.get_quality_mult(q_lower)
+		quality_mult_high = Global.get_quality_mult(q_upper)
 		_set_preview("quality", q_range)
 	else:
 		_set_preview("quality", "—")
@@ -3207,7 +3156,7 @@ func _on_make_card():
 	_start_quality_rhythm(_selected_card_base.get("quality", "标准 ~ 标准"), PlayerManager.get_guild_level(), _selected_ink.get("quality_stab", 0.0))
 	return
 func _finish_make_card(final_quality: String):
-	var q_mult = QUALITY_MULTS[QUALITY_NAMES.find(final_quality)] if QUALITY_NAMES.find(final_quality) >= 0 else 1.0
+	var q_mult = Global.get_quality_mult(final_quality)
 	
 	var card_data = {
 		"card_name": "",
@@ -3478,7 +3427,7 @@ func _on_quality_tap():
 func _show_quality_confirm(quality: String):
 	var q_idx = QUALITY_NAMES.find(quality)
 	var q_color := Color("#81C784")
-	var q_colors := [Color("#9E9E9E"), Color("#4FC3F7"), Color("#81C784"), Color("#FFD54F"), Color("#E53935")]
+	var q_colors := [Color("#9E9E9E"), Color("#4FC3F7"), Color("#81C784"), Color("#FFD54F"), Color("#E53935"), Color("#f9d371")]
 	if q_idx >= 0 and q_idx < q_colors.size():
 		q_color = q_colors[q_idx]
 	# 先清掉旧的确认弹窗（防重复）
@@ -3640,15 +3589,15 @@ func _restart_quality_rhythm():
 
 func _compute_quality_weights(q_range: String, title_level: int, quality_stab: float) -> Array:
 	var parts = q_range.split(" ~ ")
-	var lower = QUALITY_NAMES.find(parts[0])
-	var upper = QUALITY_NAMES.find(parts[1])
+	var lower = QUALITY_NAMES.find(parts[0]) if parts.size() > 0 else -1
+	var upper = QUALITY_NAMES.find(parts[1]) if parts.size() > 1 else -1
 	if lower < 0 or upper < 0 or lower > upper:
 		lower = QUALITY_NAMES.find("标准")
 		upper = lower
 	var range_size = max(1, upper - lower)
 	var mid = (lower + upper) / 2.0
 	var weights := []
-	for i in range(5):
+	for i in range(QUALITY_NAMES.size()):
 		if i < lower or i > upper:
 			weights.append(0.0)
 		else:

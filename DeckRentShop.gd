@@ -482,10 +482,18 @@ func _rent_with_gold(dd: Dictionary):
 	var gold = SaveManager.get_value("player", "gold", 0)
 	if gold < Global.RENT_COST_GOLD:
 		_set_status("⚠️ 金币不足！需要 " + str(Global.RENT_COST_GOLD) + " 金币", Color("#FF5252")); return
+	var r = Global.rent_deck(dd)
+	if not r.get("ok", false):
+		_set_status("⚠️ " + str(r.get("reason", "租借失败")), Color("#FF5252")); return
 	gold -= Global.RENT_COST_GOLD
 	SaveManager.set_value("player", "gold", gold); SaveManager.save_to_disk()
 	_update_gold()
-	_do_rent(dd)
+	var dname = dd.get("name", "")
+	if r.get("reason", "") == "已叠加":
+		_set_status("✅ 「" + dname + "」耐久 +" + str(Global.RENTED_DECK_MAX_DURABILITY) + " → 共 " + str(r.get("durability", 0)) + " 点", Color("#4CAF50"))
+	else:
+		_set_status("✅ 已租借「" + dname + "」耐久 " + str(r.get("durability", 0)) + " 点", Color("#4CAF50"))
+	_rebuild_list()
 
 func _rent_with_ad(dd: Dictionary):
 	Global.play_sfx("click")

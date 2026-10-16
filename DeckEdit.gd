@@ -1471,18 +1471,7 @@ func _build_filter_popup_content(panel: Panel):
 	btn_hbox.add_child(close_btn)
 
 func _get_quality_rank(quality: String) -> int:
-	var q = quality
-	if " ~ " in q:
-		var parts = q.split(" ~ ")
-		q = parts[parts.size() - 1].strip_edges()
-	if "完美" in q:
-		return 4
-	elif "卓越" in q:
-		return 3
-	elif "精良" in q:
-		return 2
-	else:
-		return 1
+	return Global.get_quality_rank(quality)
 
 func _get_filtered_sorted_available(available: Array) -> Array:
 	var result = []
@@ -1491,15 +1480,15 @@ func _get_filtered_sorted_available(available: Array) -> Array:
 		if _filter_quality != "all":
 			var q = card.get("quality", "")
 			var rank = _get_quality_rank(q)
-			match _filter_quality:
-				"perfect":
-					if rank != 4: continue
-				"excellent":
-					if rank != 3: continue
-				"fine":
-					if rank != 2: continue
-				"normal":
-					if rank != 1: continue
+	match _filter_quality:
+			"perfect":
+				if rank < 5: continue
+			"excellent":
+				if rank < 4: continue
+			"fine":
+				if rank < 3: continue
+			"normal":
+				if rank > 2: continue
 		# 搜索筛选
 		if _search_text != "":
 			var name_str = card.get("name", card.get("card_name", "")).to_lower()

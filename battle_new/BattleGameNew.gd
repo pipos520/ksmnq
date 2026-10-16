@@ -341,15 +341,14 @@ func request_end_phase() -> void:
 func request_select_discard(indices: Array) -> void:
 	# Controller选择完弃牌后回调
 	var p = _get_current_player()
-	for idx in indices:
+	var sorted_indices = indices.duplicate()
+	sorted_indices.sort()
+	sorted_indices.reverse()
+	for idx in sorted_indices:
 		if idx >= 0 and idx < p.hand.size():
 			var card = p.hand[idx]
 			p.grave.add(card)
 			p.hand.remove_at(idx)
-			# 调整后续索引
-			for j in range(indices.size()):
-				if indices[j] > idx:
-					indices[j] -= 1
 	p.hand_changed.emit()
 	p.grave_changed.emit()
 	# 执行回调

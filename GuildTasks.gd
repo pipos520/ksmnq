@@ -1000,7 +1000,7 @@ func _check_card_for_condition(card: Dictionary, condition: Dictionary) -> bool:
 				var parts = card_q.split(" ~ ")
 				var lower_q = parts[0].strip_edges()
 				var upper_q = parts[1].strip_edges()
-				var q_order = ["废品", "瑕疵", "标准", "卓越", "完美"]
+				var q_order = Global.QUALITY_ORDER
 				var target_idx = q_order.find(target_q)
 				var lower_idx = q_order.find(lower_q)
 				var upper_idx = q_order.find(upper_q)

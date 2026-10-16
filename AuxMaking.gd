@@ -243,12 +243,16 @@ func _on_make_aux(aux_id: String, aux_data: Dictionary):
 		_show_popup("💰 金币不足！需要 " + str(gold_cost) + " 金币", Color("#FF6B6B"))
 		return
 	
-	# 消耗素材
+	# 预检所有素材是否充足（避免部分消耗后失败）
 	for mid in mats_needed.keys():
 		var need = mats_needed[mid]
-		if not warehouse.consume_material(mid, need):
+		if warehouse.get_material_count(mid) < need:
 			_show_popup("素材不足，无法制作", Color("#FF6B6B"))
 			return
+	
+	# 消耗素材
+	for mid in mats_needed.keys():
+		warehouse.consume_material(mid, mats_needed[mid])
 	
 	# 消耗金币
 	SaveManager.set_value("player", "gold", gold - gold_cost)

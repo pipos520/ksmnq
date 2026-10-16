@@ -269,12 +269,7 @@ func show_card(card: BattleCard, mode: String = "view", battle_manager = null, h
 	
 	# 名称 + 品质着色
 	_name_lbl.text = card.get_display_name()
-	match card.quality:
-		"普通": _name_lbl.add_theme_color_override("font_color", Color("#e8d5b7"))
-		"稀有": _name_lbl.add_theme_color_override("font_color", Color("#4fc3f7"))
-		"史诗": _name_lbl.add_theme_color_override("font_color", Color("#ce93d8"))
-		"传说": _name_lbl.add_theme_color_override("font_color", Color("#ffd54f"))
-		_: _name_lbl.add_theme_color_override("font_color", Color("#e8d5b7"))
+	_name_lbl.add_theme_color_override("font_color", Global.get_quality_color(card.quality))
 	
 	# 纹路触发器（从效果中提取）
 	var trigger_text = ""

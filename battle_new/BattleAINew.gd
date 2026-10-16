@@ -75,6 +75,9 @@ func get_view() -> Dictionary:
 func _start_think(callback: Callable) -> void:
 	if _is_thinking:
 		return
+	if _game == null or not is_instance_valid(_game):
+		callback.call()
+		return
 	_is_thinking = true
 	# 使用SceneTree timer模拟思考延迟
 	_think_timer = _game.get_tree().create_timer(_think_delay)

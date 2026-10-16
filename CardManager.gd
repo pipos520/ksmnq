@@ -11,12 +11,31 @@ const DECK_KEY := "decks"
 
 ## 是否已导入新手卡组（防止重复导入）
 var _starter_imported := false
+# 卡牌 ID → 索引 的缓存映射，避免线性查找
+var _card_id_index: Dictionary = {}
 
 func _ready() -> void:
 	# 延迟一帧，等 SaveManager 加载完存档再检查
 	call_deferred("_check_import_starter")
 	# 启动后延迟清理卡组残留失效ID（等新手卡组导入完成后再执行）
 	call_deferred("_clean_invalid_deck_ids")
+	# 构建卡牌 ID 索引
+	call_deferred("_rebuild_card_index")
+
+func _rebuild_card_index() -> void:
+	var cards = get_all_cards()
+	_card_id_index.clear()
+	for i in range(cards.size()):
+		var cid = cards[i].get("id", "")
+		if cid != "":
+			_card_id_index[cid] = i
+
+func _get_card_index_by_id(card_id: String) -> int:
+	return _card_id_index.get(card_id, -1)
+
+func _remove_card_from_index(card_id: String) -> void:
+	# 移除后重建索引（后续索引都偏移了）
+	_rebuild_card_index()
 
 ## 启动时扫描所有卡组，移除匹配不到收藏卡的失效ID（修复历史残留）
 ## 让「卡组显示牌数」与「实际战斗可用牌数」永远一致
@@ -126,6 +145,37 @@ func get_card(index: int) -> Dictionary:
 
 # ---------- 添加 ----------
 
+## 按 ID 获取卡牌数据（O(1) 索引查找）
+## 同时匹配 id 和 template_id
+func get_card_by_id(card_id: String) -> Dictionary:
+	var idx = _get_card_index_by_id(card_id)
+	if idx >= 0:
+		var cards = get_all_cards()
+		if idx < cards.size():
+			return cards[idx]
+	# 回退：匹配 template_id
+	var cards = get_all_cards()
+	for i in range(cards.size()):
+		if cards[i].get("template_id", "") == card_id:
+			return cards[i]
+	return {}
+
+## 批量按 ID 获取卡牌数据（利用索引，避免 O(n*m) 嵌套循环）
+func get_cards_by_ids(card_ids: Array) -> Array:
+	var result := []
+	var cards = get_all_cards()
+	for cid in card_ids:
+		var idx = _get_card_index_by_id(cid)
+		if idx >= 0 and idx < cards.size():
+			result.append(cards[idx].duplicate())
+		else:
+			# 回退：匹配 template_id
+			for i in range(cards.size()):
+				if cards[i].get("template_id", "") == cid:
+					result.append(cards[i].duplicate())
+					break
+	return result
+
 ## 添加一张卡牌（自动生成 id 和时间戳）
 func add_card(card_data: Dictionary) -> void:
 	var cards = get_all_cards()
@@ -144,6 +194,7 @@ func add_card(card_data: Dictionary) -> void:
 	cards.append(new_data)
 	SaveManager.set_value(STORAGE_SECTION, STORAGE_KEY, cards)
 	SaveManager.save_to_disk()
+	_card_id_index[new_data["id"]] = cards.size() - 1
 	print("[CardManager] 添加卡牌: ", new_data.get("card_name", "未知"), " (id: ", new_data["id"], ")")
 
 # ---------- 删除 ----------
@@ -160,22 +211,24 @@ func remove_card(index: int) -> bool:
 	if card_id != "":
 		_remove_card_id_from_all_decks(card_id)
 	SaveManager.save_to_disk()
+	_rebuild_card_index()
 	print("[CardManager] 删除卡牌，索引: ", index)
 	return true
 
 ## 删除指定 id 的卡牌，返回是否成功
 func remove_card_by_id(card_id: String) -> bool:
+	var idx = _get_card_index_by_id(card_id)
+	if idx < 0:
+		return false
 	var cards = get_all_cards()
-	for i in range(cards.size()):
-		if cards[i].get("id", "") == card_id:
-			cards.remove_at(i)
-			SaveManager.set_value(STORAGE_SECTION, STORAGE_KEY, cards)
-			# ★ 同步清理所有卡组中的该卡牌ID，避免产生失效残留导致「显示牌数>实际牌数」
-			_remove_card_id_from_all_decks(card_id)
-			SaveManager.save_to_disk()
-			print("[CardManager] 删除卡牌: ", card_id)
-			return true
-	return false
+	cards.remove_at(idx)
+	SaveManager.set_value(STORAGE_SECTION, STORAGE_KEY, cards)
+	# ★ 同步清理所有卡组中的该卡牌ID，避免残留失效ID
+	_remove_card_id_from_all_decks(card_id)
+	SaveManager.save_to_disk()
+	_rebuild_card_index()
+	print("[CardManager] 删除卡牌: ", card_id)
+	return true
 
 ## 从所有卡组中移除指定的卡牌ID（删除卡牌时保持卡组同步）
 func _remove_card_id_from_all_decks(card_id: String) -> void:
@@ -214,15 +267,15 @@ func update_card(index: int, card_data: Dictionary) -> bool:
 
 ## 更新指定 id 的卡牌数据，返回是否成功
 func update_card_by_id(card_id: String, card_data: Dictionary) -> bool:
+	var idx = _get_card_index_by_id(card_id)
+	if idx < 0:
+		return false
 	var cards = get_all_cards()
-	for i in range(cards.size()):
-		if cards[i].get("id", "") == card_id:
-			cards[i] = card_data.duplicate()
-			SaveManager.set_value(STORAGE_SECTION, STORAGE_KEY, cards)
-			SaveManager.save_to_disk()
-			print("[CardManager] 更新卡牌: ", card_id)
-			return true
-	return false
+	cards[idx] = card_data.duplicate()
+	SaveManager.set_value(STORAGE_SECTION, STORAGE_KEY, cards)
+	SaveManager.save_to_disk()
+	print("[CardManager] 更新卡牌: ", card_id)
+	return true
 
 # ---------- 搜索/筛选 ----------
 

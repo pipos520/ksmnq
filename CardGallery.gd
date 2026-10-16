@@ -119,13 +119,7 @@ func _refresh_list():
 		hbox.add_child(left_vbox)
 		
 		var name_label = Label.new()
-		var elem_icon = ""
-		match main_element:
-			"火": elem_icon = "🔥"
-			"水": elem_icon = "💧"
-			"风": elem_icon = "🌪️"
-			"暗": elem_icon = "🌑"
-			"光": elem_icon = "☀️"
+		var elem_icon = Global.get_element_emoji(main_element)
 		name_label.text = elem_icon + " " + card_name
 		name_label.add_theme_font_size_override("font_size", 50)
 		name_label.add_theme_color_override("font_color", Global.current.title)
@@ -184,29 +178,11 @@ func _get_row_bg_color(row_index: int) -> Color:
 
 
 func _get_quality_color(quality: String) -> Color:
-	if "完美" in quality:
-		return Color("#f9d371")
-	elif "卓越" in quality:
-		return Color("#c084fc")
-	elif "精良" in quality:
-		return Color("#60a5fa")
-	else:
-		return Global.current.btn_text
+	return Global.get_quality_color(quality)
 
 
 func _get_quality_rank(quality: String) -> int:
-	var q = quality
-	if " ~ " in q:
-		var parts = q.split(" ~ ")
-		q = parts[parts.size() - 1].strip_edges()
-	if "完美" in q:
-		return 4
-	elif "卓越" in q:
-		return 3
-	elif "精良" in q:
-		return 2
-	else:
-		return 1
+	return Global.get_quality_rank(quality)
 
 func _get_filtered_sorted_cards(cards: Array) -> Array:
 	var result = []
@@ -216,16 +192,16 @@ func _get_filtered_sorted_cards(cards: Array) -> Array:
 			var rank = _get_quality_rank(q)
 			match _filter_quality:
 				"perfect":
-					if rank != 4: continue
+					if rank < 5: continue
 				"excellent":
-					if rank != 3: continue
+					if rank < 4: continue
 				"fine":
-					if rank != 2: continue
+					if rank < 3: continue
 				"normal":
-					if rank != 1: continue
+					if rank > 2: continue
 		if _search_text != "":
 			var name_str = card.get("name", card.get("card_name", "")).to_lower()
-			var desc_str = card.get("desc", "").to_lower()
+			var desc_str = card.get("description", card.get("desc", "")).to_lower()
 			if not _search_text.to_lower() in name_str and not _search_text.to_lower() in desc_str:
 				continue
 		result.append(card)
@@ -368,7 +344,7 @@ func _build_filter_popup_content(panel: Panel):
 		{"key": "perfect", "label": "完美", "color": Color("#f9d371")},
 		{"key": "excellent", "label": "卓越", "color": Color("#c084fc")},
 		{"key": "fine", "label": "精良", "color": Color("#60a5fa")},
-		{"key": "normal", "label": "普通", "color": Color("#888888")},
+		{"key": "normal", "label": "标准以下", "color": Color("#888888")},
 	]
 	for opt in quality_options:
 		var q_btn = Button.new()
@@ -656,7 +632,7 @@ func _show_help_guide():
 		"👆 长按卡牌：查看卡牌详情和效果",
 		"🆔 唯一ID：每张卡牌有独立实例ID，同名卡独立展示",
 		"⭐ 星数：1~5星，星数越高卡牌越强",
-		"💎 品质：废品→瑕疵→标准→卓越→完美",
+		"💎 品质：废品→瑕疵→标准→精良→卓越→完美",
 		"🗑️ 删除：可删除不需要的卡牌",
 		"📤 分享：将卡牌信息分享到社交平台",
 	]
@@ -773,7 +749,7 @@ func _show_card_detail(row: Control) -> void:
 		display_quality = q_parts[q_parts.size() - 1].strip_edges()
 	var main_element = CardManager.get_card_element(card)
 	var fields = card.get("fields", [])
-	var desc = card.get("desc", "")
+	var desc = card.get("description", card.get("desc", ""))
 	var star = card.get("star", 1)
 	var effects = card.get("effects", [])
 	
@@ -1053,26 +1029,19 @@ func _show_card_detail(row: Control) -> void:
 		confirm_btn.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 		confirm_btn.pressed.connect(func():
 			# 执行删除
-			var cards = CardManager.get_all_cards()
-			var idx = -1
 			var card_id = card.get("id", "")
 			if card_id != "":
-				for ci in range(cards.size()):
-					if cards[ci].get("id", "") == card_id:
-						idx = ci
-						break
+				CardManager.remove_card_by_id(card_id)
 			else:
 				# 没有id，按名称匹配
+				var cards = CardManager.get_all_cards()
 				for ci in range(cards.size()):
 					if cards[ci].get("name", cards[ci].get("card_name", "")) == card_name:
-						idx = ci
+						CardManager.remove_card(ci)
 						break
-			
-			if idx >= 0:
-				CardManager.remove_card(idx)
-				_refresh_list()
-				confirm_overlay.queue_free()
-				overlay.queue_free()
+			_refresh_list()
+			confirm_overlay.queue_free()
+			overlay.queue_free()
 		)
 		btn_hbox.add_child(confirm_btn)
 	)
@@ -1215,7 +1184,7 @@ func _compress_card(card: Dictionary) -> String:
 	if " ~ " in quality:
 		var q_parts = quality.split(" ~ ")
 		compress_q = q_parts[q_parts.size() - 1].strip_edges()
-	var q_map = {"废品": "5", "瑕疵": "6", "普通": "1", "优秀": "2", "标准": "7", "精良": "8", "卓越": "3", "完美": "4"}
+	var q_map = Global.QUALITY_ENCODE
 	parts.append("Q" + q_map.get(compress_q, "0"))
 	
 	# 属性（单字母编码）
@@ -1236,7 +1205,7 @@ func _compress_card(card: Dictionary) -> String:
 		parts.append("F" + ",".join(clean_fields))
 	
 	# 描述
-	var desc = card.get("desc", "")
+	var desc = card.get("description", card.get("desc", ""))
 	if desc != "":
 		parts.append("D" + _sanitize(desc))
 	
@@ -1301,7 +1270,7 @@ func _compress_card(card: Dictionary) -> String:
 			min_cost = int(min_cost)
 		minimal_parts.append("C" + str(min_cost))
 		var q = card.get("quality", "普通")
-		q_map = {"废品":"5", "瑕疵":"6", "普通":"1", "优秀":"2", "标准":"7", "精良":"8", "卓越":"3", "完美":"4"}
+		q_map = Global.QUALITY_ENCODE
 		minimal_parts.append("Q" + q_map.get(q, "1"))
 		var e = card.get("element", "无")
 		e_map = {"火":"F", "水":"W", "风":"A", "暗":"D", "光":"L", "地":"E", "无":"N"}
@@ -1327,7 +1296,7 @@ func _compress_card(card: Dictionary) -> String:
 					d = d.substr(0, 8) + "…"
 				minimal_parts.append("X" + _sanitize(d))
 		# 描述丢弃（最占空间，非核心字段）
-		desc = card.get("desc", "")
+		desc = card.get("description", card.get("desc", ""))
 		if desc != "":
 			if desc.length() > 8:
 				desc = desc.substr(0, 8) + "…"
@@ -1368,7 +1337,7 @@ func _decompress_card(compressed: String) -> Dictionary:
 			"H": card["hp"] = int(value)
 			"C": card["cost"] = int(value)
 			"Q":
-				var q_map = {"1": "普通", "2": "优秀", "3": "卓越", "4": "完美", "5": "废品", "6": "瑕疵", "7": "标准", "8": "精良"}
+				var q_map = Global.QUALITY_DECODE
 				card["quality"] = q_map.get(value, "普通")
 			"E":
 				var e_map = {"F": "火", "W": "水", "A": "风", "D": "暗", "L": "光", "E": "地", "N": "无"}
@@ -1908,7 +1877,7 @@ func _show_scan_preview_dialog(card: Dictionary) -> void:
 			info_vbox.add_child(f_label)
 	
 	# 描述
-	var desc = card.get("desc", "")
+	var desc = card.get("description", card.get("desc", ""))
 	if desc != "":
 		var d_label = Label.new()
 		d_label.text = desc

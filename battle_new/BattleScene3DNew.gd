@@ -126,8 +126,8 @@ func _init_game() -> void:
 	_game.chain_requested.connect(_on_chain_requested)
 	
 	# 获取战斗数据并开始
-	var deck_id = Global.current_battle_deck_id if Global.get("current_battle_deck_id") else ""
-	var enemy_data = Global.current_battle_enemy_data if Global.get("current_battle_enemy_data") else {}
+	var deck_id = Global.current_deck_id
+	var enemy_data = Global.current_enemy_data
 	_game.start_battle(deck_id, enemy_data)
 
 

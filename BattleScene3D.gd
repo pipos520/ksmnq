@@ -183,10 +183,12 @@ func _create_battle_bg() -> void:
 		var rd := Global.get_rented_deck(Global.current_rented_deck_id)
 		var rd_name := String(rd.get("name", rd.get("source_deck", "")))
 		cloth_id = CardManager.get_back_id_for_deck_name(rd_name)
-		print("[BattleScene3D] 租借卡组桌布: ", rd_name, " -> ", cloth_id)
+		if OS.is_debug_build():
+			print("[BattleScene3D] 租借卡组桌布: ", rd_name, " -> ", cloth_id)
 	elif Global.current_deck_id != "":
 		cloth_id = CardManager.get_deck_tablecloth(Global.current_deck_id)
-		print("[BattleScene3D] 玩家卡组桌布: ", cloth_id)
+		if OS.is_debug_build():
+			print("[BattleScene3D] 玩家卡组桌布: ", cloth_id)
 	var cloth_path := CardManager.get_deck_tablecloth_path(cloth_id)
 	var tex = load(cloth_path)
 	if not tex:
@@ -297,10 +299,12 @@ func _ready() -> void:
 		var rd := Global.get_rented_deck(Global.current_rented_deck_id)
 		var rd_name := String(rd.get("name", rd.get("source_deck", "")))
 		back_id = CardManager.get_back_id_for_deck_name(rd_name)
-		print("[BattleScene3D] 租借卡组卡背: ", rd_name, " -> ", back_id)
+		if OS.is_debug_build():
+			print("[BattleScene3D] 租借卡组卡背: ", rd_name, " -> ", back_id)
 	elif Global.current_deck_id != "":
 		back_id = CardManager.get_deck_back(Global.current_deck_id)
-		print("[BattleScene3D] 玩家卡组卡背: ", back_id)
+		if OS.is_debug_build():
+			print("[BattleScene3D] 玩家卡组卡背: ", back_id)
 	var back_path := CardManager.get_deck_back_path(back_id)
 	var back_tex = load(back_path)
 	if back_tex == null:
@@ -363,7 +367,8 @@ func _ready() -> void:
 	await get_tree().create_timer(2.0).timeout
 	_start_rps_select()
 	
-	print("[BattleScene3D] ready: cam%d p_cards%d e_cards%d" % [_cam_state, _player_deck_cards.size(), _enemy_deck_cards.size()])
+	if OS.is_debug_build():
+		print("[BattleScene3D] ready: cam%d p_cards%d e_cards%d" % [_cam_state, _player_deck_cards.size(), _enemy_deck_cards.size()])
 
 
 func _load_deck_data() -> void:
@@ -375,7 +380,8 @@ func _load_deck_data() -> void:
 		if not rd.is_empty():
 			for c in rd.get("card_datas", []):
 				_player_deck_cards.append(c.duplicate(true))
-			print("[BattleScene3D] 使用租借卡组: ", rd.get("name", ""), " ", _player_deck_cards.size(), "张")
+			if OS.is_debug_build():
+				print("[BattleScene3D] 使用租借卡组: ", rd.get("name", ""), " ", _player_deck_cards.size(), "张")
 	elif deck_id != "":
 		var deck_data = CardManager.get_deck(deck_id)
 		var card_ids = deck_data.get("cards", [])
@@ -386,14 +392,16 @@ func _load_deck_data() -> void:
 					_player_deck_cards.append(card_data.duplicate(true))
 					break
 	else:
-		print("[BattleScene3D] 未选择卡组，使用全部卡牌")
+		if OS.is_debug_build():
+			print("[BattleScene3D] 未选择卡组，使用全部卡牌")
 		for card_data in CardManager.get_all_cards():
 			_player_deck_cards.append(card_data.duplicate(true))
 	
 	# === 敌方：从卡组池随机选一套 ===
 	_enemy_deck_cards = _pick_ai_deck()
 	
-	print("[BattleScene3D] 我方卡组(初始): %d张, 敌方卡组(初始): %d张" % [_player_deck_cards.size(), _enemy_deck_cards.size()])
+	if OS.is_debug_build():
+		print("[BattleScene3D] 我方卡组(初始): %d张, 敌方卡组(初始): %d张" % [_player_deck_cards.size(), _enemy_deck_cards.size()])
 	# 初始化卡组剩余张数（抽牌前，后续会被 _sync_deck_from_bm 修正）
 	_player_deck_count = _player_deck_cards.size()
 	_enemy_deck_count = _enemy_deck_cards.size()
@@ -431,7 +439,8 @@ func _sync_deck_from_bm() -> void:
 		_player_deck_lbl.text = "📚 %d张" % _player_deck_count
 	if _enemy_deck_lbl:
 		_enemy_deck_lbl.text = "📚 %d张" % _enemy_deck_count
-	print("[BattleScene3D] 同步BM后 我方卡组: %d张, 敌方卡组: %d张" % [_player_deck_count, _enemy_deck_count])
+	if OS.is_debug_build():
+		print("[BattleScene3D] 同步BM后 我方卡组: %d张, 敌方卡组: %d张" % [_player_deck_count, _enemy_deck_count])
 
 ## 把 BM 的 BattleCard 转成 3D 卡牌显示的 dict（供场景层堆叠用）
 func _battle_card_to_dict_for_display(c) -> Dictionary:
@@ -526,7 +535,8 @@ func _pick_ai_deck() -> Array:
 	
 	# 4. 空回退
 	if candidates.is_empty():
-		print("[BattleScene3D] ⚠️ 卡组池为空，回退到随机卡牌")
+		if OS.is_debug_build():
+			print("[BattleScene3D] ⚠️ 卡组池为空，回退到随机卡牌")
 		var result := []
 		for i in range(20):
 			result.append(_generate_filler_card())
@@ -535,7 +545,8 @@ func _pick_ai_deck() -> Array:
 	# 随机选一套
 	var picked = candidates[randi() % candidates.size()]
 	var ai_cards = picked.get("card_datas", [])
-	print("[BattleScene3D] 🤖 AI对手使用卡组: %s (%d张)" % [picked.get("name", "未知"), ai_cards.size()])
+	if OS.is_debug_build():
+		print("[BattleScene3D] 🤖 AI对手使用卡组: %s (%d张)" % [picked.get("name", "未知"), ai_cards.size()])
 	return ai_cards
 
 
@@ -861,7 +872,8 @@ func _init_battle_data() -> void:
 	if _battle_manager.has_signal("end_phase_effects_pending_discard"):
 		_battle_manager.end_phase_effects_pending_discard.connect(_on_end_phase_effects_pending_discard)
 	
-	print("[BattleScene3D] 战斗初始化完成: %s vs %s" % [_player_name, _enemy_name])
+	if OS.is_debug_build():
+		print("[BattleScene3D] 战斗初始化完成: %s vs %s" % [_player_name, _enemy_name])
 
 
 ## 添加阶段切换按钮
@@ -1057,7 +1069,8 @@ func _on_card_effect_activated(card_name: String, effect_desc: String, action_ty
 		"T07": target_text = "敌方英雄"
 		"T08": target_text = "己方英雄"
 		_: target_text = target_id
-	print("[BattleScene3D] 效果发动: %s【%s】%s → %s" % [side, card_name, effect_desc, target_text])
+	if OS.is_debug_build():
+		print("[BattleScene3D] 效果发动: %s【%s】%s → %s" % [side, card_name, effect_desc, target_text])
 	# 效果发动音效
 	Global.play_sfx("effect_cast")
 	# 源卡牌边框闪烁
@@ -1549,9 +1562,11 @@ func _on_revive_chance_triggered(chance: float, success: bool, slot: int, is_pla
 		else:
 			text += "❌ 复活失败"
 			_show_3d_float_text(pos, text, 0, "damage")
-		print("[复活] 飙窗: chance=", chance, " success=", success, " slot=", slot, " is_player=", is_player)
+		if OS.is_debug_build():
+			print("[复活] 飙窗: chance=", chance, " success=", success, " slot=", slot, " is_player=", is_player)
 	else:
-		print("[复活] slot无效: chance=", chance, " success=", success)
+		if OS.is_debug_build():
+			print("[复活] slot无效: chance=", chance, " success=", success)
 
 ## 回合变化信号
 func _on_turn_changed(turn_count: int) -> void:
@@ -1565,14 +1580,16 @@ func _on_battle_state_changed(state: int) -> void:
 	var sname = state_names.get(state, "未知")
 	if _turn_info_label:
 		_turn_info_label.text = "🏆 " + sname
-	print("[BattleScene3D] 🎉 战斗状态: ", sname)
+	if OS.is_debug_build():
+		print("[BattleScene3D] 🎉 战斗状态: ", sname)
 	
 	# 胜利时：触发辅材掉落
 	if state == 1:
 		# 教学战胜利 → 推进教程，回主界面找老陈
 		if Global.is_tutorial_battle:
 			_exit_to_main = true
-			print("[战斗] 🎉 教学战胜利！推进教程")
+			if OS.is_debug_build():
+				print("[战斗] 🎉 教学战胜利！推进教程")
 			TutorialManager.advance()
 			# 教学战保底掉落：制作第一张卡所需的最低级卡基+卡墨素材
 			var craft_drops = _give_tutorial_craft_materials()
@@ -1585,11 +1602,13 @@ func _on_battle_state_changed(state: int) -> void:
 			PlayerManager.set_map_cleared(Global.current_map_id)
 			Global.current_is_boss = false
 			_exit_to_main = true
-			print("[战斗] 🎉 BOSS战胜利！地图通关：", Global.current_map_id)
+			if OS.is_debug_build():
+				print("[战斗] 🎉 BOSS战胜利！地图通关：", Global.current_map_id)
 			# 检查纹路解锁状态
 			var new_unlocks = CircuitManager.check_and_apply_unlocks()
 			if new_unlocks.size() > 0:
-				print("[战斗] 解锁了 ", new_unlocks.size(), " 个纹路组件")
+				if OS.is_debug_build():
+					print("[战斗] 解锁了 ", new_unlocks.size(), " 个纹路组件")
 		else:
 			# ★ 普通战斗胜利 → 回地图内继续探索
 			_exit_to_main = false
@@ -1599,17 +1618,20 @@ func _on_battle_state_changed(state: int) -> void:
 		if Global.current_map_name == "⚔ 决斗场":
 			var result = PlayerManager.record_duel_win()
 			if result.get("completed", false):
-				print("[战斗] 🎉 每日决斗场阶梯完成！金币+" + str(result.get("reward", 0)))
+				if OS.is_debug_build():
+					print("[战斗] 🎉 每日决斗场阶梯完成！金币+" + str(result.get("reward", 0)))
 		else:
 			# ★ 非决斗场胜利 → 记录杀敌阶梯
 			var kill_result = PlayerManager.record_kill()
 			if kill_result.get("completed", false):
-				print("[战斗] 🎉 每日杀敌阶梯完成！金币+" + str(kill_result.get("reward", 0)))
+				if OS.is_debug_build():
+					print("[战斗] 🎉 每日杀敌阶梯完成！金币+" + str(kill_result.get("reward", 0)))
 			# ★ BOSS战胜利 → 额外记录通关地图阶梯
 			if was_boss:
 				var map_result = PlayerManager.record_map_clear()
 				if map_result.get("completed", false):
-					print("[战斗] 🎉 每日通关地图阶梯完成！金币+" + str(map_result.get("reward", 0)))
+					if OS.is_debug_build():
+						print("[战斗] 🎉 每日通关地图阶梯完成！金币+" + str(map_result.get("reward", 0)))
 	# 败北/平局时：显示退出按钮，回主界面
 	elif state == 2 or state == 3:
 		_exit_to_main = true
@@ -1769,7 +1791,8 @@ func _on_card_sent_to_grave(card, is_player: bool) -> void:
 	if card == null:
 		return
 	var card_name = card.card_name
-	print("[BattleScene3D] 送墓动画: %s (%s)" % [card_name, "己方" if is_player else "敌方"])
+	if OS.is_debug_build():
+		print("[BattleScene3D] 送墓动画: %s (%s)" % [card_name, "己方" if is_player else "敌方"])
 	# 送墓音效
 	Global.play_sfx("card_death")
 	var grave_node = _player_grave_node if is_player else _enemy_grave_node
@@ -1814,11 +1837,13 @@ func _on_card_sent_to_grave(card, is_player: bool) -> void:
 		var grave_arr = _player_grave_cards if is_player else _enemy_grave_cards
 		card_node.fly_to_grave(grave_node, grave_arr.size())
 		grave_arr.append(card_node)
-		print("[BattleScene3D] 送墓飞行: 从槽位%d → 墓地" % found_slot)
+		if OS.is_debug_build():
+			print("[BattleScene3D] 送墓飞行: 从槽位%d → 墓地" % found_slot)
 	else:
 		# 找不到卡牌节点 → 卡牌可能已被移走或还未到达
 		# 不创建新卡，仅记录日志
-		print("[BattleScene3D] 送墓: 未找到卡牌视觉节点（可能已被其他流程处理）")
+		if OS.is_debug_build():
+			print("[BattleScene3D] 送墓: 未找到卡牌视觉节点（可能已被其他流程处理）")
 
 
 ## 卡牌除外动画：从场上/手牌飞向除外区
@@ -1826,7 +1851,8 @@ func _on_card_banished(card, is_player: bool) -> void:
 	if card == null:
 		return
 	var card_name = card.card_name
-	print("[BattleScene3D] 除外动画: %s (%s)" % [card_name, "己方" if is_player else "敌方"])
+	if OS.is_debug_build():
+		print("[BattleScene3D] 除外动画: %s (%s)" % [card_name, "己方" if is_player else "敌方"])
 	# 除外音效（复用destroy音效）
 	Global.play_sfx("destroy")
 	var exile_node = _player_exile_node if is_player else _enemy_exile_node
@@ -1880,9 +1906,11 @@ func _on_card_banished(card, is_player: bool) -> void:
 				card_node.position = Vector3(0, 0.03 * exile_arr.size(), 0)
 		)
 		exile_arr.append(card_node)
-		print("[BattleScene3D] 除外飞行: 从槽位%d → 除外区" % card_slot)
+		if OS.is_debug_build():
+			print("[BattleScene3D] 除外飞行: 从槽位%d → 除外区" % card_slot)
 	else:
-		print("[BattleScene3D] 除外: 未找到卡牌视觉节点（可能从手牌/墓地除外）")
+		if OS.is_debug_build():
+			print("[BattleScene3D] 除外: 未找到卡牌视觉节点（可能从手牌/墓地除外）")
 
 
 ## 除外区变化（刷新计数等）
@@ -1898,17 +1926,21 @@ func _on_phase_btn_pressed() -> void:
 	if _battle_manager.current_phase == BattleManager.Phase.MAIN:
 		var result = _battle_manager.do_action("end_main_phase")
 		if result.success:
-			print("[BattleScene3D] 进入战斗阶段")
+			if OS.is_debug_build():
+				print("[BattleScene3D] 进入战斗阶段")
 			_advance_tutorial_step("end_turn")
 		else:
-			print("[BattleScene3D] 无法进入战斗阶段: ", result.get("reason", ""))
+			if OS.is_debug_build():
+				print("[BattleScene3D] 无法进入战斗阶段: ", result.get("reason", ""))
 	elif _battle_manager.current_phase == BattleManager.Phase.BATTLE:
 		var result = _battle_manager.do_action("end_battle_phase")
 		if result.success:
-			print("[BattleScene3D] 结束回合")
+			if OS.is_debug_build():
+				print("[BattleScene3D] 结束回合")
 			_advance_tutorial_step("end_turn")
 		else:
-			print("[BattleScene3D] 无法结束战斗阶段: ", result.get("reason", ""))
+			if OS.is_debug_build():
+				print("[BattleScene3D] 无法结束战斗阶段: ", result.get("reason", ""))
 
 
 ## 更新阶段按钮文字
@@ -3509,7 +3541,8 @@ func _show_tutorial_step_popup() -> void:
 ## 回合结束效果已发完（数据层），等非飘窗动画（画线1.2s/闪烁1.2s/视角切换0.2s）播完后再推进弃牌阶段
 ## 避免回合结束效果的视角切换/画线动画与弃牌视角切换交错打架
 func _on_end_phase_effects_pending_discard(need_discard: int) -> void:
-	print("[UI] 回合结束效果已发完，等待非飘窗动画播完再进弃牌: 需弃", need_discard, "张")
+	if OS.is_debug_build():
+		print("[UI] 回合结束效果已发完，等待非飘窗动画播完再进弃牌: 需弃", need_discard, "张")
 	# 画线动画=0.8停留+0.4淡出=1.2s，边框闪烁=1.2s，视角切换=0.2s，取安全值1.4s确保全部播完
 	# 用scene_tree的timer而非tween，避免被暂停/其他tween干扰
 	await get_tree().create_timer(1.4).timeout
@@ -3522,10 +3555,12 @@ func _on_end_phase_effects_pending_discard(need_discard: int) -> void:
 ## 弃牌请求信号处理（由BattleManager的discard_requested信号触发）
 func _on_discard_requested(count: int, callback_id: int, reason: String) -> void:
 	if _discard_mode:
-		print("[UI] 弃牌弹窗忙，请求入队: 回调ID=", callback_id, " 需弃", count, "张")
+		if OS.is_debug_build():
+			print("[UI] 弃牌弹窗忙，请求入队: 回调ID=", callback_id, " 需弃", count, "张")
 		_discard_request_queue.append({"count": count, "callback_id": callback_id, "reason": reason})
 		return
-	print("[UI] 收到弃牌请求: ", count, "张, 原因: ", reason)
+	if OS.is_debug_build():
+		print("[UI] 收到弃牌请求: ", count, "张, 原因: ", reason)
 	_discard_callback_id = callback_id
 	_discard_need = count
 	_show_discard_ui(reason)
@@ -3535,14 +3570,16 @@ func _process_next_discard_request() -> void:
 	if _discard_request_queue.is_empty():
 		return
 	var req = _discard_request_queue.pop_front()
-	print("[UI] 处理队列中的弃牌请求: 回调ID=", req.callback_id, " 需弃", req.count, "张")
+	if OS.is_debug_build():
+		print("[UI] 处理队列中的弃牌请求: 回调ID=", req.callback_id, " 需弃", req.count, "张")
 	_discard_callback_id = req.callback_id
 	_discard_need = req.count
 	_show_discard_ui(req.reason)
 
 ## 弃牌动画请求：数据已弃，播放飞向墓地特效，播完通知BM
 func _on_discard_animation_requested(callback_id: int, is_player_side: bool, discard_indices: Array) -> void:
-	print("[UI] 播放弃牌飞向墓地动画: 回调ID=", callback_id, " 己方=", is_player_side, " 弃", discard_indices.size(), "张")
+	if OS.is_debug_build():
+		print("[UI] 播放弃牌飞向墓地动画: 回调ID=", callback_id, " 己方=", is_player_side, " 弃", discard_indices.size(), "张")
 	# 恢复游戏树（暂停会导致tween不运行，回调死锁）
 	get_tree().paused = false
 	# 记录弃牌前的视角，动画结束后恢复（避免弃牌后视角永远停在弃牌方）
@@ -3681,7 +3718,8 @@ func _show_discard_ui(reason: String) -> void:
 	
 	# 刷新手牌高亮
 	_refresh_discard_hand_highlight()
-	print("[UI] 弃牌弹窗: 暂停游戏树等待玩家选择, 需弃", _discard_need, "张, 原因:", reason)
+	if OS.is_debug_build():
+		print("[UI] 弃牌弹窗: 暂停游戏树等待玩家选择, 需弃", _discard_need, "张, 原因:", reason)
 
 ## 隐藏弃牌UI
 func _hide_discard_ui() -> void:
@@ -3714,7 +3752,8 @@ func _on_confirm_discard() -> void:
 	# 先取消暂停，否则后续的布局tween和弃牌动画tween都不会运行
 	get_tree().paused = false
 	_battle_manager._on_discard_result(_discard_callback_id, _discard_selected)
-	print("[UI] 弃牌提交，回调ID:", _discard_callback_id)
+	if OS.is_debug_build():
+		print("[UI] 弃牌提交，回调ID:", _discard_callback_id)
 	_discard_callback_id = -1
 	_hide_discard_ui()
 
@@ -3812,14 +3851,16 @@ func _give_tutorial_craft_materials() -> Array:
 	var gained := []
 	for d in drops:
 		WarehouseManager.add_material(d["id"], 2)
-		print("[战斗] 教学战保底掉落: [", d["cat"], "] ", d["name"], " x2")
+		if OS.is_debug_build():
+			print("[战斗] 教学战保底掉落: [", d["cat"], "] ", d["name"], " x2")
 		gained.append({
 			"material_id": d["id"],
 			"name": d["name"],
 			"rarity": d["rarity"],
 			"amount": 2,
 		})
-	print("[战斗] 教学战保底素材发放完毕（6种×2）")
+	if OS.is_debug_build():
+		print("[战斗] 教学战保底素材发放完毕（6种×2）")
 	return gained
 
 func _handle_victory_rewards(extra_drops: Array = []) -> void:
@@ -3872,7 +3913,8 @@ func _handle_victory_rewards(extra_drops: Array = []) -> void:
 					"rarity": aux_data.get("rarity", "普通"),
 					"amount": amount,
 				})
-				print("[战斗] BOSS固定掉落: ", aux_data.get("name", aux_id), " x", amount)
+				if OS.is_debug_build():
+					print("[战斗] BOSS固定掉落: ", aux_data.get("name", aux_id), " x", amount)
 		# 公共采集素材也照常给（按概率）
 		for drop in common_drops:
 			var prob = drop.get("prob", 0.5)
@@ -3887,7 +3929,8 @@ func _handle_victory_rewards(extra_drops: Array = []) -> void:
 					"rarity": drop.get("rarity", "普通"),
 					"amount": amount,
 				})
-				print("[战斗] 地形掉落: ", drop.get("name", ""), " x", amount)
+				if OS.is_debug_build():
+					print("[战斗] 地形掉落: ", drop.get("name", ""), " x", amount)
 	else:
 		# 普通战斗：按概率随机掉落
 		# 合并公共掉落池和专属掉落池
@@ -3986,7 +4029,8 @@ func _handle_victory_rewards(extra_drops: Array = []) -> void:
 					"rarity": item["rarity"],
 					"amount": amount,
 				})
-				print("[战斗] 掉落: ", item["name"], " x", amount)
+				if OS.is_debug_build():
+					print("[战斗] 掉落: ", item["name"], " x", amount)
 	
 	# 伏击战标记清理（下次战斗前重置）
 	var was_ambush = Global.current_is_ambush

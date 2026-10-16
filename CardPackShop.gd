@@ -264,22 +264,17 @@ func _on_gold_open(pid: String, pd: Dictionary):
 	if gold < 100:
 		_show_popup("⚠️ 金币不足！", "需要100金币\n当前: "+str(gold)+" 金币", Color("#FF5252")); return
 	gold -= 100; SaveManager.set_value("player","gold",gold); SaveManager.save_to_disk(); _update_gold()
-	_do_open_pack(pid, pd)
+	_do_open_pack(pid, pd, true)
 
-func _on_ad_open(pid: String, pd: Dictionary):
-	Global.play_sfx("click")
-	if _hj_ads==null: _show_popup("⚠️ 广告未初始化","请稍后再试",Color("#FF5252")); return
-	if _hj_ads.isRewardedAdReady():
-		_pending_pack_id=pid; _set_status("▶️ 播放广告中...",Color("#FFD700")); _hj_ads.showRewardedAd()
-	else:
-		_set_status("⏳ 广告加载中...",Color("#FFD700")); _hj_ads.loadRewardedAd()
-		_show_popup("⏳ 广告加载中","请稍后点击",Color("#FFD700"))
-
-func _do_open_pack(pid: String, pd: Dictionary):
+func _do_open_pack(pid: String, pd: Dictionary, paid_gold: bool = false):
 	var result = await Global.open_card_pack(pid, 3)
-	if result.has("error"): _show_popup("⚠️ 开包失败",result.error,Color("#FF5252")); return
+	if result.has("error"):
+		if paid_gold: _refund_gold(100)
+		_show_popup("⚠️ 开包失败",result.error,Color("#FF5252")); return
 	var picked = result.get("data",[])
-	if picked.size()==0: _show_popup("⚠️ 开包失败","未获得卡牌",Color("#FF5252")); return
+	if picked.size()==0:
+		if paid_gold: _refund_gold(100)
+		_show_popup("⚠️ 开包失败","未获得卡牌",Color("#FF5252")); return
 	for card in picked: CardManager.add_card(card)
 	
 	# 增加系列购买计数并检查解锁
@@ -289,6 +284,12 @@ func _do_open_pack(pid: String, pd: Dictionary):
 		_show_pack_result(picked, pd, unlock_result)
 	else:
 		_show_pack_result(picked, pd)
+
+func _refund_gold(amount: int):
+	var gold = SaveManager.get_value("player", "gold", 0)
+	SaveManager.set_value("player", "gold", gold + amount)
+	SaveManager.save_to_disk()
+	_update_gold()
 
 ## 从卡包数据获取系列ID
 func _get_series_id_from_pack(pd: Dictionary) -> String:
@@ -970,8 +971,7 @@ func _get_qc(q: String) -> Color:
 			return Color("#6c9bcf")
 		"普通", "N", "N+":
 			return Color("#a0a0b0")
-		_:
-			return Color("#a0a0b0")
+	return Global.get_quality_color(q)
 func _show_popup(tt:String,mt:String,c:Color):
 	var overlay=ColorRect.new(); overlay.name="PopupOverlay"; overlay.color=Color(0,0,0,0.6)
 	overlay.anchor_left=0.0; overlay.anchor_top=0.0; overlay.anchor_right=1.0; overlay.anchor_bottom=1.0

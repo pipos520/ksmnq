@@ -4394,3 +4394,53 @@ func _play_enemy_attack_animation(attacker_slot: int, target_slot: int, is_hero:
 # 	print("[战斗] 收到对手操作: ", action)
 # 	if _battle_manager:
 # 		_battle_manager.on_opponent_action(action)
+
+func _exit_tree() -> void:
+	# 断开 BattleManager 信号
+	if _battle_manager:
+		if _battle_manager.phase_changed.is_connected(_on_phase_changed):
+			_battle_manager.phase_changed.disconnect(_on_phase_changed)
+		if _battle_manager.turn_changed.is_connected(_on_turn_changed):
+			_battle_manager.turn_changed.disconnect(_on_turn_changed)
+		if _battle_manager.battle_state_changed.is_connected(_on_battle_state_changed):
+			_battle_manager.battle_state_changed.disconnect(_on_battle_state_changed)
+		if _battle_manager.action_result.is_connected(_on_action_result):
+			_battle_manager.action_result.disconnect(_on_action_result)
+		if _battle_manager.effect_triggered.is_connected(_on_effect_triggered):
+			_battle_manager.effect_triggered.disconnect(_on_effect_triggered)
+		if _battle_manager.deck_search_requested.is_connected(_on_deck_search_requested):
+			_battle_manager.deck_search_requested.disconnect(_on_deck_search_requested)
+		if _battle_manager.discard_requested.is_connected(_on_discard_requested):
+			_battle_manager.discard_requested.disconnect(_on_discard_requested)
+		if _battle_manager.discard_animation_requested.is_connected(_on_discard_animation_requested):
+			_battle_manager.discard_animation_requested.disconnect(_on_discard_animation_requested)
+		if _battle_manager.chain_response_requested.is_connected(_on_chain_response_requested):
+			_battle_manager.chain_response_requested.disconnect(_on_chain_response_requested)
+		if _battle_manager.chain_built.is_connected(_on_chain_built):
+			_battle_manager.chain_built.disconnect(_on_chain_built)
+		if _battle_manager.chain_resolved.is_connected(_on_chain_resolved):
+			_battle_manager.chain_resolved.disconnect(_on_chain_resolved)
+		if _battle_manager.card_effect_activated.is_connected(_on_card_effect_activated):
+			_battle_manager.card_effect_activated.disconnect(_on_card_effect_activated)
+		if _battle_manager.effect_line_fromto.is_connected(_on_effect_line_fromto):
+			_battle_manager.effect_line_fromto.disconnect(_on_effect_line_fromto)
+		if _battle_manager.element_boost_triggered.is_connected(_on_element_boost_triggered):
+			_battle_manager.element_boost_triggered.disconnect(_on_element_boost_triggered)
+		
+		# 断开玩家信号
+		if _battle_manager.player_self:
+			if _battle_manager.player_self.hand_changed.is_connected(_on_player_hand_changed):
+				_battle_manager.player_self.hand_changed.disconnect(_on_player_hand_changed)
+			if _battle_manager.player_self.field_changed.is_connected(_on_player_field_changed):
+				_battle_manager.player_self.field_changed.disconnect(_on_player_field_changed)
+			if _battle_manager.player_self.energy_changed.is_connected(_on_player_energy_changed):
+				_battle_manager.player_self.energy_changed.disconnect(_on_player_energy_changed)
+			if _battle_manager.player_self.hp_changed.is_connected(_on_player_hp_changed):
+				_battle_manager.player_self.hp_changed.disconnect(_on_player_hp_changed)
+			if _battle_manager.player_self.deck_count_changed.is_connected(_on_player_deck_changed):
+				_battle_manager.player_self.deck_count_changed.disconnect(_on_player_deck_changed)
+		if _battle_manager.player_opponent:
+			if _battle_manager.player_opponent.hand_changed.is_connected(_on_enemy_hand_changed):
+				_battle_manager.player_opponent.hand_changed.disconnect(_on_enemy_hand_changed)
+			if _battle_manager.player_opponent.field_changed.is_connected(_on_enemy_field_changed):
+				_battle_manager.player_opponent.field_changed.disconnect(_on_enemy_field_changed)

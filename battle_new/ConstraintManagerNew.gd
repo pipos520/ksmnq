@@ -94,15 +94,15 @@ func can_activate(owner, opponent, card, effect: Dictionary, parsed: Dictionary)
 				if _effect_count >= max_uses:
 					return false
 			"CO15":  # 仅对克制属性生效
-				var check_elem = Global.get_constraint_param(effect, "CO15", 0)
-				if check_elem != 0:
+				var check_elem = Global.get_constraint_param_str(effect, "CO15", "")
+				if check_elem != "":
 					var card_elem = card.get_effective_element()
 					var affinity = Global.get_element_affinity(card_elem, check_elem)
 					if affinity <= 1.0:
 						return false
 			"CO16":  # 仅对被克制属性生效
-				var check_elem2 = Global.get_constraint_param(effect, "CO16", 0)
-				if check_elem2 != 0:
+				var check_elem2 = Global.get_constraint_param_str(effect, "CO16", "")
+				if check_elem2 != "":
 					var card_elem2 = card.get_effective_element()
 					var affinity2 = Global.get_element_affinity(check_elem2, card_elem2)
 					if affinity2 <= 1.0:

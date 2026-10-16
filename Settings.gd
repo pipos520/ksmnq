@@ -216,27 +216,7 @@ func _do_reset_confirm(overlay: ColorRect) -> void:
 	# ====== 0. 清理交易服务器数据（已注释：卡牌交易功能已移除过审） ======
 	# await Global.cleanup_trade_data()
 	
-	# ====== 1. 删除所有存档文件 ======
-	var dir = DirAccess.open("user://")
-	if dir:
-		# 删除SaveManager主存档
-		if dir.file_exists("save_data.json"):
-			dir.remove("save_data.json")
-			print("[重置] ✅ save_data.json 已删除")
-		# 删除PlayerManager独立存档
-		if dir.file_exists("player_data.json"):
-			dir.remove("player_data.json")
-			print("[重置] ✅ player_data.json 已删除")
-		# 删除主题设置
-		if dir.file_exists("theme_settings.cfg"):
-			dir.remove("theme_settings.cfg")
-			print("[重置] ✅ theme_settings.cfg 已删除")
-		# 删除玩家ID
-		if dir.file_exists("player_id.txt"):
-			dir.remove("player_id.txt")
-			print("[重置] ✅ player_id.txt 已删除")
-	
-	# ====== 2. 清空所有内存数据 ======
+	# ====== 1. 清空所有内存数据 ======
 	# 清空SaveManager内存
 	SaveManager.save_data = {}
 	# 重置PlayerManager数据（用默认初始值）
@@ -260,7 +240,7 @@ func _do_reset_confirm(overlay: ColorRect) -> void:
 	# 重置CardManager的导入标记（允许重新导入新手卡组）
 	CardManager.reset_starter_import_flag()
 	
-	# ====== 3. 重新导入新手卡组（从 starter_data.json） ======
+	# ====== 2. 重新导入新手卡组（从 starter_data.json） ======
 	var file = FileAccess.open("res://starter_data.json", FileAccess.READ)
 	if file:
 		var json_str = file.get_as_text()
@@ -281,9 +261,19 @@ func _do_reset_confirm(overlay: ColorRect) -> void:
 			SaveManager.set_value("player", "exp", 0)
 			print("[重置] ✅ 新手卡组已恢复")
 	
-	# ====== 4. 保存 ======
+	# ====== 3. 保存（覆盖旧存档） ======
 	SaveManager.save_to_disk()
 	PlayerManager.save_data()
+	
+	# ====== 4. 删除残留文件（非存档管理的配置） ======
+	var dir = DirAccess.open("user://")
+	if dir:
+		if dir.file_exists("theme_settings.cfg"):
+			dir.remove("theme_settings.cfg")
+			print("[重置] ✅ theme_settings.cfg 已删除")
+		if dir.file_exists("player_id.txt"):
+			dir.remove("player_id.txt")
+			print("[重置] ✅ player_id.txt 已删除")
 	
 	print("[重置] 🎉 重置完成！所有数据已恢复为初始状态")
 	
@@ -663,7 +653,7 @@ func _decompress_card(compressed: String) -> Dictionary:
 			"H": card["hp"] = int(value)
 			"C": card["cost"] = int(value)
 			"Q":
-				var q_map = {"1": "普通", "2": "优秀", "3": "卓越", "4": "完美"}
+				var q_map = Global.QUALITY_DECODE
 				card["quality"] = q_map.get(value, "普通")
 			"E":
 				var e_map = {"F": "火", "W": "水", "A": "风", "D": "暗", "L": "光", "E": "地", "N": "无"}

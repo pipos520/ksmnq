@@ -303,8 +303,8 @@ func _generate_card_submit_condition(rng: RandomNumberGenerator, guild_level: in
 			var min_atk = clampi(guild_level * 2 - 1, 2, 12)
 			return {"type": "atk_min", "min_atk": min_atk, "desc": "提交攻击力≥" + str(min_atk) + "的卡牌"}
 		3:
-			var qualities = ["标准", "卓越", "完美"]
-			var q_idx = clampi(guild_level / 3 - 1, 0, 2)
+			var qualities = ["标准", "精良", "卓越", "完美"]
+			var q_idx = clampi((guild_level - 1) / 2, 0, 3)
 			return {"type": "quality", "quality": qualities[q_idx], "desc": "提交" + qualities[q_idx] + "品质的卡牌"}
 		4:
 			var keywords = ["破坏", "伤害", "抽牌", "恢复", "召唤"]
@@ -345,7 +345,7 @@ func _check_card_match(task: Dictionary, card_data: Dictionary) -> Dictionary:
 				var parts = card_q.split(" ~ ")
 				var lower_q = parts[0].strip_edges()
 				var upper_q = parts[1].strip_edges()
-				var q_order = ["废品", "瑕疵", "标准", "卓越", "完美"]
+				var q_order = Global.QUALITY_ORDER
 				var target_idx = q_order.find(target_q)
 				var lower_idx = q_order.find(lower_q)
 				var upper_idx = q_order.find(upper_q)
