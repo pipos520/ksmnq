@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 
 # ===== 卡基公式数据 =====
 var _selected := {
@@ -22,15 +22,11 @@ var _tutorial_popup_overlay: Control = null
 var _tutorial_done: bool = false
 
 func _ready():
-	# ---- 静态节点已在 CardBaseMaking.tscn 中声明 ----
+	super._ready()
 	var back := get_node_or_null("BackBtn")
 	if back is Button: back.pressed.connect(_on_back)
 	var help := get_node_or_null("HelpBtn")
 	if help is Button: help.pressed.connect(_on_help)
-	# 主题
-	Global.theme_changed.connect(_on_theme_changed)
-	call_deferred("_apply_theme_styles")
-	# 动态内容构建
 	call_deferred("_build_dynamic_content")
 
 func _build_material_section(parent: VBoxContainer):
@@ -1235,23 +1231,7 @@ func _build_help_content(vbox: VBoxContainer):
 	vbox.add_child(spacer)
 
 
-func _on_theme_changed(_mode):
-	var bg = get_node_or_null("Background")
-	if bg: Global.apply_bg(bg)
-	
-	var topbar = get_node_or_null("TopBar")
-	if topbar and topbar is ColorRect:
-		topbar.color = Global.current.topbar_bg
-	
-	var topbar_line = get_node_or_null("TopBarLine")
-	if topbar_line and topbar_line is ColorRect:
-		topbar_line.color = Global.current.topbar_border
-	
-	var title = get_node_or_null("Title")
-	if title and title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-	# 刷新分类面板颜色
+func _apply_theme_custom():
 	for key in ["fiber", "mineral", "resin"]:
 		var row = get_node_or_null("ContentScroll/ContentVBox/CatRow_" + key)
 		if row and row is Panel:
@@ -1262,8 +1242,6 @@ func _on_theme_changed(_mode):
 			rs.corner_radius_bottom_left = 8
 			rs.corner_radius_bottom_right = 8
 			row.add_theme_stylebox_override("panel", rs)
-	
-	# 刷新预览面板
 	var prev = get_node_or_null("ContentScroll/ContentVBox/PreviewPanel")
 	if prev and prev is Panel:
 		var ps = StyleBoxFlat.new()
@@ -1273,6 +1251,16 @@ func _on_theme_changed(_mode):
 		ps.corner_radius_bottom_left = 8
 		ps.corner_radius_bottom_right = 8
 		prev.add_theme_stylebox_override("panel", ps)
+	var back = get_node_or_null("BackBtn")
+	if back is Button:
+		back.add_theme_color_override("font_color", Global.current.btn_text)
+		var s = StyleBoxFlat.new()
+		s.bg_color = Global.current.btn_bg
+		s.border_width_left = 2; s.border_width_right = 2; s.border_width_top = 2; s.border_width_bottom = 2
+		s.border_color = Color("#888888")
+		s.corner_radius_top_left = 10; s.corner_radius_top_right = 10
+		s.corner_radius_bottom_left = 10; s.corner_radius_bottom_right = 10
+		back.add_theme_stylebox_override("normal", s)
 
 
 # ============================
@@ -1810,31 +1798,6 @@ func _close_popup(overlay):
 	if overlay and is_instance_valid(overlay):
 		overlay.queue_free()
 
-func _apply_theme_styles():
-	var bg = get_node_or_null("Background")
-	Global.apply_bg(bg)
-	for n in ["TopBar","BottomBar"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_bg
-	for n in ["TopBarLine","BottomBarLine"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_border
-	var title = get_node_or_null("Title")
-	if title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
-	var back = get_node_or_null("BackBtn")
-	if back is Button:
-		back.add_theme_color_override("font_color", Global.current.btn_text)
-		var s = StyleBoxFlat.new()
-		s.bg_color = Global.current.btn_bg
-		s.border_width_left = 2; s.border_width_right = 2; s.border_width_top = 2; s.border_width_bottom = 2
-		s.border_color = Color("#888888")
-		s.corner_radius_top_left = 10; s.corner_radius_top_right = 10
-		s.corner_radius_bottom_left = 10; s.corner_radius_bottom_right = 10
-		back.add_theme_stylebox_override("normal", s)
 func _build_dynamic_content():
 	# ★ 创建底部提示 Label（之前从未初始化导致 _on_make 里 if not _hint_label: return 按钮点了没反应）
 	if not _hint_label:

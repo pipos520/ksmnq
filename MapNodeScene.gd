@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 
 # ============================================================
 #  节点爬塔地图 —— 参考杀戮尖塔
@@ -398,9 +398,8 @@ func _fix_dead_ends() -> void:
 							prev_conn[best_src].append(tgt_idx)
 						reachable[tgt_idx] = true
 func _ready():
-	call_deferred("_apply_theme_styles")
+	super._ready()
 	call_deferred("_build_dynamic_content")
-	# 返回按钮信号连接
 	var back_btn = get_node_or_null("BackBtn")
 	if back_btn is Button:
 		back_btn.pressed.connect(_on_back)
@@ -2150,21 +2149,7 @@ func _apply_saved_state(saved: Array) -> void:
 			nd["current"] = save_nd["current"]
 	print("[爬塔] 已恢复地图节点状态（%d 层）" % saved.size())
 
-func _apply_theme_styles():
-	var bg = get_node_or_null("Background")
-	Global.apply_bg(bg)
-	for n in ["TopBar","BottomBar"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_bg
-	for n in ["TopBarLine","BottomBarLine"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_border
-	var title = get_node_or_null("Title")
-	if title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
+func _apply_theme_custom():
 	var back = get_node_or_null("BackBtn")
 	if back is Button:
 		back.add_theme_color_override("font_color", Global.current.btn_text)

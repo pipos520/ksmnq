@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 
 # 当前标签页："items" / "lootbox"
 var _current_tab: String = "items"
@@ -8,10 +8,9 @@ var _hj_ads: HJAdsNode = null
 
 
 func _ready():
-	# ---- 静态节点已在 Shop.tscn 中声明 ----
+	super._ready()
 	var back := get_node_or_null("BackBtn")
 	if back is Button: back.pressed.connect(_on_back)
-	# 初始化广告
 	_hj_ads = HJAdsNode.new()
 	_hj_ads.name = "HJAdsNode"
 	add_child(_hj_ads)
@@ -26,34 +25,21 @@ func _ready():
 	await get_tree().process_frame
 	_hj_ads.init()
 	_hj_ads.loadRewardedAd()
-	# 标签切换
 	var items_tab := get_node_or_null("ItemsTab")
 	if items_tab is Button: items_tab.pressed.connect(_switch_tab.bind("items"))
 	var lootbox_tab := get_node_or_null("LootboxTab")
 	if lootbox_tab is Button: lootbox_tab.pressed.connect(_switch_tab.bind("lootbox"))
 	_update_tab_style()
-	# 金币更新
 	_update_gold()
-	# 刷新商品
 	_refresh_shop()
-	Global.theme_changed.connect(_on_theme_changed)
-	call_deferred("_apply_theme_styles")
 
-func _apply_theme_styles():
-	var bg = get_node_or_null("Background")
-	if bg: Global.apply_bg(bg)
-	for n in ["TopBar", "BottomBar", "TabBar"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_bg
-	for n in ["TopBarLine", "BottomBarLine", "TabLine"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_border
-	var title = get_node_or_null("Title")
-	if title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
+func _get_bar_names() -> Array:
+	return ["TopBar", "BottomBar", "TabBar"]
+
+func _get_bar_line_names() -> Array:
+	return ["TopBarLine", "BottomBarLine", "TabLine"]
+
+func _apply_theme_custom():
 	var back = get_node_or_null("BackBtn")
 	if back is Button:
 		var s = StyleBoxFlat.new()
@@ -722,47 +708,12 @@ func _do_buy(mid: String, price: int, qty: int):
 
 
 func _on_theme_changed(_mode):
-	var bg = get_node_or_null("Background")
-	if bg: Global.apply_bg(bg)
-	
-	var topbar = get_node_or_null("TopBar")
-	if topbar and topbar is ColorRect:
-		topbar.color = Global.current.topbar_bg
-	
-	var topbar_line = get_node_or_null("TopBarLine")
-	if topbar_line and topbar_line is ColorRect:
-		topbar_line.color = Global.current.topbar_border
-	
-	var tab_bar = get_node_or_null("TabBar")
-	if tab_bar and tab_bar is ColorRect:
-		tab_bar.color = Global.current.topbar_bg
-	
-	var tab_line = get_node_or_null("TabLine")
-	if tab_line and tab_line is ColorRect:
-		tab_line.color = Global.current.topbar_border
-	
-	var bottom_bar = get_node_or_null("BottomBar")
-	if bottom_bar and bottom_bar is ColorRect:
-		bottom_bar.color = Global.current.topbar_bg
-	
-	var bottom_bar_line = get_node_or_null("BottomBarLine")
-	if bottom_bar_line and bottom_bar_line is ColorRect:
-		bottom_bar_line.color = Global.current.topbar_border
-	
-	var title = get_node_or_null("Title")
-	if title and title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
-	
+	super._on_theme_changed(_mode)
 	_update_tab_style()
-	
 	for child in get_children():
 		if child is Button:
 			child.add_theme_color_override("font_color", Global.current.btn_text)
 			child.add_theme_color_override("font_hover_color", Global.current.btn_text_hover)
-	
 	_refresh_shop()
 
 

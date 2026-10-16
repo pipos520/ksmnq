@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 ## ============================================================
 ##  纹路图鉴 —— 查看所有纹路组件及解锁状态
 ##  风格参考仓库(Warehouse.gd)，支持长按查看详情
@@ -24,11 +24,10 @@ var _style_unlock_btn: StyleBoxFlat = null
 var _style_back_btn: StyleBoxFlat = null
 # ===== 长按弹窗 =====
 func _ready():
+	super._ready()
 	call_deferred("_init_scene")
 
 func _init_scene():
-	_apply_theme_colors()
-	
 	var back = get_node_or_null("BackBtn")
 	if back:
 		back.pressed.connect(_on_back)
@@ -38,7 +37,6 @@ func _init_scene():
 	var unlock_btn = get_node_or_null("UnlockBtn")
 	if unlock_btn:
 		unlock_btn.pressed.connect(_show_unlock_popup)
-	Global.theme_changed.connect(_on_theme_changed)
 	_setup_long_press()
 	
 	_fill_all_rows()
@@ -143,31 +141,7 @@ func _exit_tree():
 			else:
 				child.queue_free()
 
-func _apply_theme_colors():
-	# 应用主题样式到.tscn里预创建的节点
-	var bg = get_node_or_null("Background")
-	if bg: Global.apply_bg(bg)
-	var topbar = get_node_or_null("TopBar")
-	if topbar and topbar is ColorRect:
-		topbar.color = Global.current.topbar_bg
-	var topbar_line = get_node_or_null("TopBarLine")
-	if topbar_line and topbar_line is ColorRect:
-		topbar_line.color = Global.current.topbar_border
-	var bottom_bar = get_node_or_null("BottomBar")
-	if bottom_bar and bottom_bar is ColorRect:
-		bottom_bar.color = Global.current.topbar_bg
-	var bottom_bar_line = get_node_or_null("BottomBarLine")
-	if bottom_bar_line and bottom_bar_line is ColorRect:
-		bottom_bar_line.color = Global.current.topbar_border
-	var title = get_node_or_null("Title")
-	if title and title is Label:
-		title.add_theme_font_size_override("font_size", 100)
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
-	
-	# 筛选按钮样式（StyleBox只创建一次，后续只更新颜色）
+func _apply_theme_custom():
 	var cat_btn = get_node_or_null("CategoryBtn")
 	if cat_btn and cat_btn is Button:
 		cat_btn.add_theme_font_size_override("font_size", 45)
@@ -198,7 +172,6 @@ func _apply_theme_colors():
 		_style_unlock_btn.bg_color = Global.current.btn_bg
 		unlock_btn.add_theme_color_override("font_color", Global.current.title)
 	
-	# 返回按钮样式
 	var back = get_node_or_null("BackBtn")
 	if back and back is Button:
 		back.add_theme_font_size_override("font_size", 50)
@@ -214,7 +187,6 @@ func _apply_theme_colors():
 		_style_back_btn.bg_color = Global.current.btn_bg
 		back.add_theme_color_override("font_color", Global.current.title)
 	
-	# 提示标签
 	var hint = get_node_or_null("HintLabel")
 	if hint and hint is Label:
 		hint.add_theme_font_size_override("font_size", 50)
@@ -741,7 +713,7 @@ func _on_back():
 
 
 func _on_theme_changed(_mode):
-	_apply_theme_colors()
+	super._on_theme_changed(_mode)
 	_refresh_list()
 
 

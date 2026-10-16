@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 
 # ============================
 #  调制卡墨 - 主脚本
@@ -33,15 +33,11 @@ var _tutorial_done: bool = false
 #  _ready() 构建界面
 # ============================
 func _ready():
-	# ---- 静态节点已在 InkMaking.tscn 中声明 ----
+	super._ready()
 	var back := get_node_or_null("BackBtn")
 	if back is Button: back.pressed.connect(_on_back)
 	var help := get_node_or_null("HelpBtn")
 	if help is Button: help.pressed.connect(_on_help)
-	# 主题
-	Global.theme_changed.connect(_on_theme_changed)
-	call_deferred("_apply_theme_styles")
-	# 动态内容构建
 	call_deferred("_build_dynamic_content")
 
 func _build_material_section(parent: VBoxContainer):
@@ -1444,41 +1440,8 @@ func _close_tutorial_overlay() -> void:
 #  主题切换
 # ============================
 func _on_theme_changed(_mode):
-	var bg = get_node_or_null("Background")
-	if bg: Global.apply_bg(bg)
+	super._on_theme_changed(_mode)
 	
-	var topbar = get_node_or_null("TopBar")
-	if topbar and topbar is ColorRect:
-		topbar.color = Global.current.topbar_bg
-	
-	var topbar_line = get_node_or_null("TopBarLine")
-	if topbar_line and topbar_line is ColorRect:
-		topbar_line.color = Global.current.topbar_border
-	
-	var title = get_node_or_null("Title")
-	if title and title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
-	
-	# 更新所有按钮主题
-	for child in get_children():
-		if child is Button:
-			child.add_theme_color_override("font_color", Global.current.btn_text)
-			child.add_theme_color_override("font_hover_color", Global.current.btn_text_hover)
-			for state in ["normal", "hover", "pressed", "focus"]:
-				var sb = child.get_theme_stylebox(state)
-				if sb and sb is StyleBoxFlat:
-					if state == "normal":
-						sb.bg_color = Global.current.btn_bg
-					elif state == "hover":
-						sb.bg_color = Global.current.btn_bg_hover
-					elif state == "pressed":
-						sb.bg_color = Global.current.btn_bg_pressed
-					child.add_theme_stylebox_override(state, sb)
-	
-	# 更新素材分类面板
 	for key in _category_labels.keys():
 		var data = _category_labels.get(key)
 		var row = get_node_or_null("ContentScroll/ContentVBox/CatRow_" + key)
@@ -1488,7 +1451,6 @@ func _on_theme_changed(_mode):
 				rs.bg_color = Global.current.topbar_bg
 				row.add_theme_stylebox_override("panel", rs)
 	
-	# 更新预览面板
 	var preview_panel = get_node_or_null("ContentScroll/ContentVBox/PreviewPanel")
 	if preview_panel and preview_panel is Panel:
 		var ps = preview_panel.get_theme_stylebox("panel")
@@ -1776,21 +1738,10 @@ func _close_popup(overlay):
 	if overlay and is_instance_valid(overlay):
 		overlay.queue_free()
 
-func _apply_theme_styles():
-	var bg = get_node_or_null("Background")
-	Global.apply_bg(bg)
-	for n in ["TopBar","BottomBar"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_bg
-	for n in ["TopBarLine","BottomBarLine"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_border
-	var title = get_node_or_null("Title")
-	if title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
+func _get_themed_button_names() -> Array:
+	return ["HelpBtn"]
+
+func _apply_theme_custom():
 	var back = get_node_or_null("BackBtn")
 	if back is Button:
 		back.add_theme_color_override("font_color", Global.current.btn_text)

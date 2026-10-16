@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 ## ============================================================
 ##  公会任务 —— 任务列表、纹路获取
 ## ============================================================
@@ -27,6 +27,7 @@ var _ad_refresh_btn: Button = null
 var _ad_status_label: Label = null
 
 func _ready():
+	super._ready()
 	# ---- 静态节点已在 GuildTasks.tscn 中声明 ----
 	var back := get_node_or_null("BackBtn")
 	if back is Button: back.pressed.connect(_on_back)
@@ -212,28 +213,7 @@ func _ready():
 	daily_status.offset_right = Global.pw(-0.02); daily_status.offset_bottom = 0
 	daily_bar.add_child(daily_status)
 
-	# 主题
-	Global.theme_changed.connect(_on_theme_changed)
-	call_deferred("_apply_theme_styles")
-
-func _on_theme_changed(_mode):
-	_apply_theme_styles()
-
-func _apply_theme_styles():
-	var bg = get_node_or_null("Background")
-	if bg: Global.apply_bg(bg)
-	for n in ["TopBar", "BottomBar"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_bg
-	for n in ["TopBarLine", "BottomBarLine"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_border
-	var title = get_node_or_null("Title")
-	if title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
+func _apply_theme_custom():
 	var back = get_node_or_null("BackBtn")
 	if back is Button:
 		var s = StyleBoxFlat.new()

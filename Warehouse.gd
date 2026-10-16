@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 
 # 当前标签页： "all" 或 "material" 或 "card_base" 或 "ink" 或 "aux"
 var _current_tab: String = "all"
@@ -16,12 +16,10 @@ const LONG_PRESS_TIME := 0.5
 const DRAG_THRESHOLD := 30.0
 
 func _ready():
+	super._ready()
 	# ---- 静态节点已在 Warehouse.tscn 中声明 ----
 	var back := get_node_or_null("BackBtn")
 	if back is Button: back.pressed.connect(_on_back)
-	# 主题
-	Global.theme_changed.connect(_on_theme_changed)
-	call_deferred("_apply_theme_styles")
 	# 动态内容构建
 	call_deferred("_build_dynamic_content")
 
@@ -1457,21 +1455,7 @@ func _on_back():
 	Global.play_sfx("click")
 	Global.change_scene("res://CardWorkshop.tscn")
 
-func _apply_theme_styles():
-	var bg = get_node_or_null("Background")
-	Global.apply_bg(bg)
-	for n in ["TopBar","BottomBar"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_bg
-	for n in ["TopBarLine","BottomBarLine"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_border
-	var title = get_node_or_null("Title")
-	if title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
+func _apply_theme_custom():
 	var back = get_node_or_null("BackBtn")
 	if back is Button:
 		back.add_theme_color_override("font_color", Global.current.btn_text)

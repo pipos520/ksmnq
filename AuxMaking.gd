@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 
 ## ============================
 ##  制作辅材 - 主界面
@@ -16,6 +16,7 @@ var _picker_long_press_active: bool = false
 
 
 func _ready():
+	super._ready()
 	var bg = Global.make_bg()
 	bg.name = "Background"
 	add_child(bg)
@@ -78,8 +79,6 @@ func _ready():
 	var spacer = Control.new()
 	spacer.custom_minimum_size = Vector2(0, Global.ph(0.15))
 	vbox.add_child(spacer)
-	
-	Global.theme_changed.connect(_on_theme_changed)
 	
 	# ===== 底部UI条 =====
 	var bottom_bar = Global.make_topbar(0.083)
@@ -618,23 +617,6 @@ func _get_rarity_color(rarity: String) -> Color:
 		"稀有": return Color("#3498DB")
 		"普通": return Color("#95A5A6")
 	return Color("#95A5A6")
-
-
-func _on_theme_changed(_mode):
-	var bg = get_node_or_null("Background")
-	if bg: Global.apply_bg(bg)
-	var topbar = get_node_or_null("TopBar")
-	if topbar and topbar is ColorRect:
-		topbar.color = Global.current.topbar_bg
-	var topbar_line = get_node_or_null("TopBarLine")
-	if topbar_line and topbar_line is ColorRect:
-		topbar_line.color = Global.current.topbar_border
-	var title = get_node_or_null("Title")
-	if title and title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
 
 
 func _on_back():

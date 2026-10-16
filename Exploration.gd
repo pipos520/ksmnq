@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 var _maps := [
 	{"id": "misty_forest", "name": "🌲 迷雾森林", "desc": "幽暗的森林中弥漫着神秘雾气，\n据说深处藏着古老的卡牌碎片。", "difficulty": "简单", "diff_color": Color("#5cb85c"), "recommend": "推荐战力：100", "bg_color": Color("#1a3a2a"), "icon": "🌲"},
 	{"id": "flame_cavern", "name": "🔥 火焰洞穴", "desc": "灼热的岩浆在地底流淌，\n火焰精灵守护着珍贵的火系素材。", "difficulty": "普通", "diff_color": Color("#e8a838"), "recommend": "推荐战力：300", "bg_color": Color("#3a1a0a"), "icon": "🔥"},
@@ -75,11 +75,9 @@ var _guide_press_start_pos: Vector2 = Vector2.ZERO
 var _guide_press_index: int = -1
 const GUIDE_LONG_PRESS_TIME := 0.5
 const GUIDE_DRAG_THRESHOLD := 30.0
-var _tex_night: Texture2D
-var _tex_day: Texture2D
-var _last_applied_mode = null
 
 func _ready():
+	super._ready()
 	var _t0 = Time.get_ticks_msec()
 	set_process(true)
 	var back := get_node_or_null("BackBtn")
@@ -96,8 +94,6 @@ func _ready():
 			eb.pressed.connect(_on_explore.bind(_maps[i]["id"], _maps[i]["name"]))
 	_refresh_map_cards()
 	_refresh_bottom_deck_name()
-	Global.theme_changed.connect(_on_theme_changed)
-	call_deferred("_apply_theme_styles")
 	print("[Exploration] _ready 完成: %dms" % [Time.get_ticks_msec() - _t0])
 
 func _refresh_map_cards():
@@ -140,58 +136,18 @@ func _refresh_bottom_deck_name():
 	if dl is Label:
 		dl.text = Global.current_deck_name if Global.current_deck_name != "" else "未选择卡组"
 
-func _on_theme_changed(mode = null):
-	if mode == null: mode = Global.current_mode
-	_apply_theme_styles()
+func _get_bar_names() -> Array:
+	return ["TopBar", "BottomBar", "BottomDeckBar"]
 
-func _apply_theme_styles():
-	var mode = Global.current_mode
-	var is_day = mode == Global.ThemeMode.DAY
-	var bg = get_node_or_null("Background")
-	if bg and bg is TextureRect:
-		if _tex_night == null:
-			_tex_night = load("res://assets/theme/bg_night.png")
-			_tex_day = load("res://assets/theme/bg_day.png")
-		bg.texture = _tex_day if is_day else _tex_night
-	for n in ["TopBar","BottomBar","BottomDeckBar"]:
-		var r = get_node_or_null(n)
-		if r and r is ColorRect: r.color = Global.current.topbar_bg
-	for n in ["TopBarLine","BottomBarLine","BottomDeckBarLine"]:
-		var r = get_node_or_null(n)
-		if r and r is ColorRect: r.color = Global.current.topbar_border
-	var title = get_node_or_null("Title")
-	if title and title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
+func _get_bar_line_names() -> Array:
+	return ["TopBarLine", "BottomBarLine", "BottomDeckBarLine"]
+
+func _get_themed_button_names() -> Array:
+	return ["BackBtn", "BottomDeckSwitchBtn", "HelpBtn"]
+
+func _apply_theme_custom():
 	var dn = get_node_or_null("BottomDeckName")
 	if dn is Label: dn.add_theme_color_override("font_color", Global.current.title)
-	var mode_key = mode
-	if _last_applied_mode == mode_key: return
-	_last_applied_mode = mode_key
-	var icon_c = Color("#645C50") if is_day else Color("#CBCBE0")
-	var btn_bg = Color(0.15, 0.13, 0.20, 0.85) if not is_day else Color(0.90, 0.85, 0.75, 0.85)
-	var btn_bg_hover = btn_bg.lightened(0.12)
-	var btn_bg_pressed = btn_bg.darkened(0.15)
-	var border_c = Color("#E8A838") if not is_day else Color("#946F38")
-	for bname in ["BackBtn", "BottomDeckSwitchBtn", "HelpBtn"]:
-		var btn = get_node_or_null(bname)
-		if not btn is Button: continue
-		btn.add_theme_color_override("font_color", icon_c)
-		btn.add_theme_color_override("font_hover_color", icon_c.lightened(0.15))
-		btn.add_theme_color_override("font_pressed_color", icon_c.darkened(0.2))
-		for state in ["normal", "hover", "pressed", "focus"]:
-			var sb = StyleBoxFlat.new()
-			sb.bg_color = btn_bg_hover if state == "hover" else (btn_bg_pressed if state == "pressed" else btn_bg)
-			sb.border_width_left = 2; sb.border_width_right = 2
-			sb.border_width_top = 2; sb.border_width_bottom = 2
-			sb.border_color = border_c
-			sb.corner_radius_top_left = 12; sb.corner_radius_top_right = 12
-			sb.corner_radius_bottom_left = 12; sb.corner_radius_bottom_right = 12
-			sb.content_margin_left = 16; sb.content_margin_right = 16
-			sb.content_margin_top = 8; sb.content_margin_bottom = 8
-			btn.add_theme_stylebox_override(state, sb)
 
 func _on_back(): Global.play_sfx("click"); Global.change_scene("res://Main.tscn")
 

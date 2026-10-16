@@ -1,16 +1,12 @@
-extends Control
-var _last_applied_mode = null
-var _tex_night: Texture2D
-var _tex_day: Texture2D
+extends ThemedControl
 
 func _ready():
+	super._ready()
 	var _t0 = Time.get_ticks_msec()
-	# ---- 静态界面：UI 节点已在 CardWorkshop.tscn 中声明 ----
 	var back := get_node_or_null("BackBtn")
 	if back is Button: back.pressed.connect(_on_back)
 	var help := get_node_or_null("HelpBtn")
 	if help is Button: help.pressed.connect(_on_help)
-	# 5 个功能按钮
 	var btn_map = {
 		"BtnCardBase": "制作卡基",
 		"BtnInk": "调制卡墨",
@@ -23,62 +19,16 @@ func _ready():
 		if btn is Button:
 			var text = btn_map[bname]
 			btn.pressed.connect(_on_workshop_btn_pressed.bind(text))
-	Global.theme_changed.connect(_on_theme_changed)
-	call_deferred("_apply_theme_styles")
 	print("[CardWorkshop] _ready 完成: %dms" % [Time.get_ticks_msec() - _t0])
 
-func _on_theme_changed(mode = null):
-	if mode == null: mode = Global.current_mode
-	_apply_theme_styles()
+func _get_bar_names() -> Array:
+	return ["TopBar"]
 
-func _apply_theme_styles():
-	var mode = Global.current_mode
-	var is_day = mode == Global.ThemeMode.DAY
-	# 背景纹理
-	var bg = get_node_or_null("Background")
-	if bg and bg is TextureRect:
-		if _tex_night == null:
-			_tex_night = load("res://assets/theme/bg_night.png")
-			_tex_day = load("res://assets/theme/bg_day.png")
-		bg.texture = _tex_day if is_day else _tex_night
-	# 顶栏
-	var topbar = get_node_or_null("TopBar")
-	if topbar and topbar is ColorRect: topbar.color = Global.current.topbar_bg
-	var topbar_line = get_node_or_null("TopBarLine")
-	if topbar_line and topbar_line is ColorRect: topbar_line.color = Global.current.topbar_border
-	# 标题
-	var title = get_node_or_null("Title")
-	if title and title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
-	# 按钮样式
-	var mode_key = mode
-	if _last_applied_mode == mode_key: return
-	_last_applied_mode = mode_key
-	var icon_c = Color("#645C50") if is_day else Color("#CBCBE0")
-	var btn_bg = Color(0.15, 0.13, 0.20, 0.85) if not is_day else Color(0.90, 0.85, 0.75, 0.85)
-	var btn_bg_hover = btn_bg.lightened(0.12)
-	var btn_bg_pressed = btn_bg.darkened(0.15)
-	var border_c = Color("#E8A838") if not is_day else Color("#946F38")
-	for bname in ["BackBtn", "HelpBtn", "BtnCardBase", "BtnInk", "BtnEngrave", "BtnCircuit", "BtnWarehouse"]:
-		var btn = get_node_or_null(bname)
-		if not btn is Button: continue
-		btn.add_theme_color_override("font_color", icon_c)
-		btn.add_theme_color_override("font_hover_color", icon_c.lightened(0.15))
-		btn.add_theme_color_override("font_pressed_color", icon_c.darkened(0.2))
-		for state in ["normal", "hover", "pressed", "focus"]:
-			var sb = StyleBoxFlat.new()
-			sb.bg_color = btn_bg_hover if state == "hover" else (btn_bg_pressed if state == "pressed" else btn_bg)
-			sb.border_width_left = 2; sb.border_width_right = 2
-			sb.border_width_top = 2; sb.border_width_bottom = 2
-			sb.border_color = border_c
-			sb.corner_radius_top_left = 12; sb.corner_radius_top_right = 12
-			sb.corner_radius_bottom_left = 12; sb.corner_radius_bottom_right = 12
-			sb.content_margin_left = 16; sb.content_margin_right = 16
-			sb.content_margin_top = 8; sb.content_margin_bottom = 8
-			btn.add_theme_stylebox_override(state, sb)
+func _get_bar_line_names() -> Array:
+	return ["TopBarLine"]
+
+func _get_themed_button_names() -> Array:
+	return ["BackBtn", "HelpBtn", "BtnCardBase", "BtnInk", "BtnEngrave", "BtnCircuit", "BtnWarehouse"]
 
 func _on_workshop_btn_pressed(text: String):
 	Global.play_sfx("click")

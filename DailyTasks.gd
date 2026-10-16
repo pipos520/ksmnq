@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 ## ============================================================
 ##  每日任务 —— 每日阶梯任务界面（静态化）
 ##  包含决斗场/杀敌/通关地图/制卡 四个阶梯
@@ -8,17 +8,13 @@ var _hj_ads: HJAdsNode = null
 var _pending_reset_key: String = ""
 var _ad_status_label: Label = null
 var _ad_reset_btn: Button = null
-var _last_applied_mode = null
 
 func _ready():
+	super._ready()
 	# ---- 静态界面节点已在 DailyTasks.tscn 中声明 ----
 	var back := get_node_or_null("BackBtn")
 	if back is Button:
 		back.pressed.connect(_on_back)
-
-	# 主题
-	Global.theme_changed.connect(_on_theme_changed)
-	call_deferred("_apply_theme_styles")
 
 	# ===== 每日阶梯任务（动态生成）=====
 	var ladder_y = 0.12
@@ -91,52 +87,8 @@ func _ready():
 	_ad_status_label.offset_right = Global.pw(-0.02); _ad_status_label.offset_bottom = 0
 	ad_bar.add_child(_ad_status_label)
 
-func _on_theme_changed(mode = null):
-	_apply_theme_styles()
-
-func _apply_theme_styles():
-	var mode = Global.current_mode
-	var is_day = mode == Global.ThemeMode.DAY
-	# 背景颜色
-	var bg = get_node_or_null("Background")
-	Global.apply_bg(bg)
-	# 顶栏/底栏
-	for n in ["TopBar","BottomBar"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_bg
-	for n in ["TopBarLine","BottomBarLine"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_border
-	# 标题
-	var title = get_node_or_null("Title")
-	if title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
-	# 按钮
-	var mode_key = mode
-	if _last_applied_mode == mode_key: return
-	_last_applied_mode = mode_key
-	var icon_c = Color("#645C50") if is_day else Color("#CBCBE0")
-	var btn_bg = Color(0.15, 0.13, 0.20, 0.85) if not is_day else Color(0.90, 0.85, 0.75, 0.85)
-	var btn_bg_hover = btn_bg.lightened(0.12)
-	var btn_bg_pressed = btn_bg.darkened(0.15)
-	var border_c = Color("#E8A838") if not is_day else Color("#946F38")
-	var btn = get_node_or_null("BackBtn")
-	if btn is Button:
-		btn.add_theme_color_override("font_color", icon_c)
-		btn.add_theme_color_override("font_hover_color", icon_c.lightened(0.15))
-		btn.add_theme_color_override("font_pressed_color", icon_c.darkened(0.2))
-		for state in ["normal", "hover", "pressed", "focus"]:
-			var sb = StyleBoxFlat.new()
-			sb.bg_color = btn_bg_hover if state == "hover" else (btn_bg_pressed if state == "pressed" else btn_bg)
-			sb.border_width_left = 2; sb.border_width_right = 2; sb.border_width_top = 2; sb.border_width_bottom = 2
-			sb.border_color = border_c
-			sb.corner_radius_top_left = 12; sb.corner_radius_top_right = 12
-			sb.corner_radius_bottom_left = 12; sb.corner_radius_bottom_right = 12
-			sb.content_margin_left = 16; sb.content_margin_right = 16; sb.content_margin_top = 8; sb.content_margin_bottom = 8
-			btn.add_theme_stylebox_override(state, sb)
+func _get_themed_button_names() -> Array:
+	return ["BackBtn"]
 
 func _on_back():
 	Global.play_sfx("click")

@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 
 ## 卡师模拟器 · 主界面
 ## UI 全部静态写在 Main.tscn，此脚本只管交互逻辑 + 主题切换
@@ -47,31 +47,26 @@ const DAY = {
 }
 
 func _ready():
-	# 连接卡片按钮
+	super._ready()
 	for card_name in CARDS.keys():
 		var btn = get_node_or_null("%s/Btn" % card_name)
 		if btn is Button:
 			btn.pressed.connect(_on_card_pressed.bind(CARDS[card_name]["scene"]))
-	# 顶部图标按钮
 	var gear = get_node_or_null("GearButton")
 	if gear is Button:
 		gear.pressed.connect(_on_gear_pressed)
 	var guide = get_node_or_null("GuideBtn")
 	if guide is Button:
 		guide.pressed.connect(_on_guide)
-	# 官网按钮
 	var website = get_node_or_null("WebsiteBtn")
 	if website is Button:
 		website.pressed.connect(_on_website_pressed)
-	# 主题切换
-	Global.theme_changed.connect(_on_theme_changed)
-	_on_theme_changed(Global.current_mode)
-	# 教程
 	call_deferred("_setup_tutorial_flow")
 
 # ==================== 主题切换 ====================
 
 func _on_theme_changed(mode):
+	super._on_theme_changed(mode)
 	var is_day = mode == Global.ThemeMode.DAY
 	var theme = DAY if is_day else NIGHT
 	

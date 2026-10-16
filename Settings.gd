@@ -1,22 +1,17 @@
-extends Control
+extends ThemedControl
 
 func _ready():
-	# ---- 静态界面：所有 UI 节点已在 Settings.tscn 中声明 ----
+	super._ready()
 	var back := get_node_or_null("BackBtn")
 	if back is Button:
 		back.pressed.connect(_on_back)
-	# 4 个设置按钮：连接动作
 	_connect_setting_btn("BtnToggle", "toggle")
 	_connect_setting_btn("BtnReset", "reset")
 	_connect_setting_btn("BtnExit", "exit")
 	_connect_setting_btn("BtnDebug", "debug")
 	_connect_setting_btn("BtnBattleMode", "battle_mode")
 	_refresh_battle_mode_btn()
-	# 修正按钮文字：显示"要切换到的模式"而不是当前模式
 	_refresh_toggle_btn_text()
-	# 监听主题切换（进入场景时立即应用当前主题）
-	Global.theme_changed.connect(_on_theme_changed)
-	_on_theme_changed(Global.current_mode)
 
 func _connect_setting_btn(node_name: String, action: String) -> void:
 	var btn := get_node_or_null(node_name)
@@ -41,48 +36,26 @@ func _refresh_toggle_btn_text() -> void:
 				break
 
 
-func _on_theme_changed(mode):
+func _get_bar_names() -> Array:
+	return ["TopBar"]
+
+func _get_bar_line_names() -> Array:
+	return ["TopBarLine"]
+
+func _apply_theme_custom():
+	var mode = Global.current_mode
 	var is_day = mode == Global.ThemeMode.DAY
-	var suffix = "day" if is_day else "night"
-	
-	var bg = get_node_or_null("Background")
-	if bg and bg is TextureRect:
-		var tex_path = "res://assets/theme/bg_day.png" if is_day else "res://assets/theme/bg_night.png"
-		var tex = load(tex_path)
-		if tex:
-			bg.texture = tex
-	
-	var topbar = get_node_or_null("TopBar")
-	if topbar and topbar is ColorRect:
-		topbar.color = Global.current.topbar_bg
-	
-	var topbar_line = get_node_or_null("TopBarLine")
-	if topbar_line and topbar_line is ColorRect:
-		topbar_line.color = Global.current.topbar_border
-	
-	var title = get_node_or_null("Title")
-	if title and title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
-	
-	# 按钮：圆角背景 + 统一文字颜色（跟主界面风格统一）
 	var icon_c = Color("#645C50") if is_day else Color("#CBCBE0")
-	# 按钮背景色：半透明面板色
 	var btn_bg = Color(0.15, 0.13, 0.20, 0.85) if not is_day else Color(0.90, 0.85, 0.75, 0.85)
 	var btn_bg_hover = btn_bg.lightened(0.12)
 	var btn_bg_pressed = btn_bg.darkened(0.15)
 	var border_c = Color("#E8A838") if not is_day else Color("#946F38")
-	
 	for child in get_children():
 		if not child is Button:
 			continue
-		# 文字颜色
 		child.add_theme_color_override("font_color", icon_c)
 		child.add_theme_color_override("font_hover_color", icon_c.lightened(0.15))
 		child.add_theme_color_override("font_pressed_color", icon_c.darkened(0.2))
-		# 圆角背景
 		for state in ["normal", "hover", "pressed"]:
 			var sb = StyleBoxFlat.new()
 			sb.bg_color = btn_bg_hover if state == "hover" else (btn_bg_pressed if state == "pressed" else btn_bg)
@@ -94,7 +67,6 @@ func _on_theme_changed(mode):
 			sb.content_margin_left = 16; sb.content_margin_right = 16
 			sb.content_margin_top = 8; sb.content_margin_bottom = 8
 			child.add_theme_stylebox_override(state, sb)
-	
 	_refresh_toggle_btn_text()
 
 

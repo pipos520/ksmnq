@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 
 const QRCode = preload("res://assets/share/QRCode.gd")
 
@@ -18,6 +18,7 @@ var _search_text: String = ""
 var _search_input: LineEdit = null
 
 func _ready():
+	super._ready()
 	# ---- 静态节点已在 CardGallery.tscn 中声明 ----
 	var back := get_node_or_null("BackBtn")
 	if back is Button: back.pressed.connect(_on_back)
@@ -25,9 +26,6 @@ func _ready():
 	if help is Button: help.pressed.connect(_on_help)
 	var filter_btn := get_node_or_null("FilterBtn")
 	if filter_btn is Button: filter_btn.pressed.connect(_show_filter_popup)
-	# 主题
-	Global.theme_changed.connect(_on_theme_changed)
-	call_deferred("_apply_theme_styles")
 	# 动态内容构建
 	call_deferred("_build_dynamic_content")
 
@@ -498,37 +496,11 @@ func _build_filter_popup_content(panel: Panel):
 	)
 	btn_hbox.add_child(close_btn)
 
-func _on_theme_changed(_mode):
-	var bg = get_node_or_null("Background")
-	if bg: Global.apply_bg(bg)
-	
-	var topbar = get_node_or_null("TopBar")
-	if topbar and topbar is ColorRect:
-		topbar.color = Global.current.topbar_bg
-	
-	var topbar_line = get_node_or_null("TopBarLine")
-	if topbar_line and topbar_line is ColorRect:
-		topbar_line.color = Global.current.topbar_border
-	
-	var bottom_bar = get_node_or_null("BottomBar")
-	if bottom_bar and bottom_bar is ColorRect:
-		bottom_bar.color = Global.current.topbar_bg
-	
-	var bottom_bar_line = get_node_or_null("BottomBarLine")
-	if bottom_bar_line and bottom_bar_line is ColorRect:
-		bottom_bar_line.color = Global.current.topbar_border
-	
-	var title = get_node_or_null("Title")
-	if title and title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
-	
+func _on_theme_changed(_mode = null):
+	super._on_theme_changed(_mode)
 	var stats_label = get_node_or_null("StatsLabel")
 	if stats_label and stats_label is Label:
 		stats_label.add_theme_color_override("font_color", Global.current.btn_text)
-	
 	for child in get_children():
 		if child is Button:
 			child.add_theme_color_override("font_color", Global.current.btn_text)
@@ -543,7 +515,6 @@ func _on_theme_changed(_mode):
 					elif state == "pressed":
 						sb.bg_color = Global.current.btn_bg_pressed
 					child.add_theme_stylebox_override(state, sb)
-	
 	_refresh_list()
 
 
@@ -1983,21 +1954,7 @@ func _on_scan_error(error_msg: String) -> void:
 	print("[CardGallery] 扫码错误: ", error_msg)
 	_show_share_toast("❌ 扫码失败: " + error_msg)
 
-func _apply_theme_styles():
-	var bg = get_node_or_null("Background")
-	Global.apply_bg(bg)
-	for n in ["TopBar","BottomBar"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_bg
-	for n in ["TopBarLine","BottomBarLine"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_border
-	var title = get_node_or_null("Title")
-	if title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
+func _apply_theme_custom():
 	var back = get_node_or_null("BackBtn")
 	if back is Button:
 		back.add_theme_color_override("font_color", Global.current.btn_text)

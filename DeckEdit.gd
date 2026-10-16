@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 
 # 长按相关
 var _press_timer: float = 0.0
@@ -27,11 +27,7 @@ var _create_btn: Button
 # 预构建的 10 个卡组行模板
 var _prebuilt_rows: Array = []
 var _prebuilt_row_count = 10
-# 缓存纹理，避免每次切换主题都 load() 磁盘
-var _tex_night: Texture2D
-var _tex_day: Texture2D
 var _is_initial_theme: bool = false
-var _last_applied_mode = null  # 上次应用样式的主题（避免重复创建 StyleBoxFlat）
 
 # 筛选/排序/搜索状态
 var _filter_quality: String = "all"  # all/perfect/excellent/fine/normal
@@ -41,8 +37,8 @@ var _search_text: String = ""
 var _search_input: LineEdit = null
 
 func _ready():
+	super._ready()
 	var _t0 = Time.get_ticks_msec()
-	# ---- 静态界面：所有 UI 节点已在 DeckEdit.tscn 中声明 ----
 	_scroll = get_node_or_null("DeckScroll")
 	_list_vbox = get_node_or_null("DeckScroll/DeckList")
 	_edit_root = get_node_or_null("EditRoot")
@@ -54,14 +50,12 @@ func _ready():
 	_create_btn = get_node_or_null("CreateDeckBtn")
 	print("[DeckEdit] _ready 节点引用: %dms" % [Time.get_ticks_msec() - _t0])
 
-	# 动态尺寸（tscn 中无法用 Global.pw()，在此设置）
 	if _list_vbox:
 		_list_vbox.custom_minimum_size = Vector2(Global.pw(1.0), 0)
 	var edit_vbox = get_node_or_null("EditRoot/EditScroll/EditVBox")
 	if edit_vbox:
 		edit_vbox.custom_minimum_size = Vector2(Global.pw(1.0), 0)
 
-	# 信号连接
 	if _back_btn:
 		_back_btn.pressed.connect(_on_back)
 	var gallery_btn = get_node_or_null("GalleryBtn")
@@ -74,13 +68,9 @@ func _ready():
 		_create_btn.pressed.connect(_on_create_deck)
 	print("[DeckEdit] _ready 完成: %dms" % [Time.get_ticks_msec() - _t0])
 
-	# 刷新牌组列表（数据渲染，快）
 	_refresh_deck_list()
 	_setup_long_press()
-	Global.theme_changed.connect(_on_theme_changed)
-	# 主题样式延迟到下一帧，避免首帧卡顿
 	_is_initial_theme = true
-	call_deferred("_apply_theme_styles")
 
 # ============================================================
 # 牌组列表刷新
@@ -1970,98 +1960,24 @@ func _set_help_vbox_width(vbox: VBoxContainer, scroll: ScrollContainer):
 	vbox.custom_minimum_size = Vector2(w, 0)
 
 func _on_theme_changed(mode = null):
-	var _t0 = Time.get_ticks_msec()
-	if mode == null:
-		mode = Global.current_mode
-	var is_day = mode == Global.ThemeMode.DAY
-
-	_apply_theme_styles()
-
-	# 非首次切换时才刷新列表（首次已在 _ready 里刷过了）
+	super._on_theme_changed(mode)
 	if not _is_initial_theme:
 		_refresh_deck_list()
 		if _current_view == "edit" and _edit_root and _edit_root.visible:
 			_refresh_edit_view()
 	_is_initial_theme = false
-	print("[DeckEdit] _on_theme_changed: %dms" % [Time.get_ticks_msec() - _t0])
 
-func _apply_theme_styles():
-	var _t0 = Time.get_ticks_msec()
-	var mode = Global.current_mode
-	var is_day = mode == Global.ThemeMode.DAY
+func _get_themed_button_names() -> Array:
+	return ["BackBtn", "GalleryBtn", "CreateDeckBtn", "HelpBtn"]
 
-	# 背景纹理切换
-	var bg = get_node_or_null("Background")
-	if bg and bg is TextureRect:
-		if _tex_night == null:
-			_tex_night = load("res://assets/theme/bg_night.png")
-			_tex_day = load("res://assets/theme/bg_day.png")
-		bg.texture = _tex_day if is_day else _tex_night
+func _get_button_corner_radius(bname: String) -> int:
+	if bname == "HelpBtn":
+		return 50
+	return 12
 
-	# 顶栏
-	var topbar = get_node_or_null("TopBar")
-	if topbar and topbar is ColorRect:
-		topbar.color = Global.current.topbar_bg
-	var topbar_line = get_node_or_null("TopBarLine")
-	if topbar_line and topbar_line is ColorRect:
-		topbar_line.color = Global.current.topbar_border
-
-	# 底栏
-	var bottom_bar = get_node_or_null("BottomBar")
-	if bottom_bar and bottom_bar is ColorRect:
-		bottom_bar.color = Global.current.topbar_bg
-	var bottom_bar_line = get_node_or_null("BottomBarLine")
-	if bottom_bar_line and bottom_bar_line is ColorRect:
-		bottom_bar_line.color = Global.current.topbar_border
-
-	# 标题
-	var title = get_node_or_null("Title")
-	if title and title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
-
-	# 编辑区标题
+func _apply_theme_custom():
 	if _edit_title_label:
 		_edit_title_label.add_theme_color_override("font_color", Global.current.title)
-
-	# 按钮：圆角背景 + 统一文字颜色（跟主界面/设置界面风格统一）
-	# 如果主题没变，直接跳过（避免重复创建16个StyleBoxFlat）
-	var mode_key = mode
-	if _last_applied_mode == mode_key:
-		print("[DeckEdit] _apply_theme_styles: 跳过（主题未变）")
-		return
-	_last_applied_mode = mode_key
-	
-	var icon_c = Color("#645C50") if is_day else Color("#CBCBE0")
-	var btn_bg = Color(0.15, 0.13, 0.20, 0.85) if not is_day else Color(0.90, 0.85, 0.75, 0.85)
-	var btn_bg_hover = btn_bg.lightened(0.12)
-	var btn_bg_pressed = btn_bg.darkened(0.15)
-	var border_c = Color("#E8A838") if not is_day else Color("#946F38")
-	var btn_names = ["BackBtn", "GalleryBtn", "CreateDeckBtn", "HelpBtn"]
-	for bname in btn_names:
-		var btn = get_node_or_null(bname)
-		if not btn is Button:
-			continue
-		btn.add_theme_color_override("font_color", icon_c)
-		btn.add_theme_color_override("font_hover_color", icon_c.lightened(0.15))
-		btn.add_theme_color_override("font_pressed_color", icon_c.darkened(0.2))
-		for state in ["normal", "hover", "pressed", "focus"]:
-			var sb = StyleBoxFlat.new()
-			sb.bg_color = btn_bg_hover if state == "hover" else (btn_bg_pressed if state == "pressed" else btn_bg)
-			sb.border_width_left = 2; sb.border_width_right = 2
-			sb.border_width_top = 2; sb.border_width_bottom = 2
-			sb.border_color = border_c
-			var r = 12
-			if bname == "HelpBtn":
-				r = 50
-			sb.corner_radius_top_left = r; sb.corner_radius_top_right = r
-			sb.corner_radius_bottom_left = r; sb.corner_radius_bottom_right = r
-			sb.content_margin_left = 16; sb.content_margin_right = 16
-			sb.content_margin_top = 8; sb.content_margin_bottom = 8
-			btn.add_theme_stylebox_override(state, sb)
-	print("[DeckEdit] _apply_theme_styles: %dms" % [Time.get_ticks_msec() - _t0])
 
 # ============================================================
 # 通用提示弹窗

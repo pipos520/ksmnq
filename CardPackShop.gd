@@ -1,4 +1,4 @@
-extends Control
+extends ThemedControl
 ## 卡包商店 —— 开包界面
 var _hj_ads: HJAdsNode = null
 var _pending_pack_id: String = ""
@@ -60,6 +60,7 @@ const THEME_DESC_MAP := {
 }
 
 func _ready():
+	super._ready()
 	# —— 第五幕导览接力 ——
 	call_deferred("_maybe_show_packshop_tour")
 	# ---- 静态节点已在 CardPackShop.tscn 中声明 ----
@@ -68,9 +69,6 @@ func _ready():
 	# 金币显示
 	var gl := get_node_or_null("GoldLabel")
 	if gl is Label: gl.text = "💰 " + str(SaveManager.get_value("player", "gold", 0))
-	# 主题
-	Global.theme_changed.connect(_on_theme_changed)
-	call_deferred("_apply_theme_styles")
 	_init_ads()
 	_build_theme_view()
 
@@ -1031,29 +1029,7 @@ func _show_packshop_tour_dialogue() -> void:
 		return
 	)
 	add_child(popup)
-func _on_theme_changed(_mode):
-	var bg=get_node_or_null("Background"); if bg: Global.apply_bg(bg)
-	var tl=get_node_or_null("Title"); if tl and tl is Label:
-		tl.add_theme_color_override("font_color",Global.current.title)
-		tl.add_theme_color_override("font_shadow_color",Global.current.title_shadow)
-		tl.add_theme_constant_override("shadow_offset_x",Global.current.shadow_offset)
-		tl.add_theme_constant_override("shadow_offset_y",Global.current.shadow_offset)
-
-func _apply_theme_styles():
-	var bg = get_node_or_null("Background")
-	if bg: Global.apply_bg(bg)
-	for n in ["TopBar","BottomBar"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_bg
-	for n in ["TopBarLine","BottomBarLine"]:
-		var r = get_node_or_null(n)
-		if r is ColorRect: r.color = Global.current.topbar_border
-	var title = get_node_or_null("Title")
-	if title is Label:
-		title.add_theme_color_override("font_color", Global.current.title)
-		title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
-		title.add_theme_constant_override("shadow_offset_x", Global.current.shadow_offset)
-		title.add_theme_constant_override("shadow_offset_y", Global.current.shadow_offset)
+func _apply_theme_custom():
 	var back = get_node_or_null("BackBtn")
 	if back is Button:
 		back.add_theme_stylebox_override("normal", _make_btn_style())
