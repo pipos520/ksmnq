@@ -45,13 +45,9 @@ var _is_player_turn: bool = true
 var _phase_name: String = "主要阶段"
 @onready var _turn_info_label: Label3D = $TurnInfoLabel
 
-# ===== 战斗系统 =====
-var _game: Node = null
-var _effect_system: Node = null
-var _trigger_system: Node = null
-var _constraint_manager: Node = null
-var _player_ctrl: Node = null
-var _ai_ctrl: Node = null
+# ===== 战斗系统（全部为RefCounted，不加入场景树） =====
+var _game: BattleGameNew = null
+var _ai_ctrl: BattleAINew = null
 
 # ===== 战斗参数 =====
 var _player_name: String = "卡师"
@@ -119,39 +115,14 @@ func _ready() -> void:
 	_start_battle()
 
 func _setup_battle_system() -> void:
-	var game_script = load("res://battle_new/BattleGameNew.gd")
-	var effect_script = load("res://battle_new/EffectSystemNew.gd")
-	var trigger_script = load("res://battle_new/TriggerSystemNew.gd")
-	var constraint_script = load("res://battle_new/ConstraintManagerNew.gd")
-	var ai_script = load("res://battle_new/BattleAINew.gd")
-	var enemy_ai_script = load("res://battle_new/EnemyAIController.gd")
-	
-	_game = Node.new()
-	_game.set_script(game_script)
-	add_child(_game)
-	
-	_effect_system = Node.new()
-	_effect_system.set_script(effect_script)
-	add_child(_effect_system)
-	
-	_trigger_system = Node.new()
-	_trigger_system.set_script(trigger_script)
-	add_child(_trigger_system)
-	
-	_constraint_manager = Node.new()
-	_constraint_manager.set_script(constraint_script)
-	add_child(_constraint_manager)
-	
-	_player_ctrl = Node.new()
-	_player_ctrl.set_script(enemy_ai_script)
-	add_child(_player_ctrl)
-	
-	_ai_ctrl = Node.new()
-	_ai_ctrl.set_script(ai_script)
-	add_child(_ai_ctrl)
-	
+	# 所有战斗系统都是RefCounted，直接实例化，不加入场景树
+	_game = BattleGameNew.new()
 	_game.init()
-	_game.set_controllers(_player_ctrl, _ai_ctrl)
+	# AI控制器：BattleAINew也是RefCounted
+	_ai_ctrl = BattleAINew.new()
+	_ai_ctrl.init(_game)
+	# 玩家控制器：场景自身实现IBattleControllerNew接口
+	_game.set_controllers(self, _ai_ctrl)
 
 func _setup_ui() -> void:
 	_cam = get_node_or_null("BattleCamera") as Camera3D
@@ -244,6 +215,14 @@ func _connect_signals() -> void:
 		_game.card_effect_activated.connect(_on_card_effect_activated)
 	if _game.has_signal("discard_requested"):
 		_game.discard_requested.connect(_on_discard_requested)
+	if _game.has_signal("deck_search_requested"):
+		_game.deck_search_requested.connect(_on_deck_search_requested)
+	if _game.has_signal("chain_requested"):
+		_game.chain_requested.connect(_on_chain_requested)
+	if _game.has_signal("deck_count_changed"):
+		_game.deck_count_changed.connect(_on_deck_count_changed)
+	if _game.has_signal("banish_changed"):
+		_game.banish_changed.connect(_on_banish_changed)
 
 func _start_battle() -> void:
 	var enemy_data = _load_enemy_data(_enemy_name)
@@ -309,8 +288,8 @@ func _on_energy_changed(is_player: bool, old_val: int, new_val: int, max_val: in
 			_enemy_energy_lbl.text = "⚡ %d/%d" % [new_val, max_val]
 
 func _on_hand_changed(is_player: bool) -> void:
-	if is_player and _game.player_self:
-		_sync_player_hand_from_bm()
+	if is_player and _game and _game.player_self:
+		_sync_player_hand_from_game()
 
 func _on_field_changed(is_player: bool) -> void:
 	if is_player:
@@ -347,6 +326,22 @@ func _on_discard_requested(count: int, callback_id: int, reason: String) -> void
 	_discard_selected = []
 	_show_discard_ui(reason)
 
+func _on_deck_search_requested(cards: Array, max_select: int, callback_id: int) -> void:
+	# TODO: 实现卡组检索UI
+	pass
+
+func _on_chain_requested(callback_id: int, chainable_cards: Array) -> void:
+	# TODO: 实现连锁UI
+	pass
+
+func _on_deck_count_changed(is_player: bool, remaining: int) -> void:
+	# TODO: 更新卡组剩余显示
+	pass
+
+func _on_banish_changed(is_player: bool) -> void:
+	# TODO: 更新除外区显示
+	pass
+
 # ===== UI更新 =====
 
 func _update_turn_info() -> void:
@@ -357,12 +352,16 @@ func _update_phase_button(phase: int, player_idx: int) -> void:
 	var phase_btn = get_node_or_null("UI/PhaseBtn") as Button
 	if phase_btn:
 		if player_idx == 0:
-			if phase == 0:  # MAIN
+			# Phase enum: NONE=0, DRAW=1, READY=2, MAIN=3, BATTLE=4, END=5, DISCARD=6
+			if phase == 3:  # MAIN
 				phase_btn.text = "⚔️ 进入战斗"
-			elif phase == 1:  # BATTLE
+				phase_btn.disabled = false
+			elif phase == 4:  # BATTLE
 				phase_btn.text = "✅ 结束回合"
+				phase_btn.disabled = false
 			else:
 				phase_btn.text = "✅ 结束回合"
+				phase_btn.disabled = false
 		else:
 			phase_btn.text = "敌方回合..."
 			phase_btn.disabled = true
@@ -383,22 +382,26 @@ func _update_all_info_labels() -> void:
 
 func _get_phase_name(phase: int) -> String:
 	match phase:
-		0: return "主要阶段"
-		1: return "战斗阶段"
-		2: return "结束阶段"
+		0: return "无"
+		1: return "抽牌"
+		2: return "准备"
+		3: return "主要阶段"
+		4: return "战斗阶段"
+		5: return "结束阶段"
+		6: return "弃牌阶段"
 		_: return "未知"
 
 # ===== 手牌同步 =====
 
-func _sync_player_hand_from_bm() -> void:
+func _sync_player_hand_from_game() -> void:
 	if _game == null or _game.player_self == null:
 		return
 	var hand = _game.player_self.hand
-	var count = min(hand.size(), HAND_SLOT_MAX)
+	var count = mini(hand.size(), HAND_SLOT_MAX)
 	_ensure_hand_slots(count)
 	for i in range(HAND_SLOT_MAX):
 		if i < count:
-			var card = hand[i]
+			var card = hand.get_card(i)
 			var node = _player_hand_nodes[i]
 			if node:
 				node.queue_free()
@@ -458,20 +461,20 @@ func _refresh_player_field_display() -> void:
 		return
 	var field = _game.player_self.field
 	for i in range(5):
-		var slot = _player_slots[i] if i < _player_slots.size() else null
-		if i < field.size() and field[i]:
-			_show_player_card_on_slot(i, field[i])
+		var card = field.get_slot(i)
+		if card:
+			_show_player_card_on_slot(i, card)
 		else:
 			_clear_player_card_on_slot(i)
 
 func _refresh_enemy_field_display() -> void:
-	if _game == null or _game.player_opponent == null:
+	if _game == null or _game.player_opp == null:
 		return
-	var field = _game.player_opponent.field
+	var field = _game.player_opp.field
 	for i in range(5):
-		var slot = _enemy_slots[i] if i < _enemy_slots.size() else null
-		if i < field.size() and field[i]:
-			_show_enemy_card_on_slot(i, field[i])
+		var card = field.get_slot(i)
+		if card:
+			_show_enemy_card_on_slot(i, card)
 		else:
 			_clear_enemy_card_on_slot(i)
 
@@ -543,9 +546,9 @@ func _switch_camera(target_state: int) -> void:
 func _on_phase_btn_pressed() -> void:
 	if _game == null:
 		return
-	if _game.phase == 0:  # MAIN -> BATTLE
+	if _game.current_phase == BattleGameNew.Phase.MAIN:
 		_game.request_enter_battle()
-	elif _game.phase == 1:  # BATTLE -> END
+	elif _game.current_phase == BattleGameNew.Phase.BATTLE:
 		_game.request_end_phase()
 
 func _on_back() -> void:
@@ -603,12 +606,17 @@ func _on_mouse_click(event: InputEventMouseButton) -> void:
 func _on_hand_clicked(hand_idx: int) -> void:
 	if _game == null:
 		return
-	if _game.phase == 0:  # MAIN phase
+	if _game.current_phase == BattleGameNew.Phase.MAIN:
 		if hand_idx < _player_hand_cards.size() and _player_hand_cards[hand_idx]:
 			var card = _player_hand_cards[hand_idx]
-			var cost = card.get("cost", 0) if card.has_method("get") else 0
+			var cost = card.base_cost if card else 0
 			if _player_energy >= cost:
-				_game.request_play_card(hand_idx, 0)
+				# 找到第一个空槽位
+				var empty_slots = _game.player_self.field.get_empty_slots()
+				if empty_slots.is_empty():
+					_show_info_message("场地已满！")
+					return
+				_game.request_play_card(hand_idx, empty_slots[0])
 				_selected_hand_index = hand_idx
 				_layout_player_hand(true)
 
@@ -890,7 +898,7 @@ func _on_hand_long_pressed(hand_idx: int) -> void:
 		return
 	var hand = _game.player_self.hand
 	if hand_idx >= 0 and hand_idx < hand.size():
-		var card = hand[hand_idx]
+		var card = hand.get_card(hand_idx)
 		var data = _card_to_dict(card)
 		_show_card_detail(data)
 
@@ -899,7 +907,7 @@ func _get_player_hand_card_data(hand_idx: int) -> Dictionary:
 		return {}
 	var hand = _game.player_self.hand
 	if hand_idx >= 0 and hand_idx < hand.size():
-		return _card_to_dict(hand[hand_idx])
+		return _card_to_dict(hand.get_card(hand_idx))
 	return {}
 
 # ===== 墓地面板 =====
@@ -907,7 +915,7 @@ func _get_player_hand_card_data(hand_idx: int) -> Dictionary:
 func _show_grave_panel(is_player: bool) -> void:
 	if _game == null:
 		return
-	var grave = _game.player_self.grave if is_player else _game.player_opponent.grave
+	var grave = _game.player_self.grave if is_player else _game.player_opp.grave
 	var grave_count = grave.size() if grave else 0
 	
 	var overlay = ColorRect.new()
@@ -938,21 +946,21 @@ func _show_grave_panel(is_player: bool) -> void:
 func _on_grave_clicked(is_player: bool) -> void:
 	_show_grave_panel(is_player)
 
-func _card_to_dict(card) -> Dictionary:
+func _card_to_dict(card: BattleCardNew) -> Dictionary:
 	if card == null:
 		return {}
 	return {
-		"id": card.get("id", "") if card.has_method("get") else "",
-		"name": card.get("name", "") if card.has_method("get") else "",
-		"cost": card.get("cost", 0) if card.has_method("get") else 0,
-		"atk": card.get("atk", 0) if card.has_method("get") else 0,
-		"hp": card.get("hp", 0) if card.has_method("get") else 0,
-		"desc": card.get("desc", "") if card.has_method("get") else "",
-		"element": card.get("element", "") if card.has_method("get") else "",
-		"effects": card.get("effects", []) if card.has_method("get") else [],
-		"rarity": card.get("rarity", "普通") if card.has_method("get") else "普通",
-		"fields": card.get("fields", []) if card.has_method("get") else [],
-		"star": card.get("star", 1) if card.has_method("get") else 1
+		"id": card.card_id,
+		"name": card.card_name,
+		"cost": card.base_cost,
+		"atk": card.current_atk if card.is_on_field else card.base_atk,
+		"hp": card.current_hp if card.is_on_field else card.base_hp,
+		"desc": card.desc,
+		"element": card.element,
+		"effects": card.effects,
+		"rarity": card.quality,
+		"fields": card.fields,
+		"star": card.star
 	}
 
 # ===== 战斗奖励 =====
@@ -986,5 +994,44 @@ func _handle_victory_rewards() -> void:
 	overlay.add_child(btn)
 
 func _exit_tree() -> void:
-	if _game:
-		_game.queue_free()
+	# _game是RefCounted，不需要queue_free，由GC自动回收
+	pass
+
+
+# ============================================================
+#  IBattleControllerNew 接口实现（玩家控制器）
+# ============================================================
+
+## 阶段进入通知 — 玩家回合时更新UI高亮
+func on_phase_enter(phase: int) -> void:
+	# 玩家回合：更新UI，等待玩家输入
+	# 不需要自动操作，玩家通过点击/拖拽来驱动游戏
+	pass
+
+## 弃牌请求 — 显示弃牌UI
+func on_discard_requested(count: int, callback_id: int, reason: String) -> void:
+	# 通过信号已处理，此接口为IBattleControllerNew要求
+	pass
+
+## 卡组检索请求
+func on_deck_search_requested(cards: Array, max_select: int, callback_id: int) -> void:
+	# TODO: 实现检索UI
+	pass
+
+## 连锁请求
+func on_chain_requested(callback_id: int, chainable_cards: Array) -> void:
+	# TODO: 实现连锁UI
+	pass
+
+## 获取视角 — 玩家只能看自己的手牌
+func get_view() -> Dictionary:
+	if _game == null or _game.player_self == null:
+		return {}
+	var hand_cards: Array = []
+	for i in range(_game.player_self.hand.size()):
+		var c = _game.player_self.hand.get_card(i)
+		hand_cards.append(_card_to_dict(c))
+	return {
+		"player_hand": hand_cards,
+		"player_deck_count": _game.player_self.deck.size() if _game.player_self.deck else 0,
+	}
