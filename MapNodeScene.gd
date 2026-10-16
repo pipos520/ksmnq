@@ -112,80 +112,7 @@ var _completed_nodes := []  # 已完成节点列表
 # 现改为节点 Dictionary 内缓存完整怪物数据，显示/战斗统一读取
 
 # ===== 素材名称→ID映射（用于指南弹窗长按详情） =====
-const MATERIAL_NAME_TO_ID := {
-	"骨胶": "B01", "鱼鳔胶": "B02", "树汁胶": "B03", "精灵胶": "B04",
-	"炎胶": "B05", "风凝胶": "B06", "冰胶": "B07", "龙涎胶": "B08",
-	"清水": "E01", "生命露水": "E02", "月光露": "E03",
-	"火焰精华": "E04", "熔岩之息": "E05", "风之灵息": "E06",
-	"雷暴精华": "E07", "冰霜精华": "E08", "虚空精华": "E09", "圣光露": "E10",
-	"白麻纤维": "F01", "青藤纤维": "F02", "枯草纤维": "F03",
-	"月光麻": "F04", "火焰苔藓": "F05", "熔岩藤": "F06",
-	"风暴棉": "F07", "雷纹藤": "F08", "冰霜亚麻": "F09",
-	"暗影藤": "F10", "光之丝": "F11", "传说亚麻": "F12",
-	"石灰矿粉": "M01", "辉光矿粉": "M02", "砂金石粉": "M03",
-	"月长石粉": "M04", "熔核矿粉": "M05", "炎晶粉末": "M06",
-	"雷击矿砂": "M07", "风暴晶尘": "M08", "冰晶粉末": "M09",
-	"暗铁砂": "M10", "圣光石粉": "M11", "星辰粉末": "M12",
-	"炭黑": "P01", "朱砂": "P02", "赭石": "P03",
-	"石青": "P04", "硫磺黄": "P05", "云母粉": "P06",
-	"雷晶粉": "P07", "冰蓝": "P08", "暗晶粉": "P09", "金粉": "P10",
-	"普通松脂": "R01", "琥珀树脂": "R02",
-	"古树树脂": "R03", "熔岩树脂": "R04", "龙血树脂": "R05",
-	"风泪树脂": "R06", "冰霜琥珀": "R07", "暗影树脂": "R08",
-}
 
-# ===== 辅材名称→ID映射 =====
-const AUX_NAME_TO_ID := {
-	"新生嫩芽": "AU16", "木质纤维": "AU17", "鹿角碎片": "AU18",
-	"雾绒": "AU19", "孢子囊": "AU20", "蘑菇伞盖": "AU21",
-	"草蜥蜴鳞片": "AU22", "蜥蜴尾": "AU23", "螳螂刀臂": "AU24",
-	"螳螂翅膜": "AU25", "蛇鳞片": "AU26", "毒液囊": "AU27",
-	"岩石核心": "AU28", "矿脉石鳞": "AU29", "熔岩核心": "AU30",
-	"火鳞粉": "AU31", "暗晶尾刺": "AU32", "暗晶碎片": "AU33",
-	"纯净水心": "AU34", "水纹护符": "AU35", "风蝶翅粉": "AU36",
-	"轻羽": "AU37", "棱镜碎片": "AU38", "圣光余晖": "AU39",
-	"巨人之心": "AU40", "山岩石板": "AU41", "暗影翎羽": "AU42",
-	"夜喙碎片": "AU43", "风暴羽": "AU44", "雷电之眼": "AU45",
-	"蛛丝囊": "AU46", "毒牙": "AU47", "熔岩龟甲": "AU48",
-	"火核": "AU49", "幻光翅粉": "AU50", "圣光蝶翼": "AU51",
-	"迷雾结晶": "AU52", "守护之核": "AU53",
-}
-
-# ===== 卡兽名称→数据 =====
-const ENEMY_NAME_TO_DATA := {
-	"树苗精": {"id": "MF_FOREST_M1", "level": 2, "hp": 20, "element": "地", "desc": "迷雾森林中最常见的低阶精灵，由古木精华凝聚而成。", "aux_drops": ["AU16", "AU17"]},
-	"雾角鹿": {"id": "MF_FOREST_M2", "level": 3, "hp": 25, "element": "风", "desc": "沐浴在迷雾中生长的灵鹿，双角能凝聚雾气形成幻影。", "aux_drops": ["AU18", "AU19"]},
-	"蘑菇人": {"id": "MF_FOREST_M3", "level": 4, "hp": 30, "element": "地", "desc": "寄宿在古树根部的蘑菇精灵，擅长用毒孢子折磨对手。", "aux_drops": ["AU20", "AU21"]},
-	"草蜥蜴": {"id": "MF_GRASS_M1", "level": 5, "hp": 30, "element": "火", "desc": "草丛中潜伏的火焰蜥蜴。", "aux_drops": ["AU22", "AU23"]},
-	"螳螂刀客": {"id": "MF_GRASS_M2", "level": 6, "hp": 35, "element": "风", "desc": "草丛中的顶级猎手，双臂如镰刀般锋利。", "aux_drops": ["AU24", "AU25"]},
-	"青鳞蛇": {"id": "MF_GRASS_M3", "level": 7, "hp": 40, "element": "水", "desc": "草丛深处的剧毒之蛇。", "aux_drops": ["AU26", "AU27"]},
-	"岩石傀儡": {"id": "MF_MINE_M1", "level": 8, "hp": 50, "element": "地", "desc": "矿区深处的岩石守卫。", "aux_drops": ["AU28", "AU29"]},
-	"熔岩蠕虫": {"id": "MF_MINE_M2", "level": 9, "hp": 50, "element": "火", "desc": "盘踞在矿区岩浆裂隙中的巨型蠕虫。", "aux_drops": ["AU30", "AU31"]},
-	"暗晶蝎": {"id": "MF_MINE_M3", "level": 10, "hp": 55, "element": "暗", "desc": "矿区深处吸收暗晶能量变异而成的巨蝎。", "aux_drops": ["AU32", "AU33"]},
-	"水元素": {"id": "MF_VALLEY_M1", "level": 11, "hp": 55, "element": "水", "desc": "溪谷深处的纯净水元素。", "aux_drops": ["AU34", "AU35"]},
-	"风灵蝶": {"id": "MF_VALLEY_M2", "level": 12, "hp": 55, "element": "风", "desc": "在溪谷上空翩翩起舞的精灵蝴蝶。", "aux_drops": ["AU36", "AU37"]},
-	"光棱镜": {"id": "MF_VALLEY_M3", "level": 13, "hp": 65, "element": "光", "desc": "溪谷深处的水晶棱镜。", "aux_drops": ["AU38", "AU39"]},
-	"岩石巨人": {"id": "MF_MOUNTAIN_M1", "level": 14, "hp": 65, "element": "地", "desc": "山道上的巨型岩石构造体。", "aux_drops": ["AU40", "AU41"]},
-	"暗影鸦": {"id": "MF_MOUNTAIN_M2", "level": 15, "hp": 60, "element": "暗", "desc": "盘旋在山道暗影中的漆黑巨鸦。", "aux_drops": ["AU42", "AU43"]},
-	"风暴鹰": {"id": "MF_MOUNTAIN_M3", "level": 16, "hp": 70, "element": "风", "desc": "山道之巅的风暴之王。", "aux_drops": ["AU44", "AU45"]},
-	"暗穴蜘蛛": {"id": "MF_CAVE_M1", "level": 17, "hp": 70, "element": "暗", "desc": "暗穴深处编织巨网的巨型蜘蛛。", "aux_drops": ["AU46", "AU47"]},
-	"熔岩龟": {"id": "MF_CAVE_M2", "level": 18, "hp": 75, "element": "火", "desc": "暗穴地底岩浆池中沉睡的远古巨龟。", "aux_drops": ["AU48", "AU49"]},
-	"幻光蝶": {"id": "MF_CAVE_M3", "level": 19, "hp": 80, "element": "光", "desc": "暗穴中最神秘的存在，幻光蝶的翅膀散发着柔和的光芒。", "aux_drops": ["AU50", "AU51"]},
-	"古木": {"id": "MF_BOSS_1", "level": 20, "hp": 100, "element": "地", "desc": "迷雾森林的远古守护者。", "aux_drops": ["AU52", "AU53"]},
-	"烈焰": {"id": "MF_BOSS_2", "level": 20, "hp": 100, "element": "火", "desc": "迷雾森林的狂暴守护者。", "aux_drops": ["AU52", "AU53"]},
-	"暗影": {"id": "MF_BOSS_3", "level": 20, "hp": 100, "element": "暗", "desc": "迷雾森林的诡秘守护者。", "aux_drops": ["AU52", "AU53"]},
-	"岩浆": {"id": "FC_BOSS_1", "level": 30, "hp": 150, "element": "火", "desc": "火焰洞穴的BOSS。", "aux_drops": []},
-	"熔核": {"id": "FC_BOSS_2", "level": 30, "hp": 150, "element": "火", "desc": "火焰洞穴的BOSS。", "aux_drops": []},
-	"炎魔": {"id": "FC_BOSS_3", "level": 30, "hp": 150, "element": "火", "desc": "火焰洞穴的BOSS。", "aux_drops": []},
-	"雷电": {"id": "ST_BOSS_1", "level": 40, "hp": 200, "element": "风", "desc": "风暴高塔的BOSS。", "aux_drops": []},
-	"风暴": {"id": "ST_BOSS_2", "level": 40, "hp": 200, "element": "风", "desc": "风暴高塔的BOSS。", "aux_drops": []},
-	"云龙": {"id": "ST_BOSS_3", "level": 40, "hp": 200, "element": "风", "desc": "风暴高塔的BOSS。", "aux_drops": []},
-	"沼泽": {"id": "SS_BOSS_2", "level": 50, "hp": 250, "element": "暗", "desc": "暗影沼泽的BOSS。", "aux_drops": []},
-	"毒雾": {"id": "SS_BOSS_3", "level": 50, "hp": 250, "element": "暗", "desc": "暗影沼泽的BOSS。", "aux_drops": []},
-	"遗迹": {"id": "LR_BOSS_1", "level": 60, "hp": 300, "element": "光", "desc": "传说遗迹的BOSS。", "aux_drops": []},
-	"守护": {"id": "LR_BOSS_2", "level": 60, "hp": 300, "element": "光", "desc": "传说遗迹的BOSS。", "aux_drops": []},
-	"星空": {"id": "LR_BOSS_3", "level": 60, "hp": 300, "element": "光", "desc": "传说遗迹的BOSS。", "aux_drops": []},
-}
 
 # ===== 采集弹窗长按 =====
 var _gather_press_timer: float = 0.0
@@ -1741,15 +1668,15 @@ func _find_guide_label_recursive(node: Node, pos: Vector2) -> Label:
 		if rect.has_point(pos):
 			var text = node.text.strip_edges()
 			if text.begins_with("•") or text.begins_with("-"):
-				for mat_name in MATERIAL_NAME_TO_ID.keys():
+			for mat_name in Global.get_material_name_list():
 					if mat_name in text:
 						node.set_meta("detail_type", "material")
 						return node
-				for aux_name in AUX_NAME_TO_ID.keys():
+				for aux_name in Global.get_aux_name_list():
 					if aux_name in text:
 						node.set_meta("detail_type", "aux")
 						return node
-				for enemy_name in ENEMY_NAME_TO_DATA.keys():
+				for enemy_name in Global.get_enemy_name_list():
 					if enemy_name in text:
 						node.set_meta("detail_type", "enemy")
 						return node
@@ -1776,14 +1703,14 @@ func _show_guide_material_detail(label: Label) -> void:
 func _show_guide_mat_detail_popup(label: Label, text: String) -> void:
 	# 提取素材名称
 	var mat_name := ""
-	for name in MATERIAL_NAME_TO_ID.keys():
+	for name in Global.get_material_name_list():
 		if name in text:
 			mat_name = name
 			break
 	if mat_name == "":
 		return
 	
-	var material_id = MATERIAL_NAME_TO_ID.get(mat_name, "")
+	var material_id = Global.get_material_id_by_name(mat_name)
 	if material_id == "":
 		return
 	
@@ -1850,14 +1777,14 @@ func _show_guide_mat_detail_popup(label: Label, text: String) -> void:
 
 func _show_guide_aux_detail_popup(label: Label, text: String) -> void:
 	var aux_name := ""
-	for name in AUX_NAME_TO_ID.keys():
+	for name in Global.get_aux_name_list():
 		if name in text:
 			aux_name = name
 			break
 	if aux_name == "":
 		return
 	
-	var aux_id = AUX_NAME_TO_ID.get(aux_name, "")
+	var aux_id = Global.get_aux_id_by_name(aux_name)
 	if aux_id == "":
 		return
 	
@@ -1908,33 +1835,18 @@ func _show_guide_aux_detail_popup(label: Label, text: String) -> void:
 
 func _show_guide_enemy_detail_popup(label: Label, text: String) -> void:
 	var enemy_name := ""
-	for name in ENEMY_NAME_TO_DATA.keys():
+	for name in Global.get_enemy_plain_name_list():
 		if name in text:
 			enemy_name = name
 			break
 	if enemy_name == "":
 		return
 	
-	var enemy_data = ENEMY_NAME_TO_DATA.get(enemy_name, {})
+	var enemy_data = Global.get_enemy_by_plain_name(enemy_name)
 	if enemy_data.is_empty():
 		return
 	
-	# 带emoji的全名列表
-	var full_names := {
-		"树苗精": "🌱 树苗精", "雾角鹿": "🦌 雾角鹿", "蘑菇人": "🍄 蘑菇人",
-		"草蜥蜴": "🦎 草蜥蜴", "螳螂刀客": "🦗 螳螂刀客", "青鳞蛇": "🐍 青鳞蛇",
-		"岩石傀儡": "🪨 岩石傀儡", "熔岩蠕虫": "🔥 熔岩蠕虫", "暗晶蝎": "🦂 暗晶蝎",
-		"水元素": "💧 水元素", "风灵蝶": "🦋 风灵蝶", "光棱镜": "🔮 光棱镜",
-		"岩石巨人": "🗿 岩石巨人", "暗影鸦": "🐦‍⬛ 暗影鸦", "风暴鹰": "🦅 风暴鹰",
-		"暗穴蜘蛛": "🕷️ 暗穴蜘蛛", "熔岩龟": "🐢 熔岩龟", "幻光蝶": "✨ 幻光蝶",
-		"古木": "🌳 古木", "烈焰": "🔥 烈焰", "暗影": "🌑 暗影",
-		"岩浆": "🌋 岩浆", "熔核": "💥 熔核", "炎魔": "👿 炎魔",
-		"雷电": "⚡ 雷电", "风暴": "🌪️ 风暴", "云龙": "🐉 云龙",
-		"沼泽": "🟤 沼泽", "毒雾": "☠️ 毒雾",
-		"遗迹": "🏛️ 遗迹", "守护": "🛡️ 守护", "星空": "🌟 星空",
-	}
-	
-	var display_name = full_names.get(enemy_name, enemy_name)
+	var display_name = enemy_data.get("name", enemy_name)
 	var level = enemy_data.get("level", 0)
 	var hp = enemy_data.get("hp", 0)
 	var element = enemy_data.get("element", "无")
@@ -1953,12 +1865,18 @@ func _show_guide_enemy_detail_popup(label: Label, text: String) -> void:
 	
 	# 辅材掉落名称
 	var aux_str := ""
-	for aid in aux_drops:
-		var a_data := Global.get_aux_by_id(aid)
-		if not a_data.is_empty():
-			if aux_str != "":
-				aux_str += "、"
-			aux_str += a_data.get("name", aid)
+	for drop in aux_drops:
+		var aid = ""
+		if drop is Dictionary:
+			aid = drop.get("id", "")
+		elif drop is String:
+			aid = drop
+		if aid != "":
+			var a_data := Global.get_aux_by_id(aid)
+			if not a_data.is_empty():
+				if aux_str != "":
+					aux_str += "、"
+				aux_str += a_data.get("name", aid)
 	if aux_str == "":
 		aux_str = "无"
 	

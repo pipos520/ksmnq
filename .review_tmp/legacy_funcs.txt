@@ -1,0 +1,108 @@
+91:func _ready():
+162:func _add_grid_bg():
+171:func _add_info_bar(top: float, bottom: float, name_str: String, hp: int, max_hp: int, energy: int, max_energy: int, is_enemy: bool):
+235:func _add_grave_deck(top: float, bottom: float, is_enemy: bool):
+314:func _add_field_slots(top: float, bottom: float, slot_color: Color, is_enemy: bool = false) -> Array:
+469:func _add_middle_divider(top: float, bottom: float):
+520:func _add_hand_area(top: float, bottom: float) -> Array:
+681:func _add_enemy_hand_area(top: float, bottom: float) -> Array:
+772:func _add_bottom_bar(top: float, bottom: float):
+841:func _init_battle() -> void:
+915:func _refresh_all_ui() -> void:
+946:func _refresh_hand_ui() -> void:
+1068:func _refresh_field_ui() -> void:
+1339:func _update_phase_ui() -> void:
+1369:func _on_phase_changed(phase: int, player_index: int) -> void:
+1376:func _on_discard_requested(count: int, callback_id: int, reason: String) -> void:
+1387:func _process_next_discard_request() -> void:
+1397:func _on_discard_animation_requested(callback_id: int, is_player_side: bool, discard_indices: Array) -> void:
+1400:func _on_turn_changed(turn_count: int) -> void:
+1404:func _on_battle_state_changed(state: int) -> void:
+1436:func _handle_victory_rewards() -> void:
+1561:func _show_battle_reward_popup(gained_aux: Array) -> void:
+1722:func _on_reward_confirm(overlay: ColorRect) -> void:
+1727:func _on_reward_overlay_clicked(event: InputEvent, overlay: ColorRect) -> void:
+1732:func _show_battle_exit_btn() -> void:
+1792:func _on_battle_exit_btn() -> void:
+1886:func _go_back_to_map() -> void:
+1901:func _on_action_result(action_type: String, success: bool, data: Dictionary) -> void:
+1908:func _on_effect_triggered(action_type: String, value: int, is_player_side: bool, source_slot: int, desc: String) -> void:
+1930:func _on_deck_search_requested(cards: Array, max_select: int, callback_id: int) -> void:
+1944:func _on_chain_response_requested(callback_id: int) -> void:
+1949:func _on_chain_built(chain_count: int) -> void:
+1954:func _on_chain_resolved(link_id: int) -> void:
+1958:func _on_card_effect_activated(card_name: String, effect_desc: String, action_type: String, target_id: String, value: int, target_card_name: String = "", source_slot: int = -1, is_player_side: bool = true, target_slot: int = -1, target_is_player: bool = true) -> void:
+2115:func _on_effect_line_fromto(from_slot: int, from_is_player: bool, to_slot: int, to_is_player: bool, action_type: String) -> void:
+2142:func _on_element_boost_triggered(boost_type: String, atk_elem: String, def_elem: String, from_value: int, to_value: int, is_player_side: bool, source_slot: int) -> void:
+2197:func _create_effect_line(from_node: Node, to_node: Node, action_type: String = "") -> Line2D:
+2245:func _play_hit_animation(btn: Button) -> void:
+2269:func _play_buff_animation(btn: Button) -> void:
+2284:func _play_destroy_animation(btn: Button, delay: float = 0.5) -> void:
+2322:func _show_float_number(btn: Button, value: int, color: Color) -> void:
+2358:func _show_chain_prompt() -> void:
+2422:func _on_chain_yes() -> void:
+2450:func _show_chain_card_selection(chainable_cards: Array) -> void:
+2510:func _on_chain_no() -> void:
+2515:func _hide_chain_prompt() -> void:
+2521:func _show_chain_result(text: String) -> void:
+2535:func _show_float_text_center(action_type: String, value: int, desc: String) -> void:
+2562:func _flash_slot(slot_btn: Button) -> void:
+2573:func _show_float_text(slot_btn: Button, action_type: String, value: int, desc: String) -> void:
+2622:func _on_player_hand_changed() -> void:
+2625:func _on_player_field_changed() -> void:
+2635:func _on_player_energy_changed(old_val: int, new_val: int) -> void:
+2639:func _on_player_hp_changed(old_hp: int, new_hp: int) -> void:
+2643:func _on_player_deck_changed() -> void:
+2647:func _on_player_grave_changed() -> void:
+2652:func _on_enemy_hand_changed() -> void:
+2664:func _on_enemy_field_changed() -> void:
+2676:func _on_enemy_energy_changed(old_val: int, new_val: int) -> void:
+2680:func _on_enemy_hp_changed(old_hp: int, new_hp: int) -> void:
+2684:func _on_enemy_deck_changed() -> void:
+2688:func _on_enemy_grave_changed() -> void:
+2693:func _on_player_banish_changed() -> void:
+2697:func _on_enemy_banish_changed() -> void:
+2705:func _on_player_grave_clicked() -> void:
+2709:func _on_enemy_grave_clicked() -> void:
+2713:func _on_player_banish_clicked() -> void:
+2717:func _on_enemy_banish_clicked() -> void:
+2723:func _show_grave_popup(player_ref: BattlePlayer, is_banish: bool, title_text: String) -> void:
+2959:func _update_all_info():
+2963:func _update_label(name: String, text: String):
+2975:const LONG_PRESS_DURATION: float = 0.4  # 400ms
+2978:func _on_hand_card_drag(event: InputEvent, hand_index: int) -> void:
+3022:func _on_player_slot_gui_input(event: InputEvent, slot: int) -> void:
+3051:func _on_enemy_slot_gui_input(event: InputEvent, slot: int) -> void:
+3063:func _process(delta: float) -> void:
+3083:func _show_card_detail() -> void:
+3135:func _on_summon_from_popup(hand_idx: int, detail_popup) -> void:
+3148:func _on_summon_slot_selected(slot_index: int, hand_idx: int) -> void:
+3168:func _on_attack_from_popup(slot_idx: int, detail_popup) -> void:
+3189:func _on_attack_slot_selected(target_slot: int, attacker_slot: int) -> void:
+3192:func _reset_press() -> void:
+3202:func _toggle_discard_selection(hand_index: int) -> void:
+3221:func _show_discard_ui() -> void:
+3298:func _refresh_discard_hand_ui() -> void:
+3338:func _hide_discard_ui() -> void:
+3356:func _resume_after_animation() -> void:
+3362:func _on_confirm_discard() -> void:
+3375:func _play_discard_animation(callback_id: int, is_player_side: bool, discard_indices: Array) -> void:
+3462:func _refresh_grave_labels() -> void:
+3471:func _on_end_turn_btn() -> void:
+3494:func _on_player_slot_clicked(slot: int) -> void:
+3508:func _on_enemy_slot_clicked(slot: int) -> void:
+3526:func _execute_attack(attacker_slot: int, target_slot: int) -> void:
+3530:func _execute_attack_hero(attacker_slot: int) -> void:
+3535:func _debug_print_layout():
+3593:func _print_children_recursive(node: Node, indent: String):
+3607:func _print_all_labels(node: Node, indent: String):
+3636:func _input(event: InputEvent) -> void:
+3652:func _input_handle_drag_summon(event: InputEvent) -> void:
+3776:func _input_handle_drag_attack(event: InputEvent) -> void:
+3945:func _cleanup_drag() -> void:
+3983:func _cleanup_drag_attack() -> void:
+4022:func _play_summon_animation(hand_idx: int, slot_idx: int) -> void:
+4075:func _play_attack_animation(attacker_slot: int, target_slot: int, is_hero: bool) -> void:
+4171:func _update_enemy_ai(delta: float) -> void:
+4215:func _play_enemy_summon_animation(slot_idx: int) -> void:
+4263:func _play_enemy_attack_animation(attacker_slot: int, target_slot: int, is_hero: bool) -> void:

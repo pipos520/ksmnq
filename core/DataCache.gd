@@ -13,6 +13,8 @@ var server_card_packs_loaded: bool = false
 
 # ===== 敌人数据 =====
 var _enemy_data_cache: Dictionary = {}
+var _enemy_name_map: Dictionary = {}
+var _enemy_plain_name_map: Dictionary = {}
 
 func load_enemy_data() -> Dictionary:
 	if _enemy_data_cache.size() > 0:
@@ -29,12 +31,69 @@ func load_enemy_data() -> Dictionary:
 		print("[DataCache] 敌人JSON解析错误：", json.get_error_message())
 		return {}
 	_enemy_data_cache = json.get_data()
-	print("[DataCache] 敌人数据加载完成")
+	_enemy_name_map.clear()
+	_enemy_plain_name_map.clear()
+	for map_id in _enemy_data_cache.get("maps", {}).keys():
+		var map_data = _enemy_data_cache["maps"][map_id]
+		for terrain_id in map_data.get("terrains", {}).keys():
+			var terrain_data = map_data["terrains"][terrain_id]
+			for monster in terrain_data.get("monsters", []):
+				var mname = monster.get("name", "")
+				if mname != "":
+					_enemy_name_map[mname] = monster.duplicate(true)
+					var plain = _strip_emoji(mname)
+					if plain != "":
+						_enemy_plain_name_map[plain] = monster.duplicate(true)
+			var boss = terrain_data.get("boss", {})
+			if boss is Dictionary and boss.size() > 0:
+				var bname = boss.get("name", "")
+				if bname != "":
+					_enemy_name_map[bname] = boss.duplicate(true)
+					var plain = _strip_emoji(bname)
+					if plain != "":
+						_enemy_plain_name_map[plain] = boss.duplicate(true)
+			elif boss is Array:
+				for b in boss:
+					var bname = b.get("name", "")
+					if bname != "":
+						_enemy_name_map[bname] = b.duplicate(true)
+						var plain = _strip_emoji(bname)
+						if plain != "":
+							_enemy_plain_name_map[plain] = b.duplicate(true)
+	print("[DataCache] 敌人数据加载完成，共 ", _enemy_name_map.size(), " 个敌人")
 	return _enemy_data_cache
 
 func get_enemy_card_template(template_id: String) -> Dictionary:
 	var data = load_enemy_data()
 	return data.get("card_templates", {}).get(template_id, {})
+
+func get_enemy_by_name(name: String) -> Dictionary:
+	load_enemy_data()
+	return _enemy_name_map.get(name, {})
+
+func get_enemy_name_list() -> Array:
+	load_enemy_data()
+	return _enemy_name_map.keys()
+
+func get_enemy_by_plain_name(name: String) -> Dictionary:
+	load_enemy_data()
+	return _enemy_plain_name_map.get(name, {})
+
+func get_enemy_plain_name_list() -> Array:
+	load_enemy_data()
+	return _enemy_plain_name_map.keys()
+
+func _strip_emoji(name: String) -> String:
+	var result = ""
+	for i in range(name.length()):
+		var c = name.unicode_at(i)
+		if c >= 0x20 and c <= 0x7F:
+			result += name[i]
+		elif c >= 0x4E00 and c <= 0x9FFF:
+			result += name[i]
+		elif c >= 0x3400 and c <= 0x4DBF:
+			result += name[i]
+	return result.strip_edges()
 
 func get_map_monsters(map_id: String, terrain: String) -> Array:
 	var data = load_enemy_data()
@@ -62,8 +121,20 @@ var material_data: Dictionary = {}
 var formula_data: Dictionary = {}
 var _material_map: Dictionary = {}
 
+var _material_name_map: Dictionary = {}
+
 func get_material_by_id(id: String) -> Dictionary:
 	return _material_map.get(id, {})
+
+func get_material_by_name(name: String) -> Dictionary:
+	var mid = _material_name_map.get(name, "")
+	return _material_map.get(mid, {})
+
+func get_material_id_by_name(name: String) -> String:
+	return _material_name_map.get(name, "")
+
+func get_material_name_list() -> Array:
+	return _material_name_map.keys()
 
 func get_fiber_list() -> Array:
 	return material_data.get("fiber", [])
@@ -120,22 +191,37 @@ func _load_materials() -> void:
 	material_data = data.get("materials", {})
 	formula_data = data.get("formulas", {})
 	_material_map.clear()
+	_material_name_map.clear()
 	for category in ["fiber", "mineral", "resin", "extract", "pigment", "binder"]:
 		for mat in material_data.get(category, []):
 			var mid = mat.get("id", "")
 			if mid != "":
 				_material_map[mid] = mat
+				var mname = mat.get("name", "")
+				if mname != "":
+					_material_name_map[mname] = mid
 	print("[DataCache] 素材数据加载完成")
 
 # ===== 辅材数据 =====
 var _aux_item_data: Array = []
 var _aux_item_map: Dictionary = {}
+var _aux_name_map: Dictionary = {}
 
 func get_aux_list() -> Array:
 	return _aux_item_data.duplicate()
 
 func get_aux_by_id(id: String) -> Dictionary:
 	return _aux_item_map.get(id, {})
+
+func get_aux_by_name(name: String) -> Dictionary:
+	var aid = _aux_name_map.get(name, "")
+	return _aux_item_map.get(aid, {})
+
+func get_aux_id_by_name(name: String) -> String:
+	return _aux_name_map.get(name, "")
+
+func get_aux_name_list() -> Array:
+	return _aux_name_map.keys()
 
 func _load_aux_data() -> void:
 	var file = FileAccess.open("res://Data/aux_items.json", FileAccess.READ)
@@ -152,10 +238,14 @@ func _load_aux_data() -> void:
 	var data = json.get_data()
 	_aux_item_data = data.get("aux_items", [])
 	_aux_item_map.clear()
+	_aux_name_map.clear()
 	for item in _aux_item_data:
 		var aid = item.get("id", "")
 		if aid != "":
 			_aux_item_map[aid] = item
+			var aname = item.get("name", "")
+			if aname != "":
+				_aux_name_map[aname] = aid
 	print("[DataCache] 辅材数据加载完成：共 ", _aux_item_data.size(), " 个辅材")
 
 # ===== 服务器数据（卡组池 + 卡包） =====

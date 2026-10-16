@@ -273,6 +273,18 @@ func load_enemy_data() -> Dictionary:
 func get_enemy_card_template(template_id: String) -> Dictionary:
 	return DataCache.get_enemy_card_template(template_id)
 
+func get_enemy_by_name(name: String) -> Dictionary:
+	return DataCache.get_enemy_by_name(name)
+
+func get_enemy_by_plain_name(name: String) -> Dictionary:
+	return DataCache.get_enemy_by_plain_name(name)
+
+func get_enemy_plain_name_list() -> Array:
+	return DataCache.get_enemy_plain_name_list()
+
+func get_enemy_name_list() -> Array:
+	return DataCache.get_enemy_name_list()
+
 func get_map_monsters(map_id: String, terrain: String) -> Array:
 	return DataCache.get_map_monsters(map_id, terrain)
 
@@ -281,6 +293,15 @@ func get_map_boss(map_id: String) -> Dictionary:
 
 func get_material_by_id(id: String) -> Dictionary:
 	return DataCache.get_material_by_id(id)
+
+func get_material_by_name(name: String) -> Dictionary:
+	return DataCache.get_material_by_name(name)
+
+func get_material_id_by_name(name: String) -> String:
+	return DataCache.get_material_id_by_name(name)
+
+func get_material_name_list() -> Array:
+	return DataCache.get_material_name_list()
 
 func get_fiber_list() -> Array:
 	return DataCache.get_fiber_list()
@@ -311,6 +332,15 @@ func get_aux_list() -> Array:
 
 func get_aux_by_id(id: String) -> Dictionary:
 	return DataCache.get_aux_by_id(id)
+
+func get_aux_by_name(name: String) -> Dictionary:
+	return DataCache.get_aux_by_name(name)
+
+func get_aux_id_by_name(name: String) -> String:
+	return DataCache.get_aux_id_by_name(name)
+
+func get_aux_name_list() -> Array:
+	return DataCache.get_aux_name_list()
 
 func get_all_decks() -> Dictionary:
 	return DataCache.get_all_decks()
