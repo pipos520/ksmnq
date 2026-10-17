@@ -84,8 +84,8 @@ var use_legacy_battle: bool = false
 
 func get_battle_scene_path() -> String:
 	if use_legacy_battle:
-		return "res://BattleSceneLegacy.tscn"
-	return "res://BattleScene3D.tscn"
+		return "res://BattleScene.tscn"
+	return "res://BattleSceneFull.tscn"
 
 
 func _ready() -> void:
