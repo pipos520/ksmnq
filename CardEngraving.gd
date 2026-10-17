@@ -2452,8 +2452,8 @@ func _build_make_button(parent: VBoxContainer):
 # ============================
 #  品质随机（封卡时根据卡基区间+称号+卡墨确定最终品质）
 # ============================
-var QUALITY_NAMES := Global.QUALITY_ORDER
-var QUALITY_MULTS := Global.QUALITY_MULTS
+var QUALITY_NAMES = Global.QUALITY_ORDER
+var QUALITY_MULTS = Global.QUALITY_MULTS
 
 func _calc_energy_cost() -> int:
 	# 基础能量 = 按攻防计算（可为0）
