@@ -79,18 +79,29 @@ func _connect_signals():
 func _on_phase_changed(phase: int, player_index: int) -> void:
 	current_phase = phase
 	current_player_index = player_index
-	if phase_changed.is_valid():
-		phase_changed.emit(Phase.get_phase_name(phase), player_index)
+	if not phase_changed.get_connections().is_empty():
+		var phase_name = "NONE"
+		match phase:
+			Phase.MAIN: phase_name = "MAIN"
+			Phase.BATTLE: phase_name = "BATTLE"
+			Phase.END: phase_name = "END"
+		phase_changed.emit(phase_name, player_index)
 
 func _on_turn_changed(turn: int) -> void:
 	turn_count = turn
-	if turn_changed.is_valid():
+	if not turn_changed.get_connections().is_empty():
 		turn_changed.emit(turn)
 
 func _on_battle_state_changed(state: int) -> void:
 	battle_state = state
-	if battle_state_changed.is_valid():
-		battle_state_changed.emit(State.get_state_name(state))
+	if not battle_state_changed.get_connections().is_empty():
+		var state_name = "NONE"
+		match state:
+			State.PLAYING: state_name = "PLAYING"
+			State.PAUSED: state_name = "PAUSED"
+			State.WON: state_name = "WON"
+			State.LOST: state_name = "LOST"
+		battle_state_changed.emit(state_name)
 
 func start_battle(deck_id: String, enemy_name: String = "暗影法师", auto_start: bool = true) -> void:
 	if _game == null:

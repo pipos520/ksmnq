@@ -3,7 +3,7 @@ class_name SlotSelectPopup
 
 ## 场景位选择弹窗 —— 展示场地卡槽（带卡牌预览），选择一个空位或目标
 
-var _battle_manager: BattleManager = null
+var _battle_manager = null
 var _is_enemy: bool = false       # true=显示敌方场地, false=显示己方场地
 var _filter_empty: bool = false    # true=只显示空格（召唤用）, false=显示有卡牌的（攻击用）
 var _on_selected: Callable = Callable()
@@ -209,7 +209,7 @@ func _add_card_labels(btn: Button) -> void:
 
 
 ## 显示选择弹窗
-func show_select(battle_manager: BattleManager, is_enemy: bool, filter_empty: bool, title: String, on_selected: Callable, on_cancel: Callable = Callable()) -> void:
+func show_select(battle_manager, is_enemy: bool, filter_empty: bool, title: String, on_selected: Callable, on_cancel: Callable = Callable()) -> void:
 	_battle_manager = battle_manager
 	_is_enemy = is_enemy
 	_filter_empty = filter_empty
@@ -255,7 +255,7 @@ func _refresh_slots() -> void:
 		
 		if i < max_slots and player.field[i] != null:
 			# 有卡牌
-			var card = player.field[i] as BattleCard
+			var card = player.field[i]
 			if card == null or not card.is_alive():
 				# 空卡槽或死亡
 				_set_slot_empty(btn, elem_lbl, cost_lbl, center_lbl, atk_lbl, hp_lbl, empty_bg if not _is_enemy else enemy_bg)

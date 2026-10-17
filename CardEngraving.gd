@@ -2452,8 +2452,8 @@ func _build_make_button(parent: VBoxContainer):
 # ============================
 #  品质随机（封卡时根据卡基区间+称号+卡墨确定最终品质）
 # ============================
-const QUALITY_NAMES := Global.QUALITY_ORDER
-const QUALITY_MULTS := Global.QUALITY_MULTS
+var QUALITY_NAMES := Global.QUALITY_ORDER
+var QUALITY_MULTS := Global.QUALITY_MULTS
 
 func _calc_energy_cost() -> int:
 	# 基础能量 = 按攻防计算（可为0）
@@ -3658,7 +3658,7 @@ func _on_popup_clicked(event: InputEvent, overlay: ColorRect):
 # ============================
 #  主题切换
 # ============================
-func _on_theme_changed(_mode):
+func _on_theme_changed(_mode = null):
 	super._on_theme_changed(_mode)
 	for child in get_children():
 		if child is Button:

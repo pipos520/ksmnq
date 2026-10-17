@@ -707,7 +707,7 @@ func _do_buy(mid: String, price: int, qty: int):
 	_show_popup("✅ 成功购买 " + str(qty) + " 个 " + _buy_mat_name + "！", Color("#4CAF50"))
 
 
-func _on_theme_changed(_mode):
+func _on_theme_changed(_mode = null):
 	super._on_theme_changed(_mode)
 	_update_tab_style()
 	for child in get_children():

@@ -120,11 +120,14 @@ func get_map_boss(map_id: String) -> Dictionary:
 var material_data: Dictionary = {}
 var formula_data: Dictionary = {}
 var _material_map: Dictionary = {}
-
 var _material_name_map: Dictionary = {}
+var _material_category_map: Dictionary = {}
 
 func get_material_by_id(id: String) -> Dictionary:
 	return _material_map.get(id, {})
+
+func get_material_category(id: String) -> String:
+	return _material_category_map.get(id, "未知")
 
 func get_material_by_name(name: String) -> Dictionary:
 	var mid = _material_name_map.get(name, "")
@@ -193,10 +196,12 @@ func _load_materials() -> void:
 	_material_map.clear()
 	_material_name_map.clear()
 	for category in ["fiber", "mineral", "resin", "extract", "pigment", "binder"]:
+		var cat_label = {"fiber": "纤维", "mineral": "矿粉", "resin": "树脂", "extract": "萃取液", "pigment": "颜料", "binder": "粘合剂"}.get(category, "未知")
 		for mat in material_data.get(category, []):
 			var mid = mat.get("id", "")
 			if mid != "":
 				_material_map[mid] = mat
+				_material_category_map[mid] = cat_label
 				var mname = mat.get("name", "")
 				if mname != "":
 					_material_name_map[mname] = mid

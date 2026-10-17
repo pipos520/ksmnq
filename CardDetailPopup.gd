@@ -3,7 +3,7 @@ class_name CardDetailPopup
 
 # 卡牌详情弹窗 —— 像卡牌图鉴一样完整展示所有信息
 
-var _card: BattleCard = null
+var _card = null
 var _close_callback: Callable = Callable()
 var _mode: String = "view"  # "view", "hand_summon", "field_attack"
 var _source_hand_idx: int = -1
@@ -255,7 +255,7 @@ func _ready():
 
 ## 显示卡牌详情
 ## mode: "view"=纯查看, "hand_summon"=手牌+召唤按钮, "field_attack"=己方场上+攻击按钮
-func show_card(card: BattleCard, mode: String = "view", battle_manager = null, hand_idx: int = -1, slot_idx: int = -1, on_summon: Callable = Callable(), on_attack: Callable = Callable()) -> void:
+func show_card(card, mode: String = "view", battle_manager = null, hand_idx: int = -1, slot_idx: int = -1, on_summon: Callable = Callable(), on_attack: Callable = Callable()) -> void:
 	_card = card
 	_mode = mode
 	_battle_manager_ref = battle_manager
@@ -465,7 +465,7 @@ func _build_action_buttons() -> void:
 		var can_summon = false
 		if _battle_manager_ref != null:
 			var bm = _battle_manager_ref
-			if bm.current_phase == BattleManager.Phase.MAIN and bm.is_player_turn() and bm.player_self.get_empty_slots().size() > 0:
+			if bm.current_phase == BattleManagerBridge.Phase.MAIN and bm.is_player_turn() and bm.player_self.get_empty_slots().size() > 0:
 				can_summon = true
 		_add_action_button("⚡ 召唤到场地", Color("#4fc3f7"), can_summon, _on_summon_clicked)
 	
@@ -474,7 +474,7 @@ func _build_action_buttons() -> void:
 		var can_attack = false
 		if _battle_manager_ref != null:
 			var bm = _battle_manager_ref
-			if bm.current_phase == BattleManager.Phase.BATTLE and bm.is_player_turn():
+			if bm.current_phase == BattleManagerBridge.Phase.BATTLE and bm.is_player_turn():
 				if _card != null and _card.is_alive() and _card.can_attack():
 					can_attack = true
 		_add_action_button("⚔️ 攻击", Color("#e74c3c"), can_attack, _on_attack_clicked)

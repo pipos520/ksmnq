@@ -878,7 +878,7 @@ func _show_pack_detail(pd:Dictionary, pid:String="")->void:
 		stl.vertical_alignment=VERTICAL_ALIGNMENT_CENTER; stl.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT; hbox.add_child(stl)
 func _show_card_detail(card:Dictionary)->void:
 	var popup=CardDetailPopup.new(); popup.name="CardDetailPopup"; add_child(popup)
-	var bc=BattleCard.from_dict(card); popup.show_card(bc,"view")
+	var bc=BattleCardNew.from_dict(card); popup.show_card(bc,"view")
 
 ## "查看更多"按钮点击 → 弹确认框 → 确认后跳浏览器打开对应卡包官网/wiki页
 func _on_pack_more_pressed(pid:String, pname:String)->void:
@@ -1045,3 +1045,6 @@ func _make_btn_style(hover: bool = false) -> StyleBoxFlat:
 	s.corner_radius_top_left = 10; s.corner_radius_top_right = 10
 	s.corner_radius_bottom_left = 10; s.corner_radius_bottom_right = 10
 	return s
+
+func _on_ad_open(pid: String = "", pd: String = ""):
+	pass

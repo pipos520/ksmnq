@@ -1468,3 +1468,27 @@ func _apply_theme_custom():
 		back.add_theme_stylebox_override("normal", s)
 func _build_dynamic_content():
 	_refresh_list()
+
+func _get_category(mid: String) -> String:
+	return DataCache.get_material_category(mid)
+
+func _get_rarity_color(rarity: String) -> Color:
+	match rarity:
+		"完美": return Color("#FFD700")
+		"优良": return Color("#C0C0C0")
+		"精良": return Color("#B8860B")
+		"普通": return Color("#808080")
+		_: return Color("#808080")
+
+func _get_row_bg_color(row_index: int) -> Color:
+	if row_index % 2 == 0:
+		return Color("#141020")
+	return Color("#1a1428")
+
+func _on_overlay_clicked(event: InputEvent, overlay: Node):
+	if event is InputEventScreenTouch and not event.pressed:
+		event.accept()
+		overlay.queue_free()
+
+func _close_detail(overlay: Node):
+	overlay.queue_free()

@@ -111,7 +111,7 @@ func show_search(cards: Array, title: String, max_select: int, on_selected: Call
 	# 构建卡牌行
 	var row_idx := 0
 	for card in cards:
-		var c = card as BattleCard
+		var c = card
 		if c == null:
 			continue
 		
@@ -209,7 +209,7 @@ func show_search(cards: Array, title: String, max_select: int, on_selected: Call
 		var check_ref = check_lbl
 		var idx = row_idx
 		
-		row.gui_input.connect(func(event: InputEvent, _card: BattleCard = card_ref, _idx: int = idx, _check: Label = check_ref, _row: Panel = row_ref):
+		row.gui_input.connect(func(event: InputEvent, _card = card_ref, _idx: int = idx, _check: Label = check_ref, _row: Panel = row_ref):
 			if event is InputEventMouseButton:
 				if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 					# 启动长按计时
@@ -242,7 +242,7 @@ func show_search(cards: Array, title: String, max_select: int, on_selected: Call
 				if now - press_time >= 0.4:
 					btn.set_meta("longpress_triggered", true)
 					btn.set_meta("press_time", 0.0)
-					var c = btn.get_meta("card_ref", null) as BattleCard
+					var c = btn.get_meta("card_ref", null)
 					if c:
 						var popup = CardDetailPopup.new()
 						add_child(popup)

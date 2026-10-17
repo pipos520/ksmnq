@@ -712,7 +712,7 @@ func _on_back():
 	Global.change_scene("res://CardWorkshop.tscn")
 
 
-func _on_theme_changed(_mode):
+func _on_theme_changed(_mode = null):
 	super._on_theme_changed(_mode)
 	_refresh_list()
 

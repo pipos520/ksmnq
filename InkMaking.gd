@@ -1439,7 +1439,7 @@ func _close_tutorial_overlay() -> void:
 # ============================
 #  主题切换
 # ============================
-func _on_theme_changed(_mode):
+func _on_theme_changed(_mode = null):
 	super._on_theme_changed(_mode)
 	
 	for key in _category_labels.keys():

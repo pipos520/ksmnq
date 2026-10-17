@@ -65,7 +65,7 @@ func _ready():
 
 # ==================== 主题切换 ====================
 
-func _on_theme_changed(mode):
+func _on_theme_changed(mode = null):
 	super._on_theme_changed(mode)
 	var is_day = mode == Global.ThemeMode.DAY
 	var theme = DAY if is_day else NIGHT

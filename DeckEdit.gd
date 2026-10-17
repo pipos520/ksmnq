@@ -1465,20 +1465,18 @@ func _get_quality_rank(quality: String) -> int:
 
 func _get_filtered_sorted_available(available: Array) -> Array:
 	var result = []
-	# 品质筛选
 	for card in available:
 		if _filter_quality != "all":
 			var q = card.get("quality", "")
 			var rank = _get_quality_rank(q)
-	match _filter_quality:
-			"perfect":
-				if rank < 5: continue
-			"excellent":
-				if rank < 4: continue
-			"fine":
-				if rank < 3: continue
-			"normal":
-				if rank > 2: continue
+			if _filter_quality == "perfect" and rank < 5:
+				continue
+			elif _filter_quality == "excellent" and rank < 4:
+				continue
+			elif _filter_quality == "fine" and rank < 3:
+				continue
+			elif _filter_quality == "normal" and rank > 2:
+				continue
 		# 搜索筛选
 		if _search_text != "":
 			var name_str = card.get("name", card.get("card_name", "")).to_lower()

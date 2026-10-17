@@ -1668,7 +1668,7 @@ func _find_guide_label_recursive(node: Node, pos: Vector2) -> Label:
 		if rect.has_point(pos):
 			var text = node.text.strip_edges()
 			if text.begins_with("•") or text.begins_with("-"):
-			for mat_name in Global.get_material_name_list():
+				for mat_name in Global.get_material_name_list():
 					if mat_name in text:
 						node.set_meta("detail_type", "material")
 						return node
