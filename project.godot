@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="卡师模拟器"
-run/main_scene="uid://beobtoqj5os85"
+run/main_scene="res://LoadingScreen.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="uid://dp51awjvrf23i"
 

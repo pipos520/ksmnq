@@ -1,5 +1,4 @@
 extends Node
-class_name CardBridge
 
 # 卡牌桥接器：游戏端(ksmnqsp) ↔ 交易端 的本地文件交换
 # 退出/挂后台时全量导出卡牌，进入时导入交易回传的卡牌
