@@ -3,16 +3,16 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ctflimsahokua"
-path.etc2="res://.godot/imported/card_front.png-bf30f8f2179e8cf8898b01dd778e9f6b.etc2.ctex"
+path.s3tc="res://.godot/imported/card_front.png-bf30f8f2179e8cf8898b01dd778e9f6b.s3tc.ctex"
 metadata={
-"imported_formats": ["etc2_astc"],
+"imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/3d/card_front.png"
-dest_files=["res://.godot/imported/card_front.png-bf30f8f2179e8cf8898b01dd778e9f6b.etc2.ctex"]
+dest_files=["res://.godot/imported/card_front.png-bf30f8f2179e8cf8898b01dd778e9f6b.s3tc.ctex"]
 
 [params]
 
