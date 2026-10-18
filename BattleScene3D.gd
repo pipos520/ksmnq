@@ -122,6 +122,7 @@ var _discard_confirm_btn: Button = null  # 确认按钮
 var _drag_ctrl: CardDragController = null
 var _field_mgr: FieldSlotManager = null
 var _enemy_ai: EnemyAIController = null
+var _battle_driver: BattleDriver = null  # 战斗节奏驱动器（横竖屏共用，见 battle_core/BattleDriver.gd）
 var _is_dragging_hand: bool = false
 var _drag_start_screen: Vector2 = Vector2.ZERO
 
@@ -350,9 +351,14 @@ func _ready() -> void:
 	_drag_ctrl = CardDragController.new()
 	_drag_ctrl.setup(self, _cam, _player_slots, _enemy_slots, _player_hand_nodes, _player_hand_cards, _player_hand_datas, _card_front_mat, _field_mgr, _battle_manager, _enemy_card_nodes, _player_card_nodes)
 	add_child(_drag_ctrl)
-	# 初始化敌方AI控制器
+	# 初始化战斗节奏驱动器（横竖屏共用同一驱动协议，见 battle_core/BattleDriver.gd）
+	_battle_driver = BattleDriver.new()
+	_battle_driver.name = "BattleDriver"
+	add_child(_battle_driver)
+	_battle_driver.attach(_battle_manager)
+	# 初始化敌方AI控制器（已退化为纯 3D 表现层，节奏由驱动器控制）
 	_enemy_ai = EnemyAIController.new()
-	_enemy_ai.setup(self, _battle_manager, _cam, _card_front_mat, _card_back_mat, _enemy_slots, _enemy_hand_nodes, _player_slots, _enemy_card_nodes, _player_card_nodes)
+	_enemy_ai.setup(self, _battle_manager, _battle_driver, _cam, _card_front_mat, _card_back_mat, _enemy_slots, _enemy_hand_nodes, _player_slots, _enemy_card_nodes, _player_card_nodes)
 	add_child(_enemy_ai)
 	_stack_deck_cards()
 	# 预热效果VFX材质（效果线/闪光/边框高亮），把shader首次编译前移到读盘期
@@ -2215,9 +2221,7 @@ func _rps_compare(a: int, b: int) -> int:
 
 
 func _process(_delta: float) -> void:
-	# 敌方AI驱动
-	if _enemy_ai:
-		_enemy_ai.update(_delta)
+	# 敌方AI驱动已迁移至 BattleDriver（battle_core/BattleDriver.gd），此处不再轮询
 	# 手牌长按检测（弃牌模式下也弹详情，方便确认卡牌效果）
 	if _hand_press_time > 0 and not _long_press_triggered and not _is_dragging_hand:
 		var now = Time.get_ticks_msec() / 1000.0
@@ -3611,6 +3615,9 @@ func _show_discard_ui(reason: String) -> void:
 	_discard_selected.clear()
 	# ★ 不暂停树：_discard_mode 标志已拦截手牌点击/拖拽逻辑，
 	# 暂停会导致视角切换tween、选中动画tween、手牌Area3D全部失效
+	# ★ 但必须关闭驱动器闸门：否则敌方AI队列会在玩家弃牌期间继续推进（横竖屏统一行为）
+	if _battle_driver:
+		_battle_driver.set_ui_busy(true)
 	
 	# 创建2D叠加层
 	var canvas = CanvasLayer.new()
@@ -3688,6 +3695,9 @@ func _hide_discard_ui() -> void:
 	_discard_mode = false
 	_discard_selected.clear()
 	_discard_need = 0
+	# 恢复驱动器闸门（横竖屏统一：弃牌弹窗期间敌方AI暂停推进）
+	if _battle_driver:
+		_battle_driver.set_ui_busy(false)
 	# 恢复手牌正常布局+缩放
 	_layout_player_hand(true)
 	for i in range(_player_hand_cards.size()):
@@ -3752,8 +3762,9 @@ func _play_discard_animation_3d(callback_id: int, is_player_side: bool, discard_
 		mat.albedo_color = Color(0.3, 0.2, 0.5)
 		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 		fly.material_override = mat
-		fly.global_position = start_positions[i]
+		# ★ 必须先入树再设 global_position，否则节点不在树内赋值静默失败（弃牌卡会从原点飞出）
 		add_child(fly)
+		fly.global_position = start_positions[i]
 		fly_cards.append(fly)
 	
 	# 飞向墓地

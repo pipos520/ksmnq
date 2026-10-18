@@ -9,6 +9,7 @@ class_name EnemyAIController
 # === 依赖注入 ===
 var _scene: Node3D = null
 var _battle_mgr = null
+var _driver = null  # BattleDriver（横竖屏共用的战斗节奏驱动器）
 var _cam: Camera3D = null
 var _card_front_mat: StandardMaterial3D = null
 var _card_back_mat: StandardMaterial3D = null
@@ -21,10 +22,6 @@ var _player_card_nodes: Array = [] # 己方场上卡牌视觉节点引用表
 
 # === 状态 ===
 var _is_animating: bool = false     # 是否正在播放动画
-var _ai_wait_elapsed: float = 0.0  # AI wait计时
-var _pending_enemy_summon_slot: int = -1  # 待播放入场动画的槽位
-var _enemy_draw_delay: float = 0.0  # 敌方抽牌延迟计时
-var _enemy_ready_delay: float = 0.0  # 敌方准备阶段延迟计时
 
 # === 配置 ===
 const ENEMY_SUMMON_FLY_DURATION: float = 0.6
@@ -45,9 +42,10 @@ var _attack_trail: GPUParticles3D = null
 
 
 ## 初始化，注入依赖
-func setup(scene: Node3D, battle_mgr, cam: Camera3D, card_front_mat: StandardMaterial3D, card_back_mat: StandardMaterial3D, enemy_slots: Array, enemy_hand_nodes: Array, player_slots: Array, enemy_card_nodes: Array, player_card_nodes: Array) -> void:
+func setup(scene: Node3D, battle_mgr, driver, cam: Camera3D, card_front_mat: StandardMaterial3D, card_back_mat: StandardMaterial3D, enemy_slots: Array, enemy_hand_nodes: Array, player_slots: Array, enemy_card_nodes: Array, player_card_nodes: Array) -> void:
 	_scene = scene
 	_battle_mgr = battle_mgr
+	_driver = driver
 	_cam = cam
 	_card_front_mat = card_front_mat
 	_card_back_mat = card_back_mat
@@ -57,111 +55,49 @@ func setup(scene: Node3D, battle_mgr, cam: Camera3D, card_front_mat: StandardMat
 	_enemy_card_nodes = enemy_card_nodes
 	_player_card_nodes = player_card_nodes
 	_card_scene = load(CARD_SCENE_PATH)
+	# 连接驱动器信号：本类只负责 3D 表现，节奏由 BattleDriver 统一控制
+	if _driver:
+		_driver.enemy_draw_animation_requested.connect(_play_enemy_draw_animation)
+		_driver.enemy_summon_animation_requested.connect(_play_enemy_summon_animation)
+		_driver.enemy_attack_animation_requested.connect(_play_enemy_attack_animation)
 
 
-## 每帧驱动AI（由BattleScene3D._process调用）
-func update(delta: float) -> void:
-	if _battle_mgr == null:
-		return
-	
-	# === 敌方回合阶段推进 ===
-	# 检查敌方阶段步骤（DRAW_DONE → 播放抽牌动画 → READY_DONE → 推进到MAIN）
-	var phase_step: String = _battle_mgr.get("_enemy_phase_step")
-	if phase_step == "DRAW_DONE" and not _is_animating:
-		if _enemy_draw_delay <= 0:
-			_enemy_draw_delay = 0  # reset
-			_play_enemy_draw_animation()
-		else:
-			_enemy_draw_delay -= delta
-			return
-		return
-	
-	if phase_step == "READY_DONE" and not _is_animating:
-		if _enemy_ready_delay <= 0:
-			_enemy_ready_delay = 0
-			# 准备阶段短暂展示后推进
-			_battle_mgr.advance_enemy_phase()
-		else:
-			_enemy_ready_delay -= delta
-			return
-		return
-	
-	# 处理延迟的敌方入场动画
-	if _pending_enemy_summon_slot >= 0 and not _is_animating:
-		var slot = _pending_enemy_summon_slot
-		_pending_enemy_summon_slot = -1
-		_play_enemy_summon_animation(slot)
-		return
-	
-	# 检查BM的_last_enemy_summon_slot_idx → 触发入场动画
-	if not _is_animating:
-		var last_summon: int = _battle_mgr.get("_last_enemy_summon_slot_idx")
-		if last_summon >= 0:
-			_pending_enemy_summon_slot = last_summon
-			# 消费标记（设为-1防止重复触发）
-			_battle_mgr._last_enemy_summon_slot_idx = -1
-			return
-	
-	# 只在敌方回合执行
-	if not _battle_mgr.has_method("is_player_turn"):
-		return
-	if _battle_mgr.is_player_turn():
-		return
-	
-	# 检查是否有待处理的敌方攻击动画
-	var atk: Dictionary = _battle_mgr._pending_enemy_attack
-	if not atk.is_empty():
-		if not _is_animating:
-			if atk.get("type") == "attack_hero":
-				_play_enemy_attack_animation(atk.get("slot", -1), -1, true)
-			else:
-				_play_enemy_attack_animation(atk.get("slot", -1), atk.get("target_slot", -1), false)
-		return
-	
-	# 检查AI动作队列
-	var queue: Array = _battle_mgr.ai_action_queue
-	if queue.is_empty():
-		return
-	if _is_animating:
-		return
-	
-	# 查看队列前端
-	var front = queue[0]
-	if front.get("type", "") == "wait":
-		var delay = front.get("delay", 1.0)
-		_ai_wait_elapsed += delta
-		if _ai_wait_elapsed >= delay:
-			_ai_wait_elapsed = 0.0
-			queue.pop_front()
-			if _battle_mgr.has_method("_execute_next_ai_action"):
-				_battle_mgr._execute_next_ai_action()
-	else:
-		# 非等待动作，直接执行
-		_ai_wait_elapsed = 0.0
-		if _battle_mgr.has_method("_execute_next_ai_action"):
-			_battle_mgr._execute_next_ai_action()
+## 动画播放完成：解除自身动画状态并通知驱动器继续推进回合
+func _finish_anim() -> void:
+	_is_animating = false
+	if _driver and _driver.has_method("report_animation_done"):
+		_driver.report_animation_done()
+
+
+## 敌方AI驱动已迁移至 battle_core/BattleDriver.gd（横竖屏共用同一驱动协议）
+## 本控制器退化为纯 3D 表现层：由 BattleDriver 的信号触发动画，播完回调通知驱动器
+## 连接方式：BattleScene3D 创建 Driver 后经 setup() 注入，内部自动连接以下信号：
+##   - enemy_draw_animation_requested()          → _play_enemy_draw_animation（自发播放，不阻塞）
+##   - enemy_summon_animation_requested(slot)    → _play_enemy_summon_animation（播完 _finish_anim 通知）
+##   - enemy_attack_animation_requested(...)     → _play_enemy_attack_animation（撞击 report_attack_impact，播完 _finish_anim）
 
 
 # ===== 内部方法 =====
 
 ## 敌方抽牌动画：卡牌从敌方卡组飞到敌方手牌区
+## 由 BattleDriver.enemy_draw_animation_requested 信号触发（自发播放，不阻塞驱动；
+## 阶段推进由驱动器负责，此处不再调用 advance_enemy_phase）
 func _play_enemy_draw_animation() -> void:
 	if _battle_mgr == null:
 		return
 	_is_animating = true
-	
+
 	var enemy = _battle_mgr.player_opponent
 	if not enemy:
 		_is_animating = false
 		return
-	
+
 	# 获取手牌数量，决定飞几张牌
 	var hand_count = enemy.hand.size()
 	# 先手第一回合跳过抽牌（BM已处理），这里只处理正常抽牌
 	if hand_count == 0:
-		# 没抽到牌，直接推进
+		# 没抽到牌，无需表现（推进由驱动器负责）
 		_is_animating = false
-		_battle_mgr.advance_enemy_phase()  # DRAW_DONE → READY
 		return
 	
 	# 抽牌动画：从卡组飞到手牌区（只飞最后抽到的那张）
@@ -184,7 +120,6 @@ func _play_enemy_draw_animation() -> void:
 	var fly_card = _create_fly_card(deck_pos, true, card_data)
 	if not fly_card:
 		_is_animating = false
-		_battle_mgr.advance_enemy_phase()  # DRAW_DONE → READY
 		return
 	
 	# 贝塞尔弧线飞向手牌区
@@ -196,28 +131,28 @@ func _play_enemy_draw_animation() -> void:
 			fly_card.global_position = p
 	, 0.0, 1.0, 0.6).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 	
-	# 完成后清理，推进到READY
+	# 完成后清理（阶段推进由 BattleDriver 负责）
 	tween.tween_callback(func():
 		if is_instance_valid(fly_card):
 			fly_card.queue_free()
 		_is_animating = false
-		_enemy_ready_delay = 0.5  # 0.5秒后推进到READY（等对方看到抽牌）
-		_battle_mgr.advance_enemy_phase()  # DRAW_DONE → READY
 		print("[EnemyAI] 敌方抽牌动画完成")
 	)
 
 
 ## 敌方召唤入场动画：直接创建真实卡牌节点从卡组飞到场地卡槽
+## 由 BattleDriver.enemy_summon_animation_requested 信号触发，播完 _finish_anim 通知驱动器
 func _play_enemy_summon_animation(slot_idx: int) -> void:
 	if _battle_mgr == null or slot_idx < 0 or slot_idx >= _enemy_slots.size():
+		_finish_anim()
 		return
 	_is_animating = true
 	# 敌方召唤音效
 	Global.play_sfx("deal_alt")
-	
+
 	var slot_node = _enemy_slots[slot_idx]
 	if not slot_node:
-		_is_animating = false
+		_finish_anim()
 		return
 	
 	# 从BM获取敌方场地上的卡牌数据
@@ -281,7 +216,7 @@ func _play_enemy_summon_animation(slot_idx: int) -> void:
 				card_node.set_face_up()
 	, 0.0, 1.0, ENEMY_SUMMON_FLY_DURATION).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 	
-	# 完成后：reparent到卡位，写入引用表
+	# 完成后：reparent到卡位，写入引用表，通知驱动器继续
 	tween.tween_callback(func():
 		if is_instance_valid(card_node) and slot_node:
 			card_node.name = "EnemyCard"
@@ -290,25 +225,28 @@ func _play_enemy_summon_animation(slot_idx: int) -> void:
 			# 写入引用表
 			if slot_idx < _enemy_card_nodes.size():
 				_enemy_card_nodes[slot_idx] = card_node
-		_is_animating = false
+		_finish_anim()
 	)
 	
 	print("[EnemyAI] 敌方入场动画（真卡）: 槽位 %d" % slot_idx)
 
 
 ## 敌方攻击动画：敌方场上卡牌飞向己方目标，撞击后飞回
+## 由 BattleDriver.enemy_attack_animation_requested 信号触发；
+## 撞击瞬间回调驱动器结算伤害，播完 _finish_anim 通知驱动器
 func _play_enemy_attack_animation(attacker_slot: int, target_slot: int, is_hero: bool) -> void:
 	if _battle_mgr == null:
+		_finish_anim()
 		return
 	_is_animating = true
-	
+
 	if attacker_slot < 0 or attacker_slot >= _enemy_slots.size():
-		_is_animating = false
+		_finish_anim()
 		return
-	
+
 	var attacker_node = _enemy_slots[attacker_slot]
 	if not attacker_node:
-		_is_animating = false
+		_finish_anim()
 		return
 	
 	# 从引用表直接取卡牌节点
@@ -332,7 +270,7 @@ func _play_enemy_attack_animation(attacker_slot: int, target_slot: int, is_hero:
 		var start_pos_fb = attacker_node.global_position + Vector3(0, 0.15, 0)
 		var fly_card = _create_fly_card(start_pos_fb, false, card_data)
 		if not fly_card:
-			_is_animating = false
+			_finish_anim()
 			return
 		_animate_fly_card_attack(fly_card, start_pos_fb, target_slot, is_hero, attacker_slot, true)
 		return
@@ -355,11 +293,11 @@ func _animate_fly_card_attack(card_node: Node, start_pos: Vector3, target_slot: 
 		target_pos = Vector3(0, 0.15, 3.0)
 	else:
 		if target_slot < 0 or target_slot >= _player_slots.size():
-			_is_animating = false
+			_finish_anim()
 			return
 		var target_node = _player_slots[target_slot]
 		if not target_node:
-			_is_animating = false
+			_finish_anim()
 			return
 		target_pos = target_node.global_position + Vector3(0, 0.15, 0)
 	
@@ -437,8 +375,9 @@ func _animate_fly_card_attack(card_node: Node, start_pos: Vector3, target_slot: 
 					if target_card_data:
 						tgt_name = target_card_data.get_display_name()
 				_scene.show_attack_popup(atk_name, tgt_name, atk_atk, false)
-		if _battle_mgr.has_method("_execute_pending_enemy_attack"):
-			_battle_mgr._execute_pending_enemy_attack()
+		# 撞击瞬间：通知驱动器结算伤害（由驱动器调用 BattleManager._execute_pending_enemy_attack）
+		if _driver and _driver.has_method("report_attack_impact"):
+			_driver.report_attack_impact()
 	)
 	# 恢复材质
 	tween.tween_interval(0.1)
@@ -474,9 +413,9 @@ func _animate_fly_card_attack(card_node: Node, start_pos: Vector3, target_slot: 
 		_refresh_enemy_field()
 		if _scene and _scene.has_method("_refresh_player_field_display"):
 			_scene._refresh_player_field_display()
-		_is_animating = false
+		_finish_anim()
 	)
-	
+
 	var target_desc = "英雄" if is_hero else "槽位%d" % target_slot
 	print("[EnemyAI] 敌方攻击动画: %d → %s" % [attacker_slot, target_desc])
 
@@ -575,7 +514,7 @@ func _fly_temp_card_to_slot(fly_card: Node3D, start_pos: Vector3, end_pos: Vecto
 		if is_instance_valid(fly_card):
 			fly_card.queue_free()
 		_refresh_enemy_field()
-		_is_animating = false
+		_finish_anim()
 	)
 	print("[EnemyAI] 敌方入场动画（fallback）: 槽位 %d" % slot_idx)
 

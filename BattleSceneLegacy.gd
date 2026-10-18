@@ -26,6 +26,8 @@ var _enemy_hand_cards := []  # 敌方手牌卡槽
 
 # BattleManager引用
 var _battle_manager: BattleManager = null
+# 战斗节奏驱动器（横竖屏共用同一驱动协议，见 battle_core/BattleDriver.gd）
+var _battle_driver: BattleDriver = null
 # UI控件引用
 var _end_btn: Button = null
 var _phase_label: Label = null
@@ -846,7 +848,15 @@ func _init_battle() -> void:
 	
 	# 创建BattleManager
 	_battle_manager = BattleManager.new()
-	
+
+	# 创建战斗节奏驱动器（横竖屏共用同一驱动协议；本场景只保留 2D 表现层）
+	_battle_driver = BattleDriver.new()
+	_battle_driver.name = "BattleDriver"
+	add_child(_battle_driver)
+	_battle_driver.attach(_battle_manager)
+	_battle_driver.enemy_summon_animation_requested.connect(_on_driver_enemy_summon)
+	_battle_driver.enemy_attack_animation_requested.connect(_on_driver_enemy_attack)
+
 	# 连接管理器信号
 	_battle_manager.phase_changed.connect(_on_phase_changed)
 	_battle_manager.turn_changed.connect(_on_turn_changed)
@@ -862,6 +872,8 @@ func _init_battle() -> void:
 	_battle_manager.card_effect_activated.connect(_on_card_effect_activated)
 	_battle_manager.effect_line_fromto.connect(_on_effect_line_fromto)
 	_battle_manager.element_boost_triggered.connect(_on_element_boost_triggered)
+	# 回合结束效果播完（数据层）后推进弃牌阶段（本场景无回合结束视角动画，收到即推进）
+	_battle_manager.end_phase_effects_pending_discard.connect(_on_end_phase_effects_pending_discard)
 	
 	# 连接玩家信号（通过BattleManager获取的玩家引用）
 	# 这些会在start_battle之后连接
@@ -1928,6 +1940,7 @@ func _on_effect_triggered(action_type: String, value: int, is_player_side: bool,
 
 ## 卡组检索弹窗请求
 func _on_deck_search_requested(cards: Array, max_select: int, callback_id: int) -> void:
+	_set_driver_busy(true)
 	var popup = DeckSearchPopup.new()
 	add_child(popup)
 	var title = "卡组检索"
@@ -1937,6 +1950,7 @@ func _on_deck_search_requested(cards: Array, max_select: int, callback_id: int) 
 		title = "选择 " + str(max_select) + " 张卡牌"
 	popup.show_search(cards, title, max_select, func(selected: Array):
 		_battle_manager._on_deck_search_result(callback_id, selected)
+		_set_driver_busy(false)
 	)
 
 # ===== 连锁系统 =====
@@ -1944,6 +1958,7 @@ func _on_deck_search_requested(cards: Array, max_select: int, callback_id: int) 
 func _on_chain_response_requested(callback_id: int) -> void:
 	_chain_callback_id = callback_id
 	_chain_awaiting_response = true
+	_set_driver_busy(true)
 	_show_chain_prompt()
 ## 连锁构建完成
 func _on_chain_built(chain_count: int) -> void:
@@ -2511,12 +2526,18 @@ func _on_chain_no() -> void:
 	_hide_chain_prompt()
 	_battle_manager.on_player_chain_response(false)
 	_show_chain_result("已放弃连锁")
+## 模态开关同步到驱动器闸门（暂停树对 PROCESS_MODE_ALWAYS 的驱动器无效，必须显式通知）
+func _set_driver_busy(busy: bool) -> void:
+	if _battle_driver:
+		_battle_driver.set_ui_busy(busy)
+
 ## 隐藏连锁提示
 func _hide_chain_prompt() -> void:
 	if _chain_overlay != null:
 		_chain_overlay.queue_free()
 		_chain_overlay = null
 	_chain_awaiting_response = false
+	_set_driver_busy(false)
 ## 显示连锁结果提示（短暂显示后自动消失）
 func _show_chain_result(text: String) -> void:
 	var lbl = Label.new()
@@ -2662,16 +2683,8 @@ func _on_enemy_hand_changed() -> void:
 	_update_label("EnemyHand", "🃏 敌方手牌 " + str(hand_size))
 
 func _on_enemy_field_changed() -> void:
-	var slot_idx = _battle_manager._last_enemy_summon_slot_idx
-	if slot_idx >= 0:
-		_battle_manager._last_enemy_summon_slot_idx = -1
-		if _is_animating:
-			# 正在播放动画中，延迟到下一个空闲帧再播
-			_pending_enemy_summon_slot = slot_idx
-		else:
-			_play_enemy_summon_animation(slot_idx)
-	else:
-		_refresh_field_ui()
+	# 敌方召唤入场动画由 BattleDriver.enemy_summon_animation_requested 信号驱动（横竖屏共用协议）
+	_refresh_field_ui()
 
 func _on_enemy_energy_changed(old_val: int, new_val: int) -> void:
 	var p = _battle_manager.player_opponent
@@ -3061,8 +3074,7 @@ func _on_enemy_slot_gui_input(event: InputEvent, slot: int) -> void:
 				_press_slot_index = -1
 
 func _process(delta: float) -> void:
-	# 敌方AI进度
-	_update_enemy_ai(delta)
+	# 敌方AI驱动已迁移至 BattleDriver（battle_core/BattleDriver.gd），此处不再轮询
 	
 	# 检查长按触发
 	if _press_hand_index >= 0 or _press_slot_index >= 0:
@@ -3224,9 +3236,10 @@ func _show_discard_ui() -> void:
 	_discard_mode = true
 	_discard_selected.clear()
 	
-	# ★ 弹窗期间必须暂停游戏树 + 置 _is_animating，否则敌方AI队列仍会继续推进
-	# （_update_enemy_ai 只在 _is_animating=false 时执行 _execute_next_ai_action）
+	# ★ 弹窗期间必须暂停游戏树 + 置 _is_animating，并关闭驱动器闸门，
+	# 否则敌方AI队列仍会继续推进（驱动器是 PROCESS_MODE_ALWAYS，不受暂停树影响）
 	_is_animating = true
+	_set_driver_busy(true)
 	get_tree().paused = true
 	print("[UI] 弃牌弹窗: 暂停游戏树等待玩家选择")
 	
@@ -3339,6 +3352,7 @@ func _hide_discard_ui() -> void:
 	_discard_mode = false
 	_discard_selected.clear()
 	_discard_need = 0
+	_set_driver_busy(false)
 	# ★ 还原手牌按钮的暂停模式（恢复普通输入）
 	for i in range(_hand_cards.size()):
 		var hb = _hand_cards[i] as Button
@@ -3356,7 +3370,8 @@ func _hide_discard_ui() -> void:
 func _resume_after_animation() -> void:
 	if _discard_mode:
 		return
-	_resume_after_animation()
+	_is_animating = false
+	get_tree().paused = false
 
 ## 确认弃牌
 func _on_confirm_discard() -> void:
@@ -3540,6 +3555,8 @@ func _debug_print_layout():
 	# 遍历所有直接子控件，打印它们的实际位置
 	print("--- 所有直接子控件 ---")
 	for child in get_children():
+		if not (child is Control):
+			continue  # 跳过非控件子节点（如 BattleDriver 逻辑节点，无 anchor/offset 属性）
 		var cname = child.name if child.name != "" else child.get_class()
 		var ar = "anchor[l=" + str(child.anchor_left) + " t=" + str(child.anchor_top) + " r=" + str(child.anchor_right) + " b=" + str(child.anchor_bottom) + "]"
 		var off = "offset[l=" + str(child.offset_left) + " t=" + str(child.offset_top) + " r=" + str(child.offset_right) + " b=" + str(child.offset_bottom) + "]"
@@ -4163,64 +4180,39 @@ func _play_attack_animation(attacker_slot: int, target_slot: int, is_hero: bool)
 		)
 	)
 
-## 敌方AI进度控制（由_process调用）
-## 敌方AI进度控制（由_process调用）
-var _ai_wait_elapsed: float = 0.0
-var _pending_enemy_summon_slot: int = -1  # 延迟的敌方入场动画槽位
+## 敌方AI驱动已迁移至 BattleDriver（battle_core/BattleDriver.gd，横竖屏共用）
+## 本场景只保留表现层：以下回调由驱动器信号触发，播完动画后通知驱动器继续
 
-func _update_enemy_ai(delta: float) -> void:
-	if _battle_manager == null:
-		return
-	
-	# 处理延迟的敌方入场动画
-	if _pending_enemy_summon_slot >= 0 and not _is_animating:
-		var slot = _pending_enemy_summon_slot
-		_pending_enemy_summon_slot = -1
-		_play_enemy_summon_animation(slot)
-		return
-	
-	if _battle_manager.current_player_index != 1:
-		return
-	
-	# 检查是否有待处理的敌方攻击动画
-	if not _battle_manager._pending_enemy_attack.is_empty():
-		if not _is_animating:
-			var atk = _battle_manager._pending_enemy_attack
-			if atk.get("type") == "attack_hero":
-				_play_enemy_attack_animation(atk.get("slot", -1), -1, true)
-			else:
-				_play_enemy_attack_animation(atk.get("slot", -1), atk.get("target_slot", -1), false)
-		return
-	
-	if _battle_manager.ai_action_queue.is_empty():
-		return
-	if _is_animating:
-		return
-	
-	# 查看队列前端
-	var front = _battle_manager.ai_action_queue[0]
-	if front.get("type", "") == "wait":
-		var delay = front.get("delay", 1.0)
-		_ai_wait_elapsed += delta
-		if _ai_wait_elapsed >= delay:
-			_ai_wait_elapsed = 0.0
-			_battle_manager.ai_action_queue.pop_front()
-			# 继续执行后续动作
-			_battle_manager._execute_next_ai_action()
-	else:
-		# 非等待动作，直接执行
-		_ai_wait_elapsed = 0.0
-		_battle_manager._execute_next_ai_action()
+## 回合结束效果已发完（数据层）：本场景无回合结束视角动画，直接推进弃牌/切回合
+func _on_end_phase_effects_pending_discard(_need_discard: int) -> void:
+	if _battle_manager:
+		_battle_manager.proceed_to_discard_after_end_effects()
+
+## 敌方召唤入场：由 BattleDriver.enemy_summon_animation_requested 触发
+func _on_driver_enemy_summon(slot_idx: int) -> void:
+	_play_enemy_summon_animation(slot_idx)
+
+## 敌方攻击：由 BattleDriver.enemy_attack_animation_requested 触发
+func _on_driver_enemy_attack(attacker_slot: int, target_slot: int, is_hero: bool) -> void:
+	_play_enemy_attack_animation(attacker_slot, target_slot, is_hero)
+
+## 敌方动画结束：恢复游戏树并通知驱动器推进回合
+func _resume_after_enemy_animation() -> void:
+	_resume_after_animation()
+	if _battle_driver:
+		_battle_driver.report_animation_done()
+
 ## 敌方入场动画：卡牌从上方飞入敌方场地卡槽
 func _play_enemy_summon_animation(slot_idx: int) -> void:
 	if _battle_manager == null or slot_idx < 0 or slot_idx >= _enemy_slots.size():
 		_refresh_field_ui()
+		_resume_after_enemy_animation()
 		return
 	_is_animating = true
 	get_tree().paused = true
 	var field_btn = _enemy_slots[slot_idx] as Button
 	if field_btn == null:
-		_resume_after_animation()
+		_resume_after_enemy_animation()
 		_refresh_field_ui()
 		return
 	# 起始位置：屏幕上方中央
@@ -4255,22 +4247,23 @@ func _play_enemy_summon_animation(slot_idx: int) -> void:
 		ft.tween_callback(func(): flash.queue_free())
 		fly_card.queue_free()
 		glow.queue_free()
-		_resume_after_animation()
+		_resume_after_enemy_animation()
 		print("[动画] 敌方入场完成")
 	)
 
 ## 敌方攻击动画：从敌方场地飞向己方目标，撞击后飞回
 func _play_enemy_attack_animation(attacker_slot: int, target_slot: int, is_hero: bool) -> void:
 	if _battle_manager == null:
+		_resume_after_enemy_animation()
 		return
 	_is_animating = true
 	get_tree().paused = true
 	if attacker_slot < 0 or attacker_slot >= _enemy_slots.size():
-		_resume_after_animation()
+		_resume_after_enemy_animation()
 		return
 	var attacker_btn = _enemy_slots[attacker_slot] as Button
 	if attacker_btn == null:
-		_resume_after_animation()
+		_resume_after_enemy_animation()
 		return
 	var start_pos = attacker_btn.global_position + attacker_btn.size / 2.0
 	var target_pos: Vector2
@@ -4278,11 +4271,11 @@ func _play_enemy_attack_animation(attacker_slot: int, target_slot: int, is_hero:
 		target_pos = Vector2(self.size.x / 2.0, self.size.y * 0.94)
 	else:
 		if target_slot < 0 or target_slot >= _player_slots.size():
-			_resume_after_animation()
+			_resume_after_enemy_animation()
 			return
 		var target_btn = _player_slots[target_slot] as Button
 		if target_btn == null:
-			_resume_after_animation()
+			_resume_after_enemy_animation()
 			return
 		target_pos = target_btn.global_position + target_btn.size / 2.0
 	var fly_card = ColorRect.new()
@@ -4319,8 +4312,9 @@ func _play_enemy_attack_animation(attacker_slot: int, target_slot: int, is_hero:
 		var ht = create_tween().set_pause_mode(2)  # 忽略暂停继续播放
 		ht.tween_property(hit_flash, "modulate", Color(1.0, 0.6, 0.3, 0.0), 0.15)
 		ht.tween_callback(func(): hit_flash.queue_free())
-		# 执行实际伤害
-		_battle_manager._execute_pending_enemy_attack()
+		# 撞击瞬间：通知驱动器结算伤害（由驱动器调用 BattleManager._execute_pending_enemy_attack）
+		if _battle_driver:
+			_battle_driver.report_attack_impact()
 		# 飞回
 		var fly_back = create_tween().set_parallel(false).set_pause_mode(2)  # 忽略暂停继续播放
 		fly_back.tween_property(fly_card, "global_position", start_pos - fly_card.size / 2.0, 0.25).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
@@ -4328,7 +4322,7 @@ func _play_enemy_attack_animation(attacker_slot: int, target_slot: int, is_hero:
 		fly_back.tween_callback(func():
 			fly_card.queue_free()
 			trail.queue_free()
-			_resume_after_animation()
+			_resume_after_enemy_animation()
 			print("[动画] 敌方攻击完成")
 			_refresh_field_ui()
 			_refresh_hand_ui()
