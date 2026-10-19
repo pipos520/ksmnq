@@ -114,10 +114,11 @@ func _fill_all_rows():
 		# 行背景色（只创建一次，后续只改颜色，不再调用add_theme_stylebox_override）
 		var sb = row.get_meta("_stylebox") if row.has_meta("_stylebox") else null
 		if sb == null:
-			sb = StyleBoxFlat.new()
+			sb = Global.pixel_row_style(i, StyleBoxFlat.new())
 			row.set_meta("_stylebox", sb)
 			row.add_theme_stylebox_override("panel", sb)
-		sb.bg_color = _get_row_bg_color(i)
+		if sb is StyleBoxFlat:
+			sb.bg_color = _get_row_bg_color(i)
 		
 		vbox.add_child(row)
 	
@@ -810,7 +811,7 @@ func _cancel_press() -> void:
 		var idx = _pressed_row.get_meta("row_index", 0)
 		var sb = StyleBoxFlat.new()
 		sb.bg_color = _get_row_bg_color(idx)
-		_pressed_row.add_theme_stylebox_override("panel", sb)
+		_pressed_row.add_theme_stylebox_override("panel", Global.pixel_row_style(idx, sb))
 	_pressed_row = null
 	_press_timer = 0.0
 	_press_index = -1

@@ -615,7 +615,7 @@ func _show_aux_picker(available: Array):
 		rps.content_margin_right = Global.pw(0.02)
 		rps.content_margin_top = Global.ph(0.005)
 		rps.content_margin_bottom = Global.ph(0.005)
-		row_panel.add_theme_stylebox_override("panel", rps)
+		row_panel.add_theme_stylebox_override("panel", Global.pixel_row_style(row_index, rps))
 		row_panel.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 		row_panel.mouse_filter = MOUSE_FILTER_PASS
 		vbox.add_child(row_panel)
@@ -1638,7 +1638,7 @@ func _open_comp_picker(slot_idx: int, comp_type: String, title_text: String, slo
 		var row_panel = Panel.new()
 		var rps = StyleBoxFlat.new()
 		rps.bg_color = Global.current.topbar_bg if row_index % 2 == 0 else Global.current.topbar_bg.darkened(0.10)
-		row_panel.add_theme_stylebox_override("panel", rps)
+		row_panel.add_theme_stylebox_override("panel", Global.pixel_row_style(row_index, rps))
 		row_panel.custom_minimum_size = Vector2(0, Global.ph(0.09))
 		row_panel.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 		row_panel.mouse_filter = MOUSE_FILTER_PASS
@@ -2839,7 +2839,7 @@ func _on_select_base():
 		rps.content_margin_right = Global.pw(0.02)
 		rps.content_margin_top = Global.ph(0.005)
 		rps.content_margin_bottom = Global.ph(0.005)
-		row_panel.add_theme_stylebox_override("panel", rps)
+		row_panel.add_theme_stylebox_override("panel", Global.pixel_row_style(row_index, rps))
 		row_panel.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 		row_panel.mouse_filter = MOUSE_FILTER_PASS
 		vbox.add_child(row_panel)
@@ -3003,7 +3003,7 @@ func _on_select_ink():
 		rps.content_margin_right = Global.pw(0.02)
 		rps.content_margin_top = Global.ph(0.005)
 		rps.content_margin_bottom = Global.ph(0.005)
-		row_panel.add_theme_stylebox_override("panel", rps)
+		row_panel.add_theme_stylebox_override("panel", Global.pixel_row_style(row_index, rps))
 		row_panel.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 		row_panel.mouse_filter = MOUSE_FILTER_PASS
 		vbox.add_child(row_panel)

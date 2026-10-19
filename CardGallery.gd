@@ -76,7 +76,7 @@ func _refresh_list():
 		row_panel.name = "RowPanel"
 		var panel_style = StyleBoxFlat.new()
 		panel_style.bg_color = _get_row_bg_color(row_index)
-		row_panel.add_theme_stylebox_override("panel", panel_style)
+		row_panel.add_theme_stylebox_override("panel", Global.pixel_row_style(row_index, panel_style))
 		row_panel.custom_minimum_size = Vector2(0, Global.ph(0.095))
 		row_panel.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 		row_panel.mouse_filter = MOUSE_FILTER_PASS
@@ -754,7 +754,7 @@ func _cancel_press() -> void:
 		var idx = _pressed_row.get_meta("row_index", 0)
 		var sb = StyleBoxFlat.new()
 		sb.bg_color = _get_row_bg_color(idx)
-		_pressed_row.add_theme_stylebox_override("panel", sb)
+		_pressed_row.add_theme_stylebox_override("panel", Global.pixel_row_style(idx, sb))
 	_pressed_row = null
 	_press_timer = 0.0
 	_press_index = -1

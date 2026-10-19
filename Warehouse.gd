@@ -129,7 +129,7 @@ func _refresh_material_list() -> void:
 		row_panel.name = "RowPanel"
 		var panel_style = StyleBoxFlat.new()
 		panel_style.bg_color = _get_row_bg_color(row_index)
-		row_panel.add_theme_stylebox_override("panel", panel_style)
+		row_panel.add_theme_stylebox_override("panel", Global.pixel_row_style(row_index, panel_style))
 		row_panel.custom_minimum_size = Vector2(0, Global.ph(0.085))
 		row_panel.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 		row_panel.mouse_filter = MOUSE_FILTER_PASS
@@ -349,7 +349,7 @@ func _refresh_all_list() -> void:
 			var row = Panel.new()
 			var rs = StyleBoxFlat.new()
 			rs.bg_color = _get_row_bg_color(row_index)
-			row.add_theme_stylebox_override("panel", rs)
+			row.add_theme_stylebox_override("panel", Global.pixel_row_style(row_index, rs))
 			row.custom_minimum_size = Vector2(0, Global.ph(0.07))
 			row.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 			row.mouse_filter = MOUSE_FILTER_PASS
@@ -406,7 +406,7 @@ func _refresh_all_list() -> void:
 			var row = Panel.new()
 			var rs = StyleBoxFlat.new()
 			rs.bg_color = _get_row_bg_color(row_index)
-			row.add_theme_stylebox_override("panel", rs)
+			row.add_theme_stylebox_override("panel", Global.pixel_row_style(row_index, rs))
 			row.custom_minimum_size = Vector2(0, Global.ph(0.07))
 			row.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 			row.mouse_filter = MOUSE_FILTER_PASS
@@ -454,7 +454,7 @@ func _refresh_all_list() -> void:
 			var row = Panel.new()
 			var rs = StyleBoxFlat.new()
 			rs.bg_color = _get_row_bg_color(row_index)
-			row.add_theme_stylebox_override("panel", rs)
+			row.add_theme_stylebox_override("panel", Global.pixel_row_style(row_index, rs))
 			row.custom_minimum_size = Vector2(0, Global.ph(0.07))
 			row.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 			row.mouse_filter = MOUSE_FILTER_PASS
@@ -513,7 +513,7 @@ func _refresh_all_list() -> void:
 			var row = Panel.new()
 			var rs = StyleBoxFlat.new()
 			rs.bg_color = _get_row_bg_color(row_index)
-			row.add_theme_stylebox_override("panel", rs)
+			row.add_theme_stylebox_override("panel", Global.pixel_row_style(row_index, rs))
 			row.custom_minimum_size = Vector2(0, Global.ph(0.07))
 			row.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 			row.mouse_filter = MOUSE_FILTER_PASS
@@ -603,7 +603,7 @@ func _refresh_card_base_list():
 		row_panel.name = "RowPanel"
 		var panel_style = StyleBoxFlat.new()
 		panel_style.bg_color = _get_row_bg_color(row_index)
-		row_panel.add_theme_stylebox_override("panel", panel_style)
+		row_panel.add_theme_stylebox_override("panel", Global.pixel_row_style(row_index, panel_style))
 		row_panel.custom_minimum_size = Vector2(0, Global.ph(0.095))
 		row_panel.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 		row_panel.mouse_filter = MOUSE_FILTER_PASS
@@ -712,7 +712,7 @@ func _refresh_ink_list():
 		row_panel.name = "RowPanel"
 		var panel_style = StyleBoxFlat.new()
 		panel_style.bg_color = _get_row_bg_color(row_index)
-		row_panel.add_theme_stylebox_override("panel", panel_style)
+		row_panel.add_theme_stylebox_override("panel", Global.pixel_row_style(row_index, panel_style))
 		row_panel.custom_minimum_size = Vector2(0, Global.ph(0.095))
 		row_panel.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 		row_panel.mouse_filter = MOUSE_FILTER_PASS
@@ -829,7 +829,7 @@ func _refresh_aux_list():
 		row_panel.name = "RowPanel"
 		var panel_style = StyleBoxFlat.new()
 		panel_style.bg_color = _get_row_bg_color(row_index)
-		row_panel.add_theme_stylebox_override("panel", panel_style)
+		row_panel.add_theme_stylebox_override("panel", Global.pixel_row_style(row_index, panel_style))
 		row_panel.custom_minimum_size = Vector2(0, Global.ph(0.095))
 		row_panel.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 		row_panel.mouse_filter = MOUSE_FILTER_PASS

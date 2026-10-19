@@ -141,7 +141,7 @@ var theme_night := ThemeColors.new(
 	Color("#1a1a2e"), Color("#2a2a4e"), Color("#0a0a1e"),
 	Color("#9a9ab0"), Color("#000000"),
 	Color("#1a1a2e"), Color("#2a2a4e"),
-	Color("#1e1e3a"), Color("#3a3a5e"),
+	Color("#1e1e3a"), Color("#8a6533"),
 	6
 )
 
@@ -2567,8 +2567,93 @@ func pixel_panel_style(dark := false) -> StyleBoxTexture:
 	_pixel_style_cache[key] = sb
 	return sb
 
+## 列表行材质：白天=做旧薄纸带（纸压木，材质对比最强）
+## 夜晚=深色旧皮革（夜间文字是浅金/奶油色，浅纸会让文字消失；皮革同样非木，层级成立）
+## fallback: 调用方已建好的 StyleBoxFlat，素材缺失时原样返回，行为退回旧斑马纹
+func pixel_row_style(row_index: int, fallback: StyleBox = null) -> StyleBox:
+	var key := "row_leather" if current_mode == ThemeMode.NIGHT else "row_paper"
+	var tex := pixel_tex(key)
+	if tex == null:
+		return fallback
+	var sb := StyleBoxTexture.new()
+	sb.texture = tex
+	sb.texture_margin_left = 24
+	sb.texture_margin_right = 24
+	sb.texture_margin_top = 12
+	sb.texture_margin_bottom = 12
+	# 斑马纹：奇数行轻微降饱和/压暗（在材质内做明暗，而不是换材质）
+	if row_index % 2 == 1:
+		sb.modulate_color = Color(0.93, 0.905, 0.87)
+	return sb
+
+## 顶栏/底栏挂皮：深色胡桃木 + 铜压条铆钉（bar_top.png）
+## 挂成 ColorRect 的子节点而不是改节点类型——20 个场景里有代码直接给 TopBar.color 赋值
+func _pixel_bar_skin(bar: Control) -> void:
+	if bar.get_node_or_null("__BarSkin") != null:
+		return
+	var tex := pixel_tex("bar_top")
+	if tex == null:
+		return
+	var np := NinePatchRect.new()
+	np.name = "__BarSkin"
+	np.texture = tex
+	np.patch_margin_left = 72
+	np.patch_margin_right = 72
+	np.patch_margin_top = 20
+	np.patch_margin_bottom = 20
+	np.set_anchors_preset(Control.PRESET_FULL_RECT)
+	np.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bar.add_child(np)
+
+## 纯金色文字（如价格 #FFD700）压在浅纸/羊皮纸上对比不足 1.5:1，统一加深色描边
+func _gold_label_fix(n: Node) -> void:
+	var lbl := n as Label
+	if lbl == null or not lbl.has_theme_color_override("font_color"):
+		return
+	var fc := lbl.get_theme_color("font_color") as Color
+	if fc.r > 0.85 and fc.g > 0.68 and fc.g < 0.95 and fc.b < 0.30:
+		make_gold_legible(lbl)
+
+## 行内文字对比度自适应：行材质是纸/皮革（pixel_row_style 产物）时，
+## 浅色文字压浅纸 / 深色文字压深皮革都会消失——按材质自动加深/提亮，
+## 用 darkened/lightened 保留原有色相（品质色、状态色不丢身份）。
+## 注意：node_added 先父后子，Panel 的纸样式已在该 Label 入树前换好。
+func _row_label_contrast_fix(n: Node) -> void:
+	var lbl := n as Label
+	if lbl == null:
+		return
+	# 行内 Label 常被包在 HBox/VBox 里，向上找最近的 Panel 祖先
+	var p := lbl.get_parent()
+	var depth := 0
+	while p != null and not (p is Panel) and depth < 3:
+		p = p.get_parent()
+		depth += 1
+	if p == null or not (p is Panel):
+		return
+	var sb := (p as Panel).get_theme_stylebox("panel")
+	if sb == null or not (sb is StyleBoxTexture):
+		return
+	var tex_path := (sb as StyleBoxTexture).texture.resource_path if (sb as StyleBoxTexture).texture != null else ""
+	var on_paper: bool = tex_path.contains("row_paper")
+	var on_leather: bool = tex_path.contains("row_leather")
+	if not (on_paper or on_leather):
+		return
+	if not lbl.has_theme_color_override("font_color"):
+		# 用主题默认色的标签显式落定，避免主题切换后漂移
+		lbl.add_theme_color_override("font_color", lbl.get_theme_color("font_color") as Color)
+	var fc := lbl.get_theme_color("font_color") as Color
+	if on_paper and fc.get_luminance() > 0.60:
+		lbl.add_theme_color_override("font_color", fc.darkened(0.62))
+	elif on_leather and fc.get_luminance() < 0.45:
+		lbl.add_theme_color_override("font_color", fc.lightened(0.55))
+
 func _pixelize_node(n: Node) -> void:
 	_emoji_apply(n)
+	if n is ColorRect and (n.name == "TopBar" or n.name == "BottomBar"):
+		_pixel_bar_skin(n as Control)
+	if n is Label:
+		_gold_label_fix(n)
+		_row_label_contrast_fix(n)
 	if n is BaseButton:
 		var b := n as BaseButton
 		(b as CanvasItem).texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -2599,9 +2684,17 @@ func _pixelize_node(n: Node) -> void:
 					var d_new := pd.duplicate()
 					_copy_margins(d_new, old)
 					b.add_theme_stylebox_override("disabled", d_new)
-				if b.has_theme_color_override("font_color"):
-					b.add_theme_color_override("font_disabled_color",
-						(b.get_theme_color("font_color") as Color).darkened(0.45))
+			if b.has_theme_color_override("font_color"):
+				b.add_theme_color_override("font_disabled_color",
+					(b.get_theme_color("font_color") as Color).darkened(0.45))
+			# 夜间模式：浅色文字（夜间主题的奶油色）压在米色纸按钮上不可读，换深墨色
+			if current_mode == ThemeMode.NIGHT and b.has_theme_color_override("font_color"):
+				var fcc := b.get_theme_color("font_color") as Color
+				if fcc.get_luminance() > 0.55:
+					b.add_theme_color_override("font_color", Color(0.17, 0.12, 0.08))
+					b.add_theme_color_override("font_hover_color", Color(0.10, 0.07, 0.05))
+					b.add_theme_color_override("font_pressed_color", Color(0.10, 0.07, 0.05))
+					b.add_theme_color_override("font_disabled_color", Color(0.32, 0.27, 0.22))
 				(b as CanvasItem).texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		return
 	if n is PanelContainer or (n is Panel and not n is PanelContainer):
