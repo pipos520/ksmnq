@@ -1,8 +1,8 @@
 extends Control
 var _maps := [
-	{"id": "misty_forest", "name": "🌲 迷雾森林", "desc": "幽暗的森林中弥漫着神秘雾气，\n据说深处藏着古老的卡牌碎片。", "difficulty": "简单", "diff_color": Color("#5cb85c"), "recommend": "推荐战力：100", "bg_color": Color("#1a3a2a"), "icon": "🌲"},
-	{"id": "flame_cavern", "name": "🔥 火焰洞穴", "desc": "灼热的岩浆在地底流淌，\n火焰精灵守护着珍贵的火系素材。", "difficulty": "普通", "diff_color": Color("#e8a838"), "recommend": "推荐战力：300", "bg_color": Color("#3a1a0a"), "icon": "🔥"},
-	{"id": "duel", "name": "⚔ 决斗场", "desc": "与服务器上的其他玩家卡组进行虚拟对战！\n选择你的卡组，随机匹配对手。", "difficulty": "匹配", "diff_color": Color("#e8a838"), "recommend": "无限制", "bg_color": Color(0.25, 0.10, 0.15), "icon": "⚔"},
+	{"id": "misty_forest", "name": " 迷雾森林", "desc": "幽暗的森林中弥漫着神秘雾气，\n据说深处藏着古老的卡牌碎片。", "difficulty": "简单", "diff_color": Color("#5cb85c"), "recommend": "推荐战力：100", "bg_color": Color("#1a3a2a"), "icon": ""},
+	{"id": "flame_cavern", "name": " 火焰洞穴", "desc": "灼热的岩浆在地底流淌，\n火焰精灵守护着珍贵的火系素材。", "difficulty": "普通", "diff_color": Color("#e8a838"), "recommend": "推荐战力：300", "bg_color": Color("#3a1a0a"), "icon": ""},
+	{"id": "duel", "name": " 决斗场", "desc": "与服务器上的其他玩家卡组进行虚拟对战！\n选择你的卡组，随机匹配对手。", "difficulty": "匹配", "diff_color": Color("#e8a838"), "recommend": "无限制", "bg_color": Color(0.25, 0.10, 0.15), "icon": ""},
 ]
 const MATERIAL_NAME_TO_ID := {
 	"骨胶": "B01", "鱼鳔胶": "B02", "树汁胶": "B03", "精灵胶": "B04",
@@ -208,7 +208,7 @@ func _on_tutorial_deck_selected(deck_id: String, deck_name: String) -> void:
 
 func _start_tutorial_battle(deck_id: String, deck_name: String = ""):
 	Global.is_tutorial_battle = true
-	Global.current_enemy_data = {"name": "🥊 巷口混混", "hp": 20, "max_hp": 20, "energy": 2, "max_energy": 2, "card_datas": [
+	Global.current_enemy_data = {"name": " 巷口混混", "hp": 20, "max_hp": 20, "energy": 2, "max_energy": 2, "card_datas": [
 		{"name": "混混·小喽啰", "cost":1,"atk":1,"hp":1,"element":"地","fields":["街头"],"quality":"标准","star":1},
 		{"name": "混混·小喽啰", "cost":1,"atk":1,"hp":1,"element":"地","fields":["街头"],"quality":"标准","star":1},
 		{"name": "混混·小喽啰", "cost":1,"atk":1,"hp":1,"element":"地","fields":["街头"],"quality":"标准","star":1},
@@ -216,7 +216,7 @@ func _start_tutorial_battle(deck_id: String, deck_name: String = ""):
 		{"name": "混混·小喽啰", "cost":2,"atk":2,"hp":2,"element":"地","fields":["街头"],"quality":"标准","star":1},
 		{"name": "混混·小喽啰", "cost":3,"atk":3,"hp":3,"element":"地","fields":["街头"],"quality":"标准","star":1}]}
 	Global.current_deck_id = deck_id; Global.current_deck_name = deck_name
-	Global.current_map_id = ""; Global.current_map_name = "🥊 新手教学战"
+	Global.current_map_id = ""; Global.current_map_name = " 新手教学战"
 	Global.current_battle_terrain = ""; Global.current_is_boss = false
 	Global.change_scene(Global.get_battle_scene_path())
 
@@ -254,14 +254,14 @@ func _check_and_consume_rented(is_duel: bool) -> bool:
 	if rid == "": return true  # 非租借卡组，放行
 	var rd = Global.get_rented_deck(rid)
 	if rd.is_empty():
-		_show_toast("⚠️ 租借卡组已失效")
+		_show_toast(" 租借卡组已失效")
 		Global.current_rented_deck_id = ""; Global.current_deck_id = ""; Global.current_deck_name = ""
 		_refresh_bottom_deck_name()
 		return false
 	var dur = int(rd.get("durability", 0))
 	var cost = Global.RENT_DUR_COST_DUEL if is_duel else Global.RENT_DUR_COST_EXPLORE
 	if dur < cost:
-		_show_toast("⚠️ 租借卡组耐久不足！\n剩 " + str(dur) + " 点，本次需 " + str(cost) + " 点")
+		_show_toast(" 租借卡组耐久不足！\n剩 " + str(dur) + " 点，本次需 " + str(cost) + " 点")
 		return false
 	Global.consume_rented_durability(rid, cost)
 	return true
@@ -326,7 +326,7 @@ func _on_duel_deck_selected(deck_id: String, deck_name: String) -> void:
 	if card_datas.size() == 0: return
 	Global.current_enemy_data = {"name": "决斗者·" + opp_name, "hp": 50, "max_hp": 50, "energy": 3, "max_energy": 3, "card_datas": card_datas}
 	Global.current_deck_id = deck_id; Global.current_deck_name = deck_name
-	Global.current_map_id = ""; Global.current_map_name = "⚔ 决斗场"
+	Global.current_map_id = ""; Global.current_map_name = " 决斗场"
 	Global.current_battle_terrain = ""; Global.current_is_boss = false
 	Global.change_scene(Global.get_battle_scene_path())
 
@@ -349,7 +349,7 @@ func _show_help_guide():
 	ps.corner_radius_bottom_left = 16; ps.corner_radius_bottom_right = 16
 	panel.add_theme_stylebox_override("panel", ps); overlay.add_child(panel)
 	var title = Label.new()
-	title.text = "📖 野外探索指南"; title.add_theme_font_size_override("font_size", 60)
+	title.text = "野外探索指南"; title.add_theme_font_size_override("font_size", 60)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = 1; title.anchor_left = 0.0; title.anchor_top = 0.0; title.anchor_right = 1.0; title.anchor_bottom = 0.0
 	title.offset_left = 0; title.offset_top = Global.ph(0.01); title.offset_right = 0; title.offset_bottom = Global.ph(0.08)
@@ -365,7 +365,7 @@ func _show_help_guide():
 	_build_help_content(vbox)
 	call_deferred("_set_help_vbox_width", vbox, scroll)
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"; close_btn.add_theme_font_size_override("font_size", 50)
+	close_btn.text = "关闭"; close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg; cs.border_width_left = 2; cs.border_width_right = 2; cs.border_width_top = 2; cs.border_width_bottom = 2
 	cs.border_color = Color("#888888"); cs.corner_radius_top_left = 10; cs.corner_radius_top_right = 10
@@ -402,32 +402,32 @@ func _make_help_label(vbox, text, color = Color("#FFFFFF"), font_size = 45):
 	lbl.size_flags_horizontal = SIZE_FILL; vbox.add_child(lbl)
 
 func _build_help_content(vbox):
-	var s1 = _make_help_section(vbox, "🗺️ ① 野外探索简介", Color("#5cb85c"))
+	var s1 = _make_help_section(vbox, " ① 野外探索简介", Color("#5cb85c"))
 	_make_help_label(s1, "选择地图进入爬塔探索，每层可选择战斗或采集。", Global.current.btn_text, 42)
 	_make_help_label(s1, "击败卡兽可获得辅材掉落，采集可获得制作素材。", Color("#CCCCCC"))
 	_make_help_label(s1, "通关全部8层并击败BOSS即可获得胜利！", Color("#CCCCCC"))
-	var s2 = _make_help_section(vbox, "🌲 ② 迷雾森林 · 掉落一览", Color("#5cb85c"))
+	var s2 = _make_help_section(vbox, " ② 迷雾森林 · 掉落一览", Color("#5cb85c"))
 	_make_help_label(s2, "难度：简单 | 推荐战力：100", Color("#AAAAAA"))
-	_make_help_label(s2, "🌲 树林采集：", Color("#8BC34A"), 48)
+	_make_help_label(s2, " 树林采集：", Color("#8BC34A"), 48)
 	_make_help_label(s2, "  • 白麻纤维 (普通) prob:70%", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 青藤纤维 (普通) prob:70%", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 普通松脂 (普通) prob:70%", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 骨胶 (普通) prob:70%", Color("#CCCCCC"))
-	_make_help_label(s2, "🌿 草丛采集：", Color("#FF9800"), 48)
+	_make_help_label(s2, " 草丛采集：", Color("#FF9800"), 48)
 	_make_help_label(s2, "  • 生命露水 (普通) prob:70%", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 炭黑 (普通) prob:70%", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 朱砂 (普通) prob:70%", Color("#CCCCCC"))
-	_make_help_label(s2, "⛏️ 矿区采集：", Color("#9B59B6"), 48)
+	_make_help_label(s2, " 矿区采集：", Color("#9B59B6"), 48)
 	_make_help_label(s2, "  • 石灰矿粉 (普通) prob:70%", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 辉光矿粉 (普通) prob:70%", Color("#CCCCCC"))
-	_make_help_label(s2, "💧 溪谷采集：", Color("#3498DB"), 48)
+	_make_help_label(s2, " 溪谷采集：", Color("#3498DB"), 48)
 	_make_help_label(s2, "  • 砂金石粉 (普通) prob:70%", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 清水 (普通) prob:70%", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 鱼鳔胶 (普通) prob:70%", Color("#CCCCCC"))
-	_make_help_label(s2, "🌪️ 山道采集：", Color("#E87D38"), 48)
+	_make_help_label(s2, " 山道采集：", Color("#E87D38"), 48)
 	_make_help_label(s2, "  • 枯草纤维 (普通) prob:70%", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 赭石 (普通) prob:70%", Color("#CCCCCC"))
-	_make_help_label(s2, "🌑 暗穴采集：", Color("#8E44AD"), 48)
+	_make_help_label(s2, " 暗穴采集：", Color("#8E44AD"), 48)
 	_make_help_label(s2, "  • 琥珀树脂 (普通) prob:70%", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 树汁胶 (普通) prob:70%", Color("#CCCCCC"))
 

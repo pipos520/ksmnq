@@ -52,7 +52,7 @@ func _ready():
 
 	var hint_label = Label.new()
 	hint_label.name = "HintLabel"
-	hint_label.text = "🏛️ Lv." + str(guild_level) + "  " + guild_title
+	hint_label.text = "Lv." + str(guild_level) + "  " + guild_title
 	hint_label.add_theme_font_size_override("font_size", 48)
 	hint_label.add_theme_color_override("font_color", Global.current.btn_text)
 	hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -138,7 +138,7 @@ func _ready():
 
 	_ad_refresh_btn = Button.new()
 	_ad_refresh_btn.name = "AdRefreshBtn"
-	_ad_refresh_btn.text = "🎬 看广告刷新任务"
+	_ad_refresh_btn.text = "看广告刷新任务"
 	_ad_refresh_btn.add_theme_font_size_override("font_size", 40)
 	var abs = StyleBoxFlat.new()
 	abs.bg_color = Color("#FF6B6B")
@@ -184,7 +184,7 @@ func _ready():
 	content.add_child(daily_bar)
 
 	var daily_btn = Button.new()
-	daily_btn.text = "📅 每日任务"
+	daily_btn.text = "每日任务"
 	daily_btn.add_theme_font_size_override("font_size", 40)
 	var dabs = StyleBoxFlat.new()
 	dabs.bg_color = Color("#4CAF50")
@@ -202,7 +202,7 @@ func _ready():
 	daily_bar.add_child(daily_btn)
 
 	var daily_status = Label.new()
-	daily_status.text = "🏆 每日阶梯任务"
+	daily_status.text = "每日阶梯任务"
 	daily_status.add_theme_font_size_override("font_size", 35)
 	daily_status.add_theme_color_override("font_color", Color("#81C784"))
 	daily_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -292,17 +292,17 @@ func _create_task_card(task: Dictionary) -> PanelContainer:
 
 	# 任务类型颜色和图标
 	var type_color = Color("#888888")
-	var type_icon = "📋"
+	var type_icon = ""
 	match task_type:
 		GuildTaskManager.TaskType.UNLOCK_CIRCUIT:
 			type_color = Color("#e8a838")
-			type_icon = "🔓"
+			type_icon = ""
 		GuildTaskManager.TaskType.COLLECT_MATERIAL:
 			type_color = Color("#58a8d8")
-			type_icon = "🧪"
+			type_icon = ""
 		GuildTaskManager.TaskType.COLLECT_GOLD:
 			type_color = Color("#f0c040")
-			type_icon = "💰"
+			type_icon = ""
 
 	var bg_color = Global.current.bg
 	if completed:
@@ -358,7 +358,7 @@ func _create_task_card(task: Dictionary) -> PanelContainer:
 	text_vbox.add_child(info_row)
 
 	var req_label = Label.new()
-	req_label.text = "📦 " + requirement
+	req_label.text = "" + requirement
 	req_label.add_theme_font_size_override("font_size", 40)
 	req_label.add_theme_color_override("font_color", Color("#58a8d8") if not completed else Color("#555555"))
 	req_label.size_flags_horizontal = Control.SIZE_EXPAND | Control.SIZE_FILL
@@ -368,7 +368,7 @@ func _create_task_card(task: Dictionary) -> PanelContainer:
 	info_row.add_child(req_label)
 
 	var reward_label = Label.new()
-	reward_label.text = "🎁 " + reward_text
+	reward_label.text = "" + reward_text
 	reward_label.add_theme_font_size_override("font_size", 40)
 	reward_label.add_theme_color_override("font_color", Color("#f0c040") if not completed else Color("#555555"))
 	reward_label.size_flags_horizontal = Control.SIZE_EXPAND | Control.SIZE_FILL
@@ -380,7 +380,7 @@ func _create_task_card(task: Dictionary) -> PanelContainer:
 	# 右侧：状态/提交按钮
 	if completed:
 		var done_label = Label.new()
-		done_label.text = "✅"
+		done_label.text = ""
 		done_label.add_theme_font_size_override("font_size", 40)
 		done_label.add_theme_color_override("font_color", Color("#44cc44"))
 		done_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -502,7 +502,7 @@ func _show_requirement_detail(task: Dictionary):
 
 	# 标题
 	var title_label = Label.new()
-	title_label.text = "📦 任务需求详情"
+	title_label.text = "任务需求详情"
 	title_label.add_theme_font_size_override("font_size", 55)
 	title_label.add_theme_color_override("font_color", Color("#58a8d8"))
 	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -599,7 +599,7 @@ func _show_requirement_detail(task: Dictionary):
 
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -657,7 +657,7 @@ func _show_reward_detail(task: Dictionary):
 
 	# 标题
 	var title_label = Label.new()
-	title_label.text = "🎁 任务奖励详情"
+	title_label.text = "任务奖励详情"
 	title_label.add_theme_font_size_override("font_size", 55)
 	title_label.add_theme_color_override("font_color", Color("#f0c040"))
 	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -674,7 +674,7 @@ func _show_reward_detail(task: Dictionary):
 	# 金币奖励
 	if gold > 0:
 		var gold_lbl = Label.new()
-		gold_lbl.text = "🪙 金币 ×" + Global.n2s(gold)
+		gold_lbl.text = "金币 ×" + Global.n2s(gold)
 		gold_lbl.add_theme_font_size_override("font_size", 50)
 		gold_lbl.add_theme_color_override("font_color", Color("#f0c040"))
 		vbox.add_child(gold_lbl)
@@ -686,14 +686,14 @@ func _show_reward_detail(task: Dictionary):
 		var is_unlocked = CircuitManager.is_unlocked(circuit_id)
 
 		var circuit_lbl = Label.new()
-		circuit_lbl.text = "🔓 纹路解锁：" + circuit_name
+		circuit_lbl.text = "纹路解锁：" + circuit_name
 		circuit_lbl.add_theme_font_size_override("font_size", 50)
 		circuit_lbl.add_theme_color_override("font_color", Color("#e8a838"))
 		vbox.add_child(circuit_lbl)
 
 		if is_unlocked:
 			var unlocked_lbl = Label.new()
-			unlocked_lbl.text = "⚠️ 纹路已解锁，奖励转为200金币"
+			unlocked_lbl.text = "纹路已解锁，奖励转为200金币"
 			unlocked_lbl.add_theme_font_size_override("font_size", 40)
 			unlocked_lbl.add_theme_color_override("font_color", Color("#ff6666"))
 			vbox.add_child(unlocked_lbl)
@@ -741,7 +741,7 @@ func _show_reward_detail(task: Dictionary):
 
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -825,7 +825,7 @@ func _show_submit_confirm(task_index: int, task: Dictionary):
 	panel.add_child(vbox)
 
 	var title_lbl = Label.new()
-	title_lbl.text = "📦 确认提交素材"
+	title_lbl.text = "确认提交素材"
 	title_lbl.add_theme_font_size_override("font_size", 50)
 	title_lbl.add_theme_color_override("font_color", Color("#e8a838"))
 	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -887,10 +887,10 @@ func _do_submit_material(task_index: int, overlay: ColorRect):
 	_close_detail(overlay)
 	var result = GuildTaskManager.submit_with_material(task_index)
 	if result["success"]:
-		_show_message("✅ " + result["message"], Color("#44cc44"))
+		_show_message(" " + result["message"], Color("#44cc44"))
 		_refresh_ui()
 	else:
-		_show_message("❌ " + result["message"], Color("#ff6666"))
+		_show_message(" " + result["message"], Color("#ff6666"))
 
 func _show_card_picker(task_index: int, task: Dictionary):
 	var all_cards = CardManager.get_all_cards()
@@ -938,7 +938,7 @@ func _show_card_picker(task_index: int, task: Dictionary):
 
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕"
+	close_btn.text = ""
 	close_btn.add_theme_font_size_override("font_size", 40)
 	close_btn.add_theme_color_override("font_color", Color("#ff6666"))
 	var cls = StyleBoxFlat.new()
@@ -1062,13 +1062,13 @@ func _make_card_row(card: Dictionary, task_index: int, overlay: ColorRect) -> Pa
 	var card_hp = card.get("hp", card.get("health", 0))
 	var el_icon = ""
 	match card_element:
-		"火": el_icon = "🔥"
-		"水": el_icon = "💧"
-		"风": el_icon = "🌪️"
-		"地": el_icon = "⛰️"
-		"光": el_icon = "✨"
-		"暗": el_icon = "🌑"
-		_: el_icon = "⬜"
+		"火": el_icon = ""
+		"水": el_icon = ""
+		"风": el_icon = ""
+		"地": el_icon = ""
+		"光": el_icon = ""
+		"暗": el_icon = ""
+		_: el_icon = ""
 
 	var quality_color = Color("#95A5A6")
 	match card_quality:
@@ -1077,7 +1077,7 @@ func _make_card_row(card: Dictionary, task_index: int, overlay: ColorRect) -> Pa
 		"标准": quality_color = Color("#95A5A6")
 
 	var info_lbl = Label.new()
-	info_lbl.text = el_icon + " " + card_name + "  [" + card_quality + "]  ⚡" + str(card_cost) + "  ⚔️" + str(card_atk) + "/" + str(card_hp)
+	info_lbl.text = el_icon + " " + card_name + "  [" + card_quality + "]  " + str(card_cost) + "  " + str(card_atk) + "/" + str(card_hp)
 	info_lbl.add_theme_font_size_override("font_size", 35)
 	info_lbl.add_theme_color_override("font_color", Global.current.btn_text)
 	info_lbl.size_flags_horizontal = SIZE_EXPAND
@@ -1172,13 +1172,13 @@ func _show_card_detail_popup(card: Dictionary):
 
 	var el_icon = ""
 	match card_element:
-		"火": el_icon = "🔥"
-		"水": el_icon = "💧"
-		"风": el_icon = "🌪️"
-		"地": el_icon = "⛰️"
-		"光": el_icon = "✨"
-		"暗": el_icon = "🌑"
-		_: el_icon = "⬜"
+		"火": el_icon = ""
+		"水": el_icon = ""
+		"风": el_icon = ""
+		"地": el_icon = ""
+		"光": el_icon = ""
+		"暗": el_icon = ""
+		_: el_icon = ""
 
 	var name_lbl = Label.new()
 	name_lbl.text = el_icon + " " + card_name
@@ -1199,14 +1199,14 @@ func _show_card_detail_popup(card: Dictionary):
 	vbox.add_child(line)
 
 	var stats_lbl = Label.new()
-	stats_lbl.text = "⚡费用：" + str(card_cost) + "    ⚔️攻击：" + str(card_atk) + "    ❤️生命：" + str(card_hp)
+	stats_lbl.text = "费用：" + str(card_cost) + "    攻击：" + str(card_atk) + "    生命：" + str(card_hp)
 	stats_lbl.add_theme_font_size_override("font_size", 40)
 	stats_lbl.add_theme_color_override("font_color", Color("#ffffff"))
 	vbox.add_child(stats_lbl)
 
 	if card_fields.size() > 0:
 		var fields_lbl = Label.new()
-		fields_lbl.text = "🏷️ 字段：" + "、".join(card_fields)
+		fields_lbl.text = "字段：" + "、".join(card_fields)
 		fields_lbl.add_theme_font_size_override("font_size", 40)
 		fields_lbl.add_theme_color_override("font_color", Color("#e8a838"))
 		fields_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1214,7 +1214,7 @@ func _show_card_detail_popup(card: Dictionary):
 
 	if card_desc != "":
 		var desc_lbl = Label.new()
-		desc_lbl.text = "📖 " + card_desc
+		desc_lbl.text = "" + card_desc
 		desc_lbl.add_theme_font_size_override("font_size", 40)
 		desc_lbl.add_theme_color_override("font_color", Color("#cccccc"))
 		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1222,7 +1222,7 @@ func _show_card_detail_popup(card: Dictionary):
 
 	if card_effects.size() > 0:
 		var eff_title = Label.new()
-		eff_title.text = "⚡ 效果："
+		eff_title.text = "效果："
 		eff_title.add_theme_font_size_override("font_size", 40)
 		eff_title.add_theme_color_override("font_color", Color("#f0c040"))
 		vbox.add_child(eff_title)
@@ -1232,7 +1232,7 @@ func _show_card_detail_popup(card: Dictionary):
 			elif eff is Dictionary: eff_desc = eff.get("desc", "")
 			if eff_desc != "":
 				var eff_lbl = Label.new()
-				eff_lbl.text = "  • " + eff_desc
+				eff_lbl.text = "• " + eff_desc
 				eff_lbl.add_theme_font_size_override("font_size", 35)
 				eff_lbl.add_theme_color_override("font_color", Color("#dddddd"))
 				eff_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1241,7 +1241,7 @@ func _show_card_detail_popup(card: Dictionary):
 	var aux_items = card.get("aux_items", [])
 	if aux_items.size() > 0:
 		var aux_title = Label.new()
-		aux_title.text = "🧪 辅材："
+		aux_title.text = "辅材："
 		aux_title.add_theme_font_size_override("font_size", 40)
 		aux_title.add_theme_color_override("font_color", Color("#4fc3f7"))
 		vbox.add_child(aux_title)
@@ -1249,7 +1249,7 @@ func _show_card_detail_popup(card: Dictionary):
 			var aux_name = aux.get("name", "未知辅材")
 			var aux_eff = _describe_aux_effect(aux)
 			var aux_lbl = Label.new()
-			aux_lbl.text = "  • " + aux_name + ((" " + aux_eff) if aux_eff != "" else "")
+			aux_lbl.text = "• " + aux_name + ((" " + aux_eff) if aux_eff != "" else "")
 			aux_lbl.add_theme_font_size_override("font_size", 35)
 			aux_lbl.add_theme_color_override("font_color", Color("#b0d4f1"))
 			aux_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1260,7 +1260,7 @@ func _show_card_detail_popup(card: Dictionary):
 	vbox.add_child(spacer)
 
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -1280,10 +1280,10 @@ func _do_submit_card(card: Dictionary, task_index: int, overlay: ColorRect):
 	_close_card_picker(overlay)
 	var result = GuildTaskManager.submit_with_card(task_index, card)
 	if result["success"]:
-		_show_message("✅ " + result["message"], Color("#44cc44"))
+		_show_message(" " + result["message"], Color("#44cc44"))
 		_refresh_ui()
 	else:
-		_show_message("❌ " + result["message"], Color("#ff6666"))
+		_show_message(" " + result["message"], Color("#ff6666"))
 
 func _close_card_picker(overlay: ColorRect):
 	if overlay and is_instance_valid(overlay):
@@ -1327,13 +1327,13 @@ func _show_message(msg: String, msg_color: Color = Color("#ffffff")) -> void:
 func _on_ad_refresh_pressed():
 	if _hj_ads == null:
 		if _ad_status_label:
-			_ad_status_label.text = "⚠ 广告未初始化"
+			_ad_status_label.text = "广告未初始化"
 			_ad_status_label.add_theme_color_override("font_color", Color("#FF5252"))
 		return
 	
 	if _hj_ads.isRewardedAdReady():
 		if _ad_status_label:
-			_ad_status_label.text = "▶️ 播放广告中..."
+			_ad_status_label.text = "▶ 播放广告中..."
 			_ad_status_label.add_theme_color_override("font_color", Color("#FFD700"))
 		_hj_ads.showRewardedAd()
 	else:
@@ -1352,14 +1352,14 @@ func _on_video_rewarded_refresh(rewarded: bool):
 	
 	# 广告完整播放！刷新任务
 	if _ad_status_label:
-		_ad_status_label.text = "✅ 广告播放成功，任务刷新中..."
+		_ad_status_label.text = "广告播放成功，任务刷新中..."
 		_ad_status_label.add_theme_color_override("font_color", Color("#4CAF50"))
 	GuildTaskManager.refresh_tasks()
-	_show_message("✅ 看广告成功！任务已刷新", Color("#44cc44"))
+	_show_message(" 看广告成功！任务已刷新", Color("#44cc44"))
 
 func _on_ad_closed_refresh(result: String):
 	if _ad_status_label:
-		_ad_status_label.text = "✅ 广告已关闭，可再次观看"
+		_ad_status_label.text = "广告已关闭，可再次观看"
 		_ad_status_label.add_theme_color_override("font_color", Color("#4CAF50"))
 	await get_tree().create_timer(1.0).timeout
 	_hj_ads.loadRewardedAd()
@@ -1369,11 +1369,11 @@ func _on_ad_closed_refresh(result: String):
 
 func _on_ad_loaded_refresh(placement_id: String):
 	if _ad_status_label:
-		_ad_status_label.text = "✅ 广告已就绪，点击观看"
+		_ad_status_label.text = "广告已就绪，点击观看"
 		_ad_status_label.add_theme_color_override("font_color", Color("#4CAF50"))
 func _on_ad_failed_refresh(error_msg: String):
 	if _ad_status_label:
-		_ad_status_label.text = "⚠ 广告加载失败"
+		_ad_status_label.text = "广告加载失败"
 		_ad_status_label.add_theme_color_override("font_color", Color("#FF5252"))
 
 func _on_tasks_refreshed(new_tasks: Array) -> void:

@@ -104,12 +104,12 @@ func get_display_name() -> String:
 	var prefix = ""
 	var elem = get_effective_element()
 	match elem:
-		"火": prefix = "🔥"
-		"水": prefix = "💧"
-		"风": prefix = "🌪️"
-		"地": prefix = "⛰️"
-		"光": prefix = "✨"
-		"暗": prefix = "🌑"
+		"火": prefix = ""
+		"水": prefix = ""
+		"风": prefix = ""
+		"地": prefix = ""
+		"光": prefix = ""
+		"暗": prefix = ""
 	return prefix + " " + card_name
 
 func get_effective_element() -> String:

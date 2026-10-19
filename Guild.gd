@@ -38,7 +38,7 @@ func _refresh_status():
 	if status_label is Label:
 		var guild_level = PlayerManager.get_guild_level()
 		var guild_title = PlayerManager.get_guild_title()
-		status_label.text = "🏛️ Lv." + str(int(guild_level)) + "  " + guild_title
+		status_label.text = "Lv." + str(int(guild_level)) + "  " + guild_title
 		Global.make_gold_legible(status_label)
 
 func _on_theme_changed(mode = null):

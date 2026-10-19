@@ -138,7 +138,7 @@ func start_battle(deck_id: String, enemy_name: String = "暗影法师", auto_sta
 		var fallback_cards := CardManager.get_all_cards().duplicate(true)
 		if fallback_cards.size() > 0:
 			player_self.init_from_card_datas(fallback_cards, false, true)
-			print("[BattleManager] ⚠️ 卡组ID无效(\"%s\")，已回退为全部卡牌: %d张" % [deck_id, fallback_cards.size()])
+			print("[BattleManager]  卡组ID无效(\"%s\")，已回退为全部卡牌: %d张" % [deck_id, fallback_cards.size()])
 	# 如果是租借卡组，重新用 card_datas 初始化
 	if Global.current_rented_deck_id != "":
 		var rd = Global.get_rented_deck(Global.current_rented_deck_id)
@@ -235,7 +235,7 @@ func start_battle(deck_id: String, enemy_name: String = "暗影法师", auto_sta
 	# ★ 检查敌方是否完全无战斗力：卡组、手牌、场地全空 → 直接胜利
 	if player_opponent.deck.is_empty() and player_opponent.hand.is_empty() and player_opponent.get_field_count() == 0:
 		if OS.is_debug_build():
-			print("[战斗] 🏆 敌方卡组/手牌/场地全空，跳过战斗，直接胜利！")
+			print("[战斗]  敌方卡组/手牌/场地全空，跳过战斗，直接胜利！")
 		battle_state = State.WON
 		battle_state_changed.emit(State.WON)
 		return
@@ -313,14 +313,14 @@ func _pick_ai_deck(player_card_datas: Array, player_deck_id: String) -> Array:
 	# 3. 如果候选为空，回退到玩家当前卡组（至少能打）
 	if candidates.is_empty():
 		if OS.is_debug_build():
-			print("[战斗] ⚠️ 服务器卡组池和本地卡组池均为空，回退到玩家当前卡组")
+			print("[战斗]  服务器卡组池和本地卡组池均为空，回退到玩家当前卡组")
 		return player_card_datas
 	
 	# 从候选中随机选一套
 	var picked = candidates[randi() % candidates.size()]
 	ai_card_datas = picked.get("card_datas", [])
 	if OS.is_debug_build():
-		print("[战斗] 🤖 AI对手使用卡组: ", picked.get("name", "未知"), " (", ai_card_datas.size(), "张)")
+		print("[战斗]  AI对手使用卡组: ", picked.get("name", "未知"), " (", ai_card_datas.size(), "张)")
 	return ai_card_datas
 
 
@@ -442,10 +442,10 @@ func _execute_draw_phase() -> void:
 	var card = player.draw_phase()
 	if card:
 		if OS.is_debug_build():
-			print("[战斗] ☛ 抽牌: ", player.player_name, " 抽到 [", card.get_display_name(), "]")
+			print("[战斗]  抽牌: ", player.player_name, " 抽到 [", card.get_display_name(), "]")
 	else:
 		if OS.is_debug_build():
-			print("[战斗] ☛ 抽牌: 卡组已空！")
+			print("[战斗]  抽牌: 卡组已空！")
 	# ★ 抽牌后检查卡组耗尽判负（卡组/手牌/场地全空）
 	_check_win_condition()
 
@@ -479,7 +479,7 @@ func _execute_ready_phase() -> void:
 	player.cleanup_destroyed()
 	
 	if OS.is_debug_build():
-		print("[战斗] ☛ 准备: 能量上限", player.max_energy, " 能量回满，卡牌已重置")
+		print("[战斗]  准备: 能量上限", player.max_energy, " 能量回满，卡牌已重置")
 
 
 func _execute_end_phase() -> void:
@@ -503,7 +503,7 @@ func _execute_end_phase() -> void:
 	
 	player.end_phase()
 	if OS.is_debug_build():
-		print("[战斗] ☛ 结束: 手牌", player.hand.size(), "张 墓地", player.grave.size(), "张")
+		print("[战斗]  结束: 手牌", player.hand.size(), "张 墓地", player.grave.size(), "张")
 
 ## 中毒结算：扫描指定玩家场地，有中毒指示物的卡牌每层扣1血（中毒指示物不清零，持续掉血）
 func _resolve_poison(player: BattlePlayer) -> void:
@@ -4238,31 +4238,31 @@ func _check_win_condition() -> void:
 		battle_state = State.DRAW
 		battle_state_changed.emit(State.DRAW)
 		if OS.is_debug_build():
-			print("[战斗] 🤝 平局！双方英雄生命同时归零！")
+			print("[战斗]  平局！双方英雄生命同时归零！")
 	# 敌方归0 → 己方胜利
 	elif player_opponent.hp <= 0:
 		battle_state = State.WON
 		battle_state_changed.emit(State.WON)
 		if OS.is_debug_build():
-			print("[战斗] 🎉 胜利！敌方英雄生命归零！")
+			print("[战斗]  胜利！敌方英雄生命归零！")
 	# 己方归0 → 己方失败
 	elif player_self.hp <= 0:
 		battle_state = State.LOST
 		battle_state_changed.emit(State.LOST)
 		if OS.is_debug_build():
-			print("[战斗] 💀 败北！己方英雄生命归零！")
+			print("[战斗]  败北！己方英雄生命归零！")
 	# ★ 敌方卡组+手牌+场地全空 → 己方胜利（卡组耗尽判负）
 	elif player_opponent.deck.is_empty() and player_opponent.hand.is_empty() and player_opponent.get_field_count() == 0:
 		battle_state = State.WON
 		battle_state_changed.emit(State.WON)
 		if OS.is_debug_build():
-			print("[战斗] 🎉 胜利！敌方卡组/手牌/场地全空，无力再战！")
+			print("[战斗]  胜利！敌方卡组/手牌/场地全空，无力再战！")
 	# ★ 己方卡组+手牌+场地全空 → 己方失败
 	elif player_self.deck.is_empty() and player_self.hand.is_empty() and player_self.get_field_count() == 0:
 		battle_state = State.LOST
 		battle_state_changed.emit(State.LOST)
 		if OS.is_debug_build():
-			print("[战斗] 💀 败北！己方卡组/手牌/场地全空，无力再战！")
+			print("[战斗]  败北！己方卡组/手牌/场地全空，无力再战！")
 
 
 # ===== 查询方法 =====

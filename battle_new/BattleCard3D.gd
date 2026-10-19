@@ -61,21 +61,21 @@ func _update_labels() -> void:
 	# 四角布局
 	var elem_icon := ""
 	match element:
-		"火": elem_icon = "🔥"
-		"水": elem_icon = "💧"
-		"风": elem_icon = "🌪"
-		"地": elem_icon = "⛰"
-		"光": elem_icon = "✨"
-		"暗": elem_icon = "🌑"
+		"火": elem_icon = ""
+		"水": elem_icon = ""
+		"风": elem_icon = ""
+		"地": elem_icon = ""
+		"光": elem_icon = ""
+		"暗": elem_icon = ""
 		_: elem_icon = ""
 	_elem_lbl.text = elem_icon
-	_cost_lbl.text = "⚡" + str(cost)
+	_cost_lbl.text = "" + str(cost)
 	# 中间三行拆开：卡名 / 字段 / 效果数（和老2D战斗界面一致）
 	_center_lbl.text = card_name
 	var fields: Array = card_data.get("fields", [])
 	if _fields_lbl:
 		if fields.size() > 0:
-			_fields_lbl.text = "📖" + "|".join(fields)
+			_fields_lbl.text = "" + "|".join(fields)
 			_fields_lbl.visible = true
 		else:
 			_fields_lbl.text = ""
@@ -83,13 +83,13 @@ func _update_labels() -> void:
 	var effects: Array = card_data.get("effects", [])
 	if _effects_lbl:
 		if effects.size() > 0:
-			_effects_lbl.text = "📜" + str(effects.size()) + "效果"
+			_effects_lbl.text = "" + str(effects.size()) + "效果"
 			_effects_lbl.visible = true
 		else:
 			_effects_lbl.text = ""
 			_effects_lbl.visible = false
-	_atk_lbl.text = "⚔" + str(atk)
-	_hp_lbl.text = "❤" + str(hp_val)
+	_atk_lbl.text = "" + str(atk)
+	_hp_lbl.text = "" + str(hp_val)
 
 
 func set_face_up(mat: StandardMaterial3D = null) -> void:

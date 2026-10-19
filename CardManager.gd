@@ -53,7 +53,7 @@ func _clean_invalid_deck_ids() -> void:
 	if changed:
 		SaveManager.set_value("player", "decks", decks)
 		SaveManager.save_to_disk()
-		print("[CardManager] ✅ 卡组残留失效ID清理完成")
+		print("[CardManager]  卡组残留失效ID清理完成")
 	else:
 		print("[CardManager] 卡组检查：无残留失效ID，无需清理")
 
@@ -88,13 +88,13 @@ func _check_import_starter() -> void:
 	var starter_cards = player_data.get("cards", [])
 	if starter_cards.size() > 0:
 		SaveManager.set_value(STORAGE_SECTION, STORAGE_KEY, starter_cards)
-		print("[CardManager] ✅ 导入新手卡组卡牌: ", starter_cards.size(), " 张")
+		print("[CardManager]  导入新手卡组卡牌: ", starter_cards.size(), " 张")
 	
 	# 导入牌组
 	var starter_decks = player_data.get("decks", {})
 	if starter_decks.size() > 0:
 		SaveManager.set_value(STORAGE_SECTION, DECK_KEY, starter_decks)
-		print("[CardManager] ✅ 导入新手牌组: ", starter_decks.size(), " 个")
+		print("[CardManager]  导入新手牌组: ", starter_decks.size(), " 个")
 	
 	# 初始化金币等
 	if not SaveManager.get_value(STORAGE_SECTION, "gold", 0) > 0:
@@ -105,7 +105,7 @@ func _check_import_starter() -> void:
 	
 	SaveManager.save_to_disk()
 	_starter_imported = true
-	print("[CardManager] 🎉 新手卡组导入完成！")
+	print("[CardManager]  新手卡组导入完成！")
 
 # ---------- 读取 ----------
 

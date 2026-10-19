@@ -255,7 +255,7 @@ func record_duel_win() -> Dictionary:
 		set_daily_duel_ladder_index(next_idx)
 		var reward = DAILY_DUEL_REWARDS[next_idx]
 		set_gold(get_gold() + reward)
-		ladder_step_completed.emit("⚔ 决斗场", next_idx + 1, reward, DAILY_DUEL_LADDER[next_idx])
+		ladder_step_completed.emit(" 决斗场", next_idx + 1, reward, DAILY_DUEL_LADDER[next_idx])
 		save_data()
 		var next_target = DAILY_DUEL_LADDER[next_idx + 1] if next_idx + 1 < DAILY_DUEL_LADDER.size() else -1
 		return {"completed": true, "reward": reward, "next_target": next_target, "next_idx": next_idx + 1}
@@ -366,7 +366,7 @@ func _get_daily_ladder_count(key_prefix: String) -> int:
 # ==================== 杀敌阶梯 ====================
 
 func record_kill() -> Dictionary:
-	return _record_daily_ladder("kill", "💀 杀敌")
+	return _record_daily_ladder("kill", " 杀敌")
 func get_kill_step() -> int:
 	return _get_daily_ladder_step("kill")
 func get_kill_target() -> int:
@@ -377,7 +377,7 @@ func get_kill_count() -> int:
 # ==================== 通关地图阶梯 ====================
 
 func record_map_clear() -> Dictionary:
-	return _record_daily_ladder("map_clear", "🗺️ 通关地图")
+	return _record_daily_ladder("map_clear", " 通关地图")
 func get_map_clear_step() -> int:
 	return _get_daily_ladder_step("map_clear")
 func get_map_clear_target() -> int:
@@ -388,7 +388,7 @@ func get_map_clear_count() -> int:
 # ==================== 制卡阶梯 ====================
 
 func record_craft() -> Dictionary:
-	return _record_daily_ladder("craft", "🃏 制卡")
+	return _record_daily_ladder("craft", " 制卡")
 func get_craft_step() -> int:
 	return _get_daily_ladder_step("craft")
 func get_craft_target() -> int:
@@ -488,7 +488,7 @@ func _update_guild_level() -> void:
 	set_data("guild", "level", new_level)
 	set_data("guild", "title", new_title)
 	if new_level > old_level:
-		print("[PlayerManager] 🎉 公会升级！Lv.", old_level, " → Lv.", new_level, " ", new_title)
+		print("[PlayerManager]  公会升级！Lv.", old_level, " → Lv.", new_level, " ", new_title)
 
 ## 获取下一级信息（用于界面显示）
 func get_next_guild_level_info() -> Dictionary:
@@ -557,7 +557,7 @@ func unlock_circuit(circuit_id: String) -> bool:
 	unlocked.append(circuit_id)
 	set_unlocked_circuits(unlocked)
 	save_data()
-	print("[PlayerManager] 🔓 解锁纹路：", circuit_id)
+	print("[PlayerManager]  解锁纹路：", circuit_id)
 	return true
 
 func get_unlocked_circuit_count() -> int:

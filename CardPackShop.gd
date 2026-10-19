@@ -68,7 +68,7 @@ func _ready():
 	# 金币显示
 	var gl := get_node_or_null("GoldLabel")
 	if gl is Label:
-		gl.text = "💰 " + Global.n2s(SaveManager.get_value("player", "gold", 0))
+		gl.text = "" + Global.n2s(SaveManager.get_value("player", "gold", 0))
 		Global.make_gold_legible(gl)
 	# 主题
 	Global.theme_changed.connect(_on_theme_changed)
@@ -134,7 +134,7 @@ func _build_pack_list():
 		iv.size_flags_horizontal=SIZE_EXPAND|SIZE_FILL; iv.size_flags_vertical=SIZE_EXPAND|SIZE_FILL; cp.add_child(iv)
 		# 第一排：卡包名 + 卡牌数量
 		var tr = HBoxContainer.new(); tr.size_flags_horizontal=SIZE_EXPAND|SIZE_FILL; tr.custom_minimum_size=Vector2(0,Global.ph(0.05)); iv.add_child(tr)
-		var nl = Label.new(); nl.text="🎴 "+pname; nl.add_theme_font_size_override("font_size",50)
+		var nl = Label.new(); nl.text=" "+pname; nl.add_theme_font_size_override("font_size",50)
 		nl.add_theme_color_override("font_color",Color("#d4b8e8")); nl.size_flags_horizontal=SIZE_EXPAND|SIZE_FILL; tr.add_child(nl)
 		var cl = Label.new(); cl.text="共 "+str(cc)+" 张"; cl.add_theme_font_size_override("font_size",35)
 		cl.add_theme_color_override("font_color",Color("#8a8aa0")); cl.vertical_alignment=VERTICAL_ALIGNMENT_CENTER; tr.add_child(cl)
@@ -147,7 +147,7 @@ func _build_pack_list():
 		var br=HBoxContainer.new(); br.size_flags_horizontal=SIZE_EXPAND|SIZE_FILL; br.size_flags_vertical=SIZE_EXPAND|SIZE_FILL
 		br.alignment=BoxContainer.ALIGNMENT_CENTER; br.custom_minimum_size=Vector2(0,Global.ph(0.07)); iv.add_child(br)
 		
-		var gb=Button.new(); gb.text="💰 100金币"; gb.add_theme_font_size_override("font_size",45)
+		var gb=Button.new(); gb.text=" 100金币"; gb.add_theme_font_size_override("font_size",45)
 		var gbs=StyleBoxFlat.new(); gbs.bg_color=Color("#2a1a3a"); gbs.border_width_left=2; gbs.border_width_right=2
 		gbs.border_width_top=2; gbs.border_width_bottom=2; gbs.border_color=Color("#f9d371")
 		gbs.corner_radius_top_left=12; gbs.corner_radius_top_right=12; gbs.corner_radius_bottom_left=12; gbs.corner_radius_bottom_right=12
@@ -158,7 +158,7 @@ func _build_pack_list():
 		gb.custom_minimum_size=Vector2(Global.pw(0.25),Global.ph(0.06)); gb.pressed.connect(_on_gold_open.bind(pid,pd)); br.add_child(gb)
 		
 		var sp=Control.new(); sp.custom_minimum_size=Vector2(Global.pw(0.04),0); br.add_child(sp)
-		var ab=Button.new(); ab.text="🎬 看广告"; ab.add_theme_font_size_override("font_size",45)
+		var ab=Button.new(); ab.text=" 看广告"; ab.add_theme_font_size_override("font_size",45)
 		var abs=StyleBoxFlat.new(); abs.bg_color=Color("#2a1a3a"); abs.border_width_left=2; abs.border_width_right=2
 		abs.border_width_top=2; abs.border_width_bottom=2; abs.border_color=Color("#6c9bcf")
 		abs.corner_radius_top_left=12; abs.corner_radius_top_right=12; abs.corner_radius_bottom_left=12; abs.corner_radius_bottom_right=12
@@ -202,7 +202,7 @@ func _build_theme_view():
 		if not themes.has(t): themes.append(t)
 	
 	# 主题标题
-	var hint = Label.new(); hint.text = "🌍 选择卡包主题"
+	var hint = Label.new(); hint.text = "选择卡包主题"
 	hint.add_theme_font_size_override("font_size", 52)
 	hint.add_theme_color_override("font_color", Color("#d4b8e8"))
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -235,14 +235,14 @@ func _build_theme_view():
 		iv.offset_left=Global.pw(0.03); iv.offset_right=Global.pw(-0.03); iv.offset_top=Global.ph(0.005); iv.offset_bottom=Global.ph(-0.005)
 		iv.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL; iv.size_flags_vertical = SIZE_EXPAND | SIZE_FILL; tp.add_child(iv)
 		var tr = HBoxContainer.new(); tr.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL; tr.custom_minimum_size = Vector2(0, Global.ph(0.05)); iv.add_child(tr)
-		var nl = Label.new(); nl.text = "🌍 " + tname; nl.add_theme_font_size_override("font_size", 55)
+		var nl = Label.new(); nl.text = "" + tname; nl.add_theme_font_size_override("font_size", 55)
 		nl.add_theme_color_override("font_color", Color("#f9d371")); nl.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL; tr.add_child(nl)
 		var cnt = 0
 		for p in packs:
 			if p.get("theme", "沧澜古界") == tname: cnt += 1
 		var cl = Label.new(); cl.text = str(cnt) + " 个卡包"; cl.add_theme_font_size_override("font_size", 38)
 		cl.add_theme_color_override("font_color", Color("#8a8aa0")); cl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER; tr.add_child(cl)
-		var dl = Label.new(); dl.text = "👆 点击进入 · 长按详情"
+		var dl = Label.new(); dl.text = "点击进入 · 长按详情"
 		dl.add_theme_font_size_override("font_size", 32)
 		dl.add_theme_color_override("font_color", Color("#6c9bcf")); dl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		dl.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL; tr.add_child(dl)
@@ -268,24 +268,24 @@ func _on_gold_open(pid: String, pd: Dictionary):
 	Global.play_sfx("click")
 	var gold = SaveManager.get_value("player", "gold", 0)
 	if gold < 100:
-		_show_popup("⚠️ 金币不足！", "需要100金币\n当前: "+Global.n2s(gold)+" 金币", Color("#FF5252")); return
+		_show_popup(" 金币不足！", "需要100金币\n当前: "+Global.n2s(gold)+" 金币", Color("#FF5252")); return
 	gold -= 100; SaveManager.set_value("player","gold",gold); SaveManager.save_to_disk(); _update_gold()
 	_do_open_pack(pid, pd)
 
 func _on_ad_open(pid: String, pd: Dictionary):
 	Global.play_sfx("click")
-	if _hj_ads==null: _show_popup("⚠️ 广告未初始化","请稍后再试",Color("#FF5252")); return
+	if _hj_ads==null: _show_popup(" 广告未初始化","请稍后再试",Color("#FF5252")); return
 	if _hj_ads.isRewardedAdReady():
-		_pending_pack_id=pid; _set_status("▶️ 播放广告中...",Color("#FFD700")); _hj_ads.showRewardedAd()
+		_pending_pack_id=pid; _set_status("▶ 播放广告中...",Color("#FFD700")); _hj_ads.showRewardedAd()
 	else:
 		_set_status("⏳ 广告加载中...",Color("#FFD700")); _hj_ads.loadRewardedAd()
 		_show_popup("⏳ 广告加载中","请稍后点击",Color("#FFD700"))
 
 func _do_open_pack(pid: String, pd: Dictionary):
 	var result = await Global.open_card_pack(pid, 3)
-	if result.has("error"): _show_popup("⚠️ 开包失败",result.error,Color("#FF5252")); return
+	if result.has("error"): _show_popup(" 开包失败",result.error,Color("#FF5252")); return
 	var picked = result.get("data",[])
-	if picked.size()==0: _show_popup("⚠️ 开包失败","未获得卡牌",Color("#FF5252")); return
+	if picked.size()==0: _show_popup(" 开包失败","未获得卡牌",Color("#FF5252")); return
 	for card in picked: CardManager.add_card(card)
 	
 	# 增加系列购买计数并检查解锁
@@ -334,7 +334,7 @@ func _show_pack_result(cards: Array, pd: Dictionary, unlock_result: Dictionary =
 	vbox.offset_left=Global.pw(0.03); vbox.offset_top=Global.ph(0.02); vbox.offset_right=Global.pw(-0.03); vbox.offset_bottom=Global.ph(-0.02)
 	panel.add_child(vbox)
 	
-	var tl=Label.new(); tl.text="🎉 开包成功！"; tl.add_theme_font_size_override("font_size",70)
+	var tl=Label.new(); tl.text=" 开包成功！"; tl.add_theme_font_size_override("font_size",70)
 	tl.add_theme_color_override("font_color",Color("#f9d371")); tl.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	tl.custom_minimum_size=Vector2(0,Global.ph(0.07)); vbox.add_child(tl)
 	var nl=Label.new(); nl.text=pname; nl.add_theme_font_size_override("font_size",45)
@@ -367,11 +367,11 @@ func _show_pack_result(cards: Array, pd: Dictionary, unlock_result: Dictionary =
 		var ql=Label.new(); ql.text=q; ql.add_theme_font_size_override("font_size",35)
 		ql.add_theme_color_override("font_color",_get_qc(q)); ql.custom_minimum_size=Vector2(Global.pw(0.08),0)
 		ql.vertical_alignment=VERTICAL_ALIGNMENT_CENTER; ql.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER; hbox.add_child(ql)
-		var stl=Label.new(); stl.text="⚔"+str(atk)+" ❤"+str(hp); stl.add_theme_font_size_override("font_size",35)
+		var stl=Label.new(); stl.text=""+str(atk)+" "+str(hp); stl.add_theme_font_size_override("font_size",35)
 		stl.add_theme_color_override("font_color",Color("#a0a0b0")); stl.custom_minimum_size=Vector2(Global.pw(0.15),0)
 		stl.vertical_alignment=VERTICAL_ALIGNMENT_CENTER; stl.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT; hbox.add_child(stl)
 	
-	var hl=Label.new(); hl.text="💡 长按卡牌查看详情\n点击任意处关闭"; hl.add_theme_font_size_override("font_size",35)
+	var hl=Label.new(); hl.text=" 长按卡牌查看详情\n点击任意处关闭"; hl.add_theme_font_size_override("font_size",35)
 	hl.add_theme_color_override("font_color",Color("#5a5a6e")); hl.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	hl.custom_minimum_size=Vector2(0,Global.ph(0.06)); vbox.add_child(hl)
 	
@@ -443,7 +443,7 @@ func _show_unlock_notification(unlock_result: Dictionary):
 	
 	# 标题
 	var title = Label.new()
-	title.text = "🎉 解锁新内容！"
+	title.text = "解锁新内容！"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 60)
 	title.add_theme_color_override("font_color", Color("#f9d371"))
@@ -671,7 +671,7 @@ func _show_theme_detail(tname:String)->void:
 			if not panel.get_rect().has_point(mp): overlay.queue_free()
 	)
 	# 标题
-	var title=Label.new(); title.text="🌍 "+tname
+	var title=Label.new(); title.text=" "+tname
 	title.add_theme_font_size_override("font_size",52); title.add_theme_color_override("font_color",Color("#f9d371"))
 	title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	title.anchor_left=0.0; title.anchor_top=0.0; title.anchor_right=1.0; title.anchor_bottom=0.0
@@ -700,7 +700,7 @@ func _show_theme_detail(tname:String)->void:
 	dl.size_flags_horizontal=Control.SIZE_EXPAND|Control.SIZE_FILL
 	dl.custom_minimum_size=Vector2(Global.pw(0.74),0); scroll.add_child(dl)
 	# 🌐 查看更多按钮（跳转官网系列页）
-	var more=Button.new(); more.text="🌐 查看更多"
+	var more=Button.new(); more.text=" 查看更多"
 	more.add_theme_font_size_override("font_size",38); more.add_theme_color_override("font_color",Color("#6c9bcf"))
 	var ms=StyleBoxFlat.new(); ms.bg_color=Color(0.15,0.2,0.35,0.9)
 	ms.border_width_left=2; ms.border_width_right=2; ms.border_width_top=2; ms.border_width_bottom=2; ms.border_color=Color(0.42,0.6,0.81,0.8)
@@ -712,7 +712,7 @@ func _show_theme_detail(tname:String)->void:
 	more.pressed.connect(func(): _on_theme_more_pressed(tname))
 	panel.add_child(more)
 	# 关闭按钮
-	var close=Button.new(); close.text="✕ 关闭"
+	var close=Button.new(); close.text=" 关闭"
 	close.add_theme_font_size_override("font_size",38); close.add_theme_color_override("font_color",Color("#a0a0b0"))
 	var cs=StyleBoxFlat.new(); cs.bg_color=Color(0.2,0.12,0.2,0.9)
 	cs.corner_radius_top_left=12; cs.corner_radius_top_right=12; cs.corner_radius_bottom_left=12; cs.corner_radius_bottom_right=12
@@ -749,7 +749,7 @@ func _on_theme_more_pressed(tname:String)->void:
 	msg.anchor_left=0.0; msg.anchor_top=0.0; msg.anchor_right=1.0; msg.anchor_bottom=1.0
 	msg.offset_left=Global.pw(0.03); msg.offset_top=Global.ph(0.02); msg.offset_right=Global.pw(-0.03); msg.offset_bottom=Global.ph(-0.09)
 	panel.add_child(msg)
-	var ok=Button.new(); ok.text="✓ 打开网页"
+	var ok=Button.new(); ok.text=" 打开网页"
 	ok.add_theme_font_size_override("font_size",36); ok.add_theme_color_override("font_color",Color("#e8d5b7"))
 	var oks=StyleBoxFlat.new(); oks.bg_color=Color(0.25,0.15,0.4,0.9)
 	oks.corner_radius_top_left=12; oks.corner_radius_top_right=12; oks.corner_radius_bottom_left=12; oks.corner_radius_bottom_right=12
@@ -762,7 +762,7 @@ func _on_theme_more_pressed(tname:String)->void:
 		OS.shell_open(url)
 	)
 	panel.add_child(ok)
-	var cancel=Button.new(); cancel.text="✕ 取消"
+	var cancel=Button.new(); cancel.text=" 取消"
 	cancel.add_theme_font_size_override("font_size",36); cancel.add_theme_color_override("font_color",Color("#a0a0b0"))
 	var ccs=StyleBoxFlat.new(); ccs.bg_color=Color(0.2,0.12,0.2,0.9)
 	ccs.corner_radius_top_left=12; ccs.corner_radius_top_right=12; ccs.corner_radius_bottom_left=12; ccs.corner_radius_bottom_right=12
@@ -799,7 +799,7 @@ func _show_pack_detail(pd:Dictionary, pid:String="")->void:
 	panel.offset_right=Global.pw(-0.10); panel.offset_bottom=Global.ph(0.88)
 	overlay.add_child(panel)
 	# 关闭按钮（右上角，参考墓地弹窗的切换按钮位置）
-	var close_btn=Button.new(); close_btn.text="✕"
+	var close_btn=Button.new(); close_btn.text=""
 	close_btn.add_theme_font_size_override("font_size",40); close_btn.add_theme_color_override("font_color",Color("#a0a0b0"))
 	var cbs=StyleBoxFlat.new(); cbs.bg_color=Color(0.2,0.1,0.3,0.8); cbs.corner_radius_top_left=50; cbs.corner_radius_top_right=50
 	cbs.corner_radius_bottom_left=50; cbs.corner_radius_bottom_right=50; cbs.content_margin_left=8; cbs.content_margin_right=8
@@ -811,7 +811,7 @@ func _show_pack_detail(pd:Dictionary, pid:String="")->void:
 	close_btn.mouse_filter=Control.MOUSE_FILTER_STOP
 	overlay.add_child(close_btn)
 	# 标题
-	var title=Label.new(); title.text="🎴 "+pname
+	var title=Label.new(); title.text=" "+pname
 	title.add_theme_font_size_override("font_size",50); title.add_theme_color_override("font_color",Color("#f9d371"))
 	title.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	title.anchor_left=0.0; title.anchor_top=0.0; title.anchor_right=1.0; title.anchor_bottom=0.0
@@ -844,7 +844,7 @@ func _show_pack_detail(pd:Dictionary, pid:String="")->void:
 	scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_AUTO; scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
 	panel.add_child(scroll)
 	# 查看更多按钮（底部，点击跳转浏览器打开对应卡包的官网/wiki页）
-	var more_btn=Button.new(); more_btn.text="🌐 查看更多"
+	var more_btn=Button.new(); more_btn.text=" 查看更多"
 	more_btn.add_theme_font_size_override("font_size",36); more_btn.add_theme_color_override("font_color",Color("#e8d5b7"))
 	var mbs=StyleBoxFlat.new(); mbs.bg_color=Color(0.25,0.15,0.4,0.9)
 	mbs.corner_radius_top_left=12; mbs.corner_radius_top_right=12; mbs.corner_radius_bottom_left=12; mbs.corner_radius_bottom_right=12
@@ -880,7 +880,7 @@ func _show_pack_detail(pd:Dictionary, pid:String="")->void:
 		var ql=Label.new(); ql.text=q; ql.add_theme_font_size_override("font_size",33)
 		ql.add_theme_color_override("font_color",_get_qc(q)); ql.custom_minimum_size=Vector2(Global.pw(0.08),0)
 		ql.vertical_alignment=VERTICAL_ALIGNMENT_CENTER; ql.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER; hbox.add_child(ql)
-		var stl=Label.new(); stl.text="⚔"+str(atk)+" ❤"+str(hp); stl.add_theme_font_size_override("font_size",33)
+		var stl=Label.new(); stl.text=""+str(atk)+" "+str(hp); stl.add_theme_font_size_override("font_size",33)
 		stl.add_theme_color_override("font_color",Color("#a0a0b0")); stl.custom_minimum_size=Vector2(Global.pw(0.15),0)
 		stl.vertical_alignment=VERTICAL_ALIGNMENT_CENTER; stl.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT; hbox.add_child(stl)
 func _show_card_detail(card:Dictionary)->void:
@@ -890,9 +890,9 @@ func _show_card_detail(card:Dictionary)->void:
 ## "查看更多"按钮点击 → 弹确认框 → 确认后跳浏览器打开对应卡包官网/wiki页
 func _on_pack_more_pressed(pid:String, pname:String)->void:
 	if pid=="":
-		_show_popup("⚠️ 无法打开","未找到卡包标识",Color("#FF5252")); return
+		_show_popup(" 无法打开","未找到卡包标识",Color("#FF5252")); return
 	if not PACK_WIKI_MAP.has(pid):
-		_show_popup("⚠️ 无法打开","该卡包暂无线上详情页",Color("#FF5252")); return
+		_show_popup(" 无法打开","该卡包暂无线上详情页",Color("#FF5252")); return
 	var url=OFFICIAL_BASE_URL+PACK_WIKI_MAP[pid]
 	# 确认弹窗遮罩
 	var overlay=ColorRect.new(); overlay.name="WebJumpConfirmOverlay"
@@ -919,7 +919,7 @@ func _on_pack_more_pressed(pid:String, pname:String)->void:
 	msg.offset_left=Global.pw(0.03); msg.offset_top=Global.ph(0.02); msg.offset_right=Global.pw(-0.03); msg.offset_bottom=Global.ph(-0.09)
 	panel.add_child(msg)
 	# 确认按钮
-	var ok=Button.new(); ok.text="✓ 打开网页"
+	var ok=Button.new(); ok.text=" 打开网页"
 	ok.add_theme_font_size_override("font_size",36); ok.add_theme_color_override("font_color",Color("#e8d5b7"))
 	var oks=StyleBoxFlat.new(); oks.bg_color=Color(0.25,0.15,0.4,0.9)
 	oks.corner_radius_top_left=12; oks.corner_radius_top_right=12; oks.corner_radius_bottom_left=12; oks.corner_radius_bottom_right=12
@@ -933,7 +933,7 @@ func _on_pack_more_pressed(pid:String, pname:String)->void:
 	)
 	panel.add_child(ok)
 	# 取消按钮
-	var cancel=Button.new(); cancel.text="✕ 取消"
+	var cancel=Button.new(); cancel.text=" 取消"
 	cancel.add_theme_font_size_override("font_size",36); cancel.add_theme_color_override("font_color",Color("#a0a0b0"))
 	var ccs=StyleBoxFlat.new(); ccs.bg_color=Color(0.2,0.12,0.2,0.9)
 	ccs.corner_radius_top_left=12; ccs.corner_radius_top_right=12; ccs.corner_radius_bottom_left=12; ccs.corner_radius_bottom_right=12
@@ -944,26 +944,26 @@ func _on_pack_more_pressed(pid:String, pname:String)->void:
 	cancel.pressed.connect(func(): if is_instance_valid(overlay): overlay.queue_free())
 	panel.add_child(cancel)
 
-func _on_ad_loaded(_pid:String): _set_status("✅ 广告已就绪",Color("#4CAF50"))
+func _on_ad_loaded(_pid:String): _set_status(" 广告已就绪",Color("#4CAF50"))
 func _on_video_rewarded(rewarded:bool):
-	if not rewarded: _set_status("⏳ 广告未完整播放",Color("#FF5252")); _show_popup("⚠️ 广告未完整播放","下次请看完哦",Color("#FF5252")); return
+	if not rewarded: _set_status("⏳ 广告未完整播放",Color("#FF5252")); _show_popup(" 广告未完整播放","下次请看完哦",Color("#FF5252")); return
 	if _pending_pack_id=="": return
-	_set_status("✅ 广告播放完成，开包中...",Color("#4CAF50"))
+	_set_status(" 广告播放完成，开包中...",Color("#4CAF50"))
 	var pd={}
 	for pack in Global.server_card_packs:
 		if pack.get("pack_id","")==_pending_pack_id: pd=pack.get("pack_data",{}); break
 	_do_open_pack(_pending_pack_id,pd); _pending_pack_id=""
 func _on_ad_closed(_result:String):
-	_set_status("✅ 广告已关闭",Color("#4CAF50"))
+	_set_status(" 广告已关闭",Color("#4CAF50"))
 	await get_tree().create_timer(1.0).timeout; _hj_ads.loadRewardedAd()
 func _on_ad_failed(err:String):
-	_set_status("⚠ 广告加载失败",Color("#FF5252"))
+	_set_status(" 广告加载失败",Color("#FF5252"))
 	# 不弹 Popup 报错——避免审核员在断网环境下看到"报错"而被判定为联网功能异常
 
 func _update_gold():
 	var gl=get_node_or_null("GoldLabel")
 	if gl:
-		gl.text="💰 "+Global.n2s(SaveManager.get_value("player","gold",0))
+		gl.text=" "+Global.n2s(SaveManager.get_value("player","gold",0))
 		Global.make_gold_legible(gl)
 func _set_status(t:String,c:Color):
 	var sl=get_node_or_null("StatusLabel")

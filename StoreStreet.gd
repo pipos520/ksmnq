@@ -20,7 +20,7 @@ func _ready():
 	# 更新金币
 	var gold_label := get_node_or_null("GoldLabel")
 	if gold_label is Label:
-		gold_label.text = "💰 " + Global.n2s(SaveManager.get_value("player", "gold", 0))
+		gold_label.text = "" + Global.n2s(SaveManager.get_value("player", "gold", 0))
 		Global.make_gold_legible(gold_label)
 	Global.theme_changed.connect(_on_theme_changed)
 	call_deferred("_apply_theme_styles")
@@ -98,7 +98,7 @@ func _maybe_show_street_tour() -> void:
 func _show_street_tour_dialogue() -> void:
 	var popup = preload("res://TutorialDialoguePopup.gd").new()
 	popup.setup([
-		{"speaker": "老陈", "text": "这条街叫商店街，是卡师们买卖的地方。左边【📦素材商店】补制作材料，右边【🎁卡包商店】碰碰手气。"},
+		{"speaker": "老陈", "text": "这条街叫商店街，是卡师们买卖的地方。左边【素材商店】补制作材料，右边【卡包商店】碰碰手气。"},
 		{"speaker": "你", "text": "素材店和卡包店……都在这条街？"},
 		{"speaker": "老陈", "text": "手头紧的时候，先逛逛素材店买点便宜料子，做出来的卡也能换俩钱。你先自己逛逛，熟悉一下环境。"},
 	], func():

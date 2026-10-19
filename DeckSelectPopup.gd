@@ -70,7 +70,7 @@ func _ready():
 	# 标题
 	var title = Label.new()
 	title.name = "Title"
-	title.text = "📋 选择卡组"
+	title.text = "选择卡组"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 60)
 	title.add_theme_color_override("font_color", Color("#f9d371"))
@@ -108,7 +108,7 @@ func _ready():
 	# 「我的卡组 / 已租卡组」切换按钮
 	var switch_btn = Button.new()
 	switch_btn.name = "SwitchModeBtn"
-	switch_btn.text = "🔄 已租卡组"
+	switch_btn.text = "已租卡组"
 	switch_btn.add_theme_font_size_override("font_size", 36)
 	switch_btn.add_theme_color_override("font_color", Color("#6c9bcf"))
 	var sws = StyleBoxFlat.new(); sws.bg_color = Color(0.1, 0.16, 0.24, 0.9)
@@ -144,7 +144,7 @@ func _ready():
 	
 	# 取消按钮
 	var cancel_btn = Button.new()
-	cancel_btn.text = "✖ 取消"
+	cancel_btn.text = "取消"
 	cancel_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color(0.2, 0.15, 0.25)
@@ -164,7 +164,7 @@ func _ready():
 	# 确认按钮
 	var confirm_btn = Button.new()
 	confirm_btn.name = "ConfirmBtn"
-	confirm_btn.text = "✅ 确认出发"
+	confirm_btn.text = "确认出发"
 	confirm_btn.add_theme_font_size_override("font_size", 45)
 	confirm_btn.disabled = true
 	var cfs = StyleBoxFlat.new()
@@ -198,7 +198,7 @@ func _build_deck_list() -> void:
 		# ===== 我的卡组 =====
 		var decks = CardManager.get_all_decks()
 		if decks.size() == 0:
-			_add_empty_hint(vbox, "⚠️ 还没有卡组！\n请先去「卡组编辑」创建一套卡组")
+			_add_empty_hint(vbox, " 还没有卡组！\n请先去「卡组编辑」创建一套卡组")
 		else:
 			var all_cards = CardManager.get_all_cards()
 			for deck_id in decks:
@@ -218,7 +218,7 @@ func _build_deck_list() -> void:
 		# ===== 已租卡组 =====
 		var rented = Global.get_all_rented_decks()
 		if rented.is_empty():
-			_add_empty_hint(vbox, "⚠️ 还没有租借卡组！\n请先去「商店街 → 牌组租借」租一套")
+			_add_empty_hint(vbox, " 还没有租借卡组！\n请先去「商店街 → 牌组租借」租一套")
 		else:
 			var shown := 0
 			for rid in rented:
@@ -230,7 +230,7 @@ func _build_deck_list() -> void:
 				_create_rented_card(vbox, rid, rd.get("name", "租借卡组"), rd.get("cards", []).size(), dur)
 				shown += 1
 			if shown == 0:
-				_add_empty_hint(vbox, "⚠️ 租借卡组耐久不足\n（探索需 3 点耐久）")
+				_add_empty_hint(vbox, " 租借卡组耐久不足\n（探索需 3 点耐久）")
 
 func _add_empty_hint(vbox, text: String) -> void:
 	var empty_lbl = Label.new()
@@ -248,14 +248,14 @@ func _on_switch_mode() -> void:
 	_rented_mode = not _rented_mode
 	var btn = get_node_or_null("PopupPanel/MarginContainer/SwitchModeBtn")
 	if btn is Button:
-		btn.text = "🔄 我的卡组" if _rented_mode else "🔄 已租卡组"
+		btn.text = "我的卡组" if _rented_mode else " 已租卡组"
 	_build_deck_list()
 
 func _set_confirm_disabled(dis: bool) -> void:
 	var cb = get_node_or_null("PopupPanel/MarginContainer/BottomBtns/ConfirmBtn")
 	if cb is Button:
 		cb.disabled = dis
-		if dis: cb.text = "✅ 确认出发"
+		if dis: cb.text = "确认出发"
 
 # 已租卡组卡片
 func _create_rented_card(parent: VBoxContainer, rented_id: String, deck_name: String, card_count: int, durability: int) -> void:
@@ -276,7 +276,7 @@ func _create_rented_card(parent: VBoxContainer, rented_id: String, deck_name: St
 	card.set_meta("deck_name", deck_name)
 	# 名称
 	var name_lbl = Label.new()
-	name_lbl.text = "🃏 " + deck_name + "（租）"
+	name_lbl.text = "" + deck_name + "（租）"
 	name_lbl.add_theme_font_size_override("font_size", 45)
 	name_lbl.add_theme_color_override("font_color", Color("#a8d8ea"))
 	name_lbl.anchor_left = 0.0; name_lbl.anchor_top = 0.0; name_lbl.anchor_right = 0.0; name_lbl.anchor_bottom = 1.0
@@ -296,7 +296,7 @@ func _create_rented_card(parent: VBoxContainer, rented_id: String, deck_name: St
 	card.add_child(info_lbl)
 	# 选中标记
 	var check = Label.new()
-	check.name = "CheckMark"; check.text = "✅"
+	check.name = "CheckMark"; check.text = ""
 	check.add_theme_font_size_override("font_size", 40)
 	check.anchor_left = 1.0; check.anchor_top = 0.0; check.anchor_right = 1.0; check.anchor_bottom = 1.0
 	check.offset_left = Global.pw(-0.1); check.offset_right = Global.pw(-0.02)
@@ -331,7 +331,7 @@ func _create_deck_card(parent: VBoxContainer, deck_id: String, deck_name: String
 	
 	# 左侧：卡组名 + 张数
 	var name_lbl = Label.new()
-	name_lbl.text = "📚 " + deck_name
+	name_lbl.text = "" + deck_name
 	name_lbl.add_theme_font_size_override("font_size", 45)
 	name_lbl.add_theme_color_override("font_color", Color("#e8d5b7"))
 	name_lbl.anchor_left = 0.0; name_lbl.anchor_top = 0.0
@@ -357,7 +357,7 @@ func _create_deck_card(parent: VBoxContainer, deck_id: String, deck_name: String
 	# 选中标记（默认隐藏）
 	var check = Label.new()
 	check.name = "CheckMark"
-	check.text = "✅"
+	check.text = ""
 	check.add_theme_font_size_override("font_size", 40)
 	check.anchor_left = 1.0; check.anchor_top = 0.0
 	check.anchor_right = 1.0; check.anchor_bottom = 1.0
@@ -408,7 +408,7 @@ func _select_deck(card: Panel) -> void:
 	var confirm_btn = get_node_or_null("PopupPanel/MarginContainer/BottomBtns/ConfirmBtn")
 	if confirm_btn:
 		confirm_btn.disabled = false
-		confirm_btn.text = "✅ 进入"
+		confirm_btn.text = "进入"
 
 
 func _on_confirm() -> void:
@@ -419,13 +419,13 @@ func _on_confirm() -> void:
 	if _selected_rented_id != "":
 		var rd = Global.get_rented_deck(_selected_rented_id)
 		if rd.is_empty():
-			_show_toast("⚠️ 该租借卡组已失效")
+			_show_toast(" 该租借卡组已失效")
 			_build_deck_list()
 			return
 		var dur = int(rd.get("durability", 0))
 		var dur_cost = Global.RENT_DUR_COST_DUEL if _is_duel else Global.RENT_DUR_COST_EXPLORE
 		if dur < dur_cost:
-			_show_toast("⚠️ 耐久不足（剩 " + str(dur) + " 点，需 " + str(dur_cost) + " 点）")
+			_show_toast(" 耐久不足（剩 " + str(dur) + " 点，需 " + str(dur_cost) + " 点）")
 			_build_deck_list()
 			return
 		# 扣耐久 + 设置携带租借卡组

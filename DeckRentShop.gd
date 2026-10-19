@@ -36,7 +36,7 @@ func _on_theme_changed(_mode = null):
 func _update_gold():
 	var g = get_node_or_null("GoldLabel")
 	if g is Label:
-		g.text = "💰 " + Global.n2s(SaveManager.get_value("player", "gold", 0))
+		g.text = "" + Global.n2s(SaveManager.get_value("player", "gold", 0))
 		Global.make_gold_legible(g)
 
 func _set_status(t: String, c: Color):
@@ -71,7 +71,7 @@ func _build_list():
 	# 不设置 custom_minimum_size，让 VBox 自动适应 ScrollContainer 宽度（扣除滚动条）
 	vbox.add_theme_constant_override("separation", Global.ph(0.012)); scroll.add_child(vbox)
 
-	var hint = Label.new(); hint.text = "🃏 租借决斗场卡组 · 每次 +" + str(Global.RENTED_DECK_MAX_DURABILITY) + " 耐久（重复租借可叠加）· 仅用于对战"
+	var hint = Label.new(); hint.text = "租借决斗场卡组 · 每次 +" + str(Global.RENTED_DECK_MAX_DURABILITY) + " 耐久（重复租借可叠加）· 仅用于对战"
 	hint.add_theme_font_size_override("font_size", 40); hint.add_theme_color_override("font_color", Color("#d4b8e8"))
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -84,7 +84,7 @@ func _build_list():
 	vbox.add_child(filter_hbox)
 	# 搜索输入框
 	_search_input = LineEdit.new()
-	_search_input.placeholder_text = "🔍 搜索卡组名..."
+	_search_input.placeholder_text = " 搜索卡组名..."
 	_search_input.add_theme_font_size_override("font_size", 38)
 	_search_input.custom_minimum_size = Vector2(0, Global.ph(0.06))
 	_search_input.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
@@ -93,7 +93,7 @@ func _build_list():
 	filter_hbox.add_child(_search_input)
 	# 筛选按钮
 	var filter_btn = Button.new()
-	filter_btn.text = "🎯 筛选"
+	filter_btn.text = "筛选"
 	filter_btn.add_theme_font_size_override("font_size", 38)
 	var fbs = StyleBoxFlat.new()
 	fbs.bg_color = Color(0.15, 0.13, 0.20)
@@ -231,7 +231,7 @@ func _build_filter_popup_content(panel: Panel):
 	for s in series_list:
 		var btn = Button.new()
 		var is_sel = (_filter_series == s.id)
-		btn.text = ("✓ " if is_sel else "") + s.name
+		btn.text = (" " if is_sel else "") + s.name
 		btn.add_theme_font_size_override("font_size", 38)
 		var bs = StyleBoxFlat.new()
 		bs.bg_color = Color(0.2, 0.17, 0.26) if not is_sel else Color(0.3, 0.25, 0.15)
@@ -304,7 +304,7 @@ func _show_deck_detail(dd: Dictionary, dname: String):
 	panel.offset_right = Global.pw(-0.06); panel.offset_bottom = Global.ph(0.90)
 	overlay.add_child(panel)
 	# 关闭按钮
-	var close_btn = Button.new(); close_btn.text = "✕"
+	var close_btn = Button.new(); close_btn.text = ""
 	close_btn.add_theme_font_size_override("font_size", 40)
 	close_btn.add_theme_color_override("font_color", Color("#a0a0b0"))
 	var cbs = StyleBoxFlat.new()
@@ -322,7 +322,7 @@ func _show_deck_detail(dd: Dictionary, dname: String):
 	close_btn.mouse_filter = Control.MOUSE_FILTER_STOP
 	overlay.add_child(close_btn)
 	# 标题
-	var title = Label.new(); title.text = "🃏 " + dname
+	var title = Label.new(); title.text = "" + dname
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Color("#f9d371"))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -377,7 +377,7 @@ func _show_deck_detail(dd: Dictionary, dname: String):
 		hbox.size_flags_vertical = SIZE_EXPAND | SIZE_FILL
 		row.add_child(hbox)
 		var cl = Label.new()
-		cl.text = "⚡" + str(cost)
+		cl.text = "" + str(cost)
 		cl.add_theme_font_size_override("font_size", 32)
 		cl.add_theme_color_override("font_color", Color("#f9d371"))
 		cl.custom_minimum_size = Vector2(Global.pw(0.08), 0)
@@ -391,7 +391,7 @@ func _show_deck_detail(dd: Dictionary, dname: String):
 		nvl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		hbox.add_child(nvl)
 		var stl = Label.new()
-		stl.text = "⚔" + str(atk) + " ❤" + str(hp)
+		stl.text = "" + str(atk) + " " + str(hp)
 		stl.add_theme_font_size_override("font_size", 32)
 		stl.add_theme_color_override("font_color", Color("#a0a0b0"))
 		stl.custom_minimum_size = Vector2(Global.pw(0.15), 0)
@@ -446,7 +446,7 @@ func _build_row(vbox, dd: Dictionary, dname: String, cc: int, owned_dur: int = -
 	tr.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 	tr.custom_minimum_size = Vector2(0, Global.ph(0.055))
 	iv.add_child(tr)
-	var nl = Label.new(); nl.text = "🃏 " + dname
+	var nl = Label.new(); nl.text = "" + dname
 	nl.add_theme_font_size_override("font_size", 50); nl.add_theme_color_override("font_color", Color("#e8d5b7"))
 	nl.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 	tr.add_child(nl)
@@ -470,7 +470,7 @@ func _build_row(vbox, dd: Dictionary, dname: String, cc: int, owned_dur: int = -
 	br.custom_minimum_size = Vector2(0, Global.ph(0.065))
 	iv.add_child(br)
 	# 金币按钮
-	var gb = Button.new(); gb.text = "💰 " + str(Global.RENT_COST_GOLD)
+	var gb = Button.new(); gb.text = "" + str(Global.RENT_COST_GOLD)
 	gb.add_theme_font_size_override("font_size", 42); gb.add_theme_color_override("font_color", Color("#f9d371"))
 	var gbs = StyleBoxFlat.new(); gbs.bg_color = Color(0.2, 0.16, 0.08, 0.9)
 	gbs.corner_radius_top_left = 10; gbs.corner_radius_top_right = 10; gbs.corner_radius_bottom_left = 10; gbs.corner_radius_bottom_right = 10
@@ -482,7 +482,7 @@ func _build_row(vbox, dd: Dictionary, dname: String, cc: int, owned_dur: int = -
 	# 间隔
 	var sp = Control.new(); sp.custom_minimum_size = Vector2(Global.pw(0.04), 0); br.add_child(sp)
 	# 广告按钮
-	var ab = Button.new(); ab.text = "🎬 广告"
+	var ab = Button.new(); ab.text = "广告"
 	ab.add_theme_font_size_override("font_size", 42); ab.add_theme_color_override("font_color", Color("#6c9bcf"))
 	var abs_ = StyleBoxFlat.new(); abs_.bg_color = Color(0.1, 0.16, 0.24, 0.9)
 	abs_.corner_radius_top_left = 10; abs_.corner_radius_top_right = 10; abs_.corner_radius_bottom_left = 10; abs_.corner_radius_bottom_right = 10
@@ -499,7 +499,7 @@ func _rent_with_gold(dd: Dictionary):
 	Global.play_sfx("click")
 	var gold = SaveManager.get_value("player", "gold", 0)
 	if gold < Global.RENT_COST_GOLD:
-		_set_status("⚠️ 金币不足！需要 " + str(Global.RENT_COST_GOLD) + " 金币", Color("#FF5252")); return
+		_set_status(" 金币不足！需要 " + str(Global.RENT_COST_GOLD) + " 金币", Color("#FF5252")); return
 	gold -= Global.RENT_COST_GOLD
 	SaveManager.set_value("player", "gold", gold); SaveManager.save_to_disk()
 	_update_gold()
@@ -507,9 +507,9 @@ func _rent_with_gold(dd: Dictionary):
 
 func _rent_with_ad(dd: Dictionary):
 	Global.play_sfx("click")
-	if _hj_ads == null: _set_status("⚠️ 广告未初始化", Color("#FF5252")); return
+	if _hj_ads == null: _set_status(" 广告未初始化", Color("#FF5252")); return
 	if _hj_ads.isRewardedAdReady():
-		_pending_rent_deck = dd; _set_status("▶️ 播放广告中...", Color("#FFD700")); _hj_ads.showRewardedAd()
+		_pending_rent_deck = dd; _set_status("▶ 播放广告中...", Color("#FFD700")); _hj_ads.showRewardedAd()
 	else:
 		_set_status("⏳ 广告加载中，请稍候", Color("#FFD700")); _hj_ads.loadRewardedAd()
 
@@ -517,18 +517,18 @@ func _do_rent(dd: Dictionary):
 	var r = Global.rent_deck(dd)
 	var dname = dd.get("name", "")
 	if not r.get("ok", false):
-		_set_status("⚠️ " + str(r.get("reason", "租借失败")), Color("#FF5252")); return
+		_set_status(" " + str(r.get("reason", "租借失败")), Color("#FF5252")); return
 	if r.get("reason", "") == "已叠加":
-		_set_status("✅ 「" + dname + "」耐久 +" + str(Global.RENTED_DECK_MAX_DURABILITY) + " → 共 " + str(r.get("durability", 0)) + " 点", Color("#4CAF50"))
+		_set_status(" 「" + dname + "」耐久 +" + str(Global.RENTED_DECK_MAX_DURABILITY) + " → 共 " + str(r.get("durability", 0)) + " 点", Color("#4CAF50"))
 	else:
-		_set_status("✅ 已租借「" + dname + "」耐久 " + str(r.get("durability", 0)) + " 点", Color("#4CAF50"))
+		_set_status(" 已租借「" + dname + "」耐久 " + str(r.get("durability", 0)) + " 点", Color("#4CAF50"))
 	# 刷新列表（已租耐久立即可见）
 	_rebuild_list()
 
 # ============================================================
 #  广告回调
 # ============================================================
-func _on_ad_loaded(_pid: String): _set_status("✅ 广告已就绪", Color("#4CAF50"))
+func _on_ad_loaded(_pid: String): _set_status(" 广告已就绪", Color("#4CAF50"))
 func _on_video_rewarded(rewarded: bool):
 	if not rewarded:
 		_set_status("⏳ 广告未完整播放", Color("#FF5252")); return
@@ -537,4 +537,4 @@ func _on_video_rewarded(rewarded: bool):
 func _on_ad_closed(_r: String):
 	await get_tree().create_timer(1.0).timeout
 	if _hj_ads: _hj_ads.loadRewardedAd()
-func _on_ad_failed(_e = null): _set_status("⚠️ 广告加载失败", Color("#FF5252"))
+func _on_ad_failed(_e = null): _set_status(" 广告加载失败", Color("#FF5252"))

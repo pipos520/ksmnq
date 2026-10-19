@@ -73,7 +73,7 @@ offset_top = 0
 offset_right = 0
 offset_bottom = 0
 vertical_alignment = 1
-text = "❤️ 100/100"
+text = "100/100"
 theme_override_font_sizes/font_size = 40
 theme_override_colors/font_color = Color(0.91, 0.3, 0.24, 1.0)
 
@@ -88,7 +88,7 @@ offset_top = 0
 offset_right = 0
 offset_bottom = 0
 vertical_alignment = 1
-text = "⚡ 3/5"
+text = "3/5"
 theme_override_font_sizes/font_size = 40
 theme_override_colors/font_color = Color(0.98, 0.83, 0.44, 1.0)
 
@@ -105,7 +105,7 @@ anchor_right = 0.5
 anchor_top = 0.09
 anchor_bottom = 0.12
 vertical_alignment = 1
-text = "📋 敌方手牌"
+text = "敌方手牌"
 theme_override_font_sizes/font_size = 50
 theme_override_colors/font_color = Color(0.6, 0.5, 0.7, 0.6)
 
@@ -135,7 +135,7 @@ offset_left = 0
 offset_top = 9.6
 offset_right = 0
 offset_bottom = -9.6
-text = "📜\n0"
+text = "\n0"
 theme_override_font_sizes/font_size = 50
 
 [node name="EnemyDeck" type="Button" parent="."]
@@ -148,7 +148,7 @@ offset_left = 0
 offset_top = 9.6
 offset_right = 0
 offset_bottom = -9.6
-text = "📚\n30"
+text = "\n30"
 theme_override_font_sizes/font_size = 50
 disabled = true
 
@@ -162,7 +162,7 @@ offset_left = 0
 offset_top = 9.6
 offset_right = 0
 offset_bottom = -9.6
-text = "🌀\n0"
+text = "\n0"
 theme_override_font_sizes/font_size = 50
 
 [node name="EnemySlot_0" type="Button" parent="."]
@@ -652,7 +652,7 @@ offset_top = 0
 offset_right = 0
 offset_bottom = 0
 vertical_alignment = 1
-text = "⚔ 主要阶段"
+text = "主要阶段"
 theme_override_font_sizes/font_size = 50
 theme_override_colors/font_color = Color(0.91, 0.84, 0.72, 1.0)
 
@@ -682,7 +682,7 @@ offset_left = 0
 offset_top = 9.6
 offset_right = 0
 offset_bottom = -9.6
-text = "📜\n0"
+text = "\n0"
 theme_override_font_sizes/font_size = 50
 
 [node name="PlayerDeck" type="Button" parent="."]
@@ -695,7 +695,7 @@ offset_left = 0
 offset_top = 9.6
 offset_right = 0
 offset_bottom = -9.6
-text = "📚\n30"
+text = "\n30"
 theme_override_font_sizes/font_size = 50
 disabled = true
 
@@ -709,7 +709,7 @@ offset_left = 0
 offset_top = 9.6
 offset_right = 0
 offset_bottom = -9.6
-text = "🌀\n0"
+text = "\n0"
 theme_override_font_sizes/font_size = 50
 
 [node name="HandArea" type="ColorRect" parent="."]
@@ -725,7 +725,7 @@ anchor_right = 0.5
 anchor_top = 0.62
 anchor_bottom = 0.65
 vertical_alignment = 1
-text = "📋 手牌"
+text = "手牌"
 theme_override_font_sizes/font_size = 50
 theme_override_colors/font_color = Color(0.6, 0.5, 0.7, 0.6)
 
@@ -789,7 +789,7 @@ offset_top = 0
 offset_right = 0
 offset_bottom = 0
 vertical_alignment = 1
-text = "❤️ 100/100"
+text = "100/100"
 theme_override_font_sizes/font_size = 40
 theme_override_colors/font_color = Color(0.91, 0.3, 0.24, 1.0)
 
@@ -804,7 +804,7 @@ offset_top = 0
 offset_right = 0
 offset_bottom = 0
 vertical_alignment = 1
-text = "⚡ 3/5"
+text = "3/5"
 theme_override_font_sizes/font_size = 40
 theme_override_colors/font_color = Color(0.98, 0.83, 0.44, 1.0)
 

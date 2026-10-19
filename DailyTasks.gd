@@ -22,13 +22,13 @@ func _ready():
 
 	# ===== 每日阶梯任务（动态生成）=====
 	var ladder_y = 0.12
-	_add_daily_ladder_card(ladder_y, "⚔ 决斗场", PlayerManager.get_current_duel_ladder_step(), PlayerManager.get_daily_duel_wins(), PlayerManager.DAILY_DUEL_LADDER, PlayerManager.DAILY_DUEL_REWARDS, Color("#FF6B6B"), "duel")
-	_add_daily_ladder_card(ladder_y + 0.16, "💀 杀敌", PlayerManager.get_kill_step(), PlayerManager.get_kill_count(), PlayerManager.DAILY_LADDER, PlayerManager.DAILY_LADDER_REWARDS, Color("#FF9800"), "kill")
-	_add_daily_ladder_card(ladder_y + 0.32, "🗺️ 通关地图", PlayerManager.get_map_clear_step(), PlayerManager.get_map_clear_count(), PlayerManager.DAILY_LADDER, PlayerManager.DAILY_LADDER_REWARDS, Color("#4FC3F7"), "map_clear")
-	_add_daily_ladder_card(ladder_y + 0.48, "🃏 制卡", PlayerManager.get_craft_step(), PlayerManager.get_craft_count(), PlayerManager.DAILY_LADDER, PlayerManager.DAILY_LADDER_REWARDS, Color("#81C784"), "craft")
+	_add_daily_ladder_card(ladder_y, " 决斗场", PlayerManager.get_current_duel_ladder_step(), PlayerManager.get_daily_duel_wins(), PlayerManager.DAILY_DUEL_LADDER, PlayerManager.DAILY_DUEL_REWARDS, Color("#FF6B6B"), "duel")
+	_add_daily_ladder_card(ladder_y + 0.16, " 杀敌", PlayerManager.get_kill_step(), PlayerManager.get_kill_count(), PlayerManager.DAILY_LADDER, PlayerManager.DAILY_LADDER_REWARDS, Color("#FF9800"), "kill")
+	_add_daily_ladder_card(ladder_y + 0.32, " 通关地图", PlayerManager.get_map_clear_step(), PlayerManager.get_map_clear_count(), PlayerManager.DAILY_LADDER, PlayerManager.DAILY_LADDER_REWARDS, Color("#4FC3F7"), "map_clear")
+	_add_daily_ladder_card(ladder_y + 0.48, " 制卡", PlayerManager.get_craft_step(), PlayerManager.get_craft_count(), PlayerManager.DAILY_LADDER, PlayerManager.DAILY_LADDER_REWARDS, Color("#81C784"), "craft")
 
 	PlayerManager.ladder_step_completed.connect(func(label: String, step: int, reward: int, target: int):
-		Global.show_global_toast("🎉 " + label + " 第" + str(step) + "阶完成！+" + str(reward) + "金币", Color("#FFD700"))
+		Global.show_global_toast(" " + label + " 第" + str(step) + "阶完成！+" + str(reward) + "金币", Color("#FFD700"))
 	)
 
 	# ===== 初始化广告 =====
@@ -63,7 +63,7 @@ func _ready():
 	add_child(ad_bar)
 
 	_ad_reset_btn = Button.new()
-	_ad_reset_btn.text = "🔄 看广告重置全部"
+	_ad_reset_btn.text = "看广告重置全部"
 	_ad_reset_btn.add_theme_font_size_override("font_size", 35)
 	var abs = StyleBoxFlat.new()
 	abs.bg_color = Color("#FF6B6B")
@@ -173,7 +173,7 @@ func _add_daily_ladder_card(top_y: float, label: String, step: int, count: int, 
 
 	var title = Label.new()
 	if step < 0:
-		title.text = "🎉 " + label + " — 全部完成！"
+		title.text = "" + label + " — 全部完成！"
 	else:
 		title.text = label
 	title.add_theme_font_size_override("font_size", 40)
@@ -217,7 +217,7 @@ func _add_daily_ladder_card(top_y: float, label: String, step: int, count: int, 
 		target_row.add_child(target_label)
 
 		var reward_label = Label.new()
-		reward_label.text = "🏆 +" + str(reward) + "金币"
+		reward_label.text = "+" + str(reward) + "金币"
 		reward_label.add_theme_font_size_override("font_size", 35)
 		reward_label.add_theme_color_override("font_color", Color("#FFD700"))
 		reward_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -225,7 +225,7 @@ func _add_daily_ladder_card(top_y: float, label: String, step: int, count: int, 
 
 		if reset_key != "":
 			var reset_btn = Button.new()
-			reset_btn.text = "🔄 重置"
+			reset_btn.text = "重置"
 			reset_btn.add_theme_font_size_override("font_size", 32)
 			var rbs = StyleBoxFlat.new()
 			rbs.bg_color = color
@@ -275,14 +275,14 @@ func _on_ladder_reset_pressed(reset_key: String) -> void:
 	Global.play_sfx("click")
 	if _hj_ads == null:
 		if _ad_status_label:
-			_ad_status_label.text = "⚠ 广告未初始化"
+			_ad_status_label.text = "广告未初始化"
 			_ad_status_label.add_theme_color_override("font_color", Color("#FF5252"))
 		return
 
 	if _hj_ads.isRewardedAdReady():
 		_pending_reset_key = reset_key
 		if _ad_status_label:
-			_ad_status_label.text = "▶️ 播放广告中..."
+			_ad_status_label.text = "▶ 播放广告中..."
 			_ad_status_label.add_theme_color_override("font_color", Color("#FFD700"))
 		_hj_ads.showRewardedAd()
 	else:
@@ -296,14 +296,14 @@ func _on_ladder_ad_pressed() -> void:
 	Global.play_sfx("click")
 	if _hj_ads == null:
 		if _ad_status_label:
-			_ad_status_label.text = "⚠ 广告未初始化"
+			_ad_status_label.text = "广告未初始化"
 			_ad_status_label.add_theme_color_override("font_color", Color("#FF5252"))
 		return
 
 	if _hj_ads.isRewardedAdReady():
 		_pending_reset_key = "all"
 		if _ad_status_label:
-			_ad_status_label.text = "▶️ 播放广告中..."
+			_ad_status_label.text = "▶ 播放广告中..."
 			_ad_status_label.add_theme_color_override("font_color", Color("#FFD700"))
 		_hj_ads.showRewardedAd()
 	else:
@@ -327,18 +327,18 @@ func _on_ladder_ad_rewarded(rewarded: bool) -> void:
 		PlayerManager.reset_daily_ladder("kill")
 		PlayerManager.reset_daily_ladder("map_clear")
 		PlayerManager.reset_daily_ladder("craft")
-		_show_message("✅ 所有每日阶梯已重置！", Color("#44cc44"))
+		_show_message(" 所有每日阶梯已重置！", Color("#44cc44"))
 	elif _pending_reset_key == "duel":
 		PlayerManager.reset_duel_ladder()
-		_show_message("✅ 决斗场阶梯已重置！", Color("#44cc44"))
+		_show_message(" 决斗场阶梯已重置！", Color("#44cc44"))
 	elif _pending_reset_key != "":
 		PlayerManager.reset_daily_ladder(_pending_reset_key)
-		_show_message("✅ " + _pending_reset_key + " 阶梯已重置！", Color("#44cc44"))
+		_show_message(" " + _pending_reset_key + " 阶梯已重置！", Color("#44cc44"))
 
 	_pending_reset_key = ""
 
 	if _ad_status_label:
-		_ad_status_label.text = "✅ 重置成功！"
+		_ad_status_label.text = "重置成功！"
 		_ad_status_label.add_theme_color_override("font_color", Color("#4CAF50"))
 
 	_refresh_ladder_ui()
@@ -348,14 +348,14 @@ func _refresh_ladder_ui() -> void:
 		if child.name.begins_with("DailyLadder_"):
 			child.queue_free()
 	var ladder_y = 0.12
-	_add_daily_ladder_card(ladder_y, "⚔ 决斗场", PlayerManager.get_current_duel_ladder_step(), PlayerManager.get_daily_duel_wins(), PlayerManager.DAILY_DUEL_LADDER, PlayerManager.DAILY_DUEL_REWARDS, Color("#FF6B6B"), "duel")
-	_add_daily_ladder_card(ladder_y + 0.16, "💀 杀敌", PlayerManager.get_kill_step(), PlayerManager.get_kill_count(), PlayerManager.DAILY_LADDER, PlayerManager.DAILY_LADDER_REWARDS, Color("#FF9800"), "kill")
-	_add_daily_ladder_card(ladder_y + 0.32, "🗺️ 通关地图", PlayerManager.get_map_clear_step(), PlayerManager.get_map_clear_count(), PlayerManager.DAILY_LADDER, PlayerManager.DAILY_LADDER_REWARDS, Color("#4FC3F7"), "map_clear")
-	_add_daily_ladder_card(ladder_y + 0.48, "🃏 制卡", PlayerManager.get_craft_step(), PlayerManager.get_craft_count(), PlayerManager.DAILY_LADDER, PlayerManager.DAILY_LADDER_REWARDS, Color("#81C784"), "craft")
+	_add_daily_ladder_card(ladder_y, " 决斗场", PlayerManager.get_current_duel_ladder_step(), PlayerManager.get_daily_duel_wins(), PlayerManager.DAILY_DUEL_LADDER, PlayerManager.DAILY_DUEL_REWARDS, Color("#FF6B6B"), "duel")
+	_add_daily_ladder_card(ladder_y + 0.16, " 杀敌", PlayerManager.get_kill_step(), PlayerManager.get_kill_count(), PlayerManager.DAILY_LADDER, PlayerManager.DAILY_LADDER_REWARDS, Color("#FF9800"), "kill")
+	_add_daily_ladder_card(ladder_y + 0.32, " 通关地图", PlayerManager.get_map_clear_step(), PlayerManager.get_map_clear_count(), PlayerManager.DAILY_LADDER, PlayerManager.DAILY_LADDER_REWARDS, Color("#4FC3F7"), "map_clear")
+	_add_daily_ladder_card(ladder_y + 0.48, " 制卡", PlayerManager.get_craft_step(), PlayerManager.get_craft_count(), PlayerManager.DAILY_LADDER, PlayerManager.DAILY_LADDER_REWARDS, Color("#81C784"), "craft")
 
 func _on_ladder_ad_closed(result: String) -> void:
 	if _ad_status_label:
-		_ad_status_label.text = "✅ 广告已关闭，可再次观看"
+		_ad_status_label.text = "广告已关闭，可再次观看"
 		_ad_status_label.add_theme_color_override("font_color", Color("#4CAF50"))
 	await get_tree().create_timer(1.0).timeout
 	_hj_ads.loadRewardedAd()
@@ -365,12 +365,12 @@ func _on_ladder_ad_closed(result: String) -> void:
 
 func _on_ladder_ad_loaded(placement_id: String) -> void:
 	if _ad_status_label:
-		_ad_status_label.text = "✅ 广告已就绪，点击观看"
+		_ad_status_label.text = "广告已就绪，点击观看"
 		_ad_status_label.add_theme_color_override("font_color", Color("#4CAF50"))
 
 func _on_ladder_ad_failed(error_msg: String) -> void:
 	if _ad_status_label:
-		_ad_status_label.text = "⚠ 广告加载失败"
+		_ad_status_label.text = "广告加载失败"
 		_ad_status_label.add_theme_color_override("font_color", Color("#FF5252"))
 
 func _show_message(text: String, color: Color) -> void:

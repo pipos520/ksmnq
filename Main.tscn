@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b4x6m0vcn2k6c"]
+[gd_scene load_steps=21 format=3 uid="uid://b4x6m0vcn2k6c"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_script"]
 [ext_resource type="Theme" path="res://assets/theme/pixel_theme.tres" id="2_theme"]
@@ -10,6 +10,12 @@
 [ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_card_stack.png" id="22_px_deck"]
 [ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_stall.png" id="23_px_shop"]
 [ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_map.png" id="24_px_map"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/board_main.png" id="30_board"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/btn_normal.png" id="31_paper"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/pin.png" id="32_pin"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_help.png" id="33_help"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_gear.png" id="34_gear"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_signpost.png" id="35_web"]
 
 [sub_resource type="ShaderMaterial" id="mat_guild"]
 shader = ExtResource("3_shader")
@@ -81,13 +87,16 @@ grow_vertical = 2
 theme = ExtResource("2_theme")
 script = ExtResource("1_script")
 
-[node name="Background" type="TextureRect" parent="." unique_id=1599581506]
+[node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource("4_bg_night")
-stretch_mode = 6
+texture = ExtResource("30_board")
+expand_mode = 1
+stretch_mode = 0
+texture_filter = 2
+metadata/fixed_bg = true
 
 [node name="Logo" type="Label" parent="." unique_id=1574227271]
 layout_mode = 1
@@ -114,7 +123,9 @@ offset_bottom = -42.0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 64
 flat = true
-text = "❓"
+icon = ExtResource("33_help")
+expand_icon = true
+icon_alignment = 1
 
 [node name="GearButton" type="Button" parent="." unique_id=1099648102]
 layout_mode = 1
@@ -131,7 +142,9 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 64
 flat = true
-text = "⚙"
+icon = ExtResource("34_gear")
+expand_icon = true
+icon_alignment = 1
 
 [node name="WebsiteBtn" type="Button" parent="."]
 layout_mode = 1
@@ -148,7 +161,9 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 64
 flat = true
-text = "🌐"
+icon = ExtResource("35_web")
+expand_icon = true
+icon_alignment = 1
 
 [node name="VersionLabel" type="Label" parent="." unique_id=1056571748]
 layout_mode = 1
@@ -174,13 +189,32 @@ anchor_top = 0.14
 anchor_right = 0.92
 anchor_bottom = 0.367
 offset_bottom = 0.0
+rotation = -0.011
 
-[node name="Bg" type="ColorRect" parent="CardGuild"]
+[node name="Paper" type="NinePatchRect" parent="CardGuild"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-material = SubResource("mat_guild")
+texture = ExtResource("31_paper")
+patch_margin_left = 12
+patch_margin_top = 12
+patch_margin_right = 12
+patch_margin_bottom = 12
+texture_filter = 1
+
+[node name="Pin" type="TextureRect" parent="CardGuild"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -34.0
+offset_top = -30.0
+offset_right = 34.0
+offset_bottom = 38.0
+texture = ExtResource("32_pin")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
 
 [node name="Icon" type="TextureRect" parent="CardGuild"]
 layout_mode = 1
@@ -199,7 +233,10 @@ anchor_left = 0.0
 anchor_top = 0.48
 anchor_right = 1.0
 anchor_bottom = 0.6
-theme_override_colors/font_color = Color(0.902, 0.902, 0.949, 1)
+theme_override_colors/font_color = Color(0.169, 0.125, 0.094, 1)
+theme_override_colors/font_shadow_color = Color(1, 0.98, 0.92, 0.55)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 72
 text = "卡师公会"
 horizontal_alignment = 1
@@ -211,9 +248,12 @@ anchor_left = 0.0
 anchor_top = 0.68
 anchor_right = 1.0
 anchor_bottom = 0.8
-theme_override_colors/font_color = Color(0.643, 0.643, 0.760, 1)
-theme_override_font_sizes/font_size = 36
+theme_override_colors/font_color = Color(0.388, 0.318, 0.243, 1)
+theme_override_font_sizes/font_size = 32
 text = "个人信息，公会任务，提升等级"
+offset_left = 22.0
+offset_right = -22.0
+autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -230,13 +270,32 @@ anchor_left = 0.08
 anchor_top = 0.384
 anchor_right = 0.494
 anchor_bottom = 0.588
+rotation = 0.017
 
-[node name="Bg" type="ColorRect" parent="CardWorkshop"]
+[node name="Paper" type="NinePatchRect" parent="CardWorkshop"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-material = SubResource("mat_workshop")
+texture = ExtResource("31_paper")
+patch_margin_left = 12
+patch_margin_top = 12
+patch_margin_right = 12
+patch_margin_bottom = 12
+texture_filter = 1
+
+[node name="Pin" type="TextureRect" parent="CardWorkshop"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -34.0
+offset_top = -30.0
+offset_right = 34.0
+offset_bottom = 38.0
+texture = ExtResource("32_pin")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
 
 [node name="Icon" type="TextureRect" parent="CardWorkshop"]
 layout_mode = 1
@@ -255,7 +314,7 @@ anchor_left = 0.0
 anchor_top = 0.48
 anchor_right = 1.0
 anchor_bottom = 0.6
-theme_override_colors/font_color = Color(0.902, 0.902, 0.949, 1)
+theme_override_colors/font_color = Color(0.169, 0.125, 0.094, 1)
 theme_override_font_sizes/font_size = 64
 text = "制卡工坊"
 horizontal_alignment = 1
@@ -267,9 +326,12 @@ anchor_left = 0.0
 anchor_top = 0.68
 anchor_right = 1.0
 anchor_bottom = 0.8
-theme_override_colors/font_color = Color(0.643, 0.643, 0.760, 1)
+theme_override_colors/font_color = Color(0.388, 0.318, 0.243, 1)
 theme_override_font_sizes/font_size = 32
 text = "制作卡基，调制卡墨，刻画成卡"
+offset_left = 22.0
+offset_right = -22.0
+autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -286,13 +348,32 @@ anchor_left = 0.506
 anchor_top = 0.384
 anchor_right = 0.92
 anchor_bottom = 0.588
+rotation = -0.018
 
-[node name="Bg" type="ColorRect" parent="CardDeck"]
+[node name="Paper" type="NinePatchRect" parent="CardDeck"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-material = SubResource("mat_deck")
+texture = ExtResource("31_paper")
+patch_margin_left = 12
+patch_margin_top = 12
+patch_margin_right = 12
+patch_margin_bottom = 12
+texture_filter = 1
+
+[node name="Pin" type="TextureRect" parent="CardDeck"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -34.0
+offset_top = -30.0
+offset_right = 34.0
+offset_bottom = 38.0
+texture = ExtResource("32_pin")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
 
 [node name="Icon" type="TextureRect" parent="CardDeck"]
 layout_mode = 1
@@ -311,7 +392,7 @@ anchor_left = 0.0
 anchor_top = 0.48
 anchor_right = 1.0
 anchor_bottom = 0.6
-theme_override_colors/font_color = Color(0.902, 0.902, 0.949, 1)
+theme_override_colors/font_color = Color(0.169, 0.125, 0.094, 1)
 theme_override_font_sizes/font_size = 64
 text = "配置牌库"
 horizontal_alignment = 1
@@ -323,9 +404,12 @@ anchor_left = 0.0
 anchor_top = 0.68
 anchor_right = 1.0
 anchor_bottom = 0.8
-theme_override_colors/font_color = Color(0.643, 0.643, 0.760, 1)
+theme_override_colors/font_color = Color(0.388, 0.318, 0.243, 1)
 theme_override_font_sizes/font_size = 32
 text = "编辑管理战斗卡组"
+offset_left = 22.0
+offset_right = -22.0
+autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -342,13 +426,32 @@ anchor_left = 0.08
 anchor_top = 0.604
 anchor_right = 0.494
 anchor_bottom = 0.808
+rotation = 0.015
 
-[node name="Bg" type="ColorRect" parent="CardShop"]
+[node name="Paper" type="NinePatchRect" parent="CardShop"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-material = SubResource("mat_shop")
+texture = ExtResource("31_paper")
+patch_margin_left = 12
+patch_margin_top = 12
+patch_margin_right = 12
+patch_margin_bottom = 12
+texture_filter = 1
+
+[node name="Pin" type="TextureRect" parent="CardShop"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -34.0
+offset_top = -30.0
+offset_right = 34.0
+offset_bottom = 38.0
+texture = ExtResource("32_pin")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
 
 [node name="Icon" type="TextureRect" parent="CardShop"]
 layout_mode = 1
@@ -367,7 +470,7 @@ anchor_left = 0.0
 anchor_top = 0.48
 anchor_right = 1.0
 anchor_bottom = 0.6
-theme_override_colors/font_color = Color(0.902, 0.902, 0.949, 1)
+theme_override_colors/font_color = Color(0.169, 0.125, 0.094, 1)
 theme_override_font_sizes/font_size = 64
 text = "商店街"
 horizontal_alignment = 1
@@ -379,9 +482,12 @@ anchor_left = 0.0
 anchor_top = 0.68
 anchor_right = 1.0
 anchor_bottom = 0.8
-theme_override_colors/font_color = Color(0.643, 0.643, 0.760, 1)
+theme_override_colors/font_color = Color(0.388, 0.318, 0.243, 1)
 theme_override_font_sizes/font_size = 32
 text = "素材商店，卡包抽取"
+offset_left = 22.0
+offset_right = -22.0
+autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -398,14 +504,32 @@ anchor_left = 0.506
 anchor_top = 0.604
 anchor_right = 0.92
 anchor_bottom = 0.808
+rotation = -0.014
 
-[node name="Bg" type="ColorRect" parent="CardExplore"]
+[node name="Paper" type="NinePatchRect" parent="CardExplore"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
-anchor_top = 0.0
 anchor_bottom = 1.0
-material = SubResource("mat_explore")
+texture = ExtResource("31_paper")
+patch_margin_left = 12
+patch_margin_top = 12
+patch_margin_right = 12
+patch_margin_bottom = 12
+texture_filter = 1
+
+[node name="Pin" type="TextureRect" parent="CardExplore"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -34.0
+offset_top = -30.0
+offset_right = 34.0
+offset_bottom = 38.0
+texture = ExtResource("32_pin")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
 
 [node name="Icon" type="TextureRect" parent="CardExplore"]
 layout_mode = 1
@@ -424,7 +548,7 @@ anchor_left = 0.0
 anchor_top = 0.48
 anchor_right = 1.0
 anchor_bottom = 0.6
-theme_override_colors/font_color = Color(0.902, 0.902, 0.949, 1)
+theme_override_colors/font_color = Color(0.169, 0.125, 0.094, 1)
 theme_override_font_sizes/font_size = 64
 text = "野外探索"
 horizontal_alignment = 1
@@ -436,9 +560,12 @@ anchor_left = 0.0
 anchor_top = 0.68
 anchor_right = 1.0
 anchor_bottom = 0.8
-theme_override_colors/font_color = Color(0.643, 0.643, 0.760, 1)
+theme_override_colors/font_color = Color(0.388, 0.318, 0.243, 1)
 theme_override_font_sizes/font_size = 32
 text = "冒险对战，收集素材资源"
+offset_left = 22.0
+offset_right = -22.0
+autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
 

@@ -159,7 +159,7 @@ theme_override_styles/normal = SubResource("sb_back")
 theme_override_styles/pressed = SubResource("sb_back")
 theme_override_styles/hover = SubResource("sb_back")
 theme_override_styles/focus = SubResource("sb_back")
-text = "🚪 返回"
+text = "返回"
 
 [node name="ViewBtn" type="Button" parent="UI" unique_id=1160231457]
 offset_left = 20.0
@@ -172,7 +172,7 @@ theme_override_styles/normal = SubResource("sb_view")
 theme_override_styles/pressed = SubResource("sb_view")
 theme_override_styles/hover = SubResource("sb_view")
 theme_override_styles/focus = SubResource("sb_view")
-text = "📷 视角: 中"
+text = "视角: 中"
 
 [node name="EnemyFieldBG" type="MeshInstance3D" parent="." unique_id=363254228]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14, -1.2)
@@ -205,7 +205,7 @@ mesh = SubResource("mesh_slot")
 [node name="Label" type="Label3D" parent="EnemyField/GraveArea" unique_id=1236408012]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.02, 0)
 modulate = Color(0.6, 0.6, 0.6, 0.6)
-text = "🪦 墓地"
+text = "墓地"
 font_size = 30
 outline_size = 2
 
@@ -225,7 +225,7 @@ mesh = SubResource("mesh_slot")
 [node name="Label" type="Label3D" parent="EnemyField/ExileArea" unique_id=618617511]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.02, 0)
 modulate = Color(0.6, 0.6, 0.6, 0.6)
-text = "💫 除外"
+text = "除外"
 font_size = 30
 outline_size = 2
 
@@ -245,7 +245,7 @@ mesh = SubResource("mesh_slot")
 [node name="Label" type="Label3D" parent="EnemyField/DeckArea" unique_id=642898091]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.02, 0)
 modulate = Color(0.6, 0.6, 0.6, 0.6)
-text = "📚 卡组"
+text = "卡组"
 font_size = 30
 outline_size = 2
 
@@ -282,7 +282,7 @@ outline_size = 2
 [node name="EnergyLabel" type="Label3D" parent="EnemyField/InfoArea" unique_id=1017976005]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.02, -0.2)
 modulate = Color(0.9, 0.8, 0.2, 1)
-text = "⚡ 0"
+text = "0"
 font_size = 28
 outline_size = 2
 
@@ -417,7 +417,7 @@ mesh = SubResource("mesh_slot")
 [node name="Label" type="Label3D" parent="PlayerField/GraveArea" unique_id=551681705]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.02, 0)
 modulate = Color(0.6, 0.6, 0.6, 0.6)
-text = "🪦 墓地"
+text = "墓地"
 font_size = 30
 outline_size = 2
 
@@ -437,7 +437,7 @@ mesh = SubResource("mesh_slot")
 [node name="Label" type="Label3D" parent="PlayerField/ExileArea" unique_id=1339360440]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.02, 0)
 modulate = Color(0.6, 0.6, 0.6, 0.6)
-text = "💫 除外"
+text = "除外"
 font_size = 30
 outline_size = 2
 
@@ -457,7 +457,7 @@ mesh = SubResource("mesh_slot")
 [node name="Label" type="Label3D" parent="PlayerField/DeckArea" unique_id=950034410]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.02, 0)
 modulate = Color(0.6, 0.6, 0.6, 0.6)
-text = "📚 卡组"
+text = "卡组"
 font_size = 30
 outline_size = 2
 
@@ -494,7 +494,7 @@ outline_size = 2
 [node name="EnergyLabel" type="Label3D" parent="PlayerField/InfoArea" unique_id=411909447]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.02, -0.2)
 modulate = Color(0.9, 0.8, 0.2, 1)
-text = "⚡ 0"
+text = "0"
 font_size = 28
 outline_size = 2
 

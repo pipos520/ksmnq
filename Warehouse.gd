@@ -221,11 +221,11 @@ func _switch_tab(tab: String):
 	var btn = get_node_or_null("CategoryBtn")
 	if btn:
 		match tab:
-			"all": btn.text = "📦 全部"
-			"material": btn.text = "🧶 素材"
-			"card_base": btn.text = "🃏 卡基"
-			"ink": btn.text = "🎨 卡墨"
-			"aux": btn.text = "🧪 辅材"
+			"all": btn.text = "全部"
+			"material": btn.text = "素材"
+			"card_base": btn.text = "卡基"
+			"ink": btn.text = "卡墨"
+			"aux": btn.text = "辅材"
 	_refresh_list()
 
 ## 分类选择弹窗
@@ -272,11 +272,11 @@ func _show_category_popup() -> void:
 	panel.add_child(vbox)
 	
 	var categories = [
-		{"tab": "all", "label": "📦 全部"},
-		{"tab": "material", "label": "🧶 素材"},
-		{"tab": "card_base", "label": "🃏 卡基"},
-		{"tab": "ink", "label": "🎨 卡墨"},
-		{"tab": "aux", "label": "🧪 辅材"},
+		{"tab": "all", "label": " 全部"},
+		{"tab": "material", "label": " 素材"},
+		{"tab": "card_base", "label": " 卡基"},
+		{"tab": "ink", "label": " 卡墨"},
+		{"tab": "aux", "label": " 辅材"},
 	]
 	
 	for cat in categories:
@@ -327,7 +327,7 @@ func _refresh_all_list() -> void:
 	if mats.size() > 0:
 		# 分类标题
 		var sec_title = Label.new()
-		sec_title.text = "🧶 素材"
+		sec_title.text = "素材"
 		sec_title.add_theme_font_size_override("font_size", 55)
 		sec_title.add_theme_color_override("font_color", Color("#f9d371"))
 		sec_title.custom_minimum_size = Vector2(0, Global.ph(0.07))
@@ -388,7 +388,7 @@ func _refresh_all_list() -> void:
 	var cbs = WarehouseManager.get_card_bases()
 	if cbs.size() > 0:
 		var sec_title = Label.new()
-		sec_title.text = "🃏 卡基"
+		sec_title.text = "卡基"
 		sec_title.add_theme_font_size_override("font_size", 55)
 		sec_title.add_theme_color_override("font_color", Color("#60a5fa"))
 		sec_title.custom_minimum_size = Vector2(0, Global.ph(0.07))
@@ -436,7 +436,7 @@ func _refresh_all_list() -> void:
 	var inks = WarehouseManager.get_ink_inventory()
 	if inks.size() > 0:
 		var sec_title = Label.new()
-		sec_title.text = "🎨 卡墨"
+		sec_title.text = "卡墨"
 		sec_title.add_theme_font_size_override("font_size", 55)
 		sec_title.add_theme_color_override("font_color", Color("#c084fc"))
 		sec_title.custom_minimum_size = Vector2(0, Global.ph(0.07))
@@ -492,7 +492,7 @@ func _refresh_all_list() -> void:
 	var aux_inv = WarehouseManager.get_aux_items()
 	if aux_inv.size() > 0:
 		var sec_title = Label.new()
-		sec_title.text = "🧪 辅材"
+		sec_title.text = "辅材"
 		sec_title.add_theme_font_size_override("font_size", 55)
 		sec_title.add_theme_color_override("font_color", Color("#4ade80"))
 		sec_title.custom_minimum_size = Vector2(0, Global.ph(0.07))
@@ -896,12 +896,12 @@ func _refresh_aux_list():
 		
 		var type_label = Label.new()
 		match atype:
-			"boost": type_label.text = "⚡增幅"
-			"element": type_label.text = "🔥元素"
-			"protect": type_label.text = "🛡️保护"
-			"special": type_label.text = "✨特殊"
-			"poison": type_label.text = "🐍剧毒"
-			"combo": type_label.text = "⚔️连击"
+			"boost": type_label.text = "增幅"
+			"element": type_label.text = "元素"
+			"protect": type_label.text = "保护"
+			"special": type_label.text = "特殊"
+			"poison": type_label.text = "剧毒"
+			"combo": type_label.text = "连击"
 			_: type_label.text = atype
 		type_label.add_theme_font_size_override("font_size", 30)
 		type_label.add_theme_color_override("font_color", Global.current.btn_text)
@@ -963,7 +963,7 @@ func _show_ink_detail(row: Control) -> void:
 	panel.add_theme_stylebox_override("panel", panel_style)
 	
 	var title_label = Label.new()
-	title_label.text = "🎨 卡墨"
+	title_label.text = "卡墨"
 	title_label.add_theme_font_size_override("font_size", 60)
 	title_label.add_theme_color_override("font_color", Global.current.title)
 	title_label.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
@@ -1071,7 +1071,7 @@ func _show_ink_detail(row: Control) -> void:
 		info_y += 0.045
 	
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -1108,11 +1108,11 @@ func _format_ink_resistance(resistance: Dictionary) -> String:
 	for k in resistance.keys():
 		var elem_name := ""
 		match k:
-			"火": elem_name = "🔥火"
-			"水": elem_name = "💧水"
-			"风": elem_name = "🌪️风"
-			"暗": elem_name = "🌑暗"
-			"光": elem_name = "☀️光"
+			"火": elem_name = "火"
+			"水": elem_name = "水"
+			"风": elem_name = "风"
+			"暗": elem_name = "暗"
+			"光": elem_name = "光"
 			"all": elem_name = "全属性"
 			_: elem_name = k
 		parts.append(elem_name + "+" + str(resistance[k]) + "%")
@@ -1149,12 +1149,11 @@ func _get_rarity_color(rarity: String) -> Color:
 
 # 交替斑马纹背景色
 func _get_row_bg_color(row_index: int) -> Color:
+	# 斑马纹第二色必须是「略深的羊皮纸」，不能是透明：页面底色是深色贴图，
+	# 透明会让后半数行压成深底，而行内文字是深棕色 -> 整行看不见。
 	if row_index % 2 == 0:
-		# 偶数列：用顶栏色（比背景稍亮，昼夜都适配）
 		return Global.current.topbar_bg
-	else:
-		# 奇数列：透明（透出背景色）
-		return Color.TRANSPARENT
+	return Global.current.topbar_bg.darkened(0.10)
 
 
 # ===== 长按弹窗 =====
@@ -1233,7 +1232,7 @@ func _show_detail(row: Control):
 	
 	match row_type:
 		"material":
-			icon = "🧶"
+			icon = ""
 			var mid: String = data.get("id", "")
 			var mat_data := Global.get_material_by_id(mid)
 			if mat_data.is_empty():
@@ -1259,7 +1258,7 @@ func _show_detail(row: Control):
 			info_pairs = [["采集区域", area], ["倾向", tendency], ["属性", props_text]]
 		
 		"card_base":
-			icon = "🃏"
+			icon = ""
 			var cid = data.get("id", "未知")
 			var quality = data.get("quality", "—")
 			var load_cap = data.get("load_cap", 0)
@@ -1278,7 +1277,7 @@ func _show_detail(row: Control):
 			info_pairs = [["品质", str(quality)], ["承载力", str(load_cap)], ["卡槽", str(slots)], ["耐久度", str(durability)], ["倾向", tendency_str], ["制作时间", Time.get_date_string_from_unix_time(created_at) if created_at > 0 else "未知"]]
 		
 		"ink":
-			icon = "🎨"
+			icon = ""
 			var ink_name = data.get("name", "未知卡墨")
 			var ink_id = data.get("id", "未知")
 			var load_reduce = data.get("load_reduce", 0)
@@ -1310,7 +1309,7 @@ func _show_detail(row: Control):
 			if mat_parts.size() > 0: info_pairs.append(["素材", " ".join(mat_parts)])
 		
 		"aux":
-			icon = "🧪"
+			icon = ""
 			var aname = data.get("name", "未知")
 			var aid = data.get("id", "未知")
 			var rarity = data.get("rarity", "普通")
@@ -1320,10 +1319,10 @@ func _show_detail(row: Control):
 			rarity_color = _get_rarity_color(rarity)
 			var type_name = ""
 			match atype:
-				"boost": type_name = "⚡ 属性增幅"
-				"element": type_name = "🔥 元素赋予"
-				"protect": type_name = "🛡️ 保护"
-				"special": type_name = "✨ 特殊效果"
+				"boost": type_name = " 属性增幅"
+				"element": type_name = " 元素赋予"
+				"protect": type_name = " 保护"
+				"special": type_name = " 特殊效果"
 			title_text = aname
 			subtitle_text = rarity + "  ·  " + type_name
 			info_pairs = [["说明", desc]]
@@ -1444,7 +1443,7 @@ func _show_detail(row: Control):
 		row_hbox.add_child(val_lbl)
 	
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -1484,12 +1483,12 @@ func _show_aux_detail(row: Control):
 	
 	var type_name = ""
 	match atype:
-		"boost": type_name = "⚡ 属性增幅"
-		"element": type_name = "🔥 元素赋予"
-		"protect": type_name = "🛡️ 保护"
-		"special": type_name = "✨ 特殊效果"
-		"poison": type_name = "🐍 剧毒"
-		"combo": type_name = "⚔️ 连击"
+		"boost": type_name = " 属性增幅"
+		"element": type_name = " 元素赋予"
+		"protect": type_name = " 保护"
+		"special": type_name = " 特殊效果"
+		"poison": type_name = " 剧毒"
+		"combo": type_name = " 连击"
 	
 	var overlay = ColorRect.new()
 	overlay.name = "DetailOverlay"
@@ -1578,7 +1577,7 @@ func _show_aux_detail(row: Control):
 	
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -1641,7 +1640,7 @@ func _show_card_base_detail(row: Control):
 	panel.add_theme_stylebox_override("panel", panel_style)
 	
 	var title_label = Label.new()
-	title_label.text = "🃏 " + WarehouseManager.get_card_base_display_name(data)
+	title_label.text = "" + WarehouseManager.get_card_base_display_name(data)
 	title_label.add_theme_font_size_override("font_size", 60)
 	title_label.add_theme_color_override("font_color", Global.current.title)
 	title_label.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
@@ -1739,7 +1738,7 @@ func _show_card_base_detail(row: Control):
 		info_y += 0.045
 	
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -1952,7 +1951,7 @@ func _show_material_detail(row: Control) -> void:
 	
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 45)
 	
 	var cs = StyleBoxFlat.new()
@@ -2303,7 +2302,7 @@ func _show_filter_popup() -> void:
 	
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg

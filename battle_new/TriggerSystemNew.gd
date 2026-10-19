@@ -111,7 +111,7 @@ func clear() -> void:
 ## context: 额外上下文（如 { "target_card": card, "old_slot": slot }）
 func scan_and_trigger(trigger_id: String, player, context: Dictionary = {}) -> void:
 	if _trigger_depth >= MAX_TRIGGER_DEPTH:
-		print("[TriggerNew] ⚠️ Max trigger depth reached, aborting")
+		print("[TriggerNew]  Max trigger depth reached, aborting")
 		return
 	_trigger_depth += 1
 	
@@ -153,7 +153,7 @@ func scan_and_trigger(trigger_id: String, player, context: Dictionary = {}) -> v
 ## 用于 TR09/TR10（攻击宣言）、TR06（亡语）等只应由具体卡触发的效果
 func trigger_single(trigger_id: String, owner, card, slot: int, context: Dictionary = {}) -> void:
 	if _trigger_depth >= MAX_TRIGGER_DEPTH:
-		print("[TriggerNew] ⚠️ Max trigger depth reached, aborting")
+		print("[TriggerNew]  Max trigger depth reached, aborting")
 		return
 	_trigger_depth += 1
 	

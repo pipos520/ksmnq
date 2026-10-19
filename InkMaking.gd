@@ -60,9 +60,9 @@ func _make_card_style() -> StyleBoxFlat:
 
 func _build_material_section(parent: VBoxContainer):
 	var cat_data = [
-		{"key": "extract", "label": "🧪 萃取液", "color": Color("#4FC3F7")},
-		{"key": "pigment", "label": "🎨 颜料", "color": Color("#FF8A65")},
-		{"key": "binder", "label": "🧴 粘合剂", "color": Color("#81C784")},
+		{"key": "extract", "label": " 萃取液", "color": Color("#4FC3F7")},
+		{"key": "pigment", "label": " 颜料", "color": Color("#FF8A65")},
+		{"key": "binder", "label": " 粘合剂", "color": Color("#81C784")},
 	]
 	
 	for cat in cat_data:
@@ -241,7 +241,7 @@ func _show_material_picker(cat_key: String):
 		vbox.add_child(mat_row)
 	
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -577,7 +577,7 @@ func _show_material_detail(mat: Dictionary):
 		vbox.add_child(desc_label)
 	
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -732,7 +732,7 @@ func _build_preview_section(parent: VBoxContainer):
 	panel.add_child(vbox)
 	
 	var title = Label.new()
-	title.text = "🎨 卡墨属性预览"
+	title.text = "卡墨属性预览"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Global.current.title)
 	vbox.add_child(title)
@@ -814,7 +814,7 @@ func _update_preview():
 		var parts := []
 		for k in discount.keys():
 			parts.append(k + str(discount[k]) + "%")
-		_preview_labels["discount"].text = " ".join(parts)
+		_preview_labels["discount"].text = "".join(parts)
 
 	# 抗性预览
 	var res_str := _format_resistance(resistance)
@@ -829,7 +829,7 @@ func _update_preview():
 	if consumption_parts.is_empty():
 		_preview_labels["consumption"].text = "无"
 	else:
-		_preview_labels["consumption"].text = " ".join(consumption_parts)
+		_preview_labels["consumption"].text = "".join(consumption_parts)
 	
 	if _hint_label:
 		var total = _get_total_count()
@@ -944,11 +944,11 @@ func _format_resistance(resistance: Dictionary) -> String:
 	for k in resistance.keys():
 		var elem_name := ""
 		match k:
-			"火": elem_name = "🔥火"
-			"水": elem_name = "💧水"
-			"风": elem_name = "🌪️风"
-			"暗": elem_name = "🌑暗"
-			"光": elem_name = "☀️光"
+			"火": elem_name = "火"
+			"水": elem_name = "水"
+			"风": elem_name = "风"
+			"暗": elem_name = "暗"
+			"光": elem_name = "光"
 			"all": elem_name = "全属性"
 			_: elem_name = k
 		parts.append(elem_name + "+" + str(resistance[k]) + "%")
@@ -1065,7 +1065,7 @@ func _show_make_confirm_dialog():
 	
 	# 标题
 	var title_label = Label.new()
-	title_label.text = "⚙️ 确认调制卡墨"
+	title_label.text = "确认调制卡墨"
 	title_label.add_theme_font_size_override("font_size", 55)
 	title_label.add_theme_color_override("font_color", Global.current.title)
 	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -1113,7 +1113,7 @@ func _show_make_confirm_dialog():
 				scroll_vbox.add_child(row)
 				
 				var name_label = Label.new()
-				name_label.text = "  " + mat_name + "×" + str(qty)
+				name_label.text = "" + mat_name + "×" + str(qty)
 				name_label.add_theme_font_size_override("font_size", 50)
 				name_label.add_theme_color_override("font_color", Global.current.btn_text)
 				name_label.size_flags_horizontal = SIZE_EXPAND
@@ -1264,7 +1264,7 @@ func _on_confirm_make():
 			_hint_label.add_theme_color_override("font_color", Color("#FF5252"))
 			_hint_label.text = "素材不足，无法制作！"
 		_close_make_confirm()
-		_show_popup("⚠️ 素材不足，无法制作！请检查仓库库存", Color("#FF6B6B"))
+		_show_popup(" 素材不足，无法制作！请检查仓库库存", Color("#FF6B6B"))
 		return
 	
 	var warehouse = get_node("/root/WarehouseManager")
@@ -1281,7 +1281,7 @@ func _on_confirm_make():
 					var mat = Global.get_material_by_id(mid)
 					_hint_label.text = "素材不足！" + mat.get("name", mid) + " 需要" + str(_confirm_qty * qty) + " 仅剩" + str(stock) + "个"
 				_close_make_confirm()
-				_show_popup("⚠️ " + _hint_label.text, Color("#FF6B6B"))
+				_show_popup(" " + _hint_label.text, Color("#FF6B6B"))
 				return
 	
 	# 计算属性
@@ -1368,14 +1368,14 @@ func _on_confirm_make():
 	
 	if _hint_label:
 		_hint_label.add_theme_color_override("font_color", Color("#4CAF50"))
-		_hint_label.text = "✅ 成功调制 " + str(_confirm_qty) + " 个卡墨！"
+		_hint_label.text = "成功调制 " + str(_confirm_qty) + " 个卡墨！"
 	
 	# 教程引导：制作成功 → 弹收尾对话（提示去刻画卡牌）
 	if _tutorial_done == false:
 		_advance_tutorial("made")
 	else:
 		# 弹出成功提示
-		_show_popup("✅ 成功调制 " + str(_confirm_qty) + " 个卡墨！", Color("#81C784"))
+		_show_popup(" 成功调制 " + str(_confirm_qty) + " 个卡墨！", Color("#81C784"))
 
 
 func _close_make_confirm():
@@ -1551,7 +1551,7 @@ func _show_help_guide():
 	
 	# 标题
 	var title = Label.new()
-	title.text = "📖 调制卡墨指南"
+	title.text = "调制卡墨指南"
 	title.add_theme_font_size_override("font_size", 60)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -1585,7 +1585,7 @@ func _show_help_guide():
 	
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -1647,62 +1647,62 @@ func _make_help_label(vbox: VBoxContainer, text: String, color: Color = Color("#
 
 func _build_help_content(vbox: VBoxContainer):
 	# 1. 输入规则
-	var s1 = _make_help_section(vbox, "📋 ① 输入规则", Color("#FF9800"))
+	var s1 = _make_help_section(vbox, " ① 输入规则", Color("#FF9800"))
 	_make_help_label(s1, "调制卡墨需要选择三种素材，每种有数量限制：", Global.current.btn_text, 42)
-	_make_help_label(s1, "🧪 萃取液（Extract）：1 ~ 2 种", Color("#4FC3F7"), 45)
-	_make_help_label(s1, "🎨 颜料（Pigment）：1 ~ 2 种", Color("#FF8A65"), 45)
-	_make_help_label(s1, "🧴 粘合剂（Binder）：1 ~ 2 种", Color("#81C784"), 45)
-	_make_help_label(s1, "📦 素材总数：3 ~ 6 种", Color("#FFD700"), 45)
-	_make_help_label(s1, "✅ 每种素材最多选1个，无素材数量惩罚", Color("#4CAF50"), 42)
+	_make_help_label(s1, " 萃取液（Extract）：1 ~ 2 种", Color("#4FC3F7"), 45)
+	_make_help_label(s1, " 颜料（Pigment）：1 ~ 2 种", Color("#FF8A65"), 45)
+	_make_help_label(s1, " 粘合剂（Binder）：1 ~ 2 种", Color("#81C784"), 45)
+	_make_help_label(s1, " 素材总数：3 ~ 6 种", Color("#FFD700"), 45)
+	_make_help_label(s1, " 每种素材最多选1个，无素材数量惩罚", Color("#4CAF50"), 42)
 	
 	# 2. 素材属性说明
-	var s2 = _make_help_section(vbox, "🔬 ② 素材属性说明", Color("#3498DB"))
+	var s2 = _make_help_section(vbox, " ② 素材属性说明", Color("#3498DB"))
 	_make_help_label(s2, "每种素材有独有属性，影响成品卡墨的最终数值：", Global.current.btn_text, 42)
 	
-	_make_help_label(s2, "🧪 萃取液素材", Color("#4FC3F7"), 48)
+	_make_help_label(s2, " 萃取液素材", Color("#4FC3F7"), 48)
 	_make_help_label(s2, "  • 传导性（conductivity）：影响卡墨的【负荷减免】", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 纯度（purity）：提取品质，影响萃取液的效果基础", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 倾向（tendency）：影响【负荷减免】和【倾向折扣】", Color("#CCCCCC"))
 	
-	_make_help_label(s2, "🎨 颜料素材", Color("#FF8A65"), 48)
+	_make_help_label(s2, " 颜料素材", Color("#FF8A65"), 48)
 	_make_help_label(s2, "  • 附着力（adhesion）：影响卡墨的【品质稳定性】", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 显色（chromatography）：影响卡墨的【效果强度加成】", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 倾向（tendency）：影响卡墨的【倾向折扣】", Color("#CCCCCC"))
 	
-	_make_help_label(s2, "🧴 粘合剂素材", Color("#81C784"), 48)
+	_make_help_label(s2, " 粘合剂素材", Color("#81C784"), 48)
 	_make_help_label(s2, "  • 调和度（harmony）：影响卡墨的【负荷减免】", Color("#CCCCCC"))
 	
-	_make_help_label(s2, "✨ 共通属性", Color("#FFD700"), 48)
+	_make_help_label(s2, " 共通属性", Color("#FFD700"), 48)
 	_make_help_label(s2, "  • 倾向（tendency）：所有素材的倾向值组合，决定【抗性】和【折扣】", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 稀有度：影响素材边框颜色（普通/稀有/史诗/传说）", Color("#CCCCCC"))
 	
 	# 3. 计算公式
-	var s3 = _make_help_section(vbox, "🧮 ③ 计算公式", Color("#9B59B6"))
+	var s3 = _make_help_section(vbox, " ③ 计算公式", Color("#9B59B6"))
 	
-	_make_help_label(s3, "✦ 负荷减免（Load Reduce）", Color("#4FC3F7"), 48)
+	_make_help_label(s3, " 负荷减免（Load Reduce）", Color("#4FC3F7"), 48)
 	_make_help_label(s3, "公式：min( Σ(传导性)×0.3 + Σ(调和度)×0.2 + Σ(萃取液倾向数字)×0.1 , 3.5 )", Color("#FFD700"), 42)
 	_make_help_label(s3, "→ 萃取液传导性越高、粘合剂调和度越高，负荷减免越多", Color("#CCCCCC"))
 	_make_help_label(s3, "→ 萃取液倾向值中的数字部分也会计入（如「火3」→ +3×0.1）", Color("#CCCCCC"))
 	_make_help_label(s3, "→ 结果四舍五入到一位小数，上限3.5", Color("#CCCCCC"))
 	_make_help_label(s3, "→ 负荷减免越高，刻画纹路时消耗的能量越少", Color("#CCCCCC"))
 	
-	_make_help_label(s3, "✦ 效果强度加成（Effect Power）", Color("#FF8A65"), 48)
+	_make_help_label(s3, " 效果强度加成（Effect Power）", Color("#FF8A65"), 48)
 	_make_help_label(s3, "公式：min( Σ(显色)×3% , 30% )", Color("#FFD700"), 42)
 	_make_help_label(s3, "→ 颜料的显色值越高，效果强度加成越多，上限30%", Color("#CCCCCC"))
 	_make_help_label(s3, "→ 效果强度影响卡牌纹路效果的触发成功率", Color("#CCCCCC"))
 	
-	_make_help_label(s3, "✦ 品质稳定性（Quality Stability）", Color("#FFD54F"), 48)
+	_make_help_label(s3, " 品质稳定性（Quality Stability）", Color("#FFD54F"), 48)
 	_make_help_label(s3, "公式：min( Σ(附着力)×2% , 20% )", Color("#FFD700"), 42)
 	_make_help_label(s3, "→ 颜料的附着力越高，品质稳定性越高，上限20%", Color("#CCCCCC"))
 	_make_help_label(s3, "→ 品质稳定性影响卡基制作时的品质波动范围", Color("#CCCCCC"))
 	
-	_make_help_label(s3, "✦ 倾向折扣（Discount）", Color("#FFD700"), 48)
+	_make_help_label(s3, " 倾向折扣（Discount）", Color("#FFD700"), 48)
 	_make_help_label(s3, "公式：Σ(萃取液倾向数字)×5% + Σ(颜料倾向数字)×3%（按元素分别计算）", Color("#FFD700"), 42)
 	_make_help_label(s3, "→ 每种元素独立计算折扣，返回字典如「火13% 风8%」", Color("#CCCCCC"))
 	_make_help_label(s3, "→ 例如「火3」萃取液 → 火系折扣+15%，「火2」颜料 → 火系折扣+6%", Color("#CCCCCC"))
 	_make_help_label(s3, "→ 倾向折扣影响对应元素卡牌的纹路刻画能量消耗", Color("#CCCCCC"))
 	
-	_make_help_label(s3, "✦ 属性抗性（Resistance）", Color("#E91E63"), 48)
+	_make_help_label(s3, " 属性抗性（Resistance）", Color("#E91E63"), 48)
 	_make_help_label(s3, "抗性根据所有素材的倾向组合决定：", Color("#CCCCCC"))
 	_make_help_label(s3, "  • 全部同倾向（如全是火系）→ 该属性抗性 +20%", Color("#4FC3F7"))
 	_make_help_label(s3, "  • 两种不同倾向 → 各 +10%", Color("#FF9800"))
@@ -1710,12 +1710,12 @@ func _build_help_content(vbox: VBoxContainer):
 	_make_help_label(s3, "  • 全部无倾向素材 → 全属性抗性 +5%", Color("#8BC34A"))
 	_make_help_label(s3, "→ 属性抗性影响卡牌受到对应元素伤害时的减免", Color("#CCCCCC"))
 	
-	_make_help_label(s3, "✦ 消耗（Consumption）", Color("#95A5A6"), 48)
+	_make_help_label(s3, " 消耗（Consumption）", Color("#95A5A6"), 48)
 	_make_help_label(s3, "公式：各素材类别数量组合（如 萃取液x2 颜料x1 粘合剂x1）", Color("#FFD700"), 42)
 	_make_help_label(s3, "→ 消耗仅显示用了哪些素材，不计入最终属性", Color("#CCCCCC"))
 	
 	# 4. 制作技巧
-	var s4 = _make_help_section(vbox, "💡 ④ 制作技巧", Color("#4CAF50"))
+	var s4 = _make_help_section(vbox, " ④ 制作技巧", Color("#4CAF50"))
 	_make_help_label(s4, "1. 萃取液和粘合剂 → 提升负荷减免，降低纹路能量消耗", Global.current.btn_text, 42)
 	_make_help_label(s4, "2. 颜料 → 提升效果强度和品质稳定性", Global.current.btn_text, 42)
 	_make_help_label(s4, "3. 想追求单属性抗性 → 全部选同倾向的素材", Global.current.btn_text, 42)
@@ -1723,13 +1723,13 @@ func _build_help_content(vbox: VBoxContainer):
 	_make_help_label(s4, "5. 倾向折扣可以叠加多种元素，适合多属性卡组", Global.current.btn_text, 42)
 	
 	# 5. 制作步骤
-	var s5 = _make_help_section(vbox, "🎯 ⑤ 制作步骤", Color("#3498DB"))
+	var s5 = _make_help_section(vbox, " ⑤ 制作步骤", Color("#3498DB"))
 	_make_help_label(s5, "1. 点击「选择」按钮，从仓库中选择素材", Global.current.btn_text, 42)
 	_make_help_label(s5, "2. 用 [-] [+] 调整每种素材的数量（最多1个）", Global.current.btn_text, 42)
 	_make_help_label(s5, "3. 在「卡墨属性预览」中查看实时计算结果", Global.current.btn_text, 42)
 	_make_help_label(s5, "4. 每类至少选1种，总数至少3种，点击「调制卡墨」生成", Global.current.btn_text, 42)
 	_make_help_label(s5, "5. 制作好的卡墨会存入仓库，可在刻画界面选择使用", Global.current.btn_text, 42)
-	_make_help_label(s5, "💡 长按素材行可查看素材详情", Color("#FFD700"), 42)
+	_make_help_label(s5, " 长按素材行可查看素材详情", Color("#FFD700"), 42)
 	
 	# 底部留白
 	var spacer = Control.new()

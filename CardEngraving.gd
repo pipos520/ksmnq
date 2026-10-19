@@ -70,7 +70,7 @@ func _build_base_selection(parent: VBoxContainer):
 	var vbox = panel.get_child(0)
 	
 	var title = Label.new()
-	title.text = "🃏 ① 选择卡基"
+	title.text = "① 选择卡基"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Global.current.title)
 	vbox.add_child(title)
@@ -144,7 +144,7 @@ func _build_ink_selection(parent: VBoxContainer):
 	var vbox = panel.get_child(0)
 	
 	var title = Label.new()
-	title.text = "🎨 ② 选择卡墨"
+	title.text = "② 选择卡墨"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Global.current.title)
 	vbox.add_child(title)
@@ -187,7 +187,7 @@ func _build_stat_input(parent: VBoxContainer):
 	var vbox = panel.get_child(0)
 	
 	var title = Label.new()
-	title.text = "💪 ③ 填写基础数值"
+	title.text = "③ 填写基础数值"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Global.current.title)
 	vbox.add_child(title)
@@ -205,7 +205,7 @@ func _build_stat_input(parent: VBoxContainer):
 	vbox.add_child(atk_hbox)
 	
 	var atk_label = Label.new()
-	atk_label.text = "⚔️ 攻击："
+	atk_label.text = "攻击："
 	atk_label.add_theme_font_size_override("font_size", 45)
 	atk_label.add_theme_color_override("font_color", Global.current.title)
 	atk_label.size_flags_horizontal = SIZE_EXPAND
@@ -220,7 +220,7 @@ func _build_stat_input(parent: VBoxContainer):
 	vbox.add_child(hp_hbox)
 	
 	var hp_label = Label.new()
-	hp_label.text = "❤️ 生命："
+	hp_label.text = "生命："
 	hp_label.add_theme_font_size_override("font_size", 45)
 	hp_label.add_theme_color_override("font_color", Global.current.title)
 	hp_label.size_flags_horizontal = SIZE_EXPAND
@@ -305,7 +305,7 @@ func _build_field_input(parent: VBoxContainer):
 	var vbox = panel.get_child(0)
 	
 	var title = Label.new()
-	title.text = "🏷️ ④ 填写卡名与字段"
+	title.text = "④ 填写卡名与字段"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Global.current.title)
 	vbox.add_child(title)
@@ -316,7 +316,7 @@ func _build_field_input(parent: VBoxContainer):
 	vbox.add_child(name_hbox)
 	
 	var name_label = Label.new()
-	name_label.text = "📛 卡名："
+	name_label.text = "卡名："
 	name_label.add_theme_font_size_override("font_size", 40)
 	name_label.add_theme_color_override("font_color", Global.current.title)
 	name_label.custom_minimum_size = Vector2(Global.pw(0.12), 0)
@@ -388,7 +388,7 @@ func _build_card_detail(parent: VBoxContainer):
 	var vbox = panel.get_child(0)
 	
 	var title = Label.new()
-	title.text = "📝 ⑤ 卡牌描述"
+	title.text = "⑤ 卡牌描述"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Global.current.title)
 	vbox.add_child(title)
@@ -441,7 +441,7 @@ func _build_aux_section(parent: VBoxContainer):
 	var vbox = panel.get_child(0)
 	
 	var title = Label.new()
-	title.text = "🧪 ⑥ 辅材（可选，最多" + str(MAX_AUX) + "种）"
+	title.text = "⑥ 辅材（可选，最多" + str(MAX_AUX) + "种）"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Global.current.title)
 	vbox.add_child(title)
@@ -580,7 +580,7 @@ func _show_aux_picker(available: Array):
 	overlay.add_child(panel)
 
 	var title = Label.new()
-	title.text = "🧪 选择辅材"
+	title.text = "选择辅材"
 	title.add_theme_font_size_override("font_size", 55)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -610,7 +610,7 @@ func _show_aux_picker(available: Array):
 
 		var row_panel = PanelContainer.new()
 		var rps = StyleBoxFlat.new()
-		rps.bg_color = Global.current.topbar_bg if row_index % 2 == 0 else Color.TRANSPARENT
+		rps.bg_color = Global.current.topbar_bg if row_index % 2 == 0 else Global.current.topbar_bg.darkened(0.10)
 		rps.content_margin_left = Global.pw(0.02)
 		rps.content_margin_right = Global.pw(0.02)
 		rps.content_margin_top = Global.ph(0.005)
@@ -661,7 +661,7 @@ func _show_aux_picker(available: Array):
 		row_index += 1
 
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -810,9 +810,9 @@ func _tutorial_advance(trigger: String) -> void:
 				_show_tutorial_dialogue([
 					{"speaker": "你", "text": "写好了！接下来呢？"},
 					{"speaker": "老陈", "text": "好的，现在说最关键的——**纹路效果**。一张卡的效果由三部分组成："},
-					{"speaker": "老陈", "text": "① **⚡触发器（TR）**——什么时候触发？比如「入场时」「攻击时」「回合开始」。"},
-					{"speaker": "老陈", "text": "② **🎯动作（A）**——触发后做什么？比如「造成伤害」「恢复生命」「抽牌」。"},
-					{"speaker": "老陈", "text": "③ **🎯目标（T）**——对谁生效？比如「敌方单体」「己方全场」。"},
+					{"speaker": "老陈", "text": "① **触发器（TR）**——什么时候触发？比如「入场时」「攻击时」「回合开始」。"},
+					{"speaker": "老陈", "text": "② **动作（A）**——触发后做什么？比如「造成伤害」「恢复生命」「抽牌」。"},
+					{"speaker": "老陈", "text": "③ **目标（T）**——对谁生效？比如「敌方单体」「己方全场」。"},
 					{"speaker": "老陈", "text": "一个完整的效果 = 触发器 + 动作 + 目标，缺一不可。先到下面【⑦纹路槽位】点「＋ 添加新效果」创建一个效果条，然后点效果条里的「触发器槽位」选一个触发器。放好了告诉我。"},
 				], func():
 					_tutorial_step = 6  # 等纹路·触发器
@@ -821,7 +821,7 @@ func _tutorial_advance(trigger: String) -> void:
 			if trigger == "slot_trigger":
 				_tutorial_step = 7
 				_show_tutorial_dialogue([
-					{"speaker": "老陈", "text": "触发器放好了！现在装一个**动作**——再点一个空槽，选「🎯动作」。如果动作要填数值，随便填一个就行。"},
+					{"speaker": "老陈", "text": "触发器放好了！现在装一个**动作**——再点一个空槽，选「动作」。如果动作要填数值，随便填一个就行。"},
 					{"speaker": "你", "text": "动作和触发器配成一组？"},
 					{"speaker": "老陈", "text": "对。效果组就是触发器+动作+目标，三样凑齐才算一条完整的效果。放好了跟我说。"},
 				], func():
@@ -833,7 +833,7 @@ func _tutorial_advance(trigger: String) -> void:
 				_show_tutorial_dialogue([
 					{"speaker": "老陈", "text": "动作和触发器配上了！但还差一样——**目标（T）**，对谁生效？"},
 					{"speaker": "你", "text": "对哦，没目标的话不知道打谁……"},
-					{"speaker": "老陈", "text": "再点一个空槽，选「🎯目标」，指定是打敌方还是奶自己。放好了告诉我。"},
+					{"speaker": "老陈", "text": "再点一个空槽，选「目标」，指定是打敌方还是奶自己。放好了告诉我。"},
 				], func():
 					_tutorial_step = 8  # 等纹路·目标
 				)
@@ -844,8 +844,8 @@ func _tutorial_advance(trigger: String) -> void:
 					{"speaker": "老陈", "text": "好！一组完整效果（TR+A+T）成型了。不过你注意到负荷了吗？——效果越强负荷越重。"},
 					{"speaker": "老陈", "text": "想减负荷？以后可以装**条件（C）**或**约束（CO）**——条件限制触发时机，约束加额外代价，都能降低能耗。不过你现在还没解锁，以后再说。"},
 					{"speaker": "你", "text": "懂了，以后打架多了自然解锁更多纹路。"},
-					{"speaker": "老陈", "text": "没错。现在看看右边【📊卡牌属性预览】的负荷——基础负荷（攻击×1.0 + 生命×0.5）+ 纹路负荷（组件基础值 + 参数×1.7），再减去卡墨减免。不超过承载力就行。"},
-					{"speaker": "老陈", "text": "超载就封不了卡。滚到底，点【💾封卡保存】！"},
+					{"speaker": "老陈", "text": "没错。现在看看右边【卡牌属性预览】的负荷——基础负荷（攻击×1.0 + 生命×0.5）+ 纹路负荷（组件基础值 + 参数×1.7），再减去卡墨减免。不超过承载力就行。"},
+					{"speaker": "老陈", "text": "超载就封不了卡。滚到底，点【封卡保存】！"},
 				], func():
 					_tutorial_step = 9  # 可封卡
 				)
@@ -907,7 +907,7 @@ func _build_effect_slots(parent: VBoxContainer):
 	var vbox = panel.get_child(0)
 	
 	var title = Label.new()
-	title.text = "🔮 ⑦ 纹路槽位"
+	title.text = "⑦ 纹路槽位"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Global.current.title)
 	vbox.add_child(title)
@@ -1052,14 +1052,14 @@ func _rebuild_slot_ui():
 		title_hbox.size_flags_horizontal = SIZE_FILL
 		block_vbox.add_child(title_hbox)
 		var block_title = Label.new()
-		block_title.text = "✦ 效果" + str(bi + 1)
+		block_title.text = "效果" + str(bi + 1)
 		block_title.add_theme_font_size_override("font_size", 42)
 		block_title.add_theme_color_override("font_color", Color("#00BCD4"))
 		block_title.size_flags_horizontal = SIZE_EXPAND_FILL
 		title_hbox.add_child(block_title)
 		# 删除效果块按钮
 		var del_btn = Button.new()
-		del_btn.text = "🗑️"
+		del_btn.text = ""
 		del_btn.add_theme_font_size_override("font_size", 36)
 		del_btn.custom_minimum_size = Vector2(Global.ph(0.08), Global.ph(0.06))
 		var dbs = StyleBoxFlat.new()
@@ -1174,7 +1174,7 @@ func _on_effect_name_changed(new_text: String, block_idx: int):
 ## 动态添加一个新效果块（5个空槽位），效果条不占槽位，只有放纹路才占
 func _on_add_effect_block():
 	if _max_slots == 0:
-		_show_popup("⚠️ 请先选择卡基", Color("#FF6B6B"))
+		_show_popup(" 请先选择卡基", Color("#FF6B6B"))
 		return
 	# 效果条不占槽位，可以一直添加（每个效果条=5个槽位位置）
 	# 但槽位总数已满时提示
@@ -1237,14 +1237,14 @@ func _validate_slots() -> Array[String]:
 		
 		var missing: Array[String] = []
 		if not has_tr:
-			missing.append("⚡触发器")
+			missing.append("触发器")
 		if not has_a:
-			missing.append("🎯动作")
+			missing.append("动作")
 		if not has_t:
-			missing.append("🎯目标")
+			missing.append("目标")
 		
 		if missing.size() > 0:
-			hints.append("⚠️ 效果" + str(bi + 1) + "：缺少 " + "、".join(missing))
+			hints.append(" 效果" + str(bi + 1) + "：缺少 " + "、".join(missing))
 		else:
 			# ★ 检查动作×目标互斥
 			var a_cid = _slots[base + 2]
@@ -1252,9 +1252,9 @@ func _validate_slots() -> Array[String]:
 			if Global.is_action_target_mutex(a_cid, t_cid):
 				var a_name = Global._circuit_map.get(a_cid, {}).get("name", a_cid)
 				var t_name = Global._circuit_map.get(t_cid, {}).get("name", t_cid)
-				hints.append("❌ 效果" + str(bi + 1) + "：「" + a_name + "」不能配「" + t_name + "」")
+				hints.append(" 效果" + str(bi + 1) + "：「" + a_name + "」不能配「" + t_name + "」")
 			else:
-				hints.append("✅ 效果" + str(bi + 1) + "：完整")
+				hints.append(" 效果" + str(bi + 1) + "：完整")
 	
 	return hints
 
@@ -1547,11 +1547,11 @@ func _open_slot_picker(slot_idx: int):
 	var comp_type = ""
 	var type_label = ""
 	match offset:
-		0: comp_type = "TR"; type_label = "⚡ 触发器"
-		1: comp_type = "C";  type_label = "❓ 条件"
-		2: comp_type = "A";  type_label = "🎯 动作"
-		3: comp_type = "T";  type_label = "🎯 目标"
-		4: comp_type = "CO"; type_label = "🔒 约束"
+		0: comp_type = "TR"; type_label = " 触发器"
+		1: comp_type = "C";  type_label = " 条件"
+		2: comp_type = "A";  type_label = " 动作"
+		3: comp_type = "T";  type_label = " 目标"
+		4: comp_type = "CO"; type_label = " 约束"
 		_: return
 	# 直接打开组件选择弹窗（传 null 作为 overlay，_open_comp_picker 会先 _close_picker(null) 安全跳过）
 	_open_comp_picker(slot_idx, comp_type, type_label, null)
@@ -1581,7 +1581,7 @@ func _open_comp_picker(slot_idx: int, comp_type: String, title_text: String, slo
 	
 	# 如果没有可选组件
 	if available.size() == 0:
-		_show_popup("⚠️ 暂无可用组件（需解锁）", Color("#FF6B6B"))
+		_show_popup(" 暂无可用组件（需解锁）", Color("#FF6B6B"))
 		return
 	
 	# 创建弹窗
@@ -1637,7 +1637,7 @@ func _open_comp_picker(slot_idx: int, comp_type: String, title_text: String, slo
 		
 		var row_panel = Panel.new()
 		var rps = StyleBoxFlat.new()
-		rps.bg_color = Global.current.topbar_bg if row_index % 2 == 0 else Color.TRANSPARENT
+		rps.bg_color = Global.current.topbar_bg if row_index % 2 == 0 else Global.current.topbar_bg.darkened(0.10)
 		row_panel.add_theme_stylebox_override("panel", rps)
 		row_panel.custom_minimum_size = Vector2(0, Global.ph(0.09))
 		row_panel.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
@@ -1691,7 +1691,7 @@ func _open_comp_picker(slot_idx: int, comp_type: String, title_text: String, slo
 	# 清空按钮（仅当已有组件时显示）
 	if slot_idx < _slots.size() and _slots[slot_idx] != "":
 		var clear_btn = Button.new()
-		clear_btn.text = "🗑️ 清空"
+		clear_btn.text = "清空"
 		clear_btn.add_theme_font_size_override("font_size", 40)
 		var cbs = StyleBoxFlat.new()
 		cbs.bg_color = Color("#FF4444")
@@ -1707,7 +1707,7 @@ func _open_comp_picker(slot_idx: int, comp_type: String, title_text: String, slo
 	
 	# 关闭按钮 - 固定在面板底部，滚动列表下方，不遮挡
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -1834,7 +1834,7 @@ func _show_value_input(slot_idx: int, comp_id: String, param_name: String, label
 	panel.add_child(vbox)
 
 	var title = Label.new()
-	title.text = "⚙️ " + comp_name + "\n" + label_text
+	title.text = "" + comp_name + "\n" + label_text
 	title.add_theme_font_size_override("font_size", 40)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -1906,7 +1906,7 @@ func _show_value_input(slot_idx: int, comp_id: String, param_name: String, label
 	vbox.add_child(btn_hbox)
 
 	var confirm_btn = Button.new()
-	confirm_btn.text = "✓ 确定"
+	confirm_btn.text = "确定"
 	confirm_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color("#2d6a4f")
@@ -1922,7 +1922,7 @@ func _show_value_input(slot_idx: int, comp_id: String, param_name: String, label
 	btn_hbox.add_child(confirm_btn)
 
 	var cancel_btn = Button.new()
-	cancel_btn.text = "✗ 取消"
+	cancel_btn.text = "取消"
 	cancel_btn.add_theme_font_size_override("font_size", 45)
 	var cs2 = StyleBoxFlat.new()
 	cs2.bg_color = Global.current.btn_bg
@@ -2006,7 +2006,7 @@ func _show_text_input(slot_idx: int, comp_id: String, param_name: String, label_
 	panel.add_child(vbox)
 	
 	var title = Label.new()
-	title.text = "⚙️ " + comp_name + "\n" + label_text
+	title.text = "" + comp_name + "\n" + label_text
 	title.add_theme_font_size_override("font_size", 40)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -2037,7 +2037,7 @@ func _show_text_input(slot_idx: int, comp_id: String, param_name: String, label_
 	vbox.add_child(btn_hbox)
 	
 	var confirm_btn = Button.new()
-	confirm_btn.text = "✓ 确定"
+	confirm_btn.text = "确定"
 	confirm_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color("#2d6a4f")
@@ -2053,7 +2053,7 @@ func _show_text_input(slot_idx: int, comp_id: String, param_name: String, label_
 	btn_hbox.add_child(confirm_btn)
 	
 	var cancel_btn = Button.new()
-	cancel_btn.text = "✗ 取消"
+	cancel_btn.text = "取消"
 	cancel_btn.add_theme_font_size_override("font_size", 45)
 	var cs2 = StyleBoxFlat.new()
 	cs2.bg_color = Global.current.btn_bg
@@ -2114,7 +2114,7 @@ func _show_comparison_input(slot_idx: int, comp_id: String, label_text: String):
 	panel.add_child(vbox)
 	
 	var title = Label.new()
-	title.text = "⚙️ " + comp_name + "\n" + label_text
+	title.text = "" + comp_name + "\n" + label_text
 	title.add_theme_font_size_override("font_size", 40)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -2225,7 +2225,7 @@ func _show_comparison_input(slot_idx: int, comp_id: String, label_text: String):
 	
 	# 确定按钮
 	var confirm_btn = Button.new()
-	confirm_btn.text = "✓ 确定"
+	confirm_btn.text = "确定"
 	confirm_btn.add_theme_font_size_override("font_size", 40)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color("#2d6a4f")
@@ -2242,7 +2242,7 @@ func _show_comparison_input(slot_idx: int, comp_id: String, label_text: String):
 	
 	# 取消按钮
 	var cancel_btn = Button.new()
-	cancel_btn.text = "✗ 取消"
+	cancel_btn.text = "取消"
 	cancel_btn.add_theme_font_size_override("font_size", 40)
 	var cs2 = StyleBoxFlat.new()
 	cs2.bg_color = Global.current.btn_bg
@@ -2367,7 +2367,7 @@ func _build_preview_section(parent: VBoxContainer):
 	panel.add_child(vbox)
 	
 	var title = Label.new()
-	title.text = "📊 卡牌属性预览"
+	title.text = "卡牌属性预览"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Global.current.title)
 	vbox.add_child(title)
@@ -2414,7 +2414,7 @@ func _build_preview_section(parent: VBoxContainer):
 func _build_make_button(parent: VBoxContainer):
 	var btn = Button.new()
 	btn.name = "MakeBtn"
-	btn.text = "💾 封卡保存"
+	btn.text = "封卡保存"
 	btn.add_theme_font_size_override("font_size", 60)
 	btn.size_flags_horizontal = SIZE_FILL
 	btn.custom_minimum_size = Vector2(0, Global.ph(0.08))
@@ -2697,7 +2697,7 @@ func _update_preview():
 				if tendency[k] > max_val:
 					max_val = tendency[k]
 					max_elem = k
-			var elem_names = {"火": "🔥火", "水": "💧水", "风": "🌪️风", "暗": "🌑暗", "光": "☀️光"}
+			var elem_names = {"火": "火", "水": "水", "风": "风", "暗": "暗", "光": "光"}
 			_set_preview("element", elem_names.get(max_elem, max_elem))
 	else:
 		_set_preview("element", "—")
@@ -2724,7 +2724,7 @@ func _update_preview():
 		_set_preview("fields_display", "、".join(field_strs))
 	
 	# 稀有度
-	var rarity_icons = {"普通": "", "稀有": "🔵", "史诗": "🟣", "传说": "🟡"}
+	var rarity_icons = {"普通": "", "稀有": "", "史诗": "", "传说": ""}
 	_set_preview("rarity", rarity_icons.get(_card_rarity, "") + _card_rarity)
 	
 	# 卡牌描述
@@ -2742,7 +2742,7 @@ func _update_preview():
 			hint.text = "请先选择卡基和卡墨"
 			hint.add_theme_color_override("font_color", Color("#FF6B6B"))
 		else:
-			hint.text = "✅ 可以封卡保存了！"
+			hint.text = "可以封卡保存了！"
 			hint.add_theme_color_override("font_color", Color("#81C784"))
 
 
@@ -2759,11 +2759,11 @@ func _format_resistance_str(resistance: Dictionary) -> String:
 	for k in resistance.keys():
 		var elem_name := ""
 		match k:
-			"火": elem_name = "🔥火"
-			"水": elem_name = "💧水"
-			"风": elem_name = "🌪️风"
-			"暗": elem_name = "🌑暗"
-			"光": elem_name = "☀️光"
+			"火": elem_name = "火"
+			"水": elem_name = "水"
+			"风": elem_name = "风"
+			"暗": elem_name = "暗"
+			"光": elem_name = "光"
 			"all": elem_name = "全属性"
 			_: elem_name = k
 		parts.append(elem_name + "+" + str(resistance[k]) + "%")
@@ -2776,7 +2776,7 @@ func _format_resistance_str(resistance: Dictionary) -> String:
 func _on_select_base():
 	var bases = WarehouseManager.get_card_bases()
 	if bases.size() == 0:
-		_show_popup("⚠️ 暂无可用卡基，请先制作卡基", Color("#FF6B6B"))
+		_show_popup(" 暂无可用卡基，请先制作卡基", Color("#FF6B6B"))
 		return
 	
 	var overlay = ColorRect.new()
@@ -2801,7 +2801,7 @@ func _on_select_base():
 	overlay.add_child(panel)
 	
 	var title = Label.new()
-	title.text = "🠿 选择卡基"
+	title.text = "选择卡基"
 	title.add_theme_font_size_override("font_size", 55)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -2834,7 +2834,7 @@ func _on_select_base():
 		# 用 PanelContainer 让卡片高度随内容自适应，避免换行后溢出被下方卡片遮挡
 		var row_panel = PanelContainer.new()
 		var rps = StyleBoxFlat.new()
-		rps.bg_color = Global.current.topbar_bg if row_index % 2 == 0 else Color.TRANSPARENT
+		rps.bg_color = Global.current.topbar_bg if row_index % 2 == 0 else Global.current.topbar_bg.darkened(0.10)
 		rps.content_margin_left = Global.pw(0.02)
 		rps.content_margin_right = Global.pw(0.02)
 		rps.content_margin_top = Global.ph(0.005)
@@ -2891,7 +2891,7 @@ func _on_select_base():
 		row_index += 1
 	
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -2917,7 +2917,7 @@ func _on_pick_base(key: String, overlay: ColorRect):
 	
 	var btn = _preview_labels.get("select_base_btn")
 	if btn:
-		btn.text = "已选择卡基 ✓"
+		btn.text = "已选择卡基 "
 	
 	var info = _preview_labels.get("base_info")
 	if info:
@@ -2943,7 +2943,7 @@ func _on_pick_base(key: String, overlay: ColorRect):
 func _on_select_ink():
 	var inks = WarehouseManager.get_ink_inventory()
 	if inks.size() == 0:
-		_show_popup("⚠️ 暂无可用卡墨，请先调制卡墨", Color("#FF6B6B"))
+		_show_popup(" 暂无可用卡墨，请先调制卡墨", Color("#FF6B6B"))
 		return
 	
 	var overlay = ColorRect.new()
@@ -2968,7 +2968,7 @@ func _on_select_ink():
 	overlay.add_child(panel)
 	
 	var title = Label.new()
-	title.text = "🎨 选择卡墨"
+	title.text = "选择卡墨"
 	title.add_theme_font_size_override("font_size", 55)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -2998,7 +2998,7 @@ func _on_select_ink():
 		
 		var row_panel = PanelContainer.new()
 		var rps = StyleBoxFlat.new()
-		rps.bg_color = Global.current.topbar_bg if row_index % 2 == 0 else Color.TRANSPARENT
+		rps.bg_color = Global.current.topbar_bg if row_index % 2 == 0 else Global.current.topbar_bg.darkened(0.10)
 		rps.content_margin_left = Global.pw(0.02)
 		rps.content_margin_right = Global.pw(0.02)
 		rps.content_margin_top = Global.ph(0.005)
@@ -3050,7 +3050,7 @@ func _on_select_ink():
 		row_index += 1
 	
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -3135,23 +3135,23 @@ func _on_make_card():
 	# ===== 校验开始 =====
 	# 1. 必填项：卡基
 	if _selected_card_base.is_empty():
-		_show_popup("⚠️ 请先选择卡基！", Color("#FF6B6B"))
+		_show_popup(" 请先选择卡基！", Color("#FF6B6B"))
 		return
 	# 2. 必填项：卡墨
 	if _selected_ink.is_empty():
-		_show_popup("⚠️ 请先选择卡墨！", Color("#FF6B6B"))
+		_show_popup(" 请先选择卡墨！", Color("#FF6B6B"))
 		return
 	# 3. 必填项：卡名
 	var name_input = _preview_labels.get("card_name_input")
 	var card_name_text = name_input.text.strip_edges() if name_input else ""
 	if card_name_text == "":
-		_show_popup("⚠️ 请填写卡牌名称！", Color("#FF6B6B"))
+		_show_popup(" 请填写卡牌名称！", Color("#FF6B6B"))
 		return
 	# 4. 必填项：描述
 	var desc_input = _preview_labels.get("desc_input")
 	var desc_text = desc_input.text.strip_edges() if desc_input else ""
 	if desc_text == "":
-		_show_popup("⚠️ 请填写卡牌描述！", Color("#FF6B6B"))
+		_show_popup(" 请填写卡牌描述！", Color("#FF6B6B"))
 		return
 	# 5. 纹路校验：不为空时必须能组成完整效果，且总数不能超过上限
 	var placed = 0
@@ -3159,10 +3159,10 @@ func _on_make_card():
 		if cid != "":
 			placed += 1
 	if placed > _max_slots:
-		_show_popup("⚠️ 纹路槽位超限！已放置 " + str(placed) + " 个，上限为 " + str(_max_slots) + " 个，请删除多余纹路。", Color("#FF6B6B"))
+		_show_popup(" 纹路槽位超限！已放置 " + str(placed) + " 个，上限为 " + str(_max_slots) + " 个，请删除多余纹路。", Color("#FF6B6B"))
 		return
 	if not _validate_slots_effects():
-		_show_popup("⚠️ 纹路效果不完整！每个效果组需要至少一个触发器、动作和目标，请检查纹路配置！", Color("#FF6B6B"))
+		_show_popup(" 纹路效果不完整！每个效果组需要至少一个触发器、动作和目标，请检查纹路配置！", Color("#FF6B6B"))
 		return
 	# ===== 校验通过 =====
 	
@@ -3196,7 +3196,7 @@ func _on_make_card():
 	
 	# 超载检查
 	if final_load > load_cap:
-		_show_popup("⚠️ 负荷超载！当前 " + str(final_load) + " / " + str(load_cap) + "，请减少攻防或纹路组件！", Color("#FF6B6B"))
+		_show_popup(" 负荷超载！当前 " + str(final_load) + " / " + str(load_cap) + "，请减少攻防或纹路组件！", Color("#FF6B6B"))
 		return
 	
 	# 保存到成员变量供 _finish_make_card 使用
@@ -3267,7 +3267,7 @@ func _finish_make_card(final_quality: String):
 	# ★ 每日制卡阶梯
 	var craft_result = PlayerManager.record_craft()
 	if craft_result.get("completed", false):
-		print("[制卡] 🎉 每日制卡阶梯完成！金币+" + str(craft_result.get("reward", 0)))
+		print("[制卡]  每日制卡阶梯完成！金币+" + str(craft_result.get("reward", 0)))
 	# 消耗卡基和卡墨（封卡即消耗材料）
 	var warehouse = get_node("/root/WarehouseManager")
 	if _selected_card_base.has("id"):
@@ -3290,7 +3290,7 @@ func _finish_make_card(final_quality: String):
 		TutorialManager.advance()
 		_show_tutorial_done_dialogue(card_data.get("card_name", "新卡"))
 	else:
-		_show_popup("✅ 卡牌「" + card_data["card_name"] + "」制作成功！", Color("#81C784"))
+		_show_popup(" 卡牌「" + card_data["card_name"] + "」制作成功！", Color("#81C784"))
 	print("[刻画卡牌] 保存卡牌: ", card_data["card_name"])
 	
 	# 重置选择状态，防止重复封卡
@@ -3371,7 +3371,7 @@ func _start_quality_rhythm(q_range: String, title_level: int, quality_stab: floa
 	vbox.size_flags_vertical = SIZE_EXPAND | SIZE_FILL
 	panel.add_child(vbox)
 	var title = Label.new()
-	title.text = "🎯 敲击定品质！\n看准时机，点击「敲！」停住标记"
+	title.text = "敲击定品质！\n看准时机，点击「敲！」停住标记"
 	title.add_theme_font_size_override("font_size", 40)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -3432,7 +3432,7 @@ func _start_quality_rhythm(q_range: String, title_level: int, quality_stab: floa
 	vbox.add_child(name_row)
 	# 敲击按钮
 	var tap_btn = Button.new()
-	tap_btn.text = "🖱️ 敲！"
+	tap_btn.text = "敲！"
 	tap_btn.add_theme_font_size_override("font_size", 50)
 	tap_btn.custom_minimum_size = Vector2(Global.pw(0.3), Global.ph(0.08))
 	tap_btn.size_flags_horizontal = SIZE_EXPAND
@@ -3508,7 +3508,7 @@ func _show_quality_confirm(quality: String):
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
 	panel.add_child(vbox)
 	var title = Label.new()
-	title.text = "✨ 品质确认"
+	title.text = "品质确认"
 	title.add_theme_font_size_override("font_size", 52)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -3534,7 +3534,7 @@ func _show_quality_confirm(quality: String):
 	btn_row.add_theme_constant_override("separation", 20)
 	vbox.add_child(btn_row)
 	var seal_btn = Button.new()
-	seal_btn.text = "📦 封卡"
+	seal_btn.text = "封卡"
 	seal_btn.add_theme_font_size_override("font_size", 44)
 	var seal_ts := StyleBoxFlat.new()
 	seal_ts.bg_color = Color("#4CAF50")
@@ -3548,7 +3548,7 @@ func _show_quality_confirm(quality: String):
 	seal_btn.pressed.connect(_on_seal_quality)
 	btn_row.add_child(seal_btn)
 	var ad_btn = Button.new()
-	ad_btn.text = "🎬 看广告重敲"
+	ad_btn.text = "看广告重敲"
 	ad_btn.add_theme_font_size_override("font_size", 44)
 	var ad_ts := StyleBoxFlat.new()
 	ad_ts.bg_color = Color("#FF9800")
@@ -3565,10 +3565,10 @@ func _show_quality_confirm(quality: String):
 	var ad_status = Label.new()
 	ad_status.name = "AdStatusHint"
 	if _hj_ads == null:
-		ad_status.text = "📵 当前环境不支持广告"
+		ad_status.text = "当前环境不支持广告"
 		ad_status.add_theme_color_override("font_color", Color("#FF5252"))
 	else:
-		ad_status.text = ("✅ 广告已就绪，可以观看" if _ad_ready else "⏳ 广告加载中，稍后再试…")
+		ad_status.text = (" 广告已就绪，可以观看" if _ad_ready else "⏳ 广告加载中，稍后再试…")
 		ad_status.add_theme_color_override("font_color", Color("#888888" if not _ad_ready else "#4CAF50"))
 	ad_status.add_theme_font_size_override("font_size", 26)
 	ad_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -3586,7 +3586,7 @@ func _on_seal_quality():
 	_finish_make_card(final_q)
 func _on_watch_ad_retry():
 	if _hj_ads == null:
-		_show_popup("📵 当前版本暂不支持广告重敲\n请直接封卡获得当前品质", Color("#FFD54F"))
+		_show_popup(" 当前版本暂不支持广告重敲\n请直接封卡获得当前品质", Color("#FFD54F"))
 		return
 	if not _ad_ready or not _hj_ads.isRewardedAdReady():
 		_show_popup("⏳ 广告还没准备好，请稍后再点", Color("#FFD54F"))
@@ -3599,7 +3599,7 @@ func _on_watch_ad_retry():
 func _on_retry_ad_loaded(_placement_id: String):
 	_ad_ready = true
 	if _ad_status_hint and is_instance_valid(_ad_status_hint):
-		_ad_status_hint.text = "✅ 广告已就绪，可以观看"
+		_ad_status_hint.text = "广告已就绪，可以观看"
 		_ad_status_hint.add_theme_color_override("font_color", Color("#4CAF50"))
 func _on_retry_video_rewarded(rewarded: bool):
 	# 注意：这里是"观看完成但广告可能还没关闭"。为了稳，奖励在 ad_closed 后再结算
@@ -3625,7 +3625,7 @@ func _on_retry_ad_closed(_result: String):
 		_hj_ads.loadRewardedAd()
 func _on_retry_ad_failed(error_msg: String):
 	_ad_ready = false
-	_show_popup("⚠ 广告加载失败：\n" + error_msg, Color("#FF5252"))
+	_show_popup(" 广告加载失败：\n" + error_msg, Color("#FF5252"))
 	# 不自动重载，避免"失败→重载→再失败→再重载"死循环
 	
 func _restart_quality_rhythm():
@@ -3784,7 +3784,7 @@ func _show_help_guide():
 	
 	# 标题
 	var title = Label.new()
-	title.text = "📖 刻画卡牌指南"
+	title.text = "刻画卡牌指南"
 	title.add_theme_font_size_override("font_size", 60)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -3818,7 +3818,7 @@ func _show_help_guide():
 	
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -3880,22 +3880,22 @@ func _make_help_label(vbox: VBoxContainer, text: String, color: Color = Color("#
 
 func _build_help_content(vbox: VBoxContainer):
 	# 1. 刻画总览
-	var s1 = _make_help_section(vbox, "🔨 ① 刻画卡牌总览", Color("#5cb85c"))
+	var s1 = _make_help_section(vbox, " ① 刻画卡牌总览", Color("#5cb85c"))
 	_make_help_label(s1, "刻画卡牌是将卡基、卡墨和纹路组合，制作成品卡牌的核心步骤。", Global.current.btn_text, 42)
 	_make_help_label(s1, "完整流程共6步，按顺序完成即可生成一张强力卡牌！", Color("#CCCCCC"))
 	
 	# 2. 选择卡基
-	var s2 = _make_help_section(vbox, "🃏 ② 选择卡基", Color("#e8a838"))
+	var s2 = _make_help_section(vbox, " ② 选择卡基", Color("#e8a838"))
 	_make_help_label(s2, "从仓库中选择一张已制作的卡基作为底材。", Global.current.btn_text, 42)
 	_make_help_label(s2, "卡基的选择会影响成品卡牌的：", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 承载力（Load Cap）→ 决定纹路能量上限", Color("#FF9800"))
 	_make_help_label(s2, "  • 卡槽数（Slots）→ 决定可安装的纹路组件数量", Color("#8BC34A"))
 	_make_help_label(s2, "  • 品质（Quality）→ 影响成品卡牌的品质等级", Color("#9B59B6"))
 	_make_help_label(s2, "  • 倾向（Tendency）→ 决定卡牌的主元素", Color("#FFD700"))
-	_make_help_label(s2, "💡 高品质卡基 = 更强的成品卡牌！", Color("#FFD700"), 42)
+	_make_help_label(s2, " 高品质卡基 = 更强的成品卡牌！", Color("#FFD700"), 42)
 	
 	# 3. 选择卡墨
-	var s3 = _make_help_section(vbox, "🎨 ③ 选择卡墨", Color("#6c9bcf"))
+	var s3 = _make_help_section(vbox, " ③ 选择卡墨", Color("#6c9bcf"))
 	_make_help_label(s3, "从仓库中选择已调制的卡墨作为墨水。", Global.current.btn_text, 42)
 	_make_help_label(s3, "卡墨的属性会附加到刻画过程中：", Color("#CCCCCC"))
 	_make_help_label(s3, "  • 负荷减免 → 降低纹路刻画能量消耗", Color("#4FC3F7"))
@@ -3903,10 +3903,10 @@ func _build_help_content(vbox: VBoxContainer):
 	_make_help_label(s3, "  • 品质稳定性 → 稳定卡基品质波动", Color("#FFD54F"))
 	_make_help_label(s3, "  • 倾向折扣 → 按元素降低纹路能量消耗", Color("#FFD700"))
 	_make_help_label(s3, "  • 属性抗性 → 提升卡牌元素抗性", Color("#E91E63"))
-	_make_help_label(s3, "💡 选择合适的卡墨可以大幅优化卡牌性能！", Color("#FFD700"), 42)
+	_make_help_label(s3, " 选择合适的卡墨可以大幅优化卡牌性能！", Color("#FFD700"), 42)
 	
 	# 4. 填写基础数值
-	var s4 = _make_help_section(vbox, "💪 ④ 填写基础数值", Color("#FF9800"))
+	var s4 = _make_help_section(vbox, " ④ 填写基础数值", Color("#FF9800"))
 	_make_help_label(s4, "自由填写攻击和生命值，能量消耗将自动计算。", Global.current.btn_text, 42)
 	_make_help_label(s4, "  • 攻击（Attack）：卡牌的攻击力，范围 0 ~ 99", Color("#FF5252"))
 	_make_help_label(s4, "  • 生命（Health）：卡牌的生命值，范围 0 ~ 99", Color("#4CAF50"))
@@ -3914,20 +3914,20 @@ func _build_help_content(vbox: VBoxContainer):
 	_make_help_label(s4, "  • 能量消耗公式：有效果卡牌按纹路计算，无效果随从 = floor((攻+命)/2)", Color("#CCCCCC"))
 	
 	# 5. 填写卡名与字段
-	var s5 = _make_help_section(vbox, "🏷️ ⑤ 填写卡名与字段", Color("#3498DB"))
+	var s5 = _make_help_section(vbox, " ⑤ 填写卡名与字段", Color("#3498DB"))
 	_make_help_label(s5, "自定义卡牌名称和字段，用于卡牌联动检索。", Global.current.btn_text, 42)
 	_make_help_label(s5, "  • 卡名：留空则自动拼接生成", Color("#CCCCCC"))
 	_make_help_label(s5, "  • 字段：自定义字符串，最多3个，用于卡牌之间的联动检索", Color("#CCCCCC"))
 	_make_help_label(s5, "  • 拥有相同字段的卡牌可以被检索和联动效果触发", Color("#CCCCCC"))
 	
 	# 6. 卡牌描述
-	var s55 = _make_help_section(vbox, "📝 ⑥ 卡牌描述", Color("#FF9800"))
+	var s55 = _make_help_section(vbox, " ⑥ 卡牌描述", Color("#FF9800"))
 	_make_help_label(s55, "自由输入卡牌的效果说明或背景故事。", Global.current.btn_text, 42)
 	_make_help_label(s55, "  • 描述文本限40字，超出自动截断", Color("#CCCCCC"))
 	_make_help_label(s55, "  • 内容会展示在卡牌详情中，影响卡牌的故事感和沉浸感", Color("#CCCCCC"))
 	
 	# 7. 辅材
-	var s6 = _make_help_section(vbox, "🧪 ⑦ 辅材（可选）", Color("#9b59b6"))
+	var s6 = _make_help_section(vbox, " ⑦ 辅材（可选）", Color("#9b59b6"))
 	_make_help_label(s6, "从仓库中选择已拥有的辅材，附在卡牌上增强效果。", Global.current.btn_text, 42)
 	_make_help_label(s6, "  • 辅材在战斗中击败卡兽掉落获得", Color("#CCCCCC"))
 	_make_help_label(s6, "  • 最多可附加3种辅材", Color("#CCCCCC"))
@@ -3935,19 +3935,19 @@ func _build_help_content(vbox: VBoxContainer):
 	_make_help_label(s6, "  • 点击已加的辅材标签可移除并退回仓库", Color("#CCCCCC"))
 	
 	# 8. 纹路槽位
-	var s7 = _make_help_section(vbox, "🔮 ⑧ 纹路槽位", Color("#FFD700"))
+	var s7 = _make_help_section(vbox, " ⑧ 纹路槽位", Color("#FFD700"))
 	_make_help_label(s7, "在卡基的槽位上安装纹路组件，决定卡牌的效果。", Global.current.btn_text, 42)
 	_make_help_label(s7, "纹路组件类型：", Color("#CCCCCC"))
-	_make_help_label(s7, "  ⚡ 触发器（TR）→ 触发条件（召唤成功、攻击时、受到伤害等）", Color("#FF9800"))
-	_make_help_label(s7, "  🎯 动作（A）→ 执行效果（造成伤害、恢复生命、抽牌等）", Color("#FF5252"))
-	_make_help_label(s7, "  🎯 目标（T）→ 效果目标（敌方单体、敌方全体、己方等）", Color("#4FC3F7"))
-	_make_help_label(s7, "  ❓ 条件（C）→ 额外条件判断", Color("#9B59B6"))
-	_make_help_label(s7, "  🔒 约束（CO）→ 效果约束", Color("#E91E63"))
-	_make_help_label(s7, "💡 每个效果组 = 触发器 + 动作 + 目标，缺一不可", Color("#FFD700"), 42)
-	_make_help_label(s7, "💡 卡槽数量 = 卡基的卡槽属性，点击空槽位选择纹路组件", Color("#FFD700"), 42)
+	_make_help_label(s7, "   触发器（TR）→ 触发条件（召唤成功、攻击时、受到伤害等）", Color("#FF9800"))
+	_make_help_label(s7, "   动作（A）→ 执行效果（造成伤害、恢复生命、抽牌等）", Color("#FF5252"))
+	_make_help_label(s7, "   目标（T）→ 效果目标（敌方单体、敌方全体、己方等）", Color("#4FC3F7"))
+	_make_help_label(s7, "   条件（C）→ 额外条件判断", Color("#9B59B6"))
+	_make_help_label(s7, "   约束（CO）→ 效果约束", Color("#E91E63"))
+	_make_help_label(s7, " 每个效果组 = 触发器 + 动作 + 目标，缺一不可", Color("#FFD700"), 42)
+	_make_help_label(s7, " 卡槽数量 = 卡基的卡槽属性，点击空槽位选择纹路组件", Color("#FFD700"), 42)
 	
 	# 9. 制作步骤
-	var s8 = _make_help_section(vbox, "🎯 ⑨ 制作步骤", Color("#4CAF50"))
+	var s8 = _make_help_section(vbox, " ⑨ 制作步骤", Color("#4CAF50"))
 	_make_help_label(s8, "1. 点击「选择卡基」从仓库中选择卡基", Global.current.btn_text, 42)
 	_make_help_label(s8, "2. 点击「选择卡墨」从仓库中选择卡墨", Global.current.btn_text, 42)
 	_make_help_label(s8, "3. 用 [-] [+] 调整攻击和生命值", Global.current.btn_text, 42)
@@ -3957,7 +3957,7 @@ func _build_help_content(vbox: VBoxContainer):
 	_make_help_label(s8, "7. 点击空槽位选择纹路组件，装配完整效果", Global.current.btn_text, 42)
 	_make_help_label(s8, "8. 在「卡牌预览」中确认最终属性", Global.current.btn_text, 42)
 	_make_help_label(s8, "9. 点击「刻画卡牌」消耗能量，完成制作！", Global.current.btn_text, 42)
-	_make_help_label(s8, "💡 制作完成的卡牌会存入仓库，可在牌组编辑中使用", Color("#FFD700"), 42)
+	_make_help_label(s8, " 制作完成的卡牌会存入仓库，可在牌组编辑中使用", Color("#FFD700"), 42)
 	
 	# 底部留白
 	var spacer = Control.new()

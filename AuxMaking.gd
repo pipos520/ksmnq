@@ -34,7 +34,7 @@ func _ready():
 	
 	var title = Label.new()
 	title.name = "Title"
-	title.text = "🧪 制作辅材"
+	title.text = "制作辅材"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 100)
@@ -148,7 +148,7 @@ func _build_aux_list(parent: VBoxContainer):
 	panel.add_child(vbox)
 	
 	var title = Label.new()
-	title.text = "🧪 可选辅材"
+	title.text = "可选辅材"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Global.current.title)
 	vbox.add_child(title)
@@ -209,7 +209,7 @@ func _build_aux_list(parent: VBoxContainer):
 		info_vbox.add_child(name_label)
 		
 		var cost_label = Label.new()
-		cost_label.text = "💰" + Global.n2s(gold_cost) + "  " + " ".join(material_details)
+		cost_label.text = "" + Global.n2s(gold_cost) + "  " + " ".join(material_details)
 		cost_label.add_theme_font_size_override("font_size", 35)
 		cost_label.add_theme_color_override("font_color", Global.current.btn_text)
 		cost_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -240,7 +240,7 @@ func _on_make_aux(aux_id: String, aux_data: Dictionary):
 	# 检查金币
 	var gold = SaveManager.get_value("player", "gold", 0)
 	if gold < gold_cost:
-		_show_popup("💰 金币不足！需要 " + Global.n2s(gold_cost) + " 金币", Color("#FF6B6B"))
+		_show_popup(" 金币不足！需要 " + Global.n2s(gold_cost) + " 金币", Color("#FF6B6B"))
 		return
 	
 	# 消耗素材
@@ -257,7 +257,7 @@ func _on_make_aux(aux_id: String, aux_data: Dictionary):
 	# 添加辅材到仓库
 	warehouse.add_aux(aux_id, 1)
 	
-	_show_popup("✅ 制作成功！获得【" + aux_data.get("name", "") + "】", Color("#4CAF50"))
+	_show_popup(" 制作成功！获得【" + aux_data.get("name", "") + "】", Color("#4CAF50"))
 	
 	# 刷新界面
 	_refresh_aux_list()
@@ -313,7 +313,7 @@ func _build_preview_section(parent: VBoxContainer):
 	panel.add_child(vbox)
 	
 	var title = Label.new()
-	title.text = "📋 辅材说明"
+	title.text = "辅材说明"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Global.current.title)
 	vbox.add_child(title)
@@ -372,7 +372,7 @@ func _show_aux_detail(aux: Dictionary):
 		var effect = aux.get("effect", {})
 		var etype = aux.get("type", "")
 		
-		var type_names = {"boost": "⚡属性增幅", "element": "🔥元素赋予", "protect": "🛡️保护", "special": "✨特殊效果", "poison": "🐍剧毒", "combo": "⚔️连击"}
+		var type_names = {"boost": "属性增幅", "element": "元素赋予", "protect": "保护", "special": "特殊效果", "poison": "剧毒", "combo": "连击"}
 		var type_name = type_names.get(etype, "未知")
 		
 		var effect_desc = ""
@@ -493,7 +493,7 @@ func _show_aux_detail(aux: Dictionary):
 	var cost = aux.get("craft_cost", {})
 	var gold_cost = cost.get("gold", 0)
 	var mats = cost.get("materials", {})
-	var cost_str = "制作消耗：💰" + Global.n2s(gold_cost) + "金币"
+	var cost_str = "制作消耗：" + Global.n2s(gold_cost) + "金币"
 	for mid in mats.keys():
 		var mat_info = Global.get_material_by_id(mid)
 		cost_str += "\n  • " + mat_info.get("name", mid) + " x" + Global.n2s(mats[mid])

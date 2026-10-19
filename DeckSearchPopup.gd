@@ -136,7 +136,7 @@ func show_search(cards: Array, title: String, max_select: int, on_selected: Call
 		# 选中标记
 		var check_lbl = Label.new()
 		check_lbl.name = "CheckLabel"
-		check_lbl.text = "☐"
+		check_lbl.text = ""
 		check_lbl.add_theme_font_size_override("font_size", 40)
 		check_lbl.add_theme_color_override("font_color", Color("#a0a0b0"))
 		check_lbl.custom_minimum_size = Vector2(Global.pw(0.06), 0)
@@ -153,12 +153,12 @@ func show_search(cards: Array, title: String, max_select: int, on_selected: Call
 		# 元素图标
 		var elem_icon = ""
 		match c.element:
-			"火": elem_icon = "🔥"
-			"水": elem_icon = "💧"
-			"风": elem_icon = "🌪️"
-			"地": elem_icon = "⛰️"
-			"光": elem_icon = "✨"
-			"暗": elem_icon = "🌑"
+			"火": elem_icon = ""
+			"水": elem_icon = ""
+			"风": elem_icon = ""
+			"地": elem_icon = ""
+			"光": elem_icon = ""
+			"暗": elem_icon = ""
 		var elem_lbl = Label.new()
 		elem_lbl.text = elem_icon
 		elem_lbl.add_theme_font_size_override("font_size", 36)
@@ -177,7 +177,7 @@ func show_search(cards: Array, title: String, max_select: int, on_selected: Call
 		
 		# 费用
 		var cost_lbl = Label.new()
-		cost_lbl.text = "⚡" + str(c.base_cost)
+		cost_lbl.text = "" + str(c.base_cost)
 		cost_lbl.add_theme_font_size_override("font_size", 34)
 		cost_lbl.add_theme_color_override("font_color", Color("#f9d371"))
 		cost_lbl.custom_minimum_size = Vector2(Global.pw(0.07), 0)
@@ -186,7 +186,7 @@ func show_search(cards: Array, title: String, max_select: int, on_selected: Call
 		
 		# 攻防
 		var stats_lbl = Label.new()
-		stats_lbl.text = "⚔" + str(c.base_atk) + " ❤" + str(c.base_hp)
+		stats_lbl.text = "" + str(c.base_atk) + " " + str(c.base_hp)
 		stats_lbl.add_theme_font_size_override("font_size", 34)
 		stats_lbl.add_theme_color_override("font_color", Color("#7a8a7a"))
 		stats_lbl.custom_minimum_size = Vector2(Global.pw(0.18), 0)
@@ -262,7 +262,7 @@ func show_search(cards: Array, title: String, max_select: int, on_selected: Call
 	panel.add_child(bottom_hbox)
 	
 	var confirm_btn = Button.new()
-	confirm_btn.text = "✓ 确认选择"
+	confirm_btn.text = "确认选择"
 	confirm_btn.add_theme_font_size_override("font_size", 40)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color(0.2, 0.3, 0.2)
@@ -280,7 +280,7 @@ func show_search(cards: Array, title: String, max_select: int, on_selected: Call
 	bottom_hbox.add_child(confirm_btn)
 	
 	var cancel_btn = Button.new()
-	cancel_btn.text = "✕ 取消"
+	cancel_btn.text = "取消"
 	cancel_btn.add_theme_font_size_override("font_size", 40)
 	var cs2 = StyleBoxFlat.new()
 	cs2.bg_color = Color(0.2, 0.12, 0.20)
@@ -303,7 +303,7 @@ func show_search(cards: Array, title: String, max_select: int, on_selected: Call
 func _toggle_selection(idx: int, check_lbl: Label) -> void:
 	if idx in _selected_indices:
 		_selected_indices.erase(idx)
-		check_lbl.text = "☐"
+		check_lbl.text = ""
 		check_lbl.add_theme_color_override("font_color", Color("#a0a0b0"))
 	else:
 		if _max_select > 0 and _selected_indices.size() >= _max_select:
@@ -313,10 +313,10 @@ func _toggle_selection(idx: int, check_lbl: Label) -> void:
 			if old_row:
 				var old_check = old_row.get_node_or_null("CheckLabel")
 				if old_check:
-					old_check.text = "☐"
+					old_check.text = ""
 					old_check.add_theme_color_override("font_color", Color("#a0a0b0"))
 		_selected_indices.append(idx)
-		check_lbl.text = "☑"
+		check_lbl.text = ""
 		check_lbl.add_theme_color_override("font_color", Color("#60d060"))
 
 

@@ -147,10 +147,10 @@ func submit_with_card(task_index: int, card_data: Dictionary) -> Dictionary:
 		for cid in new_unlocks:
 			var info = Global.get_circuit_by_id(cid)
 			names.append(info.get("name", cid))
-		print("[GuildTaskManager] 🎉 任务完成触发纹路解锁：", ", ".join(names))
+		print("[GuildTaskManager]  任务完成触发纹路解锁：", ", ".join(names))
 	_save_tasks()
 	task_completed.emit(task_index)
-	print("[GuildTaskManager] ✅ 任务完成：", task.get("title", ""))
+	print("[GuildTaskManager]  任务完成：", task.get("title", ""))
 	return {"success": true, "message": "任务完成！" + reward_result}
 
 func submit_with_material(task_index: int) -> Dictionary:
@@ -184,10 +184,10 @@ func submit_with_material(task_index: int) -> Dictionary:
 		for cid in new_unlocks:
 			var info = Global.get_circuit_by_id(cid)
 			names.append(info.get("name", cid))
-		print("[GuildTaskManager] 🎉 任务完成触发纹路解锁：", ", ".join(names))
+		print("[GuildTaskManager]  任务完成触发纹路解锁：", ", ".join(names))
 	_save_tasks()
 	task_completed.emit(task_index)
-	print("[GuildTaskManager] ✅ 任务完成：", task.get("title", ""))
+	print("[GuildTaskManager]  任务完成：", task.get("title", ""))
 	return {"success": true, "message": "任务完成！" + reward_result}
 
 # ==================== 任务生成 ====================

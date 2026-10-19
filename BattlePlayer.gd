@@ -667,7 +667,7 @@ func print_status() -> void:
 	print("手牌:")
 	for i in range(hand.size()):
 		var c = hand[i]
-		print("  [", i, "] ", c.get_display_name(), " ⚡", c.base_cost, " (", c.get_stat_text(), ")")
+		print("  [", i, "] ", c.get_display_name(), " ", c.base_cost, " (", c.get_stat_text(), ")")
 
 
 # ===== 序列化 =====

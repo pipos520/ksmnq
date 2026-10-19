@@ -49,9 +49,9 @@ func _make_card_style() -> StyleBoxFlat:
 
 func _build_material_section(parent: VBoxContainer):
 	var cat_data = [
-		{"key": "fiber", "label": "🧶 纤维素材", "color": Color("#8BC34A")},
-		{"key": "mineral", "label": "🪨 矿粉素材", "color": Color("#FF9800")},
-		{"key": "resin", "label": "🧪 树脂素材", "color": Color("#E91E63")},
+		{"key": "fiber", "label": " 纤维素材", "color": Color("#8BC34A")},
+		{"key": "mineral", "label": " 矿粉素材", "color": Color("#FF9800")},
+		{"key": "resin", "label": " 树脂素材", "color": Color("#E91E63")},
 	]
 	
 	for cat in cat_data:
@@ -229,7 +229,7 @@ func _show_material_picker(cat_key: String):
 		vbox.add_child(mat_row)
 	
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -516,7 +516,7 @@ func _show_material_detail(mat: Dictionary):
 	
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -724,7 +724,7 @@ func _build_preview_section(parent: VBoxContainer):
 	panel.add_child(vbox)
 	
 	var title = Label.new()
-	title.text = "📊 卡基属性预览"
+	title.text = "卡基属性预览"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Global.current.title)
 	vbox.add_child(title)
@@ -808,7 +808,7 @@ func _update_preview():
 		var parts := []
 		for k in tendency.keys():
 			parts.append(k + str(tendency[k]))
-		_preview_labels["tendency"].text = " ".join(parts)
+		_preview_labels["tendency"].text = "".join(parts)
 	
 	# 消耗显示
 	var consumption_parts := []
@@ -821,7 +821,7 @@ func _update_preview():
 	if consumption_parts.is_empty():
 		_preview_labels["consumption"].text = "无"
 	else:
-		_preview_labels["consumption"].text = " ".join(consumption_parts)
+		_preview_labels["consumption"].text = "".join(consumption_parts)
 
 
 func _calc_load_cap(mineral_mats: Array, resin_mats: Array) -> int:
@@ -938,7 +938,7 @@ func _calc_tendency(fiber_mats: Array, mineral_mats: Array, resin_mats: Array) -
 func _build_make_button(parent: VBoxContainer):
 	var btn = Button.new()
 	btn.name = "MakeBtn"
-	btn.text = "🛠️  开始制作"
+	btn.text = "开始制作"
 	btn.add_theme_font_size_override("font_size", 55)
 	
 	var s = StyleBoxFlat.new()
@@ -1071,7 +1071,7 @@ func _show_help_guide():
 	
 	# 标题
 	var title = Label.new()
-	title.text = "📖 卡基制作指南"
+	title.text = "卡基制作指南"
 	title.add_theme_font_size_override("font_size", 60)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -1105,7 +1105,7 @@ func _show_help_guide():
 	
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -1181,79 +1181,79 @@ func _make_help_label(vbox: VBoxContainer, text: String, color: Color = Color("#
 
 func _build_help_content(vbox: VBoxContainer):
 	# 1. 输入规则
-	var s1 = _make_help_section(vbox, "📋 ① 输入规则", Color("#FF9800"))
+	var s1 = _make_help_section(vbox, " ① 输入规则", Color("#FF9800"))
 	_make_help_label(s1, "制作卡基需要选择三种素材，每种有数量限制：", Global.current.btn_text, 42)
-	_make_help_row(s1, "🧶  纤维素材", "1 ~ 3 种", Color("#8BC34A"))
-	_make_help_row(s1, "🪨 矿粉素材", "1 ~ 3 种", Color("#FF9800"))
-	_make_help_row(s1, "🧪 树脂素材", "1 ~ 2 种", Color("#E91E63"))
-	_make_help_row(s1, "📦 素材总数", "3 ~ 8 种", Color("#FFD700"))
+	_make_help_row(s1, "  纤维素材", "1 ~ 3 种", Color("#8BC34A"))
+	_make_help_row(s1, " 矿粉素材", "1 ~ 3 种", Color("#FF9800"))
+	_make_help_row(s1, " 树脂素材", "1 ~ 2 种", Color("#E91E63"))
+	_make_help_row(s1, " 素材总数", "3 ~ 8 种", Color("#FFD700"))
 	
 	# 2. 素材属性说明
-	var s2 = _make_help_section(vbox, "🔬 ② 素材属性说明", Color("#3498DB"))
+	var s2 = _make_help_section(vbox, " ② 素材属性说明", Color("#3498DB"))
 	_make_help_label(s2, "每种素材有独有属性，影响成品卡基的最终数值：", Global.current.btn_text, 42)
 	
-	_make_help_label(s2, "🧶 纤维素材", Color("#8BC34A"), 48)
+	_make_help_label(s2, " 纤维素材", Color("#8BC34A"), 48)
 	_make_help_label(s2, "  • 承载力 (carry)：影响卡基的【卡槽】数量", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 韧性 (toughness)：影响卡基的【耐久度】", Color("#CCCCCC"))
 	
-	_make_help_label(s2, "🪨 矿粉素材", Color("#FF9800"), 48)
+	_make_help_label(s2, " 矿粉素材", Color("#FF9800"), 48)
 	_make_help_label(s2, "  • 硬度 (hardness)：影响卡基的【承载力】", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 稳定性 (stability)：影响【卡槽】和【品质下限】", Color("#CCCCCC"))
 	
-	_make_help_label(s2, "🧪 树脂素材", Color("#E91E63"), 48)
+	_make_help_label(s2, " 树脂素材", Color("#E91E63"), 48)
 	_make_help_label(s2, "  • 光泽 (gloss)：影响【承载力】和【品质上限】", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 粘合度 (bond)：影响卡基的【耐久度】", Color("#CCCCCC"))
 	
-	_make_help_label(s2, "✨ 共通属性", Color("#FFD700"), 48)
+	_make_help_label(s2, " 共通属性", Color("#FFD700"), 48)
 	_make_help_label(s2, "  • 倾向 (tendency)：所有素材的倾向值累加，决定卡基的【元素倾向】", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 稀有度：影响素材边框颜色（普通/稀有/史诗/传说）", Color("#CCCCCC"))
 	
 	# 3. 计算公式
-	var s3 = _make_help_section(vbox, "🧮 ③ 计算公式", Color("#9B59B6"))
+	var s3 = _make_help_section(vbox, " ③ 计算公式", Color("#9B59B6"))
 	
-	_make_help_label(s3, "✦ 承载力 (Load Cap)", Color("#FF9800"), 48)
+	_make_help_label(s3, " 承载力 (Load Cap)", Color("#FF9800"), 48)
 	_make_help_label(s3, "公式：min( Σ(矿粉硬度)×2 + Σ(树脂光泽)×1 + 5 , 30 )", Color("#FFD700"), 42)
 	_make_help_label(s3, "→ 矿粉硬度越高、树脂光泽越多，承载力越大，上限30", Color("#CCCCCC"))
 	_make_help_label(s3, "→ 承载力决定卡基能承载多少纹路效果", Color("#CCCCCC"))
 	
-	_make_help_label(s3, "✦ 卡槽 (Slots)", Color("#8BC34A"), 48)
+	_make_help_label(s3, " 卡槽 (Slots)", Color("#8BC34A"), 48)
 	_make_help_label(s3, "公式：min( floor( Σ(纤维承载力)×0.5 + Σ(矿粉稳定性)×0.3 ) + 2 , 12 )", Color("#FFD700"), 42)
 	_make_help_label(s3, "→ 纤维承载力和矿粉稳定性越高，卡槽越多，上限12", Color("#CCCCCC"))
 	_make_help_label(s3, "→ 卡槽数 = 可安装的纹路组件数量", Color("#CCCCCC"))
 	
-	_make_help_label(s3, "✦ 耐久度 (Durability)", Color("#E91E63"), 48)
+	_make_help_label(s3, " 耐久度 (Durability)", Color("#E91E63"), 48)
 	_make_help_label(s3, "公式：min( 5 + Σ(纤维韧性)×3 + Σ(树脂粘合度)×2 , 60 )", Color("#FFD700"), 42)
 	_make_help_label(s3, "→ 纤维韧性和树脂粘合度越高，耐久度越高，上限60", Color("#CCCCCC"))
 	_make_help_label(s3, "→ 耐久度影响卡牌在战斗中的使用次数", Color("#CCCCCC"))
 	
-	_make_help_label(s3, "✦ 品质 (Quality)", Color("#9B59B6"), 48)
+	_make_help_label(s3, " 品质 (Quality)", Color("#9B59B6"), 48)
 	_make_help_label(s3, "品质下限 = floor( Σ(矿粉稳定性) / 矿粉种类数 )", Color("#FFD700"), 42)
 	_make_help_label(s3, "品质上限 = floor( Σ(树脂光泽) / 树脂种类数 )", Color("#FFD700"), 42)
 	_make_help_label(s3, "映射关系：", Color("#CCCCCC"))
 	_make_help_label(s3, "  0 → 废品  |  1 → 瑕疵  |  2 → 标准  |  3 → 卓越  |  4+ → 完美", Color("#AAAAAA"))
 	_make_help_label(s3, "最终品质范围：下限 ~ 上限（如「标准 ~ 卓越」）", Color("#CCCCCC"))
 	
-	_make_help_label(s3, "✦ 倾向 (Tendency)", Color("#FFD700"), 48)
+	_make_help_label(s3, " 倾向 (Tendency)", Color("#FFD700"), 48)
 	_make_help_label(s3, "公式：Σ(所有纤维/矿粉/树脂素材的倾向值)", Color("#FFD700"), 42)
 	_make_help_label(s3, "→ 倾向值格式：元素+数字，如「火3」表示火系倾向+3", Color("#CCCCCC"))
 	_make_help_label(s3, "→ 倾向最高的元素成为卡基的主元素", Color("#CCCCCC"))
 	
 	# 4. 素材惩罚
-	var s4 = _make_help_section(vbox, "⚠️ ④ 素材惩罚", Color("#FF5252"))
+	var s4 = _make_help_section(vbox, " ④ 素材惩罚", Color("#FF5252"))
 	_make_help_label(s4, "素材总数越多，制作难度越大，品质会受影响：", Global.current.btn_text, 42)
-	_make_help_row(s4, "3 ~ 4 种素材", "无惩罚 ✅", Color("#4CAF50"))
+	_make_help_row(s4, "3 ~ 4 种素材", "无惩罚 ", Color("#4CAF50"))
 	_make_help_row(s4, "5 ~ 6 种素材", "品质下限-1", Color("#FF9800"))
 	_make_help_row(s4, "7 ~ 8 种素材", "品质下限-2，品质上限-1", Color("#FF5252"))
-	_make_help_label(s4, "💡 建议：在满足需求的前提下，尽量用少的素材种类来避免惩罚！", Color("#FFD700"), 42)
+	_make_help_label(s4, " 建议：在满足需求的前提下，尽量用少的素材种类来避免惩罚！", Color("#FFD700"), 42)
 	
 	# 5. 制作步骤
-	var s5 = _make_help_section(vbox, "🎯 ⑤ 制作步骤", Color("#4CAF50"))
+	var s5 = _make_help_section(vbox, " ⑤ 制作步骤", Color("#4CAF50"))
 	_make_help_label(s5, "1. 点击「选择」按钮，从仓库中选择素材", Global.current.btn_text, 42)
 	_make_help_label(s5, "2. 用 [-] [+] 调整每种素材的数量", Global.current.btn_text, 42)
 	_make_help_label(s5, "3. 在「卡基属性预览」中查看实时计算结果", Global.current.btn_text, 42)
 	_make_help_label(s5, "4. 点击「开始制作」生成卡基", Global.current.btn_text, 42)
 	_make_help_label(s5, "5. 制作好的卡基会存入仓库，可在刻画界面选择使用", Global.current.btn_text, 42)
-	_make_help_label(s5, "💡 长按素材行可查看详情", Color("#FFD700"), 42)
+	_make_help_label(s5, " 长按素材行可查看详情", Color("#FFD700"), 42)
 	
 	# 底部留白
 	var spacer = Control.new()
@@ -1348,7 +1348,7 @@ func _show_make_confirm_dialog():
 
 	# 标题（固定高度）
 	var title_label = Label.new()
-	title_label.text = "⚙️ 确认制作"
+	title_label.text = "确认制作"
 	title_label.add_theme_font_size_override("font_size", 55)
 	title_label.add_theme_color_override("font_color", Global.current.title)
 	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -1471,7 +1471,7 @@ func _show_make_confirm_dialog():
 				scroll_vbox.add_child(row)
 				
 				var name_label = Label.new()
-				name_label.text = "  " + mat_name + "×" + str(qty)
+				name_label.text = "" + mat_name + "×" + str(qty)
 				name_label.add_theme_font_size_override("font_size", 50)
 				name_label.add_theme_color_override("font_color", Global.current.btn_text)
 				name_label.size_flags_horizontal = SIZE_EXPAND
@@ -1584,7 +1584,7 @@ func _on_confirm_make():
 			_hint_label.text = "素材不足，无法制作！"
 		# 弹窗内加醒目错误提示，避免"点了没反应"错觉
 		_close_make_confirm()
-		_show_popup("⚠️ 素材不足，无法制作！请检查仓库库存", Color("#FF6B6B"))
+		_show_popup(" 素材不足，无法制作！请检查仓库库存", Color("#FF6B6B"))
 		return
 	
 	var warehouse = get_node("/root/WarehouseManager")
@@ -1602,7 +1602,7 @@ func _on_confirm_make():
 					_hint_label.text = msg
 				# ★ 弹窗内也显示，避免"点了没反应"
 				_close_make_confirm()
-				_show_popup("⚠️ " + _hint_label.text, Color("#FF6B6B"))
+				_show_popup(" " + _hint_label.text, Color("#FF6B6B"))
 				return
 	
 	# 计算属性（复用预览逻辑）
@@ -1684,14 +1684,14 @@ func _on_confirm_make():
 	
 	if _hint_label:
 		_hint_label.add_theme_color_override("font_color", Color("#4CAF50"))
-		_hint_label.text = "✅ 成功制作 " + str(_confirm_qty) + " 个卡基！"
+		_hint_label.text = "成功制作 " + str(_confirm_qty) + " 个卡基！"
 	
 	# 教程引导：制作成功 → 弹"完成祝贺+看预览属性回顾"
 	if _tutorial_done == false:
 		_advance_tutorial("made")
 	else:
 		# 弹出成功提示
-		_show_popup("✅ 成功制作 " + str(_confirm_qty) + " 个卡基！", Color("#81C784"))
+		_show_popup(" 成功制作 " + str(_confirm_qty) + " 个卡基！", Color("#81C784"))
 
 func _close_make_confirm():
 	var overlay = _confirm_overlay
@@ -1733,11 +1733,11 @@ func _advance_tutorial(trigger: String) -> void:
 				_tutorial_step = 2
 				_show_tutorial_dialogue([
 					{"speaker": "老陈", "text": "看底下那栏【卡基属性预览】——五个属性，决定了你卡牌的底子。"},
-					{"speaker": "老陈", "text": "✦ 承载力——决定卡牌能扛多少纹路和数值，承载力越高，能刻的料越足。"},
-					{"speaker": "老陈", "text": "✦ 卡槽——决定能装几个纹路组件。槽越多，卡牌花活越多。"},
-					{"speaker": "老陈", "text": "✦ 耐久度——卡牌在战斗里能用多少次。耐久越高，越经打。"},
-					{"speaker": "老陈", "text": "✦ 品质——从低到高分废品、瑕疵、标准、卓越、完美。品质越高，基础数值越猛。"},
-					{"speaker": "老陈", "text": "✦ 倾向——卡牌的‘性格’，火水土风……不同倾向影响卡牌能配什么纹路和打法。"},
+					{"speaker": "老陈", "text": " 承载力——决定卡牌能扛多少纹路和数值，承载力越高，能刻的料越足。"},
+					{"speaker": "老陈", "text": " 卡槽——决定能装几个纹路组件。槽越多，卡牌花活越多。"},
+					{"speaker": "老陈", "text": " 耐久度——卡牌在战斗里能用多少次。耐久越高，越经打。"},
+					{"speaker": "老陈", "text": " 品质——从低到高分废品、瑕疵、标准、卓越、完美。品质越高，基础数值越猛。"},
+					{"speaker": "老陈", "text": " 倾向——卡牌的‘性格’，火水土风……不同倾向影响卡牌能配什么纹路和打法。"},
 					{"speaker": "老陈", "text": "素材选够了，点【制作卡基】试试？"},
 				], func():
 					_tutorial_step = 3  # 进入"等制作"状态

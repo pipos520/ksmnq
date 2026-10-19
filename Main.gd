@@ -52,6 +52,13 @@ func _ready():
 		var btn = get_node_or_null("%s/Btn" % card_name)
 		if btn is Button:
 			btn.pressed.connect(_on_card_pressed.bind(CARDS[card_name]["scene"]))
+		# 告示纸是倾斜的：必须绕自身中心旋转，否则 Control 默认绕左上角转，
+		# 整张纸会被甩出屏幕（右/下越界）
+		var card = get_node_or_null(card_name)
+		if card is Control:
+			var c := card as Control
+			c.pivot_offset = c.size * 0.5
+			c.resized.connect(func() -> void: c.pivot_offset = c.size * 0.5)
 	# 顶部图标按钮
 	var gear = get_node_or_null("GearButton")
 	if gear is Button:
@@ -75,18 +82,26 @@ func _on_theme_changed(mode):
 	var is_day = mode == Global.ThemeMode.DAY
 	var theme = DAY if is_day else NIGHT
 	
-	# 背景（切换纹理图）
+	# 背景：主界面固定用木板告示板（metadata/fixed_bg），不随昼夜换图
 	var bg = get_node_or_null("Background")
-	if bg:
+	if bg and not bg.has_meta("fixed_bg"):
 		var tex_path = "res://assets/theme/bg_day.png" if is_day else "res://assets/theme/bg_night.png"
 		var tex = load(tex_path)
 		if tex:
 			bg.texture = tex
+	else:
+		# 木板上稍微压暗一点，让白纸更跳
+		(bg as CanvasItem).modulate = Color(1, 1, 1, 1) if is_day else Color(0.88, 0.85, 0.82, 1)
 	
-	# LOGO
+	# LOGO：木板底上统一用金字 + 深色描边（昼夜一致）
 	var logo = get_node_or_null("Logo")
 	if logo:
-		logo.add_theme_color_override("font_color", theme["logo"])
+		logo.add_theme_color_override("font_color", Color("#efd089"))
+		logo.add_theme_color_override("font_outline_color", Color("#2b2018"))
+		logo.add_theme_constant_override("outline_size", 12)
+		logo.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.45))
+		logo.add_theme_constant_override("shadow_offset_x", 4)
+		logo.add_theme_constant_override("shadow_offset_y", 6)
 	
 	# 图标按钮
 	var icon_c = theme["icon_btn"]
@@ -107,36 +122,29 @@ func _on_theme_changed(mode):
 	if website_btn:
 		website_btn.add_theme_color_override("font_color", theme["icon_btn"])
 	
-	# 卡片
+	# 通缉令式告示纸：纸面底色固定在 tscn 里，这里只压一点昼夜明暗
 	for card_name in CARDS.keys():
-		var colors = theme["cards"][card_name]
 		var card_node = get_node_or_null(card_name)
 		if not card_node:
 			continue
 		
-		# ShaderMaterial
-		var bg_node = card_node.get_node_or_null("Bg")
-		if bg_node and bg_node.material is ShaderMaterial:
-			var mat = bg_node.material as ShaderMaterial
-			mat.set_shader_parameter("color_top", colors["top"])
-			mat.set_shader_parameter("color_bottom", colors["bot"])
-			mat.set_shader_parameter("shadow_color", theme["shadow_color"])
-			mat.set_shader_parameter("shadow_alpha", theme["shadow_alpha"])
+		var paper = card_node.get_node_or_null("Paper")
+		if paper is CanvasItem:
+			(paper as CanvasItem).modulate = Color(1, 1, 1, 1) if is_day else Color(0.90, 0.86, 0.80, 1)
 		
-		# 图标
+		# 像素图标直出，不做染色（染色会把多色图标洗淡）
 		var icon = card_node.get_node_or_null("Icon")
-		if icon:
-			icon.add_theme_color_override("font_color", colors["icon"])
+		if icon is CanvasItem:
+			(icon as CanvasItem).modulate = Color(1, 1, 1, 1)
 		
-		# 标题
+		# 纸上文字始终用墨色：纸本身是浅色的，浅字会看不见
 		var title = card_node.get_node_or_null("Title")
 		if title:
-			title.add_theme_color_override("font_color", colors["title"])
+			title.add_theme_color_override("font_color", Color("#2b2018"))
 		
-		# 描述
 		var desc = card_node.get_node_or_null("Desc")
 		if desc:
-			desc.add_theme_color_override("font_color", colors["desc"])
+			desc.add_theme_color_override("font_color", Color("#6b5340"))
 
 # ==================== 交互 ====================
 
@@ -185,7 +193,7 @@ func _show_awaken_dialogue() -> void:
 	], func():
 		_open_starter_pack()
 		TutorialManager.advance()
-		_show_toast("✨ 获得新手卡包×1（已自动领取）")
+		_show_toast(" 获得新手卡包×1（已自动领取）")
 		_show_first_battle_guide()
 	)
 	# 右上角"跳过"按钮：一键跳过所有教程
@@ -305,7 +313,7 @@ func _show_guide():
 	overlay.add_child(panel)
 	
 	var title = Label.new()
-	title.text = "📖 卡师模拟器 · 新手指南"
+	title.text = "卡师模拟器 · 新手指南"
 	title.add_theme_font_size_override("font_size", 60)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -334,7 +342,7 @@ func _show_guide():
 	call_deferred("_set_guide_vbox_width", vbox, scroll)
 	
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -391,26 +399,26 @@ func _make_guide_label(vbox: VBoxContainer, text: String, color: Color = Color("
 	vbox.add_child(lbl)
 
 func _build_guide_content(vbox: VBoxContainer):
-	var s1 = _make_guide_section(vbox, "🎮 ① 欢迎来到卡师模拟器", Color("#e8a838"))
+	var s1 = _make_guide_section(vbox, " ① 欢迎来到卡师模拟器", Color("#e8a838"))
 	_make_guide_label(s1, "在这个世界中，你将扮演一名卡牌制作师，采集素材、调制卡墨、制作卡基、刻画卡牌，最终用自己亲手制作的卡牌去战斗！", Global.current.btn_text, 42)
 	_make_guide_label(s1, "游戏的核心循环：采集素材 → 制作卡基/调制卡墨 → 刻画卡牌 → 配入牌组 → 野外战斗 → 获取更强素材 → 制作更强卡牌", Color("#FFD700"), 42)
 	
-	var s2 = _make_guide_section(vbox, "🏭 ② 制卡工坊", Color("#e8a838"))
+	var s2 = _make_guide_section(vbox, " ② 制卡工坊", Color("#e8a838"))
 	_make_guide_label(s2, "制卡工坊包含4个功能：制作卡基、调制卡墨、刻画卡牌、仓库管理。", Global.current.btn_text, 42)
 	
-	var s3 = _make_guide_section(vbox, "🗺️ ③ 野外探索", Color("#e8a838"))
+	var s3 = _make_guide_section(vbox, " ③ 野外探索", Color("#e8a838"))
 	_make_guide_label(s3, "野外探索是获取素材和辅材的主要途径。共有5个地图，每个地图包含多层地形。", Global.current.btn_text, 42)
 	
-	var s4 = _make_guide_section(vbox, "⚔️ ④ 战斗系统", Color("#e8a838"))
+	var s4 = _make_guide_section(vbox, " ④ 战斗系统", Color("#e8a838"))
 	_make_guide_label(s4, "每回合获得1点能量，用于召唤卡牌。卡牌有攻击力和生命值，击败卡兽可获得辅材和素材掉落。", Global.current.btn_text, 42)
 	
-	var s5 = _make_guide_section(vbox, "🏪 ⑤ 商店街", Color("#e8a838"))
+	var s5 = _make_guide_section(vbox, " ⑤ 商店街", Color("#e8a838"))
 	_make_guide_label(s5, "卡牌交易、素材商店、卡包商店三个功能入口。", Global.current.btn_text, 42)
 	
-	var s6 = _make_guide_section(vbox, "🏛️ ⑥ 卡师公会", Color("#e8a838"))
+	var s6 = _make_guide_section(vbox, " ⑥ 卡师公会", Color("#e8a838"))
 	_make_guide_label(s6, "接取公会任务，完成任务获得奖励，提升公会等级解锁更多纹路组件和功能。", Global.current.btn_text, 42)
 	
-	var s7 = _make_guide_section(vbox, "🃏 ⑦ 配置牌库", Color("#e8a838"))
+	var s7 = _make_guide_section(vbox, " ⑦ 配置牌库", Color("#e8a838"))
 	_make_guide_label(s7, "从仓库中选择卡牌编入牌组，用于野外战斗。合理搭配不同属性的卡牌应对不同敌人。", Global.current.btn_text, 42)
 	
 	var spacer = Control.new()

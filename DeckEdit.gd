@@ -209,11 +209,11 @@ func _refresh_deck_list():
 				# 用名称区显示标题，其余置空
 				var hl = head_row.get_node_or_null("hbox_%d/info_%d/name_%d" % [idx, idx, idx])
 				if hl is Label:
-					hl.text = "🃏 已租卡组（只读）"
+					hl.text = "已租卡组（只读）"
 					hl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 					hl.add_theme_color_override("font_color", Color("#a8d8ea"))
 				var cl = head_row.get_node_or_null("hbox_%d/info_%d/count_%d" % [idx, idx, idx])
-				if cl is Label: cl.text = " "
+				if cl is Label: cl.text = ""
 				var ab = head_row.get_node_or_null("hbox_%d/action_%d" % [idx, idx])
 				if ab is Button:
 					for c in ab.pressed.get_connections(): ab.pressed.disconnect(c["callable"])
@@ -233,7 +233,7 @@ func _refresh_deck_list():
 				var rname = rd.get("name", "租借卡组")
 				var rcount = rd.get("cards", []).size()
 				var rl = rrow.get_node_or_null("hbox_%d/info_%d/name_%d" % [idx, idx, idx])
-				if rl is Label: rl.text = "🃏 " + rname + "（租）"
+				if rl is Label: rl.text = "" + rname + "（租）"
 				var rcl = rrow.get_node_or_null("hbox_%d/info_%d/count_%d" % [idx, idx, idx])
 				if rcl is Label: rcl.text = str(rcount) + "/30 · 耐久 " + str(dur) + " 点"
 				var rab = rrow.get_node_or_null("hbox_%d/action_%d" % [idx, idx])
@@ -274,14 +274,14 @@ func _show_rented_notice(rid: String, rname: String, durability: int):
 	ps.corner_radius_top_left = 16; ps.corner_radius_top_right = 16; ps.corner_radius_bottom_left = 16; ps.corner_radius_bottom_right = 16
 	panel.add_theme_stylebox_override("panel", ps)
 	overlay.add_child(panel)
-	var title = Label.new(); title.text = "🃏 " + rname + "（租）"
+	var title = Label.new(); title.text = "" + rname + "（租）"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 50); title.add_theme_color_override("font_color", Color("#f9d371"))
 	title.anchor_left = 0.0; title.anchor_top = 0.0; title.anchor_right = 1.0; title.anchor_bottom = 0.0
 	title.offset_top = Global.ph(0.04); title.offset_bottom = Global.ph(0.10)
 	panel.add_child(title)
 	var info = Label.new()
-	info.text = "当前耐久：" + str(durability) + " 点\n\n⚠️ 租借卡组仅供对战使用\n无法在此修改或编辑\n耐久用尽后自动归还"
+	info.text = "当前耐久：" + str(durability) + " 点\n\n 租借卡组仅供对战使用\n无法在此修改或编辑\n耐久用尽后自动归还"
 	info.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; info.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	info.add_theme_font_size_override("font_size", 40); info.add_theme_color_override("font_color", Color("#a8d8ea"))
 	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -360,7 +360,7 @@ func _show_deck_actions(deck_id: String, deck_name: String):
 		btn.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 		return btn
 
-	var rename_btn = make_btn.call("✏️ 重命名", Color("#3498db"))
+	var rename_btn = make_btn.call(" 重命名", Color("#3498db"))
 	var d_id = deck_id
 	rename_btn.pressed.connect(func():
 		Global.play_sfx("click")
@@ -369,7 +369,7 @@ func _show_deck_actions(deck_id: String, deck_name: String):
 	)
 	panel_vbox.add_child(rename_btn)
 
-	var edit_btn = make_btn.call("✂️ 编辑牌组", Color("#2ecc71"))
+	var edit_btn = make_btn.call(" 编辑牌组", Color("#2ecc71"))
 	edit_btn.pressed.connect(func():
 		Global.play_sfx("click")
 		_close_action_popup()
@@ -377,7 +377,7 @@ func _show_deck_actions(deck_id: String, deck_name: String):
 	)
 	panel_vbox.add_child(edit_btn)
 
-	var back_btn = make_btn.call("🎴 卡背选择", Color("#9b59b6"))
+	var back_btn = make_btn.call(" 卡背选择", Color("#9b59b6"))
 	back_btn.pressed.connect(func():
 		Global.play_sfx("click")
 		_close_action_popup()
@@ -385,7 +385,7 @@ func _show_deck_actions(deck_id: String, deck_name: String):
 	)
 	panel_vbox.add_child(back_btn)
 
-	var cloth_btn = make_btn.call("🟦 桌布选择", Color("#16a085"))
+	var cloth_btn = make_btn.call(" 桌布选择", Color("#16a085"))
 	cloth_btn.pressed.connect(func():
 		Global.play_sfx("click")
 		_close_action_popup()
@@ -393,7 +393,7 @@ func _show_deck_actions(deck_id: String, deck_name: String):
 	)
 	panel_vbox.add_child(cloth_btn)
 
-	var delete_btn = make_btn.call("❌ 删除牌组", Color("#e74c3c"))
+	var delete_btn = make_btn.call(" 删除牌组", Color("#e74c3c"))
 	delete_btn.pressed.connect(func():
 		Global.play_sfx("click")
 		_close_action_popup()
@@ -538,10 +538,10 @@ func _show_back_select(deck_id: String, deck_name: String):
 		# 名称（大字）
 		var lbl = Label.new()
 		if is_unlocked:
-			lbl.text = info["name"] + (" ✓" if b_is_sel else "")
+			lbl.text = info["name"] + (" " if b_is_sel else "")
 			lbl.add_theme_color_override("font_color", Color("#c8a03c") if b_is_sel else Color("#dddddd"))
 		else:
-			lbl.text = info["name"] + " 🔒"
+			lbl.text = info["name"] + " "
 			lbl.add_theme_color_override("font_color", Color("#666666"))
 		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		lbl.add_theme_font_size_override("font_size", 40)
@@ -723,10 +723,10 @@ func _show_tablecloth_select(deck_id: String, deck_name: String):
 		# 名称（大字）
 		var lbl = Label.new()
 		if is_unlocked:
-			lbl.text = info["name"] + (" ✓" if b_is_sel else "")
+			lbl.text = info["name"] + (" " if b_is_sel else "")
 			lbl.add_theme_color_override("font_color", Color("#c8a03c") if b_is_sel else Color("#dddddd"))
 		else:
-			lbl.text = info["name"] + " 🔒"
+			lbl.text = info["name"] + " "
 			lbl.add_theme_color_override("font_color", Color("#666666"))
 		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		lbl.add_theme_font_size_override("font_size", 40)
@@ -1061,7 +1061,7 @@ func _refresh_edit_view():
 			var hp = card.get("hp", card.get("health", 0))
 
 			var info = Label.new()
-			info.text = "⚡" + str(cost) + "  " + str(card_name) + "  ⚔" + str(atk) + " ❤" + str(hp)
+			info.text = "" + str(cost) + "  " + str(card_name) + "  " + str(atk) + " " + str(hp)
 			info.add_theme_font_size_override("font_size", 45)
 			info.add_theme_color_override("font_color", Color("#f1c40f"))
 			info.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
@@ -1094,7 +1094,7 @@ func _refresh_edit_view():
 
 	# 筛选按钮
 	var filter_btn = Button.new()
-	filter_btn.text = "🔍 筛选"
+	filter_btn.text = "筛选"
 	filter_btn.add_theme_font_size_override("font_size", 36)
 	var fbs = StyleBoxFlat.new()
 	fbs.bg_color = Global.current.btn_bg
@@ -1153,7 +1153,7 @@ func _refresh_edit_view():
 				display_q = q_parts[q_parts.size() - 1].strip_edges()
 
 			var info = Label.new()
-			info.text = "⚡" + str(cost) + "  " + str(card_name) + "  [" + display_q + "]  ⚔" + str(atk) + " ❤" + str(hp)
+			info.text = "" + str(cost) + "  " + str(card_name) + "  [" + display_q + "]  " + str(atk) + " " + str(hp)
 			info.add_theme_font_size_override("font_size", 45)
 			info.add_theme_color_override("font_color", _get_quality_color(display_q))
 			info.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
@@ -1282,7 +1282,7 @@ func _build_filter_popup_content(panel: Panel):
 	search_btn_hbox.add_theme_constant_override("separation", 8)
 	vbox.add_child(search_btn_hbox)
 	var search_btn = Button.new()
-	search_btn.text = "🔍 搜索"
+	search_btn.text = "搜索"
 	search_btn.add_theme_font_size_override("font_size", 42)
 	var sbs = StyleBoxFlat.new()
 	sbs.bg_color = Global.current.btn_bg
@@ -1302,7 +1302,7 @@ func _build_filter_popup_content(panel: Panel):
 	)
 	search_btn_hbox.add_child(search_btn)
 	var clear_btn = Button.new()
-	clear_btn.text = "✕ 清除"
+	clear_btn.text = "清除"
 	clear_btn.add_theme_font_size_override("font_size", 42)
 	var cbs = StyleBoxFlat.new()
 	cbs.bg_color = Color("#553333")
@@ -1377,7 +1377,7 @@ func _build_filter_popup_content(panel: Panel):
 	sort_hbox.add_theme_constant_override("separation", 8)
 	vbox.add_child(sort_hbox)
 	var sort_options = [
-		{"key": "cost", "label": "⚡能量"},
+		{"key": "cost", "label": "能量"},
 		{"key": "quality", "label": "⭐品质"},
 	]
 	for opt in sort_options:
@@ -1452,7 +1452,7 @@ func _build_filter_popup_content(panel: Panel):
 	btn_hbox.add_child(reset_btn)
 	# 确定按钮
 	var confirm_btn = Button.new()
-	confirm_btn.text = "✓ 确定"
+	confirm_btn.text = "确定"
 	confirm_btn.add_theme_font_size_override("font_size", 42)
 	var cfs = StyleBoxFlat.new()
 	cfs.bg_color = Global.current.btn_bg
@@ -1473,7 +1473,7 @@ func _build_filter_popup_content(panel: Panel):
 	btn_hbox.add_child(confirm_btn)
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 42)
 	var clbs = StyleBoxFlat.new()
 	clbs.bg_color = Color("#333333")
@@ -1652,11 +1652,11 @@ func _show_card_detail(card_data: Dictionary):
 	# 标题
 	var elem_icon = ""
 	match main_element:
-		"火": elem_icon = "🔥"
-		"水": elem_icon = "💧"
-		"风": elem_icon = "🌪️"
-		"暗": elem_icon = "🌑"
-		"光": elem_icon = "☀️"
+		"火": elem_icon = ""
+		"水": elem_icon = ""
+		"风": elem_icon = ""
+		"暗": elem_icon = ""
+		"光": elem_icon = ""
 	
 	var title_label = Label.new()
 	title_label.text = elem_icon + " " + card_name
@@ -1719,9 +1719,9 @@ func _show_card_detail(card_data: Dictionary):
 	# 属性
 	info_items.append(["属性", elem_icon + " " + main_element if main_element != "" and main_element != "无" else "无"])
 	# 费用/攻防
-	info_items.append(["⚡费用", str(energy_cost)])
-	info_items.append(["⚔攻击", str(attack)])
-	info_items.append(["❤生命", str(health)])
+	info_items.append(["费用", str(energy_cost)])
+	info_items.append(["攻击", str(attack)])
+	info_items.append(["生命", str(health)])
 	# 字段
 	if fields.size() > 0:
 		info_items.append(["字段", " ".join(fields)])
@@ -1914,7 +1914,7 @@ func _show_help_guide():
 	overlay.add_child(panel)
 	
 	var title = Label.new()
-	title.text = "🃏 配置牌库指南"
+	title.text = "配置牌库指南"
 	title.add_theme_font_size_override("font_size", 60)
 	title.add_theme_color_override("font_color", Color("#c0392b"))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -1953,7 +1953,7 @@ func _show_help_guide():
 	vbox.add_child(lbl)
 	
 	lbl = Label.new()
-	lbl.text = "📋 功能说明"
+	lbl.text = "功能说明"
 	lbl.add_theme_font_size_override("font_size", 50)
 	lbl.add_theme_color_override("font_color", Color("#e8a838"))
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1961,13 +1961,13 @@ func _show_help_guide():
 	vbox.add_child(lbl)
 	
 	var items = [
-		"🆕 新建牌组：输入名称创建新卡组",
-		"✏️ 重命名：点击卡组名可修改",
-		"🗑️ 删除：清空卡组后可删除",
-		"📦 从仓库选卡：点击卡组进入编辑，从仓库添加卡牌",
-		"🃏 同名卡：同名卡可编入多张（每张独立实例ID）",
-		"⚡ 能量上限：每回合自动获得1点能量",
-		"💡 建议搭配攻击、防御、效果卡牌保持平衡",
+		" 新建牌组：输入名称创建新卡组",
+		" 重命名：点击卡组名可修改",
+		" 删除：清空卡组后可删除",
+		" 从仓库选卡：点击卡组进入编辑，从仓库添加卡牌",
+		" 同名卡：同名卡可编入多张（每张独立实例ID）",
+		" 能量上限：每回合自动获得1点能量",
+		" 建议搭配攻击、防御、效果卡牌保持平衡",
 	]
 	for item in items:
 		lbl = Label.new()
@@ -1984,7 +1984,7 @@ func _show_help_guide():
 	vbox.add_child(lbl)
 	
 	lbl = Label.new()
-	lbl.text = "💡 长按卡牌可查看详情，点击卡牌可加入/移出牌组"
+	lbl.text = "长按卡牌可查看详情，点击卡牌可加入/移出牌组"
 	lbl.add_theme_font_size_override("font_size", 42)
 	lbl.add_theme_color_override("font_color", Color("#FFD700"))
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

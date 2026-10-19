@@ -70,7 +70,7 @@ offset_top = -144.0
 offset_right = 305.0
 offset_bottom = -19.0
 theme_override_font_sizes/font_size = 50
-text = "📖 卡牌图鉴"
+text = "卡牌图鉴"
 
 [node name="CreateDeckBtn" type="Button" parent="."]
 anchor_top = 1.0
@@ -80,7 +80,7 @@ offset_top = -144.0
 offset_right = 707.0
 offset_bottom = -19.0
 theme_override_font_sizes/font_size = 50
-text = "✨ 新建卡组"
+text = "新建卡组"
 
 [node name="HelpBtn" type="Button" parent="."]
 anchor_top = 1.0

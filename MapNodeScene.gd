@@ -11,14 +11,14 @@ enum NodeType { MONSTER, GATHER, REST, BOSS, START, EMPTY }
 # 8层（起点 + 7层），每层有独立地形
 # y 坐标在 [0.13, 0.87] 范围内（避开 TopBar 0~0.083 和 BottomBar 0.917~1.0）
 const LAYER_CONFIG := [
-	{"name": "🚀 起点", "y": 0.87, "color": Color("#ffffff"), "node_count": 1, "is_start": true},
-	{"name": "🌲 树林", "y": 0.77, "color": Color("#5cb85c"), "node_count": 3, "terrain": "forest"},
-	{"name": "🌿 草丛", "y": 0.67, "color": Color("#e8a838"), "node_count": 3, "terrain": "grass"},
-	{"name": "⛏️ 矿区", "y": 0.57, "color": Color("#9b59b6"), "node_count": 3, "terrain": "mine"},
-	{"name": "💧 溪谷", "y": 0.47, "color": Color("#3498db"), "node_count": 3, "terrain": "valley"},
-	{"name": "🌪️ 山道", "y": 0.37, "color": Color("#e87d38"), "node_count": 3, "terrain": "mountain"},
-	{"name": "🌑 暗穴", "y": 0.27, "color": Color("#8e44ad"), "node_count": 3, "terrain": "cave"},
-	{"name": "👑 BOSS", "y": 0.13, "color": Color("#e74c3c"), "node_count": 1},
+	{"name": " 起点", "y": 0.87, "color": Color("#ffffff"), "node_count": 1, "is_start": true},
+	{"name": " 树林", "y": 0.77, "color": Color("#5cb85c"), "node_count": 3, "terrain": "forest"},
+	{"name": " 草丛", "y": 0.67, "color": Color("#e8a838"), "node_count": 3, "terrain": "grass"},
+	{"name": " 矿区", "y": 0.57, "color": Color("#9b59b6"), "node_count": 3, "terrain": "mine"},
+	{"name": " 溪谷", "y": 0.47, "color": Color("#3498db"), "node_count": 3, "terrain": "valley"},
+	{"name": " 山道", "y": 0.37, "color": Color("#e87d38"), "node_count": 3, "terrain": "mountain"},
+	{"name": " 暗穴", "y": 0.27, "color": Color("#8e44ad"), "node_count": 3, "terrain": "cave"},
+	{"name": " BOSS", "y": 0.13, "color": Color("#e74c3c"), "node_count": 1},
 ]
 
 # 连接关系改为动态生成（杀戮尖塔风格，每个节点有限扇出）
@@ -35,11 +35,11 @@ const TYPE_WEIGHTS := {"monster": 0.40, "gather": 0.35, "rest": 0.25}
 
 # 节点图标
 const NODE_ICONS := {
-	NodeType.MONSTER: "⚔️",
-	NodeType.GATHER: "🎒",
-	NodeType.REST: "🛌",
-	NodeType.BOSS: "👑",
-	NodeType.START: "🚀",
+	NodeType.MONSTER: "",
+	NodeType.GATHER: "",
+	NodeType.REST: "",
+	NodeType.BOSS: "",
+	NodeType.START: "",
 }
 const NODE_NAMES := {
 	NodeType.MONSTER: "野怪",
@@ -69,12 +69,12 @@ const TERRAIN_GATHER_NAMES := {
 }
 
 const TERRAIN_ICONS := {
-	"forest": "🌲",
-	"grass": "🌿",
-	"mine": "⛏️",
-	"valley": "💎",
-	"mountain": "🌪️",
-	"cave": "🕯️",
+	"forest": "",
+	"grass": "",
+	"mine": "",
+	"valley": "",
+	"mountain": "",
+	"cave": "",
 }
 
 # 地形ID → 中文名（对应LAYER_CONFIG中的地形层名）
@@ -89,11 +89,11 @@ const TERRAIN_NAMES := {
 
 # 地图ID → 中文名
 const MAP_NAMES := {
-	"misty_forest": "🌲 迷雾森林",
-	"flame_cavern": "🔥 火焰洞穴",
-	"storm_tower": "🌪️ 风暴高塔",
-	"shadow_swamp": "🌑 暗影沼泽",
-	"legendary_ruins": "🏛️ 传说遗迹",
+	"misty_forest": " 迷雾森林",
+	"flame_cavern": " 火焰洞穴",
+	"storm_tower": " 风暴高塔",
+	"shadow_swamp": " 暗影沼泽",
+	"legendary_ruins": " 传说遗迹",
 }
 
 # 传入的地图数据
@@ -734,7 +734,7 @@ func _trigger_monster_event(layer_idx: int, node_idx: int) -> void:
 ## 休息节点：恢复50%血量
 func _trigger_rest_event(layer_idx: int, node_idx: int) -> void:
 	var layer_name = LAYER_CONFIG[layer_idx]["name"]
-	print("[爬塔] 🛌 在 ", layer_name, " 休息！")
+	print("[爬塔]  在 ", layer_name, " 休息！")
 	
 	# 恢复50%最大HP
 	var heal_amount = ceil(Global.current_run_player_max_hp * 0.5)
@@ -772,7 +772,7 @@ func _show_rest_result(max_heal: int, actual_heal: int, layer_name: String) -> v
 	overlay.add_child(panel)
 	
 	var title = Label.new()
-	title.text = "🛌 休息"
+	title.text = "休息"
 	title.add_theme_font_size_override("font_size", 55)
 	title.add_theme_color_override("font_color", Color("#7ddf7d"))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -817,7 +817,7 @@ func _show_rest_result(max_heal: int, actual_heal: int, layer_name: String) -> v
 func _trigger_gather_event(layer_idx: int, node_idx: int) -> void:
 	var layer_name = LAYER_CONFIG[layer_idx]["name"]
 	var terrain = LAYER_CONFIG[layer_idx].get("terrain", "")
-	var terrain_icon = TERRAIN_ICONS.get(terrain, "🎒")
+	var terrain_icon = TERRAIN_ICONS.get(terrain, "")
 	var gather_name = TERRAIN_GATHER_NAMES.get(terrain, "采集")
 	
 	print("[爬塔] 采集！在 ", layer_name, " 进行", gather_name, "！")
@@ -827,7 +827,7 @@ func _trigger_gather_event(layer_idx: int, node_idx: int) -> void:
 	var ambush_rng = RandomNumberGenerator.new()
 	ambush_rng.randomize()
 	if ambush_rng.randf() < 0.05:
-		print("[爬塔] ⚠️ 采集时遭遇伏击！")
+		print("[爬塔]  采集时遭遇伏击！")
 		
 		# 收集对手池（同决斗场逻辑：服务器卡组 + 本机其他卡组）
 		var pool := []
@@ -1079,7 +1079,7 @@ func _show_gather_result(gained: Array, layer_name: String, terrain_icon: String
 	else:
 		# 采集结果副标题
 		var result_title = Label.new()
-		result_title.text = "🎉 采集获得："
+		result_title.text = "采集获得："
 		result_title.add_theme_font_size_override("font_size", 45)
 		result_title.add_theme_color_override("font_color", Color("#e8d5b7"))
 		result_title.anchor_left = 0.0; result_title.anchor_top = 0.0
@@ -1353,7 +1353,7 @@ func _show_gather_material_detail(row: Control) -> void:
 				gather_text += "\n"
 			var map_name = MAP_NAMES.get(map_id, map_id)
 			var terrain_name = TERRAIN_NAMES.get(terrain, terrain)
-			var terrain_icon = TERRAIN_ICONS.get(terrain, "📍")
+			var terrain_icon = TERRAIN_ICONS.get(terrain, "")
 			gather_text += map_name + " · " + terrain_icon + " " + terrain_name
 	
 	# ---- 弹窗控件 ----
@@ -1384,7 +1384,7 @@ func _show_gather_material_detail(row: Control) -> void:
 	
 	# 标题
 	var title_label = Label.new()
-	title_label.text = "📦 " + name_str
+	title_label.text = "" + name_str
 	title_label.add_theme_font_size_override("font_size", 55)
 	title_label.add_theme_color_override("font_color", rarity_color)
 	title_label.add_theme_color_override("font_shadow_color", Color("#000000"))
@@ -1447,7 +1447,7 @@ func _show_gather_material_detail(row: Control) -> void:
 	
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 40)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color(0.2, 0.15, 0.3)
@@ -1547,7 +1547,7 @@ func _show_help_guide():
 	
 	# 标题
 	var title = Label.new()
-	title.text = "📖 地图层掉落指南"
+	title.text = "地图层掉落指南"
 	title.add_theme_font_size_override("font_size", 60)
 	title.add_theme_color_override("font_color", Color("#f9d371"))
 	title.add_theme_color_override("font_shadow_color", Color("#000000"))
@@ -1584,7 +1584,7 @@ func _show_help_guide():
 	
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color(0.15, 0.13, 0.20)
@@ -1646,65 +1646,65 @@ func _make_help_label(vbox: VBoxContainer, text: String, color: Color = Color("#
 
 func _build_help_content(vbox: VBoxContainer):
 	# 1. 地图层简介
-	var s1 = _make_help_section(vbox, "🗺️ ① 地图层简介", Color("#5cb85c"))
+	var s1 = _make_help_section(vbox, " ① 地图层简介", Color("#5cb85c"))
 	_make_help_label(s1, "爬塔地图共8层，每层有3个节点（起点和BOSS层除外）。", Color("#e8d5b7"), 42)
-	_make_help_label(s1, "每层节点类型随机分配为⚔️战斗或🎒采集。", Color("#e8d5b7"), 42)
+	_make_help_label(s1, "每层节点类型随机分配为战斗或采集。", Color("#e8d5b7"), 42)
 	_make_help_label(s1, "战斗：击败卡兽可获得辅材掉落", Color("#FF5252"), 45)
 	_make_help_label(s1, "采集：采集素材用于制作卡基和卡墨", Color("#4CAF50"), 45)
 	
 	# 2. 层1-树林
-	var s2 = _make_help_section(vbox, "🌲 ② 树林层", Color("#5cb85c"))
-	_make_help_label(s2, "⚔️ 战斗掉落（辅材，概率5%）：", Color("#FF5252"), 48)
+	var s2 = _make_help_section(vbox, " ② 树林层", Color("#5cb85c"))
+	_make_help_label(s2, " 战斗掉落（辅材，概率5%）：", Color("#FF5252"), 48)
 	_make_help_label(s2, "  • 树苗精 → 树苗精华、青叶", Color("#e8d5b7"))
 	_make_help_label(s2, "  • 雾角鹿 → 鹿角粉末、雾之羽", Color("#e8d5b7"))
-	_make_help_label(s2, "🎒 采集掉落（概率70%）：", Color("#4CAF50"), 48)
+	_make_help_label(s2, " 采集掉落（概率70%）：", Color("#4CAF50"), 48)
 	_make_help_label(s2, "  • 白麻纤维 (普通) 70%", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 青藤纤维 (普通) 70%", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 普通松脂 (普通) 70%", Color("#CCCCCC"))
 	_make_help_label(s2, "  • 骨胶 (普通) 70%", Color("#CCCCCC"))
 	
 	# 3. 层2-草丛
-	var s3 = _make_help_section(vbox, "🌿 ③ 草丛层", Color("#e8a838"))
-	_make_help_label(s3, "🎒 采集掉落（概率70%）：", Color("#4CAF50"), 48)
+	var s3 = _make_help_section(vbox, " ③ 草丛层", Color("#e8a838"))
+	_make_help_label(s3, " 采集掉落（概率70%）：", Color("#4CAF50"), 48)
 	_make_help_label(s3, "  • 生命露水 (普通) 70%", Color("#CCCCCC"))
 	_make_help_label(s3, "  • 炭黑 (普通) 70%", Color("#CCCCCC"))
 	_make_help_label(s3, "  • 朱砂 (普通) 70%", Color("#CCCCCC"))
 	
 	# 4. 层3-矿区
-	var s4 = _make_help_section(vbox, "⛏️ ④ 矿区层", Color("#9b59b6"))
-	_make_help_label(s4, "🎒 采集掉落（概率70%）：", Color("#4CAF50"), 48)
+	var s4 = _make_help_section(vbox, " ④ 矿区层", Color("#9b59b6"))
+	_make_help_label(s4, " 采集掉落（概率70%）：", Color("#4CAF50"), 48)
 	_make_help_label(s4, "  • 石灰矿粉 (普通) 70%", Color("#CCCCCC"))
 	_make_help_label(s4, "  • 辉光矿粉 (普通) 70%", Color("#CCCCCC"))
 	
 	# 5. 层4-溪谷
-	var s5 = _make_help_section(vbox, "💧 ⑤ 溪谷层", Color("#3498db"))
-	_make_help_label(s5, "🎒 采集掉落（概率70%）：", Color("#4CAF50"), 48)
+	var s5 = _make_help_section(vbox, " ⑤ 溪谷层", Color("#3498db"))
+	_make_help_label(s5, " 采集掉落（概率70%）：", Color("#4CAF50"), 48)
 	_make_help_label(s5, "  • 砂金石粉 (普通) 70%", Color("#CCCCCC"))
 	_make_help_label(s5, "  • 清水 (普通) 70%", Color("#CCCCCC"))
 	_make_help_label(s5, "  • 鱼鳔胶 (普通) 70%", Color("#CCCCCC"))
 	
 	# 6. 层5-山道
-	var s6 = _make_help_section(vbox, "🌪️ ⑥ 山道层", Color("#e87d38"))
-	_make_help_label(s6, "🎒 采集掉落（概率70%）：", Color("#4CAF50"), 48)
+	var s6 = _make_help_section(vbox, " ⑥ 山道层", Color("#e87d38"))
+	_make_help_label(s6, " 采集掉落（概率70%）：", Color("#4CAF50"), 48)
 	_make_help_label(s6, "  • 枯草纤维 (普通) 70%", Color("#CCCCCC"))
 	_make_help_label(s6, "  • 赭石 (普通) 70%", Color("#CCCCCC"))
 	
 	# 7. 层6-暗穴
-	var s7 = _make_help_section(vbox, "🌑 ⑦ 暗穴层", Color("#8e44ad"))
-	_make_help_label(s7, "🎒 采集掉落（概率70%）：", Color("#4CAF50"), 48)
+	var s7 = _make_help_section(vbox, " ⑦ 暗穴层", Color("#8e44ad"))
+	_make_help_label(s7, " 采集掉落（概率70%）：", Color("#4CAF50"), 48)
 	_make_help_label(s7, "  • 琥珀树脂 (普通) 70%", Color("#CCCCCC"))
 	_make_help_label(s7, "  • 树汁胶 (普通) 70%", Color("#CCCCCC"))
 	
 	# 8. 层7-BOSS
-	var s8 = _make_help_section(vbox, "👑 ⑧ BOSS层", Color("#e74c3c"))
-	_make_help_label(s8, "⚔️ 击败BOSS即可通关该地图！", Color("#FFD700"), 45)
+	var s8 = _make_help_section(vbox, " ⑧ BOSS层", Color("#e74c3c"))
+	_make_help_label(s8, " 击败BOSS即可通关该地图！", Color("#FFD700"), 45)
 	_make_help_label(s8, "每个地图共有3个随机BOSS之一出战：", Color("#e8d5b7"), 42)
 	_make_help_label(s8, "  • 迷雾森林 → 古木/烈焰/暗影", Color("#e8d5b7"))
 	_make_help_label(s8, "  • 火焰洞穴 → 岩浆/熔核/炎魔", Color("#e8d5b7"))
 	_make_help_label(s8, "  • 风暴高塔 → 雷电/风暴/云龙", Color("#e8d5b7"))
 	_make_help_label(s8, "  • 暗影沼泽 → 暗影/沼泽/毒雾", Color("#e8d5b7"))
 	_make_help_label(s8, "  • 传说遗迹 → 遗迹/守护/星空", Color("#e8d5b7"))
-	_make_help_label(s8, "💡 不同地图的掉落不同，具体见野外探索指南", Color("#FFD700"), 42)
+	_make_help_label(s8, " 不同地图的掉落不同，具体见野外探索指南", Color("#FFD700"), 42)
 	
 	# 底部留白
 	var spacer = Control.new()
@@ -1853,7 +1853,7 @@ func _show_guide_mat_detail_popup(label: Label, text: String) -> void:
 		["属性", props_text],
 		["产出区域", area],
 	]
-	_show_detail_popup("📦 " + name_str, rarity_color, info_rows)
+	_show_detail_popup(" " + name_str, rarity_color, info_rows)
 
 
 func _show_guide_aux_detail_popup(label: Label, text: String) -> void:
@@ -1911,7 +1911,7 @@ func _show_guide_aux_detail_popup(label: Label, text: String) -> void:
 		["效果", effect_text],
 		["描述", desc],
 	]
-	_show_detail_popup("✨ " + name_str, rarity_color, info_rows)
+	_show_detail_popup(" " + name_str, rarity_color, info_rows)
 
 
 func _show_guide_enemy_detail_popup(label: Label, text: String) -> void:
@@ -1929,17 +1929,17 @@ func _show_guide_enemy_detail_popup(label: Label, text: String) -> void:
 	
 	# 带emoji的全名列表
 	var full_names := {
-		"树苗精": "🌱 树苗精", "雾角鹿": "🦌 雾角鹿", "蘑菇人": "🍄 蘑菇人",
-		"草蜥蜴": "🦎 草蜥蜴", "螳螂刀客": "🦗 螳螂刀客", "青鳞蛇": "🐍 青鳞蛇",
-		"岩石傀儡": "🪨 岩石傀儡", "熔岩蠕虫": "🔥 熔岩蠕虫", "暗晶蝎": "🦂 暗晶蝎",
-		"水元素": "💧 水元素", "风灵蝶": "🦋 风灵蝶", "光棱镜": "🔮 光棱镜",
-		"岩石巨人": "🗿 岩石巨人", "暗影鸦": "🐦‍⬛ 暗影鸦", "风暴鹰": "🦅 风暴鹰",
-		"暗穴蜘蛛": "🕷️ 暗穴蜘蛛", "熔岩龟": "🐢 熔岩龟", "幻光蝶": "✨ 幻光蝶",
-		"古木": "🌳 古木", "烈焰": "🔥 烈焰", "暗影": "🌑 暗影",
-		"岩浆": "🌋 岩浆", "熔核": "💥 熔核", "炎魔": "👿 炎魔",
-		"雷电": "⚡ 雷电", "风暴": "🌪️ 风暴", "云龙": "🐉 云龙",
-		"沼泽": "🟤 沼泽", "毒雾": "☠️ 毒雾",
-		"遗迹": "🏛️ 遗迹", "守护": "🛡️ 守护", "星空": "🌟 星空",
+		"树苗精": " 树苗精", "雾角鹿": " 雾角鹿", "蘑菇人": " 蘑菇人",
+		"草蜥蜴": " 草蜥蜴", "螳螂刀客": " 螳螂刀客", "青鳞蛇": " 青鳞蛇",
+		"岩石傀儡": " 岩石傀儡", "熔岩蠕虫": " 熔岩蠕虫", "暗晶蝎": " 暗晶蝎",
+		"水元素": " 水元素", "风灵蝶": " 风灵蝶", "光棱镜": " 光棱镜",
+		"岩石巨人": " 岩石巨人", "暗影鸦": "‍ 暗影鸦", "风暴鹰": " 风暴鹰",
+		"暗穴蜘蛛": " 暗穴蜘蛛", "熔岩龟": " 熔岩龟", "幻光蝶": " 幻光蝶",
+		"古木": " 古木", "烈焰": " 烈焰", "暗影": " 暗影",
+		"岩浆": " 岩浆", "熔核": " 熔核", "炎魔": " 炎魔",
+		"雷电": " 雷电", "风暴": " 风暴", "云龙": " 云龙",
+		"沼泽": " 沼泽", "毒雾": " 毒雾",
+		"遗迹": " 遗迹", "守护": " 守护", "星空": " 星空",
 	}
 	
 	var display_name = full_names.get(enemy_name, enemy_name)
@@ -1978,7 +1978,7 @@ func _show_guide_enemy_detail_popup(label: Label, text: String) -> void:
 		["描述", desc],
 		["辅材掉落", aux_str],
 	]
-	_show_detail_popup("⚔️ " + display_name, title_color, info_rows)
+	_show_detail_popup(" " + display_name, title_color, info_rows)
 
 
 ## 通用详情弹窗模板
@@ -2068,7 +2068,7 @@ func _show_detail_popup(title_text: String, title_color: Color, info_rows: Array
 	
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 40)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color(0.2, 0.15, 0.3)

@@ -101,23 +101,23 @@ func _start_loading():
 func _start_fetch_decks():
 	var result = await Global.get_all_decks()
 	if result.has("error"):
-		print("[LoadingScreen] ⚠️ 拉取卡组池失败: ", result.error)
+		print("[LoadingScreen]  拉取卡组池失败: ", result.error)
 	else:
 		var decks = result.get("data", [])
 		Global.server_decks = decks
 		Global.server_decks_loaded = true
-		print("[LoadingScreen] ✅ 拉取卡组池: ", decks.size(), " 套")
+		print("[LoadingScreen]  拉取卡组池: ", decks.size(), " 套")
 	_server_decks_loaded = true
 
 func _start_fetch_card_packs():
 	var result = await Global.get_all_card_packs()
 	if result.has("error"):
-		print("[LoadingScreen] ⚠️ 拉取卡包数据失败: ", result.error)
+		print("[LoadingScreen]  拉取卡包数据失败: ", result.error)
 	else:
 		var packs = result.get("data", [])
 		Global.server_card_packs = packs
 		Global.server_card_packs_loaded = true
-		print("[LoadingScreen] ✅ 拉取卡包: ", packs.size(), " 个")
+		print("[LoadingScreen]  拉取卡包: ", packs.size(), " 个")
 	_server_packs_loaded = true
 
 func _loading_loop():
@@ -144,7 +144,7 @@ func _enter_main_early():
 		if packed:
 			Global.preloaded_scenes[scene_path] = packed
 		else:
-			print("[LoadingScreen] ⚠️ 加载失败: %s" % scene_path)
+			print("[LoadingScreen]  加载失败: %s" % scene_path)
 		var pct = int(float(i + 1) / SCENES_TO_PRELOAD.size() * 100.0)
 		_progress_label.text = "正在加载场景资源 %d/%d  %d%%" % [i + 1, SCENES_TO_PRELOAD.size(), pct]
 		_bar_fill.offset_right = -150.0 + 300.0 * float(i + 1) / SCENES_TO_PRELOAD.size()
@@ -153,7 +153,7 @@ func _enter_main_early():
 			return
 		await get_tree().process_frame
 
-	print("[LoadingScreen] ✅ 全部 %d 个场景同步加载完成" % SCENES_TO_PRELOAD.size())
+	print("[LoadingScreen]  全部 %d 个场景同步加载完成" % SCENES_TO_PRELOAD.size())
 	_progress_label.text = "正在进入卡师世界..."
 	Global.change_scene("res://Main.tscn")
 
@@ -197,7 +197,7 @@ func _show_privacy_dialog():
 	overlay.add_child(panel)
 
 	var title = Label.new()
-	title.text = "🔒 隐私政策与用户协议"
+	title.text = "隐私政策与用户协议"
 	title.add_theme_font_size_override("font_size", 55)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -230,14 +230,14 @@ func _show_privacy_dialog():
 	scroll.add_child(vbox)
 
 	var sections = [
-		{"title": "📋 信息收集与使用", "content": "本游戏不会收集您的个人身份信息（如姓名、地址、电话号码等）。\n游戏运行过程中，系统会记录必要的游戏数据（如卡牌数据、游戏进度等），这些数据仅保存在您的设备本地，或通过您主动登录的账号进行云端同步。"},
-		{"title": "📡 广告服务", "content": "本游戏集成了第三方广告服务（灰鲸HJ广告SDK），用于展示激励视频广告及摇一摇等交互式广告。广告服务可能会收集设备标识符（OAID、Android ID）、设备型号、网络状态信息、IP地址及设备传感器信息（如加速度传感器、陀螺仪），用于广告展示、摇一摇广告交互识别及归因统计。此外，为实现广告反作弊和质量保障，广告SDK可能会读取您设备上已安装的应用列表（包名），该信息仅用于广告欺诈检测，不会用于其他目的。"},
-		{"title": "🔗 网络通信", "content": "游戏的部分功能（如卡包同步、排行榜等）需要通过Supabase后端服务进行网络通信。传输的数据仅包含游戏相关内容（卡牌信息等），不包含个人敏感信息。"},
-		{"title": "💾 数据存储", "content": "游戏存档保存在您的设备本地存储中（user://路径）。您可以通过设置界面清除数据或重置游戏进度。建议定期备份存档文件。"},
-		{"title": "🔐 数据安全", "content": "我们采用行业标准的安全措施保护您的数据，包括传输加密（HTTPS）和本地存储安全。但请注意，任何互联网传输和电子存储方式都无法保证100%的安全。"},
-		{"title": "👶 儿童隐私", "content": "本游戏面向所有年龄段的玩家。我们不会故意收集14岁以下儿童的个人信息。如果您是家长或监护人，发现孩子未经同意提供了个人信息，请与我们联系。"},
-		{"title": "📝 政策更新", "content": "我们可能会不时更新本隐私政策。更新后的政策将在游戏内公布，继续使用本游戏即表示您同意更新后的条款。"},
-		{"title": "📞 联系我们", "content": "如您对本隐私政策有任何疑问或建议，请通过游戏内设置界面的「反馈」功能与我们联系。"},
+		{"title": " 信息收集与使用", "content": "本游戏不会收集您的个人身份信息（如姓名、地址、电话号码等）。\n游戏运行过程中，系统会记录必要的游戏数据（如卡牌数据、游戏进度等），这些数据仅保存在您的设备本地，或通过您主动登录的账号进行云端同步。"},
+		{"title": " 广告服务", "content": "本游戏集成了第三方广告服务（灰鲸HJ广告SDK），用于展示激励视频广告及摇一摇等交互式广告。广告服务可能会收集设备标识符（OAID、Android ID）、设备型号、网络状态信息、IP地址及设备传感器信息（如加速度传感器、陀螺仪），用于广告展示、摇一摇广告交互识别及归因统计。此外，为实现广告反作弊和质量保障，广告SDK可能会读取您设备上已安装的应用列表（包名），该信息仅用于广告欺诈检测，不会用于其他目的。"},
+		{"title": " 网络通信", "content": "游戏的部分功能（如卡包同步、排行榜等）需要通过Supabase后端服务进行网络通信。传输的数据仅包含游戏相关内容（卡牌信息等），不包含个人敏感信息。"},
+		{"title": " 数据存储", "content": "游戏存档保存在您的设备本地存储中（user://路径）。您可以通过设置界面清除数据或重置游戏进度。建议定期备份存档文件。"},
+		{"title": " 数据安全", "content": "我们采用行业标准的安全措施保护您的数据，包括传输加密（HTTPS）和本地存储安全。但请注意，任何互联网传输和电子存储方式都无法保证100%的安全。"},
+		{"title": " 儿童隐私", "content": "本游戏面向所有年龄段的玩家。我们不会故意收集14岁以下儿童的个人信息。如果您是家长或监护人，发现孩子未经同意提供了个人信息，请与我们联系。"},
+		{"title": " 政策更新", "content": "我们可能会不时更新本隐私政策。更新后的政策将在游戏内公布，继续使用本游戏即表示您同意更新后的条款。"},
+		{"title": " 联系我们", "content": "如您对本隐私政策有任何疑问或建议，请通过游戏内设置界面的「反馈」功能与我们联系。"},
 	]
 
 	for sec in sections:
@@ -270,7 +270,7 @@ func _show_privacy_dialog():
 
 	# 拒绝按钮
 	var reject_btn = Button.new()
-	reject_btn.text = "✕ 拒绝并退出"
+	reject_btn.text = "拒绝并退出"
 	reject_btn.add_theme_font_size_override("font_size", 40)
 	var rs = StyleBoxFlat.new()
 	rs.bg_color = Global.current.btn_bg
@@ -290,7 +290,7 @@ func _show_privacy_dialog():
 
 	# 同意按钮
 	var accept_btn = Button.new()
-	accept_btn.text = "✅ 同意并继续"
+	accept_btn.text = "同意并继续"
 	accept_btn.add_theme_font_size_override("font_size", 40)
 	var acc_s = StyleBoxFlat.new()
 	acc_s.bg_color = Global.current.btn_bg

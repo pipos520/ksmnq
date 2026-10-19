@@ -409,12 +409,12 @@ func _check_win_condition() -> void:
 	if player_self.hp <= 0:
 		battle_state = State.LOST
 		battle_ended.emit(State.LOST)
-		print("[BattleGameNew] 💀 己方HP归零，败北！")
+		print("[BattleGameNew]  己方HP归零，败北！")
 		return
 	if player_opp.hp <= 0:
 		battle_state = State.WON
 		battle_ended.emit(State.WON)
-		print("[BattleGameNew] 🏆 敌方HP归零，胜利！")
+		print("[BattleGameNew]  敌方HP归零，胜利！")
 		return
 	# 卡组耗尽判负（卡组+手牌+场地全空）
 	var loser = null

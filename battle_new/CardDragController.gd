@@ -604,7 +604,7 @@ func _play_hero_attack_animation(attacker_slot: int, target_pos: Vector3, card_n
 	# 更新相机状态
 	_scene._cam_state = 0
 	if _scene._view_btn:
-		_scene._view_btn.text = "📷 视角: 追踪"
+		_scene._view_btn.text = " 视角: 追踪"
 	
 	# 相机追踪参数：X固定不动，只跟Y/Z让卡牌保持屏幕上下中间
 	# 相机俯视90°，屏幕上下=世界Z，所以相机Z跟卡牌Z，Y保持标准高度
@@ -695,7 +695,7 @@ func _play_hero_attack_animation(attacker_slot: int, target_pos: Vector3, card_n
 		_scene._cam_state = 2
 		var cam_labels = ["敌方", "中", "己方"]
 		if _scene._view_btn:
-			_scene._view_btn.text = "📷 视角: " + cam_labels[2]
+			_scene._view_btn.text = " 视角: " + cam_labels[2]
 		# 恢复相机到标准位置和默认俯视朝向（rotation -90° 朝地面看，禁用 look_at）
 		if _cam:
 			_cam.global_position = Vector3(_scene.CAM_POS_X, _scene.CAM_POS_Y, _scene.CAM_POS_Z[2])
@@ -717,7 +717,7 @@ func _play_card_attack_animation(attacker_slot: int, target_pos: Vector3, card_n
 	var target_cam_z = _scene.CAM_POS_Z[1]  # 中间视角
 	_scene._cam_state = 1
 	if _scene._view_btn:
-		_scene._view_btn.text = "📷 视角: 中"
+		_scene._view_btn.text = " 视角: 中"
 	
 	var tween = _scene.create_tween()
 	# 阶段1：上升
@@ -801,7 +801,7 @@ func _play_card_attack_animation(attacker_slot: int, target_pos: Vector3, card_n
 		_scene._cam_state = 2
 		var cam_labels = ["敌方", "中", "己方"]
 		if _scene._view_btn:
-			_scene._view_btn.text = "📷 视角: " + cam_labels[2]
+			_scene._view_btn.text = " 视角: " + cam_labels[2]
 		if card_node and is_instance_valid(card_node) and _player_slots[attacker_slot]:
 			card_node.reparent(_player_slots[attacker_slot], true)
 			card_node.position = Vector3(0, 0.15, 0.0)
@@ -993,7 +993,7 @@ func _fly_card_to_slot_ext(hand_idx: int, slot_idx: int, card_node: Node, card_d
 		if slot_idx < _player_card_nodes.size():
 			_player_card_nodes[slot_idx] = card_node
 	else:
-		print("[CardDragController] ⚠ 飞入后卡牌无效或无field_mgr! slot=%d" % slot_idx)
+		print("[CardDragController]  飞入后卡牌无效或无field_mgr! slot=%d" % slot_idx)
 		return
 	# ★ 执行召唤效果（BM内部含0/0送墓判定）
 	if _battle_mgr and _battle_mgr.has_method("_execute_on_summon_effects"):
@@ -1046,7 +1046,7 @@ func _fly_card_to_grave_from_field(card_node: Node, slot_idx: int, is_player: bo
 		# fallback
 		grave_node = _scene.get_node_or_null("PlayerField/GraveArea") if is_player else _scene.get_node_or_null("EnemyField/GraveArea")
 	if not grave_node:
-		print("[CardDragController] ⚠ 找不到墓地节点!")
+		print("[CardDragController]  找不到墓地节点!")
 		return
 	# 获取墓地堆叠数
 	var grave_arr = _scene._player_grave_cards if is_player else _scene._enemy_grave_cards

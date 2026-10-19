@@ -30,12 +30,12 @@ static func pw(ratio: float) -> float:
 ## 获取元素emoji
 static func get_element_emoji(element: String) -> String:
 	match element:
-		"火": return "🔥"
-		"水": return "💧"
-		"风": return "🌪️"
-		"地": return "⛰️"
-		"光": return "✨"
-		"暗": return "🌑"
+		"火": return ""
+		"水": return ""
+		"风": return ""
+		"地": return ""
+		"光": return ""
+		"暗": return ""
 	return ""
 
 ## 获取元素克制倍率
@@ -371,8 +371,8 @@ func _init_sfx() -> void:
 			add_child(p)
 			_sfx_pool[key] = p
 		else:
-			print("[SFX] ⚠️ 加载失败: %s" % SFX_MAP[key])
-	print("[SFX] ✅ 音效池初始化完成，共 %d 个" % _sfx_pool.size())
+			print("[SFX]  加载失败: %s" % SFX_MAP[key])
+	print("[SFX]  音效池初始化完成，共 %d 个" % _sfx_pool.size())
 
 
 ## 从文件系统直接读取wav构建AudioStreamWAV（load()失败时的后备方案）
@@ -1601,6 +1601,10 @@ func make_gold_legible(lbl: Label) -> void:
 
 
 func apply_bg(node: Node) -> void:
+	if node == null:
+		return
+	if node.has_meta("fixed_bg"):
+		return  # 场景自带固定背景（主界面木板），不参与昼夜替换
 	if node is TextureRect:
 		(node as TextureRect).texture = _get_bg_night() if current_mode == ThemeMode.NIGHT else _get_bg_day()
 	elif node is ColorRect:
@@ -2564,6 +2568,7 @@ func pixel_panel_style(dark := false) -> StyleBoxTexture:
 	return sb
 
 func _pixelize_node(n: Node) -> void:
+	_emoji_apply(n)
 	if n is BaseButton:
 		var b := n as BaseButton
 		(b as CanvasItem).texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -2627,3 +2632,113 @@ func _copy_margins(dst: StyleBox, src: StyleBox) -> void:
 	dst.content_margin_right = src.content_margin_right
 	dst.content_margin_top = src.content_margin_top
 	dst.content_margin_bottom = src.content_margin_bottom
+
+# ============================================================
+#  emoji 全量替换
+#  - 按钮：首个可映射 emoji -> 换成像素图标(Button.icon)，文字里剩下的 emoji 全剥离
+#  - 文本：所有 emoji 一律剥离（系统彩色 emoji 和像素 UI 完全不搭）
+#  - 由 node_added 钩子 + 2s 补扫统一驱动，不需要改 3000+ 处字符串
+#  注意：箭头 →←↑↓、★☆、◆●■▲○△□◇◎ 这些"文字符号"要保留，它们在本像素字体里
+#  有字形，且被当作文案语义用（如 "A → B"）。
+# ============================================================
+## emoji 码点 -> 像素图标名。用码点而不是字面量：源码里的 emoji 已被批量清理，
+## 这里必须能独立工作（也顺便避免再被清理脚本误伤）。
+const EMOJI_ICON := {
+	0x1F4B0: "ic_coin", 0x1FA99: "ic_coin", 0x1F4B5: "ic_coin", 0x1F4B4: "ic_coin",
+	0x2764: "ic_heart", 0x1F497: "ic_heart", 0x1F496: "ic_heart", 0x1F49D: "ic_heart",
+	0x26A1: "ic_bolt",
+	0x1FAA6: "ic_grave", 0x26B0: "ic_grave",
+	0x1F4AB: "ic_void", 0x1F300: "ic_void",
+	0x1F4DA: "ic_card_stack", 0x1F0CF: "ic_card_stack", 0x1F0B4: "ic_card_stack",
+	0x1F4D6: "ic_card_stack", 0x1F0A0: "ic_card_stack",
+	0x1F6AA: "ic_door",
+	0x1F4F7: "ic_camera", 0x1F4F8: "ic_camera",
+	0x1F3C6: "ic_trophy", 0x1F947: "ic_trophy",
+	0x1F480: "ic_skull",
+	0x1F381: "ic_gift", 0x1F4E6: "ic_gift",
+	0x2728: "ic_spark", 0x1F31F: "ic_spark", 0x2B50: "ic_spark",
+	0x1F389: "ic_spark", 0x1F38A: "ic_spark",
+	0x1F525: "ic_fire",
+	0x1F4A7: "ic_drop", 0x1F4A6: "ic_drop",
+	0x1F32A: "ic_wind", 0x1F4A8: "ic_wind",
+	0x1F311: "ic_moon", 0x1F319: "ic_moon", 0x1F312: "ic_moon",
+	0x1F9EA: "ic_potion", 0x2697: "ic_potion",
+	0x1F4CB: "ic_clipboard", 0x1F4DD: "ic_clipboard", 0x1F5D2: "ic_clipboard",
+	0x1F4A1: "ic_bulb",
+	0x1F3AF: "ic_target",
+	0x274C: "ic_cross", 0x2716: "ic_cross", 0x2717: "ic_cross",
+	0x2705: "ic_check", 0x2714: "ic_check", 0x2611: "ic_check",
+	0x1F512: "ic_lock", 0x1F510: "ic_lock", 0x1F513: "ic_lock",
+	0x26A0: "ic_warn",
+	0x1F3DB: "icon_signpost", 0x1F310: "icon_signpost", 0x1F517: "icon_signpost",
+	0x1F528: "icon_hammer", 0x1F6E0: "icon_hammer", 0x2692: "icon_hammer",
+	0x1F3EA: "icon_stall", 0x1F3EC: "icon_stall", 0x1F6D2: "icon_stall",
+	0x1F5FA: "icon_map", 0x1F9ED: "icon_map",
+	0x2699: "icon_gear",
+	0x2694: "icon_swords", 0x1F5E1: "icon_swords",
+	0x2753: "icon_help", 0x2754: "icon_help",
+}
+
+## 判断一个码点是不是要剥离的 emoji（保留 → <- 箭头、★☆、◆●■▲○△□◇◎ 等文字符号）
+func _is_emoji_cp(cp: int) -> bool:
+	if cp == 0xFE0F or cp == 0xFE0E or cp == 0x20E3:
+		return true
+	if cp >= 0x1F000 and cp <= 0x1FAFF:
+		return true
+	if cp >= 0x2190 and cp <= 0x21FF:
+		return false
+	if cp >= 0x2600 and cp <= 0x27BF:
+		return cp != 0x2605 and cp != 0x2606
+	if cp >= 0x2B00 and cp <= 0x2BFF:
+		return cp != 0x2B50 and cp != 0x2B05 and cp != 0x2B06 and cp != 0x2B07
+	return false
+
+func _strip_emoji(s: String) -> String:
+	var out := ""
+	var n := s.length()
+	for i in range(n):
+		var cp := s.unicode_at(i)
+		if not _is_emoji_cp(cp):
+			out += s[i]
+	return out
+
+## 按钮：首个可映射 emoji -> 换成像素图标；文本里残留 emoji 一律剥离
+## 标签：剥离所有 emoji
+func _emoji_apply(n: Node) -> void:
+	if n is BaseButton:
+		var b := n as BaseButton
+		var t: String = b.text
+		if t == "":
+			return
+		if b.icon == null:
+			var best_pos := -1
+			var best_cp := -1
+			for i in range(t.length()):
+				var cp := t.unicode_at(i)
+				if not EMOJI_ICON.has(cp):
+					continue
+				if best_pos < 0 or i < best_pos:
+					best_pos = i
+					best_cp = cp
+			if best_cp >= 0:
+				var tex := pixel_tex(EMOJI_ICON[best_cp])
+				if tex != null:
+					b.icon = tex
+					b.expand_icon = true
+					b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+					(b as CanvasItem).texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		var nt := _strip_emoji(t).strip_edges()
+		if nt != t:
+			b.text = nt
+		return
+	if n is Label:
+		var lbl := n as Label
+		var t2: String = lbl.text
+		if t2 == "":
+			return
+		var nt2 := _strip_emoji(t2)
+		if nt2 == t2:
+			return
+		while nt2.begins_with(" ") or nt2.begins_with("\t"):
+			nt2 = nt2.substr(1)
+		lbl.text = nt2

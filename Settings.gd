@@ -149,7 +149,7 @@ func _confirm_reset() -> void:
 	
 	# 提示文字
 	var msg = Label.new()
-	msg.text = "⚠️ 确定要重置游戏吗？\n\n所有数据将被清除，\n并恢复为初始状态。"
+	msg.text = "确定要重置游戏吗？\n\n所有数据将被清除，\n并恢复为初始状态。"
 	msg.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	msg.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	msg.add_theme_font_size_override("font_size", 50)
@@ -211,7 +211,7 @@ func _confirm_reset() -> void:
 func _do_reset_confirm(overlay: ColorRect) -> void:
 	Global.play_sfx("click")
 	print("[设置] 执行重置游戏...")
-	print("[重置] 🔥 彻底清除所有存档数据...")
+	print("[重置]  彻底清除所有存档数据...")
 	
 	# ====== 0. 清理交易服务器数据（已注释：卡牌交易功能已移除过审） ======
 	# await Global.cleanup_trade_data()
@@ -222,19 +222,19 @@ func _do_reset_confirm(overlay: ColorRect) -> void:
 		# 删除SaveManager主存档
 		if dir.file_exists("save_data.json"):
 			dir.remove("save_data.json")
-			print("[重置] ✅ save_data.json 已删除")
+			print("[重置]  save_data.json 已删除")
 		# 删除PlayerManager独立存档
 		if dir.file_exists("player_data.json"):
 			dir.remove("player_data.json")
-			print("[重置] ✅ player_data.json 已删除")
+			print("[重置]  player_data.json 已删除")
 		# 删除主题设置
 		if dir.file_exists("theme_settings.cfg"):
 			dir.remove("theme_settings.cfg")
-			print("[重置] ✅ theme_settings.cfg 已删除")
+			print("[重置]  theme_settings.cfg 已删除")
 		# 删除玩家ID
 		if dir.file_exists("player_id.txt"):
 			dir.remove("player_id.txt")
-			print("[重置] ✅ player_id.txt 已删除")
+			print("[重置]  player_id.txt 已删除")
 	
 	# ====== 2. 清空所有内存数据 ======
 	# 清空SaveManager内存
@@ -279,13 +279,13 @@ func _do_reset_confirm(overlay: ColorRect) -> void:
 			SaveManager.set_value("player", "diamonds", player_data.get("diamonds", 50))
 			SaveManager.set_value("player", "level", 1)
 			SaveManager.set_value("player", "exp", 0)
-			print("[重置] ✅ 新手卡组已恢复")
+			print("[重置]  新手卡组已恢复")
 	
 	# ====== 4. 保存 ======
 	SaveManager.save_to_disk()
 	PlayerManager.save_data()
 	
-	print("[重置] 🎉 重置完成！所有数据已恢复为初始状态")
+	print("[重置]  重置完成！所有数据已恢复为初始状态")
 	
 	# 关闭弹窗
 	_do_reset_cancel(overlay)
@@ -336,7 +336,7 @@ func _show_debug_password() -> void:
 	
 	# 提示文字
 	var msg = Label.new()
-	msg.text = "🔒 请输入调试密码"
+	msg.text = "请输入调试密码"
 	msg.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	msg.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	msg.add_theme_font_size_override("font_size", 50)
@@ -412,15 +412,15 @@ func _show_debug_password() -> void:
 func _do_debug_password_check(pwd_overlay: ColorRect, line_edit: LineEdit) -> void:
 	var pwd = line_edit.text.strip_edges()
 	if pwd == "pipos":
-		print("[调试] ✅ 密码正确！")
+		print("[调试]  密码正确！")
 		pwd_overlay.queue_free()
 		_show_debug_menu()
 	else:
-		print("[调试] ❌ 密码错误")
+		print("[调试]  密码错误")
 		line_edit.text = ""
 		# 显示错误提示
 		var err_label = Label.new()
-		err_label.text = "❌ 密码错误，请重试"
+		err_label.text = "密码错误，请重试"
 		err_label.add_theme_font_size_override("font_size", 35)
 		err_label.add_theme_color_override("font_color", Color("#e74c3c"))
 		err_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -467,7 +467,7 @@ func _show_debug_menu() -> void:
 	
 	# 标题
 	var title = Label.new()
-	title.text = "🔧 调试菜单"
+	title.text = "调试菜单"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 60)
 	title.add_theme_color_override("font_color", Global.current.title)
@@ -489,17 +489,17 @@ func _show_debug_menu() -> void:
 	panel.add_child(btn_vbox)
 	
 	# 解锁全部按钮
-	var unlock_btn = make_debug_btn("🌟 解锁全部", "解锁全部纹路/素材/最高公会等级")
+	var unlock_btn = make_debug_btn(" 解锁全部", "解锁全部纹路/素材/最高公会等级")
 	unlock_btn.pressed.connect(_do_debug_unlock_all.bind(overlay))
 	btn_vbox.add_child(unlock_btn)
 	
 	# 导入卡牌按钮
-	var import_btn = make_debug_btn("📥 导入卡牌", "从剪贴板导入分享码")
+	var import_btn = make_debug_btn(" 导入卡牌", "从剪贴板导入分享码")
 	import_btn.pressed.connect(_do_debug_import_card.bind(overlay))
 	btn_vbox.add_child(import_btn)
 	
 	# 获得所有辅材各10个按钮
-	var aux_btn = make_debug_btn("🧪 获得辅材各10", "获得所有辅材各10个")
+	var aux_btn = make_debug_btn(" 获得辅材各10", "获得所有辅材各10个")
 	aux_btn.pressed.connect(_do_debug_get_all_aux.bind(overlay))
 	btn_vbox.add_child(aux_btn)
 	
@@ -542,7 +542,7 @@ func make_debug_btn(text: String, hint: String) -> Button:
 
 ## 解锁全部功能
 func _do_debug_unlock_all(menu_overlay: ColorRect) -> void:
-	print("[调试] 🌟 解锁全部...")
+	print("[调试]  解锁全部...")
 	
 	# 1. 公会等级升到最高（Lv.10 制卡圣手）
 	# 直接设置公会数据，模拟满足全部条件
@@ -553,7 +553,7 @@ func _do_debug_unlock_all(menu_overlay: ColorRect) -> void:
 	SaveManager.set_value("player", "highest_quality", "完美")
 	# 触发公会等级更新
 	PlayerManager._update_guild_level()
-	print("[调试] ✅ 公会等级已升至最高：", PlayerManager.get_guild_title())
+	print("[调试]  公会等级已升至最高：", PlayerManager.get_guild_title())
 	
 	# 2. 解锁全部纹路组件（90个）
 	var all_circuits := []
@@ -573,7 +573,7 @@ func _do_debug_unlock_all(menu_overlay: ColorRect) -> void:
 		if cid != "" and not cid in unlocked:
 			unlocked.append(cid)
 	SaveManager.set_value("circuit", "unlocked", unlocked)
-	print("[调试] ✅ 已解锁全部纹路组件：", all_circuits.size(), " 个")
+	print("[调试]  已解锁全部纹路组件：", all_circuits.size(), " 个")
 	
 	# 3. 获得全部素材各10个
 	var all_mats := []
@@ -599,24 +599,24 @@ func _do_debug_unlock_all(menu_overlay: ColorRect) -> void:
 			warehouse.add_material(mid, 10)
 	
 	SaveManager.save_to_disk()
-	print("[调试] ✅ 全部素材各+10，共 ", all_mats.size(), " 种素材")
+	print("[调试]  全部素材各+10，共 ", all_mats.size(), " 种素材")
 	
 	# 关闭菜单
 	menu_overlay.queue_free()
-	_show_debug_toast("🌟 解锁全部成功！公会★10 + 纹路90个 + 素材各10")
+	_show_debug_toast(" 解锁全部成功！公会★10 + 纹路90个 + 素材各10")
 
 ## 获得所有辅材各10个
 func _do_debug_get_all_aux(menu_overlay: ColorRect) -> void:
-	print("[调试] 🧪 获得所有辅材各10个...")
+	print("[调试]  获得所有辅材各10个...")
 	var all_aux = Global.get_aux_list()
 	for aux in all_aux:
 		var aid = aux.get("id", "")
 		if aid != "":
 			WarehouseManager.add_aux(aid, 10)
 	SaveManager.save_to_disk()
-	print("[调试] ✅ 所有辅材各+10，共 ", all_aux.size(), " 种辅材")
+	print("[调试]  所有辅材各+10，共 ", all_aux.size(), " 种辅材")
 	menu_overlay.queue_free()
-	_show_debug_toast("🧪 获得所有辅材各10个成功！")
+	_show_debug_toast(" 获得所有辅材各10个成功！")
 
 
 ## 导入卡牌功能
@@ -627,13 +627,13 @@ func _do_debug_import_card(menu_overlay: ColorRect) -> void:
 	# 读取剪贴板
 	var code = DisplayServer.clipboard_get()
 	if code.is_empty() or code.length() < 10:
-		_show_debug_toast("❌ 剪贴板为空或格式不正确")
+		_show_debug_toast(" 剪贴板为空或格式不正确")
 		return
 	
 	# 尝试解压缩
 	var card = _decompress_card(code)
 	if card.is_empty() or not card.has("name"):
-		_show_debug_toast("❌ 分享码解析失败，请检查格式")
+		_show_debug_toast(" 分享码解析失败，请检查格式")
 		return
 	
 	# 清除ID让CardManager自动生成新ID（避免与原卡牌ID冲突）
@@ -644,8 +644,8 @@ func _do_debug_import_card(menu_overlay: ColorRect) -> void:
 	SaveManager.save_to_disk()
 	
 	var card_name = card.get("name", "未知卡牌")
-	print("[调试] 📥 导入卡牌：", card_name)
-	_show_debug_toast("✅ 已导入卡牌：「" + card_name + "」")
+	print("[调试]  导入卡牌：", card_name)
+	_show_debug_toast(" 已导入卡牌：「" + card_name + "」")
 
 
 ## 解压缩卡牌分享码（从CardGallery复制）

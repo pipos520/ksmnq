@@ -38,7 +38,7 @@ static func from_deck(deck_id: String, shuffle_cards: bool = true) -> BattleDeck
 				found = true
 				break
 		if not found:
-			print("[BattleDeck] ⚠️ 卡牌ID匹配失败，跳过: ", card_id)
+			print("[BattleDeck]  卡牌ID匹配失败，跳过: ", card_id)
 	
 	if shuffle_cards:
 		deck.shuffle()

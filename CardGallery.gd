@@ -121,11 +121,11 @@ func _refresh_list():
 		var name_label = Label.new()
 		var elem_icon = ""
 		match main_element:
-			"火": elem_icon = "🔥"
-			"水": elem_icon = "💧"
-			"风": elem_icon = "🌪️"
-			"暗": elem_icon = "🌑"
-			"光": elem_icon = "☀️"
+			"火": elem_icon = ""
+			"水": elem_icon = ""
+			"风": elem_icon = ""
+			"暗": elem_icon = ""
+			"光": elem_icon = ""
 		name_label.text = elem_icon + " " + card_name
 		name_label.add_theme_font_size_override("font_size", 50)
 		name_label.add_theme_color_override("font_color", Global.current.title)
@@ -145,7 +145,7 @@ func _refresh_list():
 		
 		# 右侧：攻防 + 费用
 		var attrs_label = Label.new()
-		attrs_label.text = "⚔" + str(attack) + " ❤" + str(health) + " ⚡" + str(energy_cost)
+		attrs_label.text = "" + str(attack) + " " + str(health) + " " + str(energy_cost)
 		attrs_label.add_theme_font_size_override("font_size", 50)
 		attrs_label.add_theme_color_override("font_color", Global.current.btn_text)
 		attrs_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -177,10 +177,12 @@ func _refresh_list():
 
 
 func _get_row_bg_color(row_index: int) -> Color:
+	# 斑马纹第二色必须是「略深的羊皮纸」，不能是透明。
+	# 页面底色是深色贴图(bg_day/bg_night)，透明会让后半数行直接压成深底，
+	# 而行内文字是深棕色 -> 对比度接近 1:1，整行看不见。
 	if row_index % 2 == 0:
 		return Global.current.topbar_bg
-	else:
-		return Color.TRANSPARENT
+	return Global.current.topbar_bg.darkened(0.10)
 
 
 func _get_quality_color(quality: String) -> Color:
@@ -312,7 +314,7 @@ func _build_filter_popup_content(panel: Panel):
 	search_btn_hbox.add_theme_constant_override("separation", 8)
 	vbox.add_child(search_btn_hbox)
 	var search_btn = Button.new()
-	search_btn.text = "🔍 搜索"
+	search_btn.text = "搜索"
 	search_btn.add_theme_font_size_override("font_size", 42)
 	var sbs = StyleBoxFlat.new()
 	sbs.bg_color = Global.current.btn_bg
@@ -332,7 +334,7 @@ func _build_filter_popup_content(panel: Panel):
 	)
 	search_btn_hbox.add_child(search_btn)
 	var clear_btn = Button.new()
-	clear_btn.text = "✕ 清除"
+	clear_btn.text = "清除"
 	clear_btn.add_theme_font_size_override("font_size", 42)
 	var cbs = StyleBoxFlat.new()
 	cbs.bg_color = Color("#553333")
@@ -407,7 +409,7 @@ func _build_filter_popup_content(panel: Panel):
 	sort_hbox.add_theme_constant_override("separation", 8)
 	vbox.add_child(sort_hbox)
 	var sort_options = [
-		{"key": "cost", "label": "⚡能量"},
+		{"key": "cost", "label": "能量"},
 		{"key": "quality", "label": "⭐品质"},
 	]
 	for opt in sort_options:
@@ -482,7 +484,7 @@ func _build_filter_popup_content(panel: Panel):
 	btn_hbox.add_child(reset_btn)
 	# 确定按钮
 	var confirm_btn = Button.new()
-	confirm_btn.text = "✓ 确定"
+	confirm_btn.text = "确定"
 	confirm_btn.add_theme_font_size_override("font_size", 42)
 	var cfs = StyleBoxFlat.new()
 	cfs.bg_color = Global.current.btn_bg
@@ -503,7 +505,7 @@ func _build_filter_popup_content(panel: Panel):
 	btn_hbox.add_child(confirm_btn)
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 42)
 	var clbs = StyleBoxFlat.new()
 	clbs.bg_color = Color("#333333")
@@ -604,7 +606,7 @@ func _show_help_guide():
 	overlay.add_child(panel)
 	
 	var title = Label.new()
-	title.text = "🖼️ 卡牌图鉴指南"
+	title.text = "卡牌图鉴指南"
 	title.add_theme_font_size_override("font_size", 60)
 	title.add_theme_color_override("font_color", Color("#6c9bcf"))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -643,7 +645,7 @@ func _show_help_guide():
 	vbox.add_child(lbl)
 	
 	lbl = Label.new()
-	lbl.text = "📋 功能说明"
+	lbl.text = "功能说明"
 	lbl.add_theme_font_size_override("font_size", 50)
 	lbl.add_theme_color_override("font_color", Color("#e8a838"))
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -651,14 +653,14 @@ func _show_help_guide():
 	vbox.add_child(lbl)
 	
 	var items = [
-		"🔍 筛选：按品质、元素、星数筛选卡牌",
-		"📊 排序：按攻击力、生命值、星级等排序",
-		"👆 长按卡牌：查看卡牌详情和效果",
-		"🆔 唯一ID：每张卡牌有独立实例ID，同名卡独立展示",
+		" 筛选：按品质、元素、星数筛选卡牌",
+		" 排序：按攻击力、生命值、星级等排序",
+		" 长按卡牌：查看卡牌详情和效果",
+		" 唯一ID：每张卡牌有独立实例ID，同名卡独立展示",
 		"⭐ 星数：1~5星，星数越高卡牌越强",
-		"💎 品质：废品→瑕疵→标准→卓越→完美",
-		"🗑️ 删除：可删除不需要的卡牌",
-		"📤 分享：将卡牌信息分享到社交平台",
+		" 品质：废品→瑕疵→标准→卓越→完美",
+		" 删除：可删除不需要的卡牌",
+		" 分享：将卡牌信息分享到社交平台",
 	]
 	for item in items:
 		lbl = Label.new()
@@ -675,7 +677,7 @@ func _show_help_guide():
 	vbox.add_child(lbl)
 	
 	lbl = Label.new()
-	lbl.text = "💡 长按卡牌查看详情，点击 ❌ 可删除卡牌"
+	lbl.text = "长按卡牌查看详情，点击  可删除卡牌"
 	lbl.add_theme_font_size_override("font_size", 42)
 	lbl.add_theme_color_override("font_color", Color("#FFD700"))
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -809,11 +811,11 @@ func _show_card_detail(row: Control) -> void:
 	# 标题
 	var elem_icon = ""
 	match main_element:
-		"火": elem_icon = "🔥"
-		"水": elem_icon = "💧"
-		"风": elem_icon = "🌪️"
-		"暗": elem_icon = "🌑"
-		"光": elem_icon = "☀️"
+		"火": elem_icon = ""
+		"水": elem_icon = ""
+		"风": elem_icon = ""
+		"暗": elem_icon = ""
+		"光": elem_icon = ""
 	
 	var title_label = Label.new()
 	title_label.text = elem_icon + " " + card_name
@@ -876,9 +878,9 @@ func _show_card_detail(row: Control) -> void:
 	# 属性
 	info_items.append(["属性", elem_icon + " " + main_element if main_element != "" and main_element != "无" else "无"])
 	# 费用/攻防
-	info_items.append(["⚡费用", str(energy_cost)])
-	info_items.append(["⚔攻击", str(attack)])
-	info_items.append(["❤生命", str(health)])
+	info_items.append(["费用", str(energy_cost)])
+	info_items.append(["攻击", str(attack)])
+	info_items.append(["生命", str(health)])
 	# 字段
 	if fields.size() > 0:
 		info_items.append(["字段", " ".join(fields)])
@@ -946,7 +948,7 @@ func _show_card_detail(row: Control) -> void:
 	
 	# 删除按钮（二次确认）
 	var delete_btn = Button.new()
-	delete_btn.text = "🗑️ 删除"
+	delete_btn.text = "删除"
 	delete_btn.add_theme_font_size_override("font_size", 50)
 	var ds = StyleBoxFlat.new()
 	ds.bg_color = Global.current.btn_bg
@@ -1080,7 +1082,7 @@ func _show_card_detail(row: Control) -> void:
 	
 	# 分享按钮
 	var share_btn = Button.new()
-	share_btn.text = "📤 分享"
+	share_btn.text = "分享"
 	share_btn.add_theme_font_size_override("font_size", 50)
 	var ss = StyleBoxFlat.new()
 	ss.bg_color = Global.current.btn_bg
@@ -1099,7 +1101,7 @@ func _show_card_detail(row: Control) -> void:
 	
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg
@@ -1126,7 +1128,7 @@ func _on_share_card(card: Dictionary, detail_overlay: ColorRect) -> void:
 		# 备用方案：复制压缩码到剪贴板
 		var compressed = _compress_card(card)
 		DisplayServer.clipboard_set(compressed)
-		_show_share_toast("✅ 卡牌压缩码已复制（" + str(compressed.length()) + "字符）")
+		_show_share_toast(" 卡牌压缩码已复制（" + str(compressed.length()) + "字符）")
 	
 	# 关闭详情弹窗
 	_close_detail(detail_overlay)
@@ -1501,7 +1503,7 @@ func _show_share_success_dialog() -> void:
 
 	# 提示文字
 	var msg_label = Label.new()
-	msg_label.text = "✅ 卡牌图片已保存到相册\n请手动分享给好友吧！"
+	msg_label.text = "卡牌图片已保存到相册\n请手动分享给好友吧！"
 	msg_label.add_theme_font_size_override("font_size", 42)
 	msg_label.add_theme_color_override("font_color", Global.current.title)
 	msg_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -1524,7 +1526,7 @@ func _show_share_success_dialog() -> void:
 	panel.add_child(btn_hbox)
 
 	var ok_btn = Button.new()
-	ok_btn.text = "👍 好的"
+	ok_btn.text = "好的"
 	ok_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color("#4CAF50")
@@ -1600,7 +1602,7 @@ func _show_delete_confirm(card: Dictionary, detail_overlay: ColorRect) -> void:
 	
 	# 确认删除按钮
 	var confirm_btn = Button.new()
-	confirm_btn.text = "🗑️ 确认删除"
+	confirm_btn.text = "确认删除"
 	confirm_btn.add_theme_font_size_override("font_size", 45)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color("#c0392b")
@@ -1744,30 +1746,30 @@ func _on_scan_import() -> void:
 	if _scanner_node == null:
 		_setup_scanner()
 	if _scanner_node == null:
-		_show_share_toast("⚠️ 扫码桥接未初始化")
+		_show_share_toast(" 扫码桥接未初始化")
 		return
 	# 相机检查（Android插件不可用时回退提示）
 	if _scanner_node.has_method("isCameraAvailable"):
 		if not _scanner_node.isCameraAvailable():
-			_show_share_toast("⚠️ 设备无可用相机")
+			_show_share_toast(" 设备无可用相机")
 			return
 	if _scanner_node.has_method("startScan"):
 		_scanner_node.startScan()
-		_show_share_toast("📷 正在启动扫码...")
+		_show_share_toast(" 正在启动扫码...")
 	else:
-		_show_share_toast("⚠️ 扫码插件不可用（仅Android支持）")
+		_show_share_toast(" 扫码插件不可用（仅Android支持）")
 
 ## 扫码成功回调
 func _on_scan_success(content: String) -> void:
 	print("[CardGallery] 扫码结果: ", content)
 	var trimmed = content.strip_edges()
 	if trimmed == "":
-		_show_share_toast("❌ 二维码内容为空")
+		_show_share_toast(" 二维码内容为空")
 		return
 	# 反解压缩卡牌码
 	var card = _decompress_card(trimmed)
 	if card.is_empty():
-		_show_share_toast("❌ 无法识别的卡牌码: " + trimmed)
+		_show_share_toast(" 无法识别的卡牌码: " + trimmed)
 		return
 	# 弹窗预览卡牌信息，确认后导入
 	_show_scan_preview_dialog(card)
@@ -1835,7 +1837,7 @@ func _show_scan_preview_dialog(card: Dictionary) -> void:
 	vbox.add_child(title_bar)
 	
 	var title_label = Label.new()
-	title_label.text = "📄 扫码预览"
+	title_label.text = "扫码预览"
 	title_label.add_theme_font_size_override("font_size", 48)
 	title_label.add_theme_color_override("font_color", Color("#4CAF50"))
 	title_label.size_flags_horizontal = SIZE_EXPAND
@@ -1860,11 +1862,11 @@ func _show_scan_preview_dialog(card: Dictionary) -> void:
 	var main_element = CardManager.get_card_element(card)
 	var elem_icon = ""
 	match main_element:
-		"火": elem_icon = "🔥"
-		"水": elem_icon = "💧"
-		"风": elem_icon = "🌪️"
-		"暗": elem_icon = "🌑"
-		"光": elem_icon = "☀️"
+		"火": elem_icon = ""
+		"水": elem_icon = ""
+		"风": elem_icon = ""
+		"暗": elem_icon = ""
+		"光": elem_icon = ""
 	name_label.text = elem_icon + " " + card_name
 	name_label.add_theme_font_size_override("font_size", 52)
 	name_label.add_theme_color_override("font_color", Global.current.title)
@@ -1888,7 +1890,7 @@ func _show_scan_preview_dialog(card: Dictionary) -> void:
 	var health = card.get("hp", card.get("health", 0))
 	var cost = card.get("cost", card.get("energy_cost", 0))
 	var stats_label = Label.new()
-	stats_label.text = "⚔" + str(attack) + "  ❤" + str(health) + "  ⚡" + str(cost)
+	stats_label.text = "" + str(attack) + "  " + str(health) + "  " + str(cost)
 	stats_label.add_theme_font_size_override("font_size", 44)
 	stats_label.add_theme_color_override("font_color", Global.current.btn_text)
 	info_vbox.add_child(stats_label)
@@ -1937,7 +1939,7 @@ func _show_scan_preview_dialog(card: Dictionary) -> void:
 					eff_desc = eff
 			if eff_desc != "":
 				var e_label = Label.new()
-				e_label.text = "  • " + eff_desc
+				e_label.text = "• " + eff_desc
 				e_label.add_theme_font_size_override("font_size", 34)
 				e_label.add_theme_color_override("font_color", Color("#d0d0e0"))
 				e_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1980,7 +1982,7 @@ func _show_scan_preview_dialog(card: Dictionary) -> void:
 	
 	# 确认导入按钮
 	var confirm_btn = Button.new()
-	confirm_btn.text = "✅ 确认导入"
+	confirm_btn.text = "确认导入"
 	confirm_btn.add_theme_font_size_override("font_size", 40)
 	confirm_btn.size_flags_horizontal = SIZE_EXPAND
 	confirm_btn.size_flags_vertical = SIZE_FILL
@@ -2000,7 +2002,7 @@ func _show_scan_preview_dialog(card: Dictionary) -> void:
 	confirm_btn.pressed.connect(func():
 		CardManager.add_card(card)
 		overlay.queue_free()
-		_show_share_toast("✅ 卡牌导入成功: " + card_name)
+		_show_share_toast(" 卡牌导入成功: " + card_name)
 		_refresh_list())
 	btn_hbox.add_child(confirm_btn)
 
@@ -2012,7 +2014,7 @@ func _on_scan_cancelled() -> void:
 ## 扫码出错回调
 func _on_scan_error(error_msg: String) -> void:
 	print("[CardGallery] 扫码错误: ", error_msg)
-	_show_share_toast("❌ 扫码失败: " + error_msg)
+	_show_share_toast(" 扫码失败: " + error_msg)
 
 func _apply_theme_styles():
 	var bg = get_node_or_null("Background")

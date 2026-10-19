@@ -65,7 +65,7 @@ anchor_top = 0.28
 anchor_right = 0.9
 anchor_bottom = 0.37
 theme_override_font_sizes/font_size = 50
-text = "🃏  制作卡基"
+text = "制作卡基"
 
 [node name="BtnInk" type="Button" parent="."]
 anchor_left = 0.1
@@ -73,7 +73,7 @@ anchor_top = 0.395
 anchor_right = 0.9
 anchor_bottom = 0.485
 theme_override_font_sizes/font_size = 50
-text = "🎨  调制卡墨"
+text = "调制卡墨"
 
 [node name="BtnEngrave" type="Button" parent="."]
 anchor_left = 0.1
@@ -81,7 +81,7 @@ anchor_top = 0.51
 anchor_right = 0.9
 anchor_bottom = 0.6
 theme_override_font_sizes/font_size = 50
-text = "⚔️  刻画卡牌"
+text = "刻画卡牌"
 
 [node name="BtnCircuit" type="Button" parent="."]
 anchor_left = 0.1
@@ -89,7 +89,7 @@ anchor_top = 0.625
 anchor_right = 0.9
 anchor_bottom = 0.715
 theme_override_font_sizes/font_size = 50
-text = "🔮  纹路图鉴"
+text = "纹路图鉴"
 
 [node name="BtnWarehouse" type="Button" parent="."]
 anchor_left = 0.1
@@ -97,4 +97,4 @@ anchor_top = 0.74
 anchor_right = 0.9
 anchor_bottom = 0.83
 theme_override_font_sizes/font_size = 50
-text = "📦  仓库"
+text = "仓库"

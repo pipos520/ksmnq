@@ -104,11 +104,11 @@ func _fill_all_rows():
 		
 		var status = hbox.get_node("StatusLabel")
 		if unlocked:
-			status.text = "✅ 已解锁"
+			status.text = "已解锁"
 			status.add_theme_color_override("font_color", Color("#4CAF50"))
 		else:
 			var cond = unlock_cond_cache.get(cid, "")
-			status.text = "🔒 " + cond if cond != "" else "🔒 初始解锁"
+			status.text = "" + cond if cond != "" else " 初始解锁"
 			status.add_theme_color_override("font_color", Color("#FF5252"))
 		
 		# 行背景色（只创建一次，后续只改颜色，不再调用add_theme_stylebox_override）
@@ -301,11 +301,11 @@ func _refresh_list(vbox_override = null):
 		
 		var status = hbox.get_node("StatusLabel")
 		if unlocked:
-			status.text = "✅ 已解锁"
+			status.text = "已解锁"
 			status.add_theme_color_override("font_color", Color("#4CAF50"))
 		else:
 			var cond = unlock_cond_cache.get(cid, "")
-			status.text = "🔒 " + cond if cond != "" else "🔒 初始解锁"
+			status.text = "" + cond if cond != "" else " 初始解锁"
 			status.add_theme_color_override("font_color", Color("#FF5252"))
 	
 	for i in range(need_count, existing_rows.size()):
@@ -326,9 +326,11 @@ func _update_hint(shown_count: int):
 
 
 func _get_row_bg_color(row_index: int) -> Color:
+	# 斑马纹第二色必须是「略深的羊皮纸」，不能是透明：页面底色是深色贴图，
+	# 透明会让后半数行压成深底，而行内文字是深棕色 -> 整行看不见。
 	if row_index % 2 == 0:
 		return Global.current.topbar_bg
-	return Color.TRANSPARENT
+	return Global.current.topbar_bg.darkened(0.10)
 
 
 func _show_category_popup():
@@ -387,12 +389,12 @@ func _show_category_popup():
 	vbox.add_child(sep)
 	
 	var categories = [
-		["all", "📂 全部类别"],
-		["TR", "⚡ 触发器"],
-		["A", "💥 动作"],
-		["T", "🎯 目标"],
-		["C", "🔍 条件"],
-		["CO", "🔗 约束"]
+		["all", " 全部类别"],
+		["TR", " 触发器"],
+		["A", " 动作"],
+		["T", " 目标"],
+		["C", " 条件"],
+		["CO", " 约束"]
 	]
 	
 	for cat in categories:
@@ -419,8 +421,8 @@ func _on_category_selected(cat_id: String, overlay: ColorRect):
 	_filter_category = cat_id
 	var btn = get_node_or_null("CategoryBtn")
 	if btn:
-		var names = {"all": "📂 全部类别", "TR": "⚡ 触发器", "A": "💥 动作", "T": "🎯 目标", "C": "🔍 条件", "CO": "🔗 约束"}
-		btn.text = names.get(cat_id, "📂 全部类别")
+		var names = {"all": " 全部类别", "TR": " 触发器", "A": " 动作", "T": " 目标", "C": " 条件", "CO": " 约束"}
+		btn.text = names.get(cat_id, " 全部类别")
 	_popup_open = false
 	overlay.queue_free()
 	_refresh_list()
@@ -482,9 +484,9 @@ func _show_unlock_popup():
 	vbox.add_child(sep)
 	
 	var options = [
-		["all", "🔓 全部"],
-		["unlocked", "✅ 已解锁"],
-		["locked", "🔒 未解锁"]
+		["all", " 全部"],
+		["unlocked", " 已解锁"],
+		["locked", " 未解锁"]
 	]
 	
 	for opt in options:
@@ -511,8 +513,8 @@ func _on_unlock_selected(filter_id: String, overlay: ColorRect):
 	_filter_unlock = filter_id
 	var btn = get_node_or_null("UnlockBtn")
 	if btn:
-		var names = {"all": "🔓 全部", "unlocked": "✅ 已解锁", "locked": "🔒 未解锁"}
-		btn.text = names.get(filter_id, "🔓 全部")
+		var names = {"all": " 全部", "unlocked": " 已解锁", "locked": " 未解锁"}
+		btn.text = names.get(filter_id, " 全部")
 	_popup_open = false
 	overlay.queue_free()
 	_refresh_list()
@@ -625,13 +627,13 @@ func _show_component_detail(cid: String):
 	# 解锁状态
 	var status_label = Label.new()
 	if unlocked:
-		status_label.text = "✅ 已解锁"
+		status_label.text = "已解锁"
 		status_label.add_theme_color_override("font_color", Color("#4CAF50"))
 	else:
 		if cond != "":
-			status_label.text = "🔒 解锁条件：" + cond
+			status_label.text = "解锁条件：" + cond
 		else:
-			status_label.text = "🔒 初始解锁"
+			status_label.text = "初始解锁"
 		status_label.add_theme_color_override("font_color", Color("#FF5252"))
 	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	status_label.add_theme_font_size_override("font_size", 38)
@@ -646,7 +648,7 @@ func _show_component_detail(cid: String):
 	var load_val = info.get("base_load", null)
 	if load_val != null:
 		var load_label = Label.new()
-		load_label.text = "⚡ 负荷：" + ("+" if load_val >= 0 else "") + str(load_val)
+		load_label.text = "负荷：" + ("+" if load_val >= 0 else "") + str(load_val)
 		load_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		load_label.add_theme_font_size_override("font_size", 46)
 		load_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.3))
@@ -898,13 +900,13 @@ func _show_detail(row: Control):
 	# 解锁状态
 	var status_label = Label.new()
 	if unlocked:
-		status_label.text = "✅ 已解锁"
+		status_label.text = "已解锁"
 		status_label.add_theme_color_override("font_color", Color("#4CAF50"))
 	else:
 		if cond != "":
-			status_label.text = "🔒 解锁条件：" + cond
+			status_label.text = "解锁条件：" + cond
 		else:
-			status_label.text = "🔒 初始解锁"
+			status_label.text = "初始解锁"
 		status_label.add_theme_color_override("font_color", Color("#FF5252"))
 	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	status_label.add_theme_font_size_override("font_size", 38)
@@ -919,7 +921,7 @@ func _show_detail(row: Control):
 	var load_val = info.get("base_load", null)
 	if load_val != null:
 		var load_label = Label.new()
-		load_label.text = "⚡ 负荷：" + ("+" if load_val >= 0 else "") + str(load_val)
+		load_label.text = "负荷：" + ("+" if load_val >= 0 else "") + str(load_val)
 		load_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		load_label.add_theme_font_size_override("font_size", 46)
 		load_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.3))

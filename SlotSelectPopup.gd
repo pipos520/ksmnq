@@ -120,7 +120,7 @@ func _ready():
 	vbox.add_child(btn_row)
 	
 	var cancel_btn = Button.new()
-	cancel_btn.text = "✕ 取消"
+	cancel_btn.text = "取消"
 	cancel_btn.add_theme_font_size_override("font_size", 40)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color(0.2, 0.12, 0.20)
@@ -265,17 +265,17 @@ func _refresh_slots() -> void:
 			# 显示卡牌信息
 			var element_icon = ""
 			match card.element:
-				"火": element_icon = "🔥"
-				"水": element_icon = "💧"
-				"风": element_icon = "🌪️"
-				"地": element_icon = "⛰️"
-				"光": element_icon = "✨"
-				"暗": element_icon = "🌑"
+				"火": element_icon = ""
+				"水": element_icon = ""
+				"风": element_icon = ""
+				"地": element_icon = ""
+				"光": element_icon = ""
+				"暗": element_icon = ""
 			if elem_lbl: elem_lbl.text = element_icon
-			if cost_lbl: cost_lbl.text = "⚡" + str(card.base_cost)
+			if cost_lbl: cost_lbl.text = "" + str(card.base_cost)
 			if center_lbl: center_lbl.text = card.card_name
-			if atk_lbl: atk_lbl.text = "⚔️" + str(card.current_atk)
-			if hp_lbl: hp_lbl.text = "❤️" + str(card.current_hp)
+			if atk_lbl: atk_lbl.text = "" + str(card.current_atk)
+			if hp_lbl: hp_lbl.text = "" + str(card.current_hp)
 			
 			# 可点击样式
 			var s = StyleBoxFlat.new()

@@ -70,7 +70,7 @@ func _update_gold():
 	var gl = get_node_or_null("GoldLabel")
 	if gl:
 		var gold = SaveManager.get_value("player", "gold", 0)
-		gl.text = "💰 " + Global.n2s(gold)
+		gl.text = "" + Global.n2s(gold)
 		Global.make_gold_legible(gl)
 
 
@@ -165,7 +165,7 @@ func _refresh_items(vbox: VBoxContainer):
 	vbox.add_child(title_bar)
 	
 	var title_label = Label.new()
-	title_label.text = "🏛 " + guild_title + " · 可购品级：[" + " | ".join(allowed_rarities) + "]"
+	title_label.text = "" + guild_title + " · 可购品级：[" + " | ".join(allowed_rarities) + "]"
 	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	title_label.add_theme_font_size_override("font_size", 38)
@@ -215,7 +215,7 @@ func _refresh_items(vbox: VBoxContainer):
 		
 		# 价格
 		var price_label = Label.new()
-		price_label.text = "💰" + str(price)
+		price_label.text = "" + str(price)
 		price_label.add_theme_font_size_override("font_size", 45)
 		price_label.add_theme_color_override("font_color", Color("#FFD700"))
 		price_label.custom_minimum_size = Vector2(Global.pw(0.15), 0)
@@ -256,7 +256,7 @@ func _refresh_lootbox(vbox: VBoxContainer):
 	# 看广告按钮
 	var ad_btn = Button.new()
 	ad_btn.name = "WatchAdBtn"
-	ad_btn.text = "🎬 看广告领取10金币"
+	ad_btn.text = "看广告领取10金币"
 	ad_btn.add_theme_font_size_override("font_size", 55)
 	var bs = StyleBoxFlat.new()
 	bs.bg_color = Color("#FF6B6B")
@@ -318,11 +318,11 @@ func _on_watch_ad():
 	Global.play_sfx("click")
 	Global.play_sfx("click")
 	if _hj_ads == null:
-		_show_ad_error("⚠ 广告未初始化")
+		_show_ad_error(" 广告未初始化")
 		return
 	
 	if _hj_ads.isRewardedAdReady():
-		_show_ad_status("▶️ 播放广告中...", Color("#FFD700"))
+		_show_ad_status("▶ 播放广告中...", Color("#FFD700"))
 		_show_ad_error("")
 		_hj_ads.showRewardedAd()
 	else:
@@ -343,9 +343,9 @@ func _on_video_rewarded(rewarded: bool):
 	SaveManager.set_value("player", "gold", gold)
 	SaveManager.save_to_disk()
 	_update_gold()
-	_show_ad_status("✅ 获得10金币奖励！", Color("#4CAF50"))
+	_show_ad_status(" 获得10金币奖励！", Color("#4CAF50"))
 	_show_ad_error("")
-	_show_popup("🎉 获得10金币！", Color("#4CAF50"))
+	_show_popup(" 获得10金币！", Color("#4CAF50"))
 	
 	# ⚠️ 注意：不要在广告关闭前重新加载！
 	# 等广告自然关闭后，由 _on_ad_closed 负责加载下一个广告
@@ -353,7 +353,7 @@ func _on_video_rewarded(rewarded: bool):
 
 func _on_ad_closed(result: String):
 	# 广告关闭回调
-	_show_ad_status("✅ 广告已关闭，可再次观看", Color("#4CAF50"))
+	_show_ad_status(" 广告已关闭，可再次观看", Color("#4CAF50"))
 	_show_ad_error("")
 	# 预加载下一个广告（加1秒延迟确保SDK清理干净）
 	await get_tree().create_timer(1.0).timeout
@@ -362,12 +362,12 @@ func _on_ad_closed(result: String):
 
 
 func _on_ad_loaded_for_reward(placement_id: String):
-	_show_ad_status("✅ 广告已就绪，点击观看", Color("#4CAF50"))
+	_show_ad_status(" 广告已就绪，点击观看", Color("#4CAF50"))
 	_show_ad_error("")
 
 
 func _on_ad_failed_for_reward(error_msg: String):
-	_show_ad_status("⚠ 广告加载失败", Color("#FF5252"))
+	_show_ad_status(" 广告加载失败", Color("#FF5252"))
 	_show_ad_error("错误详情: " + error_msg)
 	# 暂时禁用重试，避免弹窗叠加
 	# _show_popup("❌ 广告加载失败: " + error_msg, Color("#FF5252"))
@@ -522,10 +522,12 @@ func _calc_price(mat: Dictionary) -> int:
 
 
 func _get_row_bg_color(row_index: int) -> Color:
+	# 斑马纹第二色必须是「略深的羊皮纸」，不能是透明。
+	# 页面底色是深色贴图(bg_day/bg_night)，透明会让后半数行直接压成深底，
+	# 而行内文字是深棕色 -> 对比度接近 1:1，整行看不见。
 	if row_index % 2 == 0:
 		return Global.current.topbar_bg
-	else:
-		return Color.TRANSPARENT
+	return Global.current.topbar_bg.darkened(0.10)
 
 
 func _on_buy(mid: String, price: int):
@@ -556,7 +558,7 @@ func _show_buy_confirm(mid: String, price: int):
 	var gold = SaveManager.get_value("player", "gold", 0)
 	var max_qty = floor(gold / price)
 	if max_qty <= 0:
-		_show_popup("❌ 金币不足！", Color("#FF5252"))
+		_show_popup(" 金币不足！", Color("#FF5252"))
 		return
 	
 	# 创建遮罩
@@ -595,7 +597,7 @@ func _show_buy_confirm(mid: String, price: int):
 	
 	# 标题
 	var title = Label.new()
-	title.text = "🛒 批量购买"
+	title.text = "批量购买"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -612,7 +614,7 @@ func _show_buy_confirm(mid: String, price: int):
 	
 	# 单价信息
 	var unit_label = Label.new()
-	unit_label.text = "单价：💰" + str(price) + "  最多可买 x" + str(int(max_qty))
+	unit_label.text = "单价：" + str(price) + "  最多可买 x" + str(int(max_qty))
 	unit_label.add_theme_font_size_override("font_size", 40)
 	unit_label.add_theme_color_override("font_color", Color("#FFD700"))
 	unit_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -658,7 +660,7 @@ func _show_buy_confirm(mid: String, price: int):
 	qty_hbox.add_child(inc_btn)
 	
 	# 总价
-	total_label.text = "总价：💰" + str(_buy_qty * price)
+	total_label.text = "总价：" + str(_buy_qty * price)
 	total_label.add_theme_font_size_override("font_size", 45)
 	total_label.add_theme_color_override("font_color", Color("#FFD700"))
 	total_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -694,13 +696,13 @@ func _show_buy_confirm(mid: String, price: int):
 
 func _update_buy_confirm_ui(qty_val: Label, total_label: Label, gold: int):
 	qty_val.text = str(_buy_qty)
-	total_label.text = "总价：💰" + str(_buy_qty * _buy_price)
+	total_label.text = "总价：" + str(_buy_qty * _buy_price)
 
 func _do_buy(mid: String, price: int, qty: int):
 	var gold = SaveManager.get_value("player", "gold", 0)
 	var total_cost = price * qty
 	if gold < total_cost:
-		_show_popup("❌ 金币不足！", Color("#FF5252"))
+		_show_popup(" 金币不足！", Color("#FF5252"))
 		return
 	
 	# 扣钱
@@ -719,7 +721,7 @@ func _do_buy(mid: String, price: int, qty: int):
 		_buy_overlay = null
 	
 	# 成功弹窗
-	_show_popup("✅ 成功购买 " + str(qty) + " 个 " + _buy_mat_name + "！", Color("#4CAF50"))
+	_show_popup(" 成功购买 " + str(qty) + " 个 " + _buy_mat_name + "！", Color("#4CAF50"))
 
 
 func _on_theme_changed(_mode):

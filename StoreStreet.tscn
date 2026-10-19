@@ -58,7 +58,7 @@ offset_right = -20.0
 offset_bottom = 160.0
 theme_override_font_sizes/font_size = 50
 theme_override_colors/font_color = Color(1.0, 0.843, 0.0, 1)
-text = "💰 0"
+text = "0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -83,7 +83,7 @@ anchor_top = 0.22
 anchor_right = 0.9
 anchor_bottom = 0.34
 theme_override_font_sizes/font_size = 55
-text = "📦 素材商店"
+text = "素材商店"
 
 [node name="BtnCardPack" type="Button" parent="."]
 anchor_left = 0.1
@@ -91,7 +91,7 @@ anchor_top = 0.38
 anchor_right = 0.9
 anchor_bottom = 0.50
 theme_override_font_sizes/font_size = 55
-text = "🎁 卡包商店"
+text = "卡包商店"
 
 [node name="BtnDeckRent" type="Button" parent="."]
 anchor_left = 0.1
@@ -99,7 +99,7 @@ anchor_top = 0.54
 anchor_right = 0.9
 anchor_bottom = 0.66
 theme_override_font_sizes/font_size = 55
-text = "🃏 牌组租借"
+text = "牌组租借"
 
 [node name="ComingLabel" type="Label" parent="."]
 anchor_left = 0.1

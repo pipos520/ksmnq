@@ -131,12 +131,12 @@ func is_equipment() -> bool:
 func get_display_name() -> String:
 	var prefix = ""
 	var display_element = get_effective_element()
-	if display_element == "火": prefix = "🔥"
-	elif display_element == "水": prefix = "💧"
-	elif display_element == "风": prefix = "🌪️"
-	elif display_element == "地": prefix = "⛰️"
-	elif display_element == "光": prefix = "✨"
-	elif display_element == "暗": prefix = "🌑"
+	if display_element == "火": prefix = ""
+	elif display_element == "水": prefix = ""
+	elif display_element == "风": prefix = ""
+	elif display_element == "地": prefix = ""
+	elif display_element == "光": prefix = ""
+	elif display_element == "暗": prefix = ""
 	return prefix + " " + card_name
 
 
@@ -154,8 +154,8 @@ func get_stat_text() -> String:
 ## 获取完整信息
 func get_full_info() -> String:
 	var info = get_display_name() + "\n"
-	info += "⚔️ " + str(current_atk) + " ❤️ " + str(current_hp)
-	info += " ⚡" + str(base_cost)
+	info += " " + str(current_atk) + "  " + str(current_hp)
+	info += " " + str(base_cost)
 	info += " [" + quality + " " + element + "]\n"
 	info += desc
 	return info

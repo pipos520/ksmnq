@@ -71,7 +71,7 @@ anchor_bottom = 1.0
 offset_left = 30.0
 offset_right = 260.0
 theme_override_font_sizes/font_size = 80
-text = "🥊"
+text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 [node name="TutorialInfo" type="VBoxContainer" parent="MapScroll/MapList/TutorialCard"]
@@ -85,7 +85,7 @@ offset_right = -20.0
 offset_bottom = -10.0
 [node name="TutorialName" type="Label" parent="MapScroll/MapList/TutorialCard/TutorialInfo"]
 theme_override_font_sizes/font_size = 46
-text = "📖 新手教学战 · 巷口混混"
+text = "新手教学战 · 巷口混混"
 [node name="TutorialDiff" type="Label" parent="MapScroll/MapList/TutorialCard/TutorialInfo"]
 theme_override_font_sizes/font_size = 32
 text = "难度：教学"
@@ -102,7 +102,7 @@ custom_minimum_size = Vector2(0, 4)
 size_flags_horizontal = 8
 custom_minimum_size = Vector2(280, 50)
 theme_override_font_sizes/font_size = 35
-text = "🥊 应战"
+text = "应战"
 
 [node name="MapCard_0" type="Panel" parent="MapScroll/MapList"]
 visible = false
@@ -116,7 +116,7 @@ anchor_bottom = 1.0
 offset_left = 30.0
 offset_right = 260.0
 theme_override_font_sizes/font_size = 80
-text = "🌲"
+text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 [node name="MapInfo_0" type="VBoxContainer" parent="MapScroll/MapList/MapCard_0"]
@@ -130,7 +130,7 @@ offset_right = -20.0
 offset_bottom = -10.0
 [node name="MapName_0" type="Label" parent="MapScroll/MapList/MapCard_0/MapInfo_0"]
 theme_override_font_sizes/font_size = 50
-text = "🌲 迷雾森林"
+text = "迷雾森林"
 [node name="MapDiff_0" type="Label" parent="MapScroll/MapList/MapCard_0/MapInfo_0"]
 theme_override_font_sizes/font_size = 35
 text = "难度：简单"
@@ -154,7 +154,7 @@ offset_top = 24.0
 offset_right = -24.0
 offset_bottom = 88.0
 theme_override_font_sizes/font_size = 38
-text = "🗡️ 探索"
+text = "探索"
 
 [node name="MapCard_1" type="Panel" parent="MapScroll/MapList"]
 visible = false
@@ -168,7 +168,7 @@ anchor_bottom = 1.0
 offset_left = 30.0
 offset_right = 260.0
 theme_override_font_sizes/font_size = 80
-text = "🔥"
+text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 [node name="MapInfo_1" type="VBoxContainer" parent="MapScroll/MapList/MapCard_1"]
@@ -182,7 +182,7 @@ offset_right = -20.0
 offset_bottom = -10.0
 [node name="MapName_1" type="Label" parent="MapScroll/MapList/MapCard_1/MapInfo_1"]
 theme_override_font_sizes/font_size = 50
-text = "🔥 火焰洞穴"
+text = "火焰洞穴"
 [node name="MapDiff_1" type="Label" parent="MapScroll/MapList/MapCard_1/MapInfo_1"]
 theme_override_font_sizes/font_size = 35
 text = "难度：普通"
@@ -206,7 +206,7 @@ offset_top = 24.0
 offset_right = -24.0
 offset_bottom = 88.0
 theme_override_font_sizes/font_size = 38
-text = "🗡️ 探索"
+text = "探索"
 
 [node name="MapCard_2" type="Panel" parent="MapScroll/MapList"]
 visible = false
@@ -220,7 +220,7 @@ anchor_bottom = 1.0
 offset_left = 30.0
 offset_right = 260.0
 theme_override_font_sizes/font_size = 80
-text = "⚔"
+text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 [node name="MapInfo_2" type="VBoxContainer" parent="MapScroll/MapList/MapCard_2"]
@@ -234,7 +234,7 @@ offset_right = -20.0
 offset_bottom = -10.0
 [node name="MapName_2" type="Label" parent="MapScroll/MapList/MapCard_2/MapInfo_2"]
 theme_override_font_sizes/font_size = 50
-text = "⚔ 决斗场"
+text = "决斗场"
 [node name="MapDiff_2" type="Label" parent="MapScroll/MapList/MapCard_2/MapInfo_2"]
 theme_override_font_sizes/font_size = 35
 text = "难度：匹配"
@@ -258,7 +258,7 @@ offset_top = 24.0
 offset_right = -24.0
 offset_bottom = 88.0
 theme_override_font_sizes/font_size = 38
-text = "🗡️ 探索"
+text = "探索"
 
 [node name="MapCard_3" type="Panel" parent="MapScroll/MapList"]
 visible = false
@@ -310,7 +310,7 @@ offset_top = 24.0
 offset_right = -24.0
 offset_bottom = 88.0
 theme_override_font_sizes/font_size = 38
-text = "🔒 未开放"
+text = "未开放"
 disabled = true
 
 [node name="BottomBar" type="ColorRect" parent="."]
@@ -352,7 +352,7 @@ offset_top = -120.0
 offset_right = 170.0
 offset_bottom = -10.0
 theme_override_font_sizes/font_size = 45
-text = "🃏"
+text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
 

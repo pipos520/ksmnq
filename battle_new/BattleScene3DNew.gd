@@ -150,11 +150,11 @@ func _on_turn_changed(turn_count: int) -> void:
 func _on_battle_ended(result: int) -> void:
 	match result:
 		BattleGameNew.State.WON:
-			_update_info("🏆 胜利！")
+			_update_info(" 胜利！")
 		BattleGameNew.State.LOST:
-			_update_info("💀 败北！")
+			_update_info(" 败北！")
 		BattleGameNew.State.DRAW:
-			_update_info("⚖️ 平局！")
+			_update_info(" 平局！")
 	# 3秒后返回
 	get_tree().create_timer(3.0).timeout.connect(_on_back)
 
@@ -174,7 +174,7 @@ func _on_energy_changed(is_player: bool, old_val: int, new_val: int, max_val: in
 	if _energy_labels.has(key):
 		var label = _energy_labels[key] as Label
 		if label:
-			label.text = "⚡ %d/%d" % [new_val, max_val]
+			label.text = " %d/%d" % [new_val, max_val]
 
 
 func _on_hand_changed(is_player: bool) -> void:
@@ -203,7 +203,7 @@ func _on_banish_changed(is_player: bool) -> void:
 func _on_action_result(action_type: String, success: bool, data: Dictionary) -> void:
 	if not success:
 		var reason = data.get("reason", "失败")
-		_update_info("⚠️ %s: %s" % [action_type, reason])
+		_update_info(" %s: %s" % [action_type, reason])
 	_refresh_field()
 
 
@@ -212,7 +212,7 @@ func _on_info_message(text: String) -> void:
 
 
 func _on_card_effect_activated(card_name: String, effect_desc: String, action_type: String, target_id: String, value: int, target_card_name: String, source_slot: int, is_player: bool, target_slot: int, target_is_player: bool) -> void:
-	_update_info("✨ %s: %s" % [card_name, effect_desc])
+	_update_info(" %s: %s" % [card_name, effect_desc])
 	_refresh_field()
 
 
@@ -242,7 +242,7 @@ func _on_view_switch() -> void:
 	_cam_state = (_cam_state + 1) % 3
 	var labels = ["敌方", "中", "己方"]
 	if _view_btn:
-		_view_btn.text = "📷 视角: " + labels[_cam_state]
+		_view_btn.text = " 视角: " + labels[_cam_state]
 	if _cam:
 		if _cam_tween and _cam_tween.is_valid():
 			_cam_tween.kill()

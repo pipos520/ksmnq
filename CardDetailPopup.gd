@@ -144,7 +144,7 @@ func _ready():
 	stat_hbox.add_child(atk_vbox)
 	
 	var atk_title = Label.new()
-	atk_title.text = "⚔️ 攻击力"
+	atk_title.text = "攻击力"
 	atk_title.add_theme_font_size_override("font_size", 28)
 	atk_title.add_theme_color_override("font_color", Color(0.8, 0.5, 0.5, 0.7))
 	atk_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -164,7 +164,7 @@ func _ready():
 	stat_hbox.add_child(hp_vbox)
 	
 	var hp_title = Label.new()
-	hp_title.text = "❤️ 生命值"
+	hp_title.text = "生命值"
 	hp_title.add_theme_font_size_override("font_size", 28)
 	hp_title.add_theme_color_override("font_color", Color(0.5, 0.8, 0.5, 0.7))
 	hp_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -184,7 +184,7 @@ func _ready():
 	stat_hbox.add_child(cost_vbox)
 	
 	var cost_title = Label.new()
-	cost_title.text = "⚡ 费用"
+	cost_title.text = "费用"
 	cost_title.add_theme_font_size_override("font_size", 28)
 	cost_title.add_theme_color_override("font_color", Color(0.8, 0.7, 0.4, 0.7))
 	cost_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -286,23 +286,23 @@ func show_card(card: BattleCard, mode: String = "view", battle_manager = null, h
 		elif first_eff is Dictionary and first_eff.has("trigger"):
 			trigger_id = first_eff.get("trigger", "TR01")
 		match trigger_id:
-			"TR01": trigger_text = "⚡ 召唤时发动"
+			"TR01": trigger_text = " 召唤时发动"
 			# "TR02": trigger_text = "⚡ 特殊召唤时发动"  # 已注释
 			# "TR03": trigger_text = "⚡ 从墓地特召时发动"  # 已注释
 			# "TR04": trigger_text = "💥 被战斗破坏时发动"  # 已注释
-			"TR06": trigger_text = "💀 送墓时发动"
+			"TR06": trigger_text = " 送墓时发动"
 			# "TR07": trigger_text = "🌀 被除外时发动"  # 已注释
 			# "TR08": trigger_text = "💨 离场时发动"  # 已注释
-			"TR09": trigger_text = "⚔️ 攻击时发动"
-			"TR10": trigger_text = "🛡️ 被攻击时发动"
-			"TR11": trigger_text = "💢 战斗伤害时发动"
-			"TR12": trigger_text = "🔁 己方回合开始时"
-			"TR13": trigger_text = "🔁 对方回合开始时"
-			"TR14": trigger_text = "🔁 己方回合结束时"
-			"TR15": trigger_text = "🔁 对方回合结束时"
-			"TR16": trigger_text = "🔄 对方发动效果时"
-			"TR17": trigger_text = "🔄 对方召唤时"
-			_: trigger_text = "⚡ 召唤时发动"
+			"TR09": trigger_text = " 攻击时发动"
+			"TR10": trigger_text = " 被攻击时发动"
+			"TR11": trigger_text = " 战斗伤害时发动"
+			"TR12": trigger_text = " 己方回合开始时"
+			"TR13": trigger_text = " 对方回合开始时"
+			"TR14": trigger_text = " 己方回合结束时"
+			"TR15": trigger_text = " 对方回合结束时"
+			"TR16": trigger_text = " 对方发动效果时"
+			"TR17": trigger_text = " 对方召唤时"
+			_: trigger_text = " 召唤时发动"
 	_type_lbl.text = trigger_text
 	
 	# 星级
@@ -314,12 +314,12 @@ func show_card(card: BattleCard, mode: String = "view", battle_manager = null, h
 	# 品质+元素
 	var element_icon = ""
 	match card.element:
-		"火": element_icon = "🔥"
-		"水": element_icon = "💧"
-		"风": element_icon = "🌪️"
-		"地": element_icon = "⛰️"
-		"光": element_icon = "✨"
-		"暗": element_icon = "🌑"
+		"火": element_icon = ""
+		"水": element_icon = ""
+		"风": element_icon = ""
+		"地": element_icon = ""
+		"光": element_icon = ""
+		"暗": element_icon = ""
 	_qual_lbl.text = "[" + card.quality + "] " + element_icon + " " + card.element
 	
 	# ATK值
@@ -345,7 +345,7 @@ func show_card(card: BattleCard, mode: String = "view", battle_manager = null, h
 	
 	# 字段
 	if card.fields.size() > 0:
-		_fields_lbl.text = "📖 " + " | ".join(card.fields)
+		_fields_lbl.text = "" + " | ".join(card.fields)
 	else:
 		_fields_lbl.text = ""
 	
@@ -401,7 +401,7 @@ func show_card(card: BattleCard, mode: String = "view", battle_manager = null, h
 	# 辅材
 	var aux_text := ""
 	if card.aux_items.size() > 0:
-		aux_text = "\n🧪 辅材：\n"
+		aux_text = "\n 辅材：\n"
 		for aux in card.aux_items:
 			var aux_name = aux.get("name", "未知辅材")
 			var aux_eff = _describe_aux_effect(aux)
@@ -416,30 +416,30 @@ func show_card(card: BattleCard, mode: String = "view", battle_manager = null, h
 		# 查看模式：不显示运行时状态
 		rt_text = ""
 	elif card.is_on_field:
-		rt_text += "🟢 已在场上 | 位置: " + str(card.slot_index + 1)
+		rt_text += " 已在场上 | 位置: " + str(card.slot_index + 1)
 		if card.is_turned:
 			rt_text += " | 守备表示"
 		else:
 			rt_text += " | 攻击表示"
 		rt_text += "\n"
 		if card.has_attacked:
-			rt_text += "⚔️ 已攻击过\n"
+			rt_text += " 已攻击过\n"
 		else:
-			rt_text += "⚔️ 可攻击\n"
+			rt_text += " 可攻击\n"
 		if card.cannot_attack:
-			rt_text += "🚫 不能攻击\n"
+			rt_text += " 不能攻击\n"
 		if card.is_frozen:
-			rt_text += "❄️ 冰冻中\n"
+			rt_text += " 冰冻中\n"
 		if card.temp_atk_buff != 0:
-			rt_text += "⚡ 临时攻击力: " + ("+" if card.temp_atk_buff > 0 else "") + str(card.temp_atk_buff) + "\n"
+			rt_text += " 临时攻击力: " + ("+" if card.temp_atk_buff > 0 else "") + str(card.temp_atk_buff) + "\n"
 		if card.temp_hp_buff != 0:
-			rt_text += "💚 临时生命值: " + ("+" if card.temp_hp_buff > 0 else "") + str(card.temp_hp_buff) + "\n"
+			rt_text += " 临时生命值: " + ("+" if card.temp_hp_buff > 0 else "") + str(card.temp_hp_buff) + "\n"
 		if card.atk_buff_permanent != 0:
-			rt_text += "🔒 永久攻击力: " + ("+" if card.atk_buff_permanent > 0 else "") + str(card.atk_buff_permanent) + "\n"
+			rt_text += " 永久攻击力: " + ("+" if card.atk_buff_permanent > 0 else "") + str(card.atk_buff_permanent) + "\n"
 		if card.hp_buff_permanent != 0:
-			rt_text += "🔒 永久生命值: " + ("+" if card.hp_buff_permanent > 0 else "") + str(card.hp_buff_permanent) + "\n"
+			rt_text += " 永久生命值: " + ("+" if card.hp_buff_permanent > 0 else "") + str(card.hp_buff_permanent) + "\n"
 	else:
-		rt_text += "📋 在手牌中"
+		rt_text += " 在手牌中"
 	_runtime_lbl.text = rt_text
 	
 	# 构建操作按钮
@@ -472,7 +472,7 @@ func _build_action_buttons() -> void:
 			var bm = _battle_manager_ref
 			if bm.current_phase == BattleManager.Phase.MAIN and bm.is_player_turn() and bm.player_self.get_empty_slots().size() > 0:
 				can_summon = true
-		_add_action_button("⚡ 召唤到场地", Color("#4fc3f7"), can_summon, _on_summon_clicked)
+		_add_action_button(" 召唤到场地", Color("#4fc3f7"), can_summon, _on_summon_clicked)
 	
 	elif _mode == "field_attack":
 		# 己方场上模式：攻击按钮
@@ -482,11 +482,11 @@ func _build_action_buttons() -> void:
 			if bm.current_phase == BattleManager.Phase.BATTLE and bm.is_player_turn():
 				if _card != null and _card.is_alive() and _card.can_attack():
 					can_attack = true
-		_add_action_button("⚔️ 攻击", Color("#e74c3c"), can_attack, _on_attack_clicked)
+		_add_action_button(" 攻击", Color("#e74c3c"), can_attack, _on_attack_clicked)
 	
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 35)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color(0.15, 0.10, 0.18)

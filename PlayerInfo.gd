@@ -87,7 +87,7 @@ func _build_content():
 
 	var icon = Label.new()
 	icon.name = "Icon"
-	icon.text = "🏛️"
+	icon.text = ""
 	icon.add_theme_font_size_override("font_size", 80)
 	icon.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	icon.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -113,7 +113,7 @@ func _build_content():
 	if not next_info.is_max:
 		var next_tip = ""
 		for c in next_info.conditions:
-			next_tip += ("✅ " if c.done else "❌ ") + c.text
+			next_tip += (" " if c.done else " ") + c.text
 			if c.current != "":
 				next_tip += "（" + c.current + "）"
 			next_tip += "\n"
@@ -129,7 +129,7 @@ func _build_content():
 	else:
 		var max_label = Label.new()
 		max_label.name = "MaxLabel"
-		max_label.text = "🌟 已达成最高等级！"
+		max_label.text = "已达成最高等级！"
 		max_label.add_theme_font_size_override("font_size", 40)
 		max_label.add_theme_color_override("font_color", Color("#FFD700"))
 		Global.make_gold_legible(max_label)
@@ -156,7 +156,7 @@ func _build_content():
 
 	var ov_title = Label.new()
 	ov_title.name = "OvTitle"
-	ov_title.text = "📊 制卡进度"
+	ov_title.text = "制卡进度"
 	ov_title.add_theme_font_size_override("font_size", 50)
 	ov_title.add_theme_color_override("font_color", Global.current.title)
 	ov_title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
@@ -218,7 +218,7 @@ func _build_content():
 
 	var cp_title = Label.new()
 	cp_title.name = "CPTitle"
-	cp_title.text = "🔮 纹路收集"
+	cp_title.text = "纹路收集"
 	cp_title.add_theme_font_size_override("font_size", 50)
 	cp_title.add_theme_color_override("font_color", Global.current.title)
 	cp_title.add_theme_color_override("font_shadow_color", Global.current.title_shadow)
@@ -250,7 +250,7 @@ func _build_content():
 
 	var gallery_btn = Button.new()
 	gallery_btn.name = "GalleryBtn"
-	gallery_btn.text = "🔮 查看纹路图鉴"
+	gallery_btn.text = "查看纹路图鉴"
 	gallery_btn.add_theme_font_size_override("font_size", 40)
 	var gs = StyleBoxFlat.new()
 	gs.bg_color = Global.current.btn_bg
@@ -300,7 +300,7 @@ func _show_guild_guide():
 	overlay.add_child(panel)
 
 	var title = Label.new()
-	title.text = "🏛️ 公会等级指南"
+	title.text = "公会等级指南"
 	title.add_theme_font_size_override("font_size", 60)
 	title.add_theme_color_override("font_color", Global.current.title)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -350,8 +350,8 @@ func _show_guild_guide():
 
 		var lv_label = Label.new()
 		var star = ""
-		if i == 0: star = "🌱 "
-		elif i == PlayerManager.GUILD_LEVELS.size() - 1: star = "👑 "
+		if i == 0: star = " "
+		elif i == PlayerManager.GUILD_LEVELS.size() - 1: star = " "
 		else: star = "⭐ "
 		lv_label.text = star + "Lv." + str(lv.level) + "  " + lv.title
 		lv_label.add_theme_font_size_override("font_size", 45)
@@ -387,7 +387,7 @@ func _show_guild_guide():
 
 	# 关闭按钮（统一风格）
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 50)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Global.current.btn_bg

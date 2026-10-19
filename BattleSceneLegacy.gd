@@ -205,7 +205,7 @@ func _add_info_bar(top: float, bottom: float, name_str: String, hp: int, max_hp:
 	# 血量
 	var hp_lbl = Label.new()
 	hp_lbl.name = ("EnemyHP" if is_enemy else "PlayerHP")
-	hp_lbl.text = "❤️ " + str(hp) + "/" + str(max_hp)
+	hp_lbl.text = "" + str(hp) + "/" + str(max_hp)
 	hp_lbl.add_theme_font_size_override("font_size", 40)
 	hp_lbl.add_theme_color_override("font_color", Color("#e74c3c"))
 	hp_lbl.add_theme_constant_override("shadow_offset_x", 1)
@@ -220,7 +220,7 @@ func _add_info_bar(top: float, bottom: float, name_str: String, hp: int, max_hp:
 	# 能量
 	var energy_lbl = Label.new()
 	energy_lbl.name = ("EnemyEnergy" if is_enemy else "PlayerEnergy")
-	energy_lbl.text = "⚡ " + str(energy) + "/" + str(max_energy)
+	energy_lbl.text = "" + str(energy) + "/" + str(max_energy)
 	energy_lbl.add_theme_font_size_override("font_size", 40)
 	energy_lbl.add_theme_color_override("font_color", Color("#f9d371"))
 	energy_lbl.add_theme_constant_override("shadow_offset_x", 1)
@@ -240,7 +240,7 @@ func _add_grave_deck(top: float, bottom: float, is_enemy: bool):
 	# 墓地（左侧）
 	var grave_btn = Button.new()
 	grave_btn.name = prefix + "Grave"
-	grave_btn.text = "📜\n0"
+	grave_btn.text = "\n0"
 	grave_btn.add_theme_font_size_override("font_size", 50)
 	grave_btn.disabled = false
 	var grave_s = StyleBoxFlat.new()
@@ -267,7 +267,7 @@ func _add_grave_deck(top: float, bottom: float, is_enemy: bool):
 	# 卡组（右侧）
 	var deck_btn = Button.new()
 	deck_btn.name = prefix + "Deck"
-	deck_btn.text = "📚\n30"
+	deck_btn.text = "\n30"
 	deck_btn.add_theme_font_size_override("font_size", 50)
 	deck_btn.disabled = true
 	var deck_s = StyleBoxFlat.new()
@@ -289,7 +289,7 @@ func _add_grave_deck(top: float, bottom: float, is_enemy: bool):
 	# 除外区（中间）
 	var banish_btn = Button.new()
 	banish_btn.name = prefix + "Banish"
-	banish_btn.text = "🌀\n0"
+	banish_btn.text = "\n0"
 	banish_btn.add_theme_font_size_override("font_size", 50)
 	banish_btn.disabled = false
 	var banish_s = StyleBoxFlat.new()
@@ -485,7 +485,7 @@ func _add_middle_divider(top: float, bottom: float):
 	_phase_label.add_theme_color_override("font_color", Color("#e8d5b7"))
 	_phase_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	_phase_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_phase_label.text = "⚔ 主要阶段"
+	_phase_label.text = "主要阶段"
 	add_child(_phase_label)
 	
 	# 倒计时标签（中间分隔区右侧）
@@ -547,7 +547,7 @@ func _add_hand_area(top: float, bottom: float) -> Array:
 	# 手牌标签
 	var lbl = Label.new()
 	lbl.name = "HandLabel"
-	lbl.text = "📋 手牌"
+	lbl.text = "手牌"
 	lbl.add_theme_font_size_override("font_size", 50)
 	lbl.add_theme_color_override("font_color", Color(0.6, 0.5, 0.7, 0.6))
 	lbl.anchor_left = 0.02; lbl.anchor_top = top
@@ -699,7 +699,7 @@ func _add_enemy_hand_area(top: float, bottom: float) -> Array:
 	var mid_y = (top + bottom) / 2.0
 	var lbl = Label.new()
 	lbl.name = "EnemyHand"
-	lbl.text = "🃏 敌方手牌"
+	lbl.text = "敌方手牌"
 	lbl.add_theme_font_size_override("font_size", 40)
 	lbl.add_theme_color_override("font_color", Color(0.5, 0.3, 0.6, 0.6))
 	lbl.anchor_left = 0.02; lbl.anchor_top = mid_y
@@ -756,7 +756,7 @@ func _add_enemy_hand_area(top: float, bottom: float) -> Array:
 		
 		# ? 图案
 		var pattern = Label.new()
-		pattern.text = "❓"
+		pattern.text = ""
 		pattern.add_theme_font_size_override("font_size", 50)
 		pattern.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		pattern.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -789,7 +789,7 @@ func _add_bottom_bar(top: float, bottom: float):
 	# ★ 退出按钮（最左侧）
 	var exit_btn = Button.new()
 	exit_btn.name = "BattleExitBtn"
-	exit_btn.text = "🚪 退出"
+	exit_btn.text = "退出"
 	exit_btn.add_theme_font_size_override("font_size", 40)
 	var exit_s = StyleBoxFlat.new()
 	exit_s.bg_color = Color(0.2, 0.08, 0.08)
@@ -931,18 +931,18 @@ func _refresh_all_ui() -> void:
 	var enemy_p = _battle_manager.player_opponent
 	
 	# 英雄信息
-	_update_label("PlayerHP", "❤️ " + str(self_p.hp) + "/" + str(self_p.max_hp))
-	_update_label("PlayerEnergy", "⚡ " + str(self_p.energy) + "/" + str(self_p.max_energy))
-	_update_label("EnemyHP", "❤️ " + str(enemy_p.hp) + "/" + str(enemy_p.max_hp))
-	_update_label("EnemyEnergy", "⚡ " + str(enemy_p.energy) + "/" + str(enemy_p.max_energy))
+	_update_label("PlayerHP", " " + str(self_p.hp) + "/" + str(self_p.max_hp))
+	_update_label("PlayerEnergy", " " + str(self_p.energy) + "/" + str(self_p.max_energy))
+	_update_label("EnemyHP", " " + str(enemy_p.hp) + "/" + str(enemy_p.max_hp))
+	_update_label("EnemyEnergy", " " + str(enemy_p.energy) + "/" + str(enemy_p.max_energy))
 	
 	# 卡组/墓地/除外
-	_update_label("PlayerGrave", "📜\n" + str(self_p.grave.size()))
-	_update_label("PlayerDeck", "📚\n" + str(self_p.deck.size()))
-	_update_label("PlayerBanish", "🌀\n" + str(self_p.banished.size()))
-	_update_label("EnemyGrave", "📜\n" + str(enemy_p.grave.size()))
-	_update_label("EnemyDeck", "📚\n" + str(enemy_p.deck.size()))
-	_update_label("EnemyBanish", "🌀\n" + str(enemy_p.banished.size()))
+	_update_label("PlayerGrave", "\n" + str(self_p.grave.size()))
+	_update_label("PlayerDeck", "\n" + str(self_p.deck.size()))
+	_update_label("PlayerBanish", "\n" + str(self_p.banished.size()))
+	_update_label("EnemyGrave", "\n" + str(enemy_p.grave.size()))
+	_update_label("EnemyDeck", "\n" + str(enemy_p.deck.size()))
+	_update_label("EnemyBanish", "\n" + str(enemy_p.banished.size()))
 	
 	# 手牌
 	_refresh_hand_ui()
@@ -963,7 +963,7 @@ func _refresh_hand_ui() -> void:
 	# 更新手牌标签
 	var hand_label = get_node_or_null("HandLabel")
 	if hand_label:
-		hand_label.text = "📋 手牌 (" + str(self_p.hand.size()) + "张)"
+		hand_label.text = "手牌 (" + str(self_p.hand.size()) + "张)"
 	
 	# 更新手牌卡槽
 	for i in range(_hand_cards.size()):
@@ -985,12 +985,12 @@ func _refresh_hand_ui() -> void:
 			if elem_lbl:
 				var element_icon = ""
 				match card.element:
-					"火": element_icon = "🔥"
-					"水": element_icon = "💧"
-					"风": element_icon = "🌪️"
-					"地": element_icon = "⛰️"
-					"光": element_icon = "✨"
-					"暗": element_icon = "🌑"
+					"火": element_icon = ""
+					"水": element_icon = ""
+					"风": element_icon = ""
+					"地": element_icon = ""
+					"光": element_icon = ""
+					"暗": element_icon = ""
 				elem_lbl.text = element_icon
 			
 			# 费用-右上角
@@ -1001,9 +1001,9 @@ func _refresh_hand_ui() -> void:
 			if center_lbl:
 				var center_text = card.card_name + "\n"
 				if card.fields.size() > 0:
-					center_text += "📖" + "|".join(card.fields) + "\n"
+					center_text += "" + "|".join(card.fields) + "\n"
 				if card.effects.size() > 0:
-					center_text += "📜" + str(card.effects.size()) + "效果"
+					center_text += "" + str(card.effects.size()) + "效果"
 				center_lbl.text = center_text
 			
 			# 攻击-左下角
@@ -1105,12 +1105,12 @@ func _refresh_field_ui() -> void:
 			if elem_lbl:
 				var icon = ""
 				match card.element:
-					"火": icon = "🔥"
-					"水": icon = "💧"
-					"风": icon = "🌪️"
-					"地": icon = "⛰️"
-					"光": icon = "✨"
-					"暗": icon = "🌑"
+					"火": icon = ""
+					"水": icon = ""
+					"风": icon = ""
+					"地": icon = ""
+					"光": icon = ""
+					"暗": icon = ""
 				elem_lbl.text = icon
 			# 费用（纯数字，和手牌一致）
 			if cost_lbl: cost_lbl.text = str(card.base_cost)
@@ -1134,7 +1134,7 @@ func _refresh_field_ui() -> void:
 				if shield_overlay: shield_overlay.visible = true
 				if shield_lbl:
 					shield_lbl.visible = true
-					shield_lbl.text = "🛡️" + str(card.shield_points)
+					shield_lbl.text = "" + str(card.shield_points)
 			else:
 				if shield_overlay: shield_overlay.visible = false
 				if shield_lbl: shield_lbl.visible = false
@@ -1250,12 +1250,12 @@ func _refresh_field_ui() -> void:
 			if elem_lbl:
 				var icon = ""
 				match card.element:
-					"火": icon = "🔥"
-					"水": icon = "💧"
-					"风": icon = "🌪️"
-					"地": icon = "⛰️"
-					"光": icon = "✨"
-					"暗": icon = "🌑"
+					"火": icon = ""
+					"水": icon = ""
+					"风": icon = ""
+					"地": icon = ""
+					"光": icon = ""
+					"暗": icon = ""
 				elem_lbl.text = icon
 			if cost_lbl: cost_lbl.text = str(card.base_cost)
 			if center_lbl:
@@ -1275,7 +1275,7 @@ func _refresh_field_ui() -> void:
 				if shield_overlay: shield_overlay.visible = true
 				if shield_lbl:
 					shield_lbl.visible = true
-					shield_lbl.text = "🛡️" + str(card.shield_points)
+					shield_lbl.text = "" + str(card.shield_points)
 			else:
 				if shield_overlay: shield_overlay.visible = false
 				if shield_lbl: shield_lbl.visible = false
@@ -1356,7 +1356,7 @@ func _update_phase_ui() -> void:
 	# 左侧：当前阶段文字
 	if _phase_label:
 		if _battle_manager.is_player_turn():
-			_phase_label.text = "⚔ " + phase_name
+			_phase_label.text = "" + phase_name
 		else:
 			_phase_label.text = "⏳ 敌方回合 - " + phase_name
 	
@@ -1364,7 +1364,7 @@ func _update_phase_ui() -> void:
 	if _end_btn:
 		if _battle_manager.is_player_turn():
 			if _battle_manager.current_phase == BattleManager.Phase.MAIN:
-				_end_btn.text = "⚔ 进入战斗阶段"
+				_end_btn.text = "进入战斗阶段"
 				_end_btn.disabled = false
 			elif _battle_manager.current_phase == BattleManager.Phase.BATTLE:
 				_end_btn.text = "⏭ 结束回合"
@@ -1416,16 +1416,16 @@ func _on_turn_changed(turn_count: int) -> void:
 func _on_battle_state_changed(state: int) -> void:
 	var state_names = {0: "进行中", 1: "胜利！", 2: "败北...", 3: "平局"}
 	var sname = state_names.get(state, "未知")
-	print("[UI] 🎉 战斗状态: ", sname)
+	print("[UI]  战斗状态: ", sname)
 	if _phase_label:
-		_phase_label.text = "🏆 " + sname
+		_phase_label.text = "" + sname
 	
 	# 胜利时：触发辅材掉落
 	if state == 1:
 		# 教学战胜利 → 推进教程，回主界面找老陈（与 3D 端 BattleScene3D 一致）
 		if Global.is_tutorial_battle:
 			_exit_to_main = true
-			print("[战斗] 🎉 教学战胜利！推进教程")
+			print("[战斗]  教学战胜利！推进教程")
 			TutorialManager.advance()
 			# 教学战保底掉落：制作第一张卡所需的最低级卡基+卡墨素材
 			var craft_drops = _give_tutorial_craft_materials()
@@ -1437,7 +1437,7 @@ func _on_battle_state_changed(state: int) -> void:
 			PlayerManager.set_map_cleared(Global.current_map_id)
 			Global.current_is_boss = false
 			_exit_to_main = true
-			print("[战斗] 🎉 BOSS战胜利！地图通关：", Global.current_map_id)
+			print("[战斗]  BOSS战胜利！地图通关：", Global.current_map_id)
 			# 检查纹路解锁状态
 			var new_unlocks = CircuitManager.check_and_apply_unlocks()
 			if new_unlocks.size() > 0:
@@ -1639,7 +1639,7 @@ func _show_battle_reward_popup(gained_aux: Array) -> void:
 	
 	# 标题
 	var title = Label.new()
-	title.text = "🏆 战斗胜利！"
+	title.text = "战斗胜利！"
 	title.add_theme_font_size_override("font_size", 55)
 	title.add_theme_color_override("font_color", Color("#f9d371"))
 	title.add_theme_color_override("font_shadow_color", Color("#000000"))
@@ -1676,7 +1676,7 @@ func _show_battle_reward_popup(gained_aux: Array) -> void:
 	else:
 		# 掉落物副标题
 		var sub = Label.new()
-		sub.text = "🎁 掉落辅材："
+		sub.text = "掉落辅材："
 		sub.add_theme_font_size_override("font_size", 44)
 		sub.add_theme_color_override("font_color", Color("#e8d5b7"))
 		sub.anchor_left = 0.0; sub.anchor_top = 0.0
@@ -1807,7 +1807,7 @@ func _show_battle_exit_btn() -> void:
 	overlay.add_child(panel)
 	
 	var title = Label.new()
-	title.text = "💀 战斗结束"
+	title.text = "战斗结束"
 	title.add_theme_font_size_override("font_size", 55)
 	title.add_theme_color_override("font_color", Color("#e74c3c"))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -1866,7 +1866,7 @@ func _on_battle_exit_btn() -> void:
 	overlay.add_child(panel)
 	
 	var title = Label.new()
-	title.text = "🚪 退出战斗"
+	title.text = "退出战斗"
 	title.add_theme_font_size_override("font_size", 50)
 	title.add_theme_color_override("font_color", Color("#e74c3c"))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -1887,7 +1887,7 @@ func _on_battle_exit_btn() -> void:
 	
 	# 确认按钮
 	var confirm_btn = Button.new()
-	confirm_btn.text = "✅ 确认退出"
+	confirm_btn.text = "确认退出"
 	confirm_btn.add_theme_font_size_override("font_size", 40)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color(0.2, 0.08, 0.08)
@@ -1912,7 +1912,7 @@ func _on_battle_exit_btn() -> void:
 	
 	# 取消按钮
 	var cancel_btn = Button.new()
-	cancel_btn.text = "❌ 取消"
+	cancel_btn.text = "取消"
 	cancel_btn.add_theme_font_size_override("font_size", 40)
 	var cs2 = StyleBoxFlat.new()
 	cs2.bg_color = Color(0.15, 0.12, 0.22)
@@ -2436,7 +2436,7 @@ func _show_chain_prompt() -> void:
 	
 	# 标题
 	var title = Label.new()
-	title.text = "⚡ 连锁响应！"
+	title.text = "连锁响应！"
 	title.add_theme_font_size_override("font_size", 36)
 	title.add_theme_color_override("font_color", Color(1.0, 0.9, 0.3))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -2465,7 +2465,7 @@ func _show_chain_prompt() -> void:
 	
 	# 连锁按钮
 	var chain_btn = Button.new()
-	chain_btn.text = "⚡ 连锁"
+	chain_btn.text = "连锁"
 	chain_btn.add_theme_font_size_override("font_size", 28)
 	chain_btn.custom_minimum_size = Vector2(180, 60)
 	chain_btn.pressed.connect(_on_chain_yes)
@@ -2473,7 +2473,7 @@ func _show_chain_prompt() -> void:
 	
 	# 放弃按钮
 	var pass_btn = Button.new()
-	pass_btn.text = "✖ 放弃"
+	pass_btn.text = "放弃"
 	pass_btn.add_theme_font_size_override("font_size", 28)
 	pass_btn.custom_minimum_size = Vector2(180, 60)
 	pass_btn.pressed.connect(_on_chain_no)
@@ -2548,7 +2548,7 @@ func _show_chain_card_selection(chainable_cards: Array) -> void:
 		var effect = item.effect
 		
 		var card_btn = Button.new()
-		card_btn.text = c.get_display_name() + "\n⚡连锁"
+		card_btn.text = c.get_display_name() + "\n连锁"
 		card_btn.add_theme_font_size_override("font_size", 22)
 		card_btn.custom_minimum_size = Vector2(140, 160)
 		card_btn.pressed.connect(func():
@@ -2559,7 +2559,7 @@ func _show_chain_card_selection(chainable_cards: Array) -> void:
 	
 	# 放弃按钮
 	var pass_btn = Button.new()
-	pass_btn.text = "✖ 放弃连锁"
+	pass_btn.text = "放弃连锁"
 	pass_btn.add_theme_font_size_override("font_size", 24)
 	pass_btn.custom_minimum_size = Vector2(160, 50)
 	pass_btn.anchor_left = 0.35; pass_btn.anchor_top = 0.88
@@ -2602,12 +2602,12 @@ func _show_float_text_center(action_type: String, value: int, desc: String) -> v
 	var text := ""
 	var color := Color.WHITE
 	match action_type:
-		"A01": text = "💥 -" + str(value); color = Color(1.0, 0.3, 0.3)
-		"A02": text = "💚 +" + str(value); color = Color(0.3, 1.0, 0.3)
-		"A09": text = "🃏 +" + str(value) + "张"; color = Color(0.3, 0.6, 1.0)
+		"A01": text = " -" + str(value); color = Color(1.0, 0.3, 0.3)
+		"A02": text = " +" + str(value); color = Color(0.3, 1.0, 0.3)
+		"A09": text = " +" + str(value) + "张"; color = Color(0.3, 0.6, 1.0)
 		# "A19": text = "✨ 召唤"; color = Color(1.0, 0.8, 0.3)  # 已注释
-		"A20": text = "⚔️ " + ("+" if value > 0 else "") + str(value); color = Color(1.0, 0.6, 0.2)
-		"A21": text = "🛡️ " + ("+" if value > 0 else "") + str(value); color = Color(0.3, 0.8, 0.3)
+		"A20": text = " " + ("+" if value > 0 else "") + str(value); color = Color(1.0, 0.6, 0.2)
+		"A21": text = " " + ("+" if value > 0 else "") + str(value); color = Color(0.3, 0.8, 0.3)
 		# "A22": text = "⚔️🛡️ +" + str(value); color = Color(1.0, 0.9, 0.3)  # 已注释
 		_: text = desc if desc.length() > 0 else "效果"; color = Color.WHITE
 	var float_lbl = Label.new()
@@ -2642,25 +2642,25 @@ func _show_float_text(slot_btn: Button, action_type: String, value: int, desc: S
 	var color := Color.WHITE
 	match action_type:
 		"A01":  # 伤害
-			text = "💥 -" + str(value)
+			text = " -" + str(value)
 			color = Color(1.0, 0.3, 0.3)
 		"A02":  # 治疗
-			text = "💚 +" + str(value)
+			text = " +" + str(value)
 			color = Color(0.3, 1.0, 0.3)
 		"A09":  # 抽牌
-			text = "🃏 +" + str(value) + "张"
+			text = " +" + str(value) + "张"
 			color = Color(0.3, 0.6, 1.0)
 		"A19":  # 召唤
-			text = "✨ 召唤"
+			text = " 召唤"
 			color = Color(1.0, 0.8, 0.3)
 		"A20":  # 攻增益
-			text = "⚔️ " + ("+" if value > 0 else "") + str(value)
+			text = " " + ("+" if value > 0 else "") + str(value)
 			color = Color(1.0, 0.6, 0.2)
 		"A21":  # 命增益
-			text = "🛡️ " + ("+" if value > 0 else "") + str(value)
+			text = " " + ("+" if value > 0 else "") + str(value)
 			color = Color(0.3, 0.8, 0.3)
 		"A22":  # 双增益
-			text = "⚔️🛡️ +" + str(value)
+			text = " +" + str(value)
 			color = Color(1.0, 0.9, 0.3)
 		_:
 			text = desc if desc.length() > 0 else "效果"
@@ -2700,19 +2700,19 @@ func _on_player_field_changed() -> void:
 
 func _on_player_energy_changed(old_val: int, new_val: int) -> void:
 	var p = _battle_manager.player_self
-	_update_label("PlayerEnergy", "⚡ " + str(p.energy) + "/" + str(p.max_energy))
+	_update_label("PlayerEnergy", " " + str(p.energy) + "/" + str(p.max_energy))
 
 func _on_player_hp_changed(old_hp: int, new_hp: int) -> void:
 	var p = _battle_manager.player_self
-	_update_label("PlayerHP", "❤️ " + str(p.hp) + "/" + str(p.max_hp))
+	_update_label("PlayerHP", " " + str(p.hp) + "/" + str(p.max_hp))
 
 func _on_player_deck_changed() -> void:
 	var p = _battle_manager.player_self
-	_update_label("PlayerDeck", "📚\n" + str(p.deck.size()))
+	_update_label("PlayerDeck", "\n" + str(p.deck.size()))
 
 func _on_player_grave_changed() -> void:
 	var p = _battle_manager.player_self
-	_update_label("PlayerGrave", "📜\n" + str(p.grave.size()))
+	_update_label("PlayerGrave", "\n" + str(p.grave.size()))
 
 # 敌方状态变化
 func _on_enemy_hand_changed() -> void:
@@ -2725,7 +2725,7 @@ func _on_enemy_hand_changed() -> void:
 		else:
 			_enemy_hand_cards[i].hide()
 	# 更新手牌数标签
-	_update_label("EnemyHand", "🃏 敌方手牌 " + str(hand_size))
+	_update_label("EnemyHand", " 敌方手牌 " + str(hand_size))
 
 func _on_enemy_field_changed() -> void:
 	# 敌方召唤入场动画由 BattleDriver.enemy_summon_animation_requested 信号驱动（横竖屏共用协议）
@@ -2733,28 +2733,28 @@ func _on_enemy_field_changed() -> void:
 
 func _on_enemy_energy_changed(old_val: int, new_val: int) -> void:
 	var p = _battle_manager.player_opponent
-	_update_label("EnemyEnergy", "⚡ " + str(p.energy) + "/" + str(p.max_energy))
+	_update_label("EnemyEnergy", " " + str(p.energy) + "/" + str(p.max_energy))
 
 func _on_enemy_hp_changed(old_hp: int, new_hp: int) -> void:
 	var p = _battle_manager.player_opponent
-	_update_label("EnemyHP", "❤️ " + str(p.hp) + "/" + str(p.max_hp))
+	_update_label("EnemyHP", " " + str(p.hp) + "/" + str(p.max_hp))
 
 func _on_enemy_deck_changed() -> void:
 	var p = _battle_manager.player_opponent
-	_update_label("EnemyDeck", "📚\n" + str(p.deck.size()))
+	_update_label("EnemyDeck", "\n" + str(p.deck.size()))
 
 func _on_enemy_grave_changed() -> void:
 	var p = _battle_manager.player_opponent
-	_update_label("EnemyGrave", "📜\n" + str(p.grave.size()))
+	_update_label("EnemyGrave", "\n" + str(p.grave.size()))
 
 # 除外区变化
 func _on_player_banish_changed() -> void:
 	var p = _battle_manager.player_self
-	_update_label("PlayerBanish", "🌀\n" + str(p.banished.size()))
+	_update_label("PlayerBanish", "\n" + str(p.banished.size()))
 
 func _on_enemy_banish_changed() -> void:
 	var p = _battle_manager.player_opponent
-	_update_label("EnemyBanish", "🌀\n" + str(p.banished.size()))
+	_update_label("EnemyBanish", "\n" + str(p.banished.size()))
 
 
 # ============================
@@ -2763,19 +2763,19 @@ func _on_enemy_banish_changed() -> void:
 func _on_player_grave_clicked() -> void:
 	if _battle_manager == null:
 		return
-	_show_grave_popup(_battle_manager.player_self, false, "📜 己方墓地")
+	_show_grave_popup(_battle_manager.player_self, false, " 己方墓地")
 func _on_enemy_grave_clicked() -> void:
 	if _battle_manager == null:
 		return
-	_show_grave_popup(_battle_manager.player_opponent, false, "📜 敌方墓地")
+	_show_grave_popup(_battle_manager.player_opponent, false, " 敌方墓地")
 func _on_player_banish_clicked() -> void:
 	if _battle_manager == null:
 		return
-	_show_grave_popup(_battle_manager.player_self, true, "🌀 己方除外区")
+	_show_grave_popup(_battle_manager.player_self, true, " 己方除外区")
 func _on_enemy_banish_clicked() -> void:
 	if _battle_manager == null:
 		return
-	_show_grave_popup(_battle_manager.player_opponent, true, "🌀 敌方除外区")
+	_show_grave_popup(_battle_manager.player_opponent, true, " 敌方除外区")
 
 
 func _show_grave_popup(player_ref: BattlePlayer, is_banish: bool, title_text: String) -> void:
@@ -2826,7 +2826,7 @@ func _show_grave_popup(player_ref: BattlePlayer, is_banish: bool, title_text: St
 	# 切换按钮（右上角）
 	var toggle_btn = Button.new()
 	toggle_btn.name = "ToggleBtn"
-	toggle_btn.text = "📜 墓地" if is_banish else "🌀 除外"
+	toggle_btn.text = "墓地" if is_banish else " 除外"
 	toggle_btn.add_theme_font_size_override("font_size", 32)
 	var toggle_s = StyleBoxFlat.new()
 	toggle_s.bg_color = Color(0.2, 0.15, 0.3)
@@ -2874,11 +2874,11 @@ func _show_grave_popup(player_ref: BattlePlayer, is_banish: bool, title_text: St
 			c.queue_free()
 		
 		var list = player_ref.banished if _is_banish else player_ref.grave
-		var tag = "🌀" if _is_banish else "📜"
+		var tag = "" if _is_banish else ""
 		var list_name = "除外区" if _is_banish else "墓地"
 		
 		title.text = tag + " " + list_name + "  (" + str(list.size()) + "张)"
-		toggle_btn.text = "📜 墓地" if _is_banish else "🌀 除外"
+		toggle_btn.text = "墓地" if _is_banish else " 除外"
 		
 		if list.size() == 0:
 			var empty = Label.new()
@@ -2952,7 +2952,7 @@ func _show_grave_popup(player_ref: BattlePlayer, is_banish: bool, title_text: St
 			
 			# 攻防信息
 			var stats_label = Label.new()
-			stats_label.text = "⚔" + str(c.current_atk) + " ❤" + str(c.current_hp)
+			stats_label.text = "" + str(c.current_atk) + " " + str(c.current_hp)
 			stats_label.add_theme_font_size_override("font_size", 34)
 			stats_label.add_theme_color_override("font_color", Color("#7a8a7a"))
 			stats_label.custom_minimum_size = Vector2(Global.pw(0.12), 0)
@@ -2962,7 +2962,7 @@ func _show_grave_popup(player_ref: BattlePlayer, is_banish: bool, title_text: St
 			# 详情按钮（点击弹窗查看卡牌详情，不拦截滑动）
 			var card_ref = c
 			var detail_btn = Button.new()
-			detail_btn.text = "📄 详情"
+			detail_btn.text = "详情"
 			detail_btn.add_theme_font_size_override("font_size", 30)
 			var dbs2 = StyleBoxFlat.new()
 			dbs2.bg_color = Color(0.25, 0.2, 0.32)
@@ -2993,7 +2993,7 @@ func _show_grave_popup(player_ref: BattlePlayer, is_banish: bool, title_text: St
 	
 	# 关闭按钮
 	var close_btn = Button.new()
-	close_btn.text = "✕ 关闭"
+	close_btn.text = "关闭"
 	close_btn.add_theme_font_size_override("font_size", 38)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color(0.15, 0.10, 0.20)
@@ -3315,7 +3315,7 @@ func _show_discard_ui() -> void:
 	
 	# 标题
 	var title = Label.new()
-	title.text = "✋ 弃牌阶段"
+	title.text = "弃牌阶段"
 	title.add_theme_font_size_override("font_size", 45)
 	title.add_theme_color_override("font_color", Color("#e0c0f0"))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -3337,7 +3337,7 @@ func _show_discard_ui() -> void:
 	
 	# 确认按钮
 	_discard_confirm_btn = Button.new()
-	_discard_confirm_btn.text = "✅ 确认弃牌"
+	_discard_confirm_btn.text = "确认弃牌"
 	_discard_confirm_btn.disabled = true
 	_discard_confirm_btn.add_theme_font_size_override("font_size", 35)
 	_discard_confirm_btn.anchor_left = 0.0; _discard_confirm_btn.anchor_top = 0.0
@@ -3523,9 +3523,9 @@ func _refresh_grave_labels() -> void:
 	if _battle_manager == null:
 		return
 	if _player_grave_btn:
-		_player_grave_btn.text = "📜\n" + str(_battle_manager.player_self.grave.size())
+		_player_grave_btn.text = "\n" + str(_battle_manager.player_self.grave.size())
 	if _enemy_grave_btn:
-		_enemy_grave_btn.text = "📜\n" + str(_battle_manager.player_opponent.grave.size())
+		_enemy_grave_btn.text = "\n" + str(_battle_manager.player_opponent.grave.size())
 
 ## 点击结束回合/结束战斗阶段按钮
 func _on_end_turn_btn() -> void:
@@ -3646,7 +3646,7 @@ func _debug_print_layout():
 	for i in range(len(rects)):
 		for j in range(i+1, len(rects)):
 			if rects[i]["rect"].intersects(rects[j]["rect"], true):
-				print("⚠️ 控件重叠: " + rects[i]["name"] + " ↔ " + rects[j]["name"])
+				print(" 控件重叠: " + rects[i]["name"] + " ↔ " + rects[j]["name"])
 				print("   " + str(rects[i]["rect"]) + "  vs  " + str(rects[j]["rect"]))
 	
 	print("")
