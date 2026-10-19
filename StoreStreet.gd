@@ -20,7 +20,8 @@ func _ready():
 	# 更新金币
 	var gold_label := get_node_or_null("GoldLabel")
 	if gold_label is Label:
-		gold_label.text = "💰 " + str(SaveManager.get_value("player", "gold", 0))
+		gold_label.text = "💰 " + Global.n2s(SaveManager.get_value("player", "gold", 0))
+		Global.make_gold_legible(gold_label)
 	Global.theme_changed.connect(_on_theme_changed)
 	call_deferred("_apply_theme_styles")
 	print("[StoreStreet] _ready 完成: %dms" % [Time.get_ticks_msec() - _t0])

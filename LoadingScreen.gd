@@ -122,7 +122,13 @@ func _start_fetch_card_packs():
 
 func _loading_loop():
 	while _loading_timer < MIN_LOADING_SECONDS and _tasks_done < _total_tasks:
+		# 场景可能在 await 期间被切走（节点离树后 get_tree() 返回 null，
+		# await 会直接抛错让调试器中断），因此每帧都要先确认自己还在树内。
+		if not is_inside_tree():
+			return
 		await get_tree().process_frame
+		if not is_inside_tree():
+			return
 		_loading_timer += get_process_delta_time()
 		_check_progress()
 	_enter_main_early()
@@ -142,6 +148,9 @@ func _enter_main_early():
 		var pct = int(float(i + 1) / SCENES_TO_PRELOAD.size() * 100.0)
 		_progress_label.text = "正在加载场景资源 %d/%d  %d%%" % [i + 1, SCENES_TO_PRELOAD.size(), pct]
 		_bar_fill.offset_right = -150.0 + 300.0 * float(i + 1) / SCENES_TO_PRELOAD.size()
+		# 同 _loading_loop：离树后 get_tree() 为 null，await 会抛错冻结游戏
+		if not is_inside_tree():
+			return
 		await get_tree().process_frame
 
 	print("[LoadingScreen] ✅ 全部 %d 个场景同步加载完成" % SCENES_TO_PRELOAD.size())

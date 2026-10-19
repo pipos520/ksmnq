@@ -11,9 +11,20 @@ const CONFIG_SECTION := "theme"
 
 const REF_W := 1080.0
 const REF_H := 1920.0
+const CANVAS_LANDSCAPE := Vector2i(1920, 1080)
+const CANVAS_PORTRAIT := Vector2i(1080, 1920)
+# 横屏战斗时画布变成 1920x1080，pw/ph 必须跟着换算，
+# 否则 ph(0.35)=672 这种竖屏比例在 1080 高的画布上会把面板算出负高度（面板直接消失）。
+static var landscape_canvas: bool = false
+
 static func ph(ratio: float) -> float:
+	if landscape_canvas:
+		return CANVAS_LANDSCAPE.y * ratio
 	return REF_H * ratio
+
 static func pw(ratio: float) -> float:
+	if landscape_canvas:
+		return CANVAS_LANDSCAPE.x * ratio
 	return REF_W * ratio
 
 ## 获取元素emoji
@@ -251,6 +262,35 @@ func get_battle_scene_path() -> String:
 	if use_legacy_battle:
 		return "res://BattleSceneLegacy.tscn"
 	return "res://BattleScene3D.tscn"
+
+# ============================================================
+# 横屏战斗画布
+# 项目默认画布是竖屏 1080x1920（display/window/size/viewport_*），
+# 而 BattleScene3D 的 HUD 全部是按横屏 1920x1080 的固定坐标手写布局的。
+# 只调 DisplayServer.window_set_size 改不了逻辑画布：content_scale_size 仍被
+# 项目设置钉在 1080x1920，结果横屏 HUD 被竖向压扁、底部一排按钮直接被裁掉。
+# 因此进出战斗时必须同时切 content_scale_size，并用 KEEP（信箱）而不是
+# EXPAND：EXPAND 会把可见区拉到 1920x3413，固定 Y 坐标的 UI 又跑偏。
+# ============================================================
+## 进入横屏战斗：逻辑画布切 1920x1080，窗口比例不符时留黑边而不是拉伸
+func enter_landscape_canvas() -> void:
+	landscape_canvas = true
+	var w: Window = get_window()
+	if w:
+		w.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
+		w.content_scale_size = CANVAS_LANDSCAPE
+	DisplayServer.screen_set_orientation(DisplayServer.SCREEN_LANDSCAPE)
+	DisplayServer.window_set_size(CANVAS_LANDSCAPE)
+
+## 退出横屏战斗：恢复竖屏画布与 EXPAND 拉伸
+func exit_landscape_canvas() -> void:
+	landscape_canvas = false
+	var w: Window = get_window()
+	if w:
+		w.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
+		w.content_scale_size = CANVAS_PORTRAIT
+	DisplayServer.screen_set_orientation(DisplayServer.SCREEN_PORTRAIT)
+	DisplayServer.window_set_size(CANVAS_PORTRAIT)
 
 func change_scene(path: String) -> void:
 	var _t = Time.get_ticks_msec()
@@ -1537,6 +1577,28 @@ func make_bg() -> TextureRect:
 	return r
 
 ## 主题切换时更新背景贴图（兼容 ColorRect 和 TextureRect）
+## 数值 → 显示字符串。
+## 存档 / 服务端 JSON 里的整数在 Godot 里会被解析成 float，直接 str() 会显示成
+## 「x1.0」「💰 6.0」「金币×20.0」这种明显不是人写出来的数字。整数值统一按整数渲染。
+func n2s(v) -> String:
+	if typeof(v) == TYPE_FLOAT:
+		var f: float = v
+		if is_equal_approx(f, roundf(f)):
+			return str(int(roundf(f)))
+		return str(f)
+	return str(v)
+
+
+## 货币/数值这类「金色」标签统一加一圈深色描边。
+## 白天主题下顶栏底色本身就是米色(topbar_bg)，纯金 #FFD700 压上去对比只有 ~1.1:1，
+## 数字基本看不见；加描边后两种主题下都能读清，同时保留金色的视觉身份。
+func make_gold_legible(lbl: Label) -> void:
+	if lbl == null:
+		return
+	lbl.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.62))
+	lbl.add_theme_constant_override("outline_size", 6)
+
+
 func apply_bg(node: Node) -> void:
 	if node is TextureRect:
 		(node as TextureRect).texture = _get_bg_night() if current_mode == ThemeMode.NIGHT else _get_bg_day()
@@ -1749,12 +1811,14 @@ func _build_circuit_row_template() -> void:
 		id_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		hbox.add_child(id_label)
 		
-		# 名称标签
+		# 名称标签（超长名称省略，避免把右侧状态列挤出屏幕）
 		var name_label = Label.new()
 		name_label.name = "NameLabel"
 		name_label.add_theme_font_size_override("font_size", 50)
-		name_label.custom_minimum_size = Vector2(pw(0.38), 0)
-		name_label.size_flags_horizontal = Control.SIZE_EXPAND
+		name_label.custom_minimum_size = Vector2(pw(0.30), 0)
+		name_label.size_flags_horizontal = Control.SIZE_EXPAND | Control.SIZE_FILL
+		name_label.clip_text = true
+		name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		hbox.add_child(name_label)
 		
 		# 类别标签
@@ -1766,12 +1830,15 @@ func _build_circuit_row_template() -> void:
 		cat_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		hbox.add_child(cat_label)
 		
-		# 状态标签
+		# 状态标签（解锁条件可能很长，允许换行，避免整列被挤出屏幕）
 		var status_label = Label.new()
 		status_label.name = "StatusLabel"
-		status_label.add_theme_font_size_override("font_size", 40)
-		status_label.custom_minimum_size = Vector2(pw(0.22), 0)
+		status_label.add_theme_font_size_override("font_size", 38)
+		status_label.custom_minimum_size = Vector2(pw(0.26), 0)
+		status_label.size_flags_horizontal = Control.SIZE_EXPAND | Control.SIZE_FILL
 		status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		status_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		hbox.add_child(status_label)
 		
 		# 临时挂到树上触发 _ready()，再摘下来

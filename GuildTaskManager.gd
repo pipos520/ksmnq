@@ -228,7 +228,7 @@ func _generate_tasks() -> void:
 			"title": "纹路研究委托",
 			"content": "公会需要研究【" + category_name + "】纹路——" + circuit_name + "，提交符合条件的卡牌以供解析",
 			"requirement": submit_condition.get("desc", "提交一张卡牌"),
-			"reward_text": "解锁纹路：【" + circuit_name + "】 + 金币×" + str(bonus_gold),
+			"reward_text": "解锁纹路：【" + circuit_name + "】 + 金币×" + Global.n2s(bonus_gold),
 			"submit_type": SubmitType.SUBMIT_CARD,
 			"submit_condition": submit_condition,
 			"rewards": {"circuit_id": circuit_id, "gold": bonus_gold, "materials": {}},
@@ -260,7 +260,7 @@ func _generate_tasks() -> void:
 			"title": title,
 			"content": "制作卡牌缺少【" + mat_name + "】×" + str(count) + "，急需补充",
 			"requirement": "提交【" + mat_name + "】×" + str(count),
-			"reward_text": "金币×" + str(gold_reward),
+			"reward_text": "金币×" + Global.n2s(gold_reward),
 			"submit_type": SubmitType.SUBMIT_MATERIAL,
 			"submit_condition": {"materials": {mat_id: count}, "desc": "提交【" + mat_name + "】×" + str(count)},
 			"rewards": {"circuit_id": "", "gold": gold_reward, "materials": {}},
@@ -277,7 +277,7 @@ func _generate_tasks() -> void:
 			"title": "公会资金募集",
 			"content": "公会需要筹集资金，提交符合条件的卡牌兑换奖励",
 			"requirement": submit_condition.get("desc", "提交一张卡牌"),
-			"reward_text": "金币×" + str(gold_amount),
+			"reward_text": "金币×" + Global.n2s(gold_amount),
 			"submit_type": SubmitType.SUBMIT_CARD,
 			"submit_condition": submit_condition,
 			"rewards": {"circuit_id": "", "gold": gold_amount, "materials": {}},
@@ -400,7 +400,7 @@ func _apply_rewards(task: Dictionary) -> String:
 	var gold = rewards.get("gold", 0)
 	if gold > 0:
 		PlayerManager.set_gold(PlayerManager.get_gold() + gold)
-		messages.append("获得" + str(gold) + "金币")
+		messages.append("获得" + Global.n2s(gold) + "金币")
 	PlayerManager.save_data()
 	return " ".join(messages)
 

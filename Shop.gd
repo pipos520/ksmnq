@@ -70,7 +70,8 @@ func _update_gold():
 	var gl = get_node_or_null("GoldLabel")
 	if gl:
 		var gold = SaveManager.get_value("player", "gold", 0)
-		gl.text = "💰 " + str(gold)
+		gl.text = "💰 " + Global.n2s(gold)
+		Global.make_gold_legible(gl)
 
 
 func _switch_tab(tab: String):
@@ -611,7 +612,7 @@ func _show_buy_confirm(mid: String, price: int):
 	
 	# 单价信息
 	var unit_label = Label.new()
-	unit_label.text = "单价：💰" + str(price) + "  最多可买 x" + str(max_qty)
+	unit_label.text = "单价：💰" + str(price) + "  最多可买 x" + str(int(max_qty))
 	unit_label.add_theme_font_size_override("font_size", 40)
 	unit_label.add_theme_color_override("font_color", Color("#FFD700"))
 	unit_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

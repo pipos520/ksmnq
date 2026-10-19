@@ -67,7 +67,9 @@ func _ready():
 	if back is Button: back.pressed.connect(_on_back)
 	# 金币显示
 	var gl := get_node_or_null("GoldLabel")
-	if gl is Label: gl.text = "💰 " + str(SaveManager.get_value("player", "gold", 0))
+	if gl is Label:
+		gl.text = "💰 " + Global.n2s(SaveManager.get_value("player", "gold", 0))
+		Global.make_gold_legible(gl)
 	# 主题
 	Global.theme_changed.connect(_on_theme_changed)
 	call_deferred("_apply_theme_styles")
@@ -127,7 +129,9 @@ func _build_pack_list():
 		cp.add_theme_stylebox_override("panel", ps); cp.custom_minimum_size=Vector2(0,Global.ph(0.18))
 		cp.size_flags_horizontal=SIZE_EXPAND|SIZE_FILL; cp.mouse_filter=Control.MOUSE_FILTER_PASS; cp.set_meta("pack_id",pid); cp.set_meta("pack_data",pd); vbox.add_child(cp)
 		
-		var iv = VBoxContainer.new(); iv.size_flags_horizontal=SIZE_EXPAND|SIZE_FILL; iv.size_flags_vertical=SIZE_EXPAND|SIZE_FILL; cp.add_child(iv)
+		var iv = VBoxContainer.new(); iv.anchor_left=0.0; iv.anchor_top=0.0; iv.anchor_right=1.0; iv.anchor_bottom=1.0
+		iv.offset_left=Global.pw(0.03); iv.offset_right=Global.pw(-0.03); iv.offset_top=Global.ph(0.01); iv.offset_bottom=Global.ph(-0.01)
+		iv.size_flags_horizontal=SIZE_EXPAND|SIZE_FILL; iv.size_flags_vertical=SIZE_EXPAND|SIZE_FILL; cp.add_child(iv)
 		# 第一排：卡包名 + 卡牌数量
 		var tr = HBoxContainer.new(); tr.size_flags_horizontal=SIZE_EXPAND|SIZE_FILL; tr.custom_minimum_size=Vector2(0,Global.ph(0.05)); iv.add_child(tr)
 		var nl = Label.new(); nl.text="🎴 "+pname; nl.add_theme_font_size_override("font_size",50)
@@ -227,7 +231,9 @@ func _build_theme_view():
 		tp.mouse_filter = Control.MOUSE_FILTER_PASS  # 允许滑动穿透到ScrollContainer
 		tp.set_meta("theme_name", tname)
 		vbox.add_child(tp)
-		var iv = VBoxContainer.new(); iv.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL; iv.size_flags_vertical = SIZE_EXPAND | SIZE_FILL; tp.add_child(iv)
+		var iv = VBoxContainer.new(); iv.anchor_left=0.0; iv.anchor_top=0.0; iv.anchor_right=1.0; iv.anchor_bottom=1.0
+		iv.offset_left=Global.pw(0.03); iv.offset_right=Global.pw(-0.03); iv.offset_top=Global.ph(0.005); iv.offset_bottom=Global.ph(-0.005)
+		iv.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL; iv.size_flags_vertical = SIZE_EXPAND | SIZE_FILL; tp.add_child(iv)
 		var tr = HBoxContainer.new(); tr.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL; tr.custom_minimum_size = Vector2(0, Global.ph(0.05)); iv.add_child(tr)
 		var nl = Label.new(); nl.text = "🌍 " + tname; nl.add_theme_font_size_override("font_size", 55)
 		nl.add_theme_color_override("font_color", Color("#f9d371")); nl.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL; tr.add_child(nl)
@@ -262,7 +268,7 @@ func _on_gold_open(pid: String, pd: Dictionary):
 	Global.play_sfx("click")
 	var gold = SaveManager.get_value("player", "gold", 0)
 	if gold < 100:
-		_show_popup("⚠️ 金币不足！", "需要100金币\n当前: "+str(gold)+" 金币", Color("#FF5252")); return
+		_show_popup("⚠️ 金币不足！", "需要100金币\n当前: "+Global.n2s(gold)+" 金币", Color("#FF5252")); return
 	gold -= 100; SaveManager.set_value("player","gold",gold); SaveManager.save_to_disk(); _update_gold()
 	_do_open_pack(pid, pd)
 
@@ -956,7 +962,9 @@ func _on_ad_failed(err:String):
 
 func _update_gold():
 	var gl=get_node_or_null("GoldLabel")
-	if gl: gl.text="💰 "+str(SaveManager.get_value("player","gold",0))
+	if gl:
+		gl.text="💰 "+Global.n2s(SaveManager.get_value("player","gold",0))
+		Global.make_gold_legible(gl)
 func _set_status(t:String,c:Color):
 	var sl=get_node_or_null("StatusLabel")
 	if sl: sl.text=t; sl.add_theme_color_override("font_color",c)

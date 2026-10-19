@@ -33,6 +33,20 @@ func _ready():
 	# 动态内容构建
 	call_deferred("_build_dynamic_content")
 
+## 素材卡 / 预览面板的统一「卡片」样式。
+## 原先用 topbar_bg：白天主题下 TopBar 与页面底色也是同一个米色，
+## 三张素材卡 + 预览面板整块糊成一片，只剩圆角边缘的锯齿能看出边界。
+func _make_card_style() -> StyleBoxFlat:
+	var sb = StyleBoxFlat.new()
+	sb.bg_color = Global.current.btn_bg
+	sb.border_width_left = 2; sb.border_width_right = 2
+	sb.border_width_top = 2; sb.border_width_bottom = 2
+	sb.border_color = Global.current.topbar_border
+	sb.corner_radius_top_left = 10; sb.corner_radius_top_right = 10
+	sb.corner_radius_bottom_left = 10; sb.corner_radius_bottom_right = 10
+	return sb
+
+
 func _build_material_section(parent: VBoxContainer):
 	var cat_data = [
 		{"key": "fiber", "label": "🧶 纤维素材", "color": Color("#8BC34A")},
@@ -45,14 +59,7 @@ func _build_material_section(parent: VBoxContainer):
 		
 		var row = Panel.new()
 		row.name = "CatRow_" + key
-		var rs = StyleBoxFlat.new()
-		rs.bg_color = Global.current.topbar_bg
-		rs.corner_radius_top_left = 8
-		rs.corner_radius_top_right = 8
-		rs.corner_radius_bottom_left = 8
-		rs.corner_radius_bottom_right = 8
-		row.add_theme_stylebox_override("panel", rs)
-		row.custom_minimum_size = Vector2(0, Global.ph(0.15))
+		row.add_theme_stylebox_override("panel", _make_card_style())
 		row.size_flags_horizontal = SIZE_FILL
 		parent.add_child(row)
 		
@@ -63,9 +70,9 @@ func _build_material_section(parent: VBoxContainer):
 		vbox_inner.anchor_right = 1.0
 		vbox_inner.anchor_bottom = 1.0
 		vbox_inner.offset_left = Global.pw(0.02)
-		vbox_inner.offset_top = Global.ph(0.005)
+		vbox_inner.offset_top = Global.ph(0.006)
 		vbox_inner.offset_right = Global.pw(-0.02)
-		vbox_inner.offset_bottom = Global.ph(-0.005)
+		vbox_inner.offset_bottom = Global.ph(-0.006)
 		vbox_inner.size_flags_horizontal = SIZE_FILL
 		row.add_child(vbox_inner)
 		
@@ -117,6 +124,10 @@ func _build_material_section(parent: VBoxContainer):
 		vbox_inner.add_child(selected_row)
 		
 		_category_labels[key] = {"row": selected_row, "count": count_label}
+		
+		# Panel 不会按子节点自动撑高：用内容最小高度 + 少量留白定高，
+		# 原先写死 ph(0.15)=288，而内容实际只有 ~190，每张卡下面挂着大片空白。
+		row.custom_minimum_size = Vector2(0, vbox_inner.get_combined_minimum_size().y + Global.ph(0.014))
 
 
 # ============================
@@ -692,19 +703,21 @@ func _on_overlay_input(event: InputEvent, overlay: ColorRect):
 func _build_preview_section(parent: VBoxContainer):
 	var panel = Panel.new()
 	panel.name = "PreviewPanel"
-	var ps = StyleBoxFlat.new()
-	ps.bg_color = Global.current.topbar_bg
-	ps.corner_radius_top_left = 8
-	ps.corner_radius_top_right = 8
-	ps.corner_radius_bottom_left = 8
-	ps.corner_radius_bottom_right = 8
-	panel.add_theme_stylebox_override("panel", ps)
+	panel.add_theme_stylebox_override("panel", _make_card_style())
 	panel.size_flags_horizontal = SIZE_FILL
-	panel.custom_minimum_size = Vector2(0, Global.ph(0.42))
 	parent.add_child(panel)
 	
 	var vbox = VBoxContainer.new()
 	vbox.name = "PreviewVBox"
+	# Panel 不会给子节点做内缩：必须用锚点+内边距铺满，否则内容会贴屏幕左边缘
+	vbox.anchor_left = 0.0
+	vbox.anchor_top = 0.0
+	vbox.anchor_right = 1.0
+	vbox.anchor_bottom = 1.0
+	vbox.offset_left = Global.pw(0.03)
+	vbox.offset_top = Global.ph(0.01)
+	vbox.offset_right = Global.pw(-0.03)
+	vbox.offset_bottom = Global.ph(-0.01)
 	vbox.size_flags_horizontal = SIZE_FILL
 	vbox.size_flags_vertical = SIZE_SHRINK_BEGIN
 	vbox.add_theme_constant_override("separation", Global.ph(0.005))
@@ -746,6 +759,9 @@ func _build_preview_section(parent: VBoxContainer):
 		row.add_child(val_label)
 		
 		_preview_labels[attr["key"]] = val_label
+	
+	# 同素材卡：写死 ph(0.42)=806 时下面挂着 260px 空白，按内容高度收
+	panel.custom_minimum_size = Vector2(0, vbox.get_combined_minimum_size().y + Global.ph(0.02))
 
 
 # ============================
@@ -800,7 +816,7 @@ func _update_preview():
 		var count = _get_cat_total(key)
 		if count > 0:
 			var cat_name = {"fiber": "纤维", "mineral": "矿粉", "resin": "树脂"}
-			consumption_parts.append(cat_name.get(key, key) + "x" + str(count))
+			consumption_parts.append(cat_name.get(key, key) + "x" + str(int(count)))
 	
 	if consumption_parts.is_empty():
 		_preview_labels["consumption"].text = "无"
@@ -952,6 +968,16 @@ func _build_make_button(parent: VBoxContainer):
 	btn.add_theme_color_override("font_color", Global.current.btn_text)
 	btn.add_theme_color_override("font_hover_color", Global.current.btn_text_hover)
 	btn.add_theme_color_override("font_pressed_color", Global.current.btn_text_hover)
+	# 没有 disabled 样式覆盖时，禁用态会退回主题默认的灰色块 + 默认暗灰字，
+	# 于是按钮样式突然「变成另一个灰色按钮」且字几乎看不清。
+	# 这里保持本按钮的配色，只压低亮度/字号不透明度来表示「不可点」。
+	btn.add_theme_color_override("font_disabled_color",
+		Color(Global.current.btn_text.r, Global.current.btn_text.g, Global.current.btn_text.b, 0.62))
+	var sd = s.duplicate()
+	sd.bg_color = Global.current.btn_bg.darkened(0.10)
+	sd.border_color = Color(Global.current.topbar_border.r, Global.current.topbar_border.g,
+		Global.current.topbar_border.b, 0.85)
+	btn.add_theme_stylebox_override("disabled", sd)
 	
 	btn.size_flags_horizontal = SIZE_FILL
 	btn.custom_minimum_size = Vector2(0, Global.ph(0.09))
@@ -1255,24 +1281,12 @@ func _on_theme_changed(_mode):
 	for key in ["fiber", "mineral", "resin"]:
 		var row = get_node_or_null("ContentScroll/ContentVBox/CatRow_" + key)
 		if row and row is Panel:
-			var rs = StyleBoxFlat.new()
-			rs.bg_color = Global.current.topbar_bg
-			rs.corner_radius_top_left = 8
-			rs.corner_radius_top_right = 8
-			rs.corner_radius_bottom_left = 8
-			rs.corner_radius_bottom_right = 8
-			row.add_theme_stylebox_override("panel", rs)
+			row.add_theme_stylebox_override("panel", _make_card_style())
 	
 	# 刷新预览面板
 	var prev = get_node_or_null("ContentScroll/ContentVBox/PreviewPanel")
 	if prev and prev is Panel:
-		var ps = StyleBoxFlat.new()
-		ps.bg_color = Global.current.topbar_bg
-		ps.corner_radius_top_left = 8
-		ps.corner_radius_top_right = 8
-		ps.corner_radius_bottom_left = 8
-		ps.corner_radius_bottom_right = 8
-		prev.add_theme_stylebox_override("panel", ps)
+		prev.add_theme_stylebox_override("panel", _make_card_style())
 
 
 # ============================
@@ -1859,6 +1873,13 @@ func _build_dynamic_content():
 			add_child(_hint_label)
 	var vbox = get_node_or_null("ContentScroll/ContentVBox")
 	if not vbox: return
+	# 内容区左右留白 + 卡片间距：tscn 里 ContentScroll 锚满整宽，
+	# 素材卡/预览面板会紧贴屏幕左右边缘并且彼此相连（VBox 默认 separation=0）。
+	var scroll := get_node_or_null("ContentScroll") as ScrollContainer
+	if scroll:
+		scroll.offset_left = Global.pw(0.03)
+		scroll.offset_right = Global.pw(-0.03)
+	vbox.add_theme_constant_override("separation", int(Global.ph(0.014)))
 	_build_material_section(vbox)
 	_build_preview_section(vbox)
 	_build_make_button(vbox)

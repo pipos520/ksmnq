@@ -220,8 +220,8 @@ func _create_battle_bg() -> void:
 
 
 func _ready() -> void:
-	DisplayServer.screen_set_orientation(DisplayServer.SCREEN_LANDSCAPE)
-	DisplayServer.window_set_size(Vector2i(1920, 1080))
+	# 横屏战斗：连逻辑画布一起切成 1920x1080（只改窗口大小无效，见 Global 里的说明）
+	Global.enter_landscape_canvas()
 
 	# 动态创建战斗背景纹理平面（放在 Floor 上方，覆盖相机视野）
 	_create_battle_bg()
@@ -878,17 +878,17 @@ func _add_phase_button() -> void:
 	var btn = Button.new()
 	btn.name = "PhaseBtn"
 	btn.text = "⚔ 进入战斗阶段"
-	btn.add_theme_font_size_override("font_size", 80)
+	btn.add_theme_font_size_override("font_size", 48)
 	btn.add_theme_color_override("font_color", Color(0.9, 0.8, 0.3, 1))
-	# 右下角
+	# 右下角：尺寸要收着放，否则会压住最右侧的手牌
 	btn.anchor_left = 1.0
 	btn.anchor_top = 1.0
 	btn.anchor_right = 1.0
 	btn.anchor_bottom = 1.0
-	btn.offset_left = -700.0
-	btn.offset_top = -160.0
+	btn.offset_left = -400.0
+	btn.offset_top = -630.0
 	btn.offset_right = -20.0
-	btn.offset_bottom = -20.0
+	btn.offset_bottom = -500.0
 	var sb = StyleBoxFlat.new()
 	sb.bg_color = Color(0.12, 0.1, 0.18, 1)
 	sb.border_width_left = 3
@@ -1947,6 +1947,60 @@ const RPS_NAMES = ["石头", "剪刀", "布"]
 const RPS_FONT_SIZE = 200
 
 
+## 模态弹窗层：必须高于「视角」按钮所在的 ViewBtnLayer(layer=100)。
+## 视角按钮为了在弃牌弹窗时仍可点，被放到了 100 层；但猜拳/结算这类全屏模态
+## 如果再往 UI(layer=1) 里塞，视角按钮就会浮在遮罩上面（截图里能看到）。
+func _modal_root() -> Node:
+	var n = get_node_or_null("ModalLayer")
+	if n == null:
+		var cl := CanvasLayer.new()
+		cl.name = "ModalLayer"
+		cl.layer = 150
+		cl.process_mode = Node.PROCESS_MODE_ALWAYS
+		add_child(cl)
+		n = cl
+	return n
+
+
+## 挂一个全屏模态遮罩：同时把「视角」按钮藏掉。
+## 按钮在 ViewBtnLayer(layer=100)，理论上比 ModalLayer(150) 低，
+## 但实测仍会画在遮罩之上，所以这里显式隐藏，遮罩消失后自动恢复。
+func _add_modal(overlay: Control) -> void:
+	_modal_root().add_child(overlay)
+	overlay.tree_exited.connect(_sync_view_btn)
+	if _view_btn:
+		_view_btn.visible = false
+
+
+func _sync_view_btn() -> void:
+	# tree_exited 也可能在整场景退出时触发，此时 SceneTree 已经在销毁，
+	# await get_tree().process_frame 会拿到失效对象直接报错。
+	# 改用 call_deferred：节点已销毁时调用会被自动丢弃，不会崩。
+	call_deferred("_apply_view_btn_visibility")
+
+
+func _apply_view_btn_visibility() -> void:
+	if not is_inside_tree() or not is_instance_valid(_view_btn):
+		return
+	var m = get_node_or_null("ModalLayer")
+	var live := 0
+	if m:
+		for c in m.get_children():
+			if not c.is_queued_for_deletion():
+				live += 1
+	_view_btn.visible = (live == 0)
+
+
+func _rps_font_size(scale_factor: float = 1.0) -> int:
+	# 猜拳面板的元素全用固定字号，但面板高度来自视口比例。
+	# 原来写死 200/400，在 1080 高的横屏画布上「你/对手」会压住底部按钮、
+	# 结果文字直接溢出画布。这里统一按画布高度换算。
+	var h: float = 1080.0
+	if get_viewport():
+		h = get_viewport().get_visible_rect().size.y
+	return int(clamp(h * 0.09 * scale_factor, 24.0, 220.0))
+
+
 func _start_rps_select() -> void:
 	_rps_player_choice = -1
 	_rps_enemy_choice = -1
@@ -1989,7 +2043,10 @@ func _show_rps_panel() -> void:
 	var title = Label.new()
 	title.text = "选择石头剪刀布！决定先攻"
 	title.add_theme_font_override("font", font)
-	title.add_theme_font_size_override("font_size", RPS_FONT_SIZE)
+	# RPS_FONT_SIZE=200 时 12 个字要 2400px，标题两侧会被屏幕直接裁掉。
+	# 标题单独用一个能放下的字号，并允许换行兜底，避免再出现「选」和「攻」被切掉。
+	title.add_theme_font_size_override("font_size", 72)
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title.add_theme_color_override("font_color", Color(0.976, 0.827, 0.443, 1.0))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.anchor_left = 0.0
@@ -2004,7 +2061,7 @@ func _show_rps_panel() -> void:
 	var player_slot = Label.new()
 	player_slot.name = "PlayerSlot"
 	player_slot.add_theme_font_override("font", font)
-	player_slot.add_theme_font_size_override("font_size", RPS_FONT_SIZE * 2)
+	player_slot.add_theme_font_size_override("font_size", _rps_font_size(2.2))
 	player_slot.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	player_slot.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	player_slot.anchor_left = 0.0
@@ -2018,7 +2075,7 @@ func _show_rps_panel() -> void:
 	var player_label = Label.new()
 	player_label.text = "你"
 	player_label.add_theme_font_override("font", font)
-	player_label.add_theme_font_size_override("font_size", RPS_FONT_SIZE)
+	player_label.add_theme_font_size_override("font_size", _rps_font_size(1.0))
 	player_label.add_theme_color_override("font_color", Color(0.3, 0.8, 0.4, 1.0))
 	player_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	player_label.anchor_left = 0.0
@@ -2031,7 +2088,7 @@ func _show_rps_panel() -> void:
 	var enemy_slot = Label.new()
 	enemy_slot.name = "EnemySlot"
 	enemy_slot.add_theme_font_override("font", font)
-	enemy_slot.add_theme_font_size_override("font_size", RPS_FONT_SIZE * 2)
+	enemy_slot.add_theme_font_size_override("font_size", _rps_font_size(2.2))
 	enemy_slot.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	enemy_slot.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	enemy_slot.anchor_left = 0.5
@@ -2045,7 +2102,7 @@ func _show_rps_panel() -> void:
 	var enemy_label = Label.new()
 	enemy_label.text = "对手"
 	enemy_label.add_theme_font_override("font", font)
-	enemy_label.add_theme_font_size_override("font_size", RPS_FONT_SIZE)
+	enemy_label.add_theme_font_size_override("font_size", _rps_font_size(1.0))
 	enemy_label.add_theme_color_override("font_color", Color(0.9, 0.3, 0.3, 1.0))
 	enemy_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	enemy_label.anchor_left = 0.5
@@ -2058,7 +2115,7 @@ func _show_rps_panel() -> void:
 	var vs_label = Label.new()
 	vs_label.text = "VS"
 	vs_label.add_theme_font_override("font", font)
-	vs_label.add_theme_font_size_override("font_size", RPS_FONT_SIZE)
+	vs_label.add_theme_font_size_override("font_size", _rps_font_size(1.6))
 	vs_label.add_theme_color_override("font_color", Color(0.8, 0.7, 0.3, 0.8))
 	vs_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vs_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -2069,11 +2126,15 @@ func _show_rps_panel() -> void:
 	panel.add_child(vs_label)
 	
 	# === 底部三个选择按钮 ===
+	# 按钮高度来自锚点 0.88~0.99（1080 高的画布上只有 119px），
+	# 而 200px 字号会把按钮最小高度撑到 209px，底边直接被画布裁掉。
+	# 字号跟着画布高度走：0.10 * 1080 ≈ 108，按钮最小高度刚好落进锚点框。
+	var rps_btn_fs: int = _rps_font_size(0.9)
 	for i in range(3):
 		var btn = Button.new()
 		btn.text = RPS_ICONS[i]
 		btn.add_theme_font_override("font", font)
-		btn.add_theme_font_size_override("font_size", RPS_FONT_SIZE)
+		btn.add_theme_font_size_override("font_size", rps_btn_fs)
 		btn.add_theme_color_override("font_color", Color(1, 1, 1, 1))
 		btn.anchor_top = 0.88
 		btn.anchor_bottom = 0.99
@@ -2102,7 +2163,7 @@ func _show_rps_panel() -> void:
 		panel.add_child(btn)
 	
 	overlay.add_child(panel)
-	ui.add_child(overlay)
+	_add_modal(overlay)
 	_rps_panel = overlay
 
 
@@ -2178,7 +2239,7 @@ func _rps_judge() -> void:
 		var result_label = Label.new()
 		result_label.text = result_text
 		result_label.add_theme_font_override("font", font)
-		result_label.add_theme_font_size_override("font_size", RPS_FONT_SIZE)
+		result_label.add_theme_font_size_override("font_size", _rps_font_size(0.9))
 		result_label.add_theme_color_override("font_color", result_color)
 		result_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		result_label.anchor_left = 0.0
@@ -3377,8 +3438,7 @@ func _exit_tree() -> void:
 		_enemy_card_nodes[i] = null
 	_player_exile_cards.clear()
 	_enemy_exile_cards.clear()
-	DisplayServer.screen_set_orientation(DisplayServer.SCREEN_PORTRAIT)
-	DisplayServer.window_set_size(Vector2i(1080, 1920))
+	Global.exit_landscape_canvas()
 
 
 # ===== 教学战引导系统 =====
@@ -4019,7 +4079,7 @@ func _show_battle_reward_popup(gained_aux: Array, is_ambush: bool = false) -> vo
 	overlay.anchor_right = 1.0; overlay.anchor_bottom = 1.0
 	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
 	overlay.gui_input.connect(_on_reward_overlay_clicked.bind(overlay))
-	ui.add_child(overlay)
+	_add_modal(overlay)
 	
 	# 弹窗面板
 	var panel = Panel.new()
@@ -4138,7 +4198,7 @@ func _show_battle_reward_popup(gained_aux: Array, is_ambush: bool = false) -> vo
 			hbox.add_child(name_label)
 			
 			var count_label = Label.new()
-			count_label.text = "x" + str(aux.get("amount", 1))
+			count_label.text = "x" + str(int(aux.get("amount", 1)))
 			count_label.add_theme_font_size_override("font_size", 84)
 			count_label.add_theme_color_override("font_color", rarity_color)
 			count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -4198,7 +4258,7 @@ func _show_battle_exit_btn(state: int = 2) -> void:
 	overlay.anchor_left = 0.0; overlay.anchor_top = 0.0
 	overlay.anchor_right = 1.0; overlay.anchor_bottom = 1.0
 	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
-	ui.add_child(overlay)
+	_add_modal(overlay)
 	
 	var panel = Panel.new()
 	panel.name = "ExitPanel"
@@ -4263,7 +4323,7 @@ func _on_battle_exit_btn() -> void:
 	overlay.anchor_left = 0.0; overlay.anchor_top = 0.0
 	overlay.anchor_right = 1.0; overlay.anchor_bottom = 1.0
 	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
-	ui.add_child(overlay)
+	_add_modal(overlay)
 	
 	var panel = Panel.new()
 	panel.name = "ExitConfirmPanel"
@@ -4277,34 +4337,34 @@ func _on_battle_exit_btn() -> void:
 	panel.add_theme_stylebox_override("panel", ps)
 	panel.anchor_left = 0.0; panel.anchor_top = 0.0
 	panel.anchor_right = 1.0; panel.anchor_bottom = 1.0
-	panel.offset_left = Global.pw(0.15); panel.offset_top = Global.ph(0.35)
-	panel.offset_right = Global.pw(-0.15); panel.offset_bottom = -Global.ph(0.35)
+	panel.offset_left = Global.pw(0.15); panel.offset_top = Global.ph(0.26)
+	panel.offset_right = Global.pw(-0.15); panel.offset_bottom = -Global.ph(0.26)
 	overlay.add_child(panel)
 	
 	var title = Label.new()
 	title.text = "🚪 退出战斗"
-	title.add_theme_font_size_override("font_size", 100)  # 50 → 100
+	title.add_theme_font_size_override("font_size", 76)
 	title.add_theme_color_override("font_color", Color("#e74c3c"))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	title.anchor_left = 0.0; title.anchor_top = 0.0
-	title.anchor_right = 1.0; title.anchor_bottom = 0.4
+	title.anchor_right = 1.0; title.anchor_bottom = 0.30
 	panel.add_child(title)
 	
 	var tip = Label.new()
 	tip.text = "退出将返回主界面\n确定要退出吗？"
-	tip.add_theme_font_size_override("font_size", 70)  # 35 → 70
+	tip.add_theme_font_size_override("font_size", 48)
 	tip.add_theme_color_override("font_color", Color("#b0a0c0"))
 	tip.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	tip.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	tip.anchor_left = 0.0; tip.anchor_top = 0.35
-	tip.anchor_right = 1.0; tip.anchor_bottom = 0.7
+	tip.anchor_left = 0.0; tip.anchor_top = 0.30
+	tip.anchor_right = 1.0; tip.anchor_bottom = 0.62
 	panel.add_child(tip)
 	
 	# 确认按钮
 	var confirm_btn = Button.new()
 	confirm_btn.text = "✅ 确认退出"
-	confirm_btn.add_theme_font_size_override("font_size", 80)  # 40 → 80
+	confirm_btn.add_theme_font_size_override("font_size", 56)
 	var cs = StyleBoxFlat.new()
 	cs.bg_color = Color(0.2, 0.08, 0.08)
 	cs.border_width_left = 2; cs.border_width_right = 2
@@ -4315,9 +4375,9 @@ func _on_battle_exit_btn() -> void:
 	cs.content_margin_left = 20; cs.content_margin_right = 20
 	confirm_btn.add_theme_stylebox_override("normal", cs)
 	confirm_btn.add_theme_color_override("font_color", Color("#e74c3c"))
-	confirm_btn.anchor_left = 0.0; confirm_btn.anchor_top = 0.7
+	confirm_btn.anchor_left = 0.0; confirm_btn.anchor_top = 0.66
 	confirm_btn.anchor_right = 0.5; confirm_btn.anchor_bottom = 1.0
-	confirm_btn.offset_left = Global.pw(0.05); confirm_btn.offset_top = Global.ph(0.02)
+	confirm_btn.offset_left = Global.pw(0.05); confirm_btn.offset_top = Global.ph(0.015)
 	confirm_btn.offset_right = Global.pw(-0.02); confirm_btn.offset_bottom = -Global.ph(0.04)
 	confirm_btn.pressed.connect(func():
 		_exit_to_main = true
@@ -4329,7 +4389,7 @@ func _on_battle_exit_btn() -> void:
 	# 取消按钮
 	var cancel_btn = Button.new()
 	cancel_btn.text = "❌ 取消"
-	cancel_btn.add_theme_font_size_override("font_size", 80)  # 40 → 80
+	cancel_btn.add_theme_font_size_override("font_size", 56)
 	var cs2 = StyleBoxFlat.new()
 	cs2.bg_color = Color(0.15, 0.12, 0.22)
 	cs2.border_width_left = 2; cs2.border_width_right = 2
@@ -4340,9 +4400,9 @@ func _on_battle_exit_btn() -> void:
 	cs2.content_margin_left = 20; cs2.content_margin_right = 20
 	cancel_btn.add_theme_stylebox_override("normal", cs2)
 	cancel_btn.add_theme_color_override("font_color", Color("#a0a0b0"))
-	cancel_btn.anchor_left = 0.5; cancel_btn.anchor_top = 0.7
+	cancel_btn.anchor_left = 0.5; cancel_btn.anchor_top = 0.66
 	cancel_btn.anchor_right = 1.0; cancel_btn.anchor_bottom = 1.0
-	cancel_btn.offset_left = Global.pw(0.02); cancel_btn.offset_top = Global.ph(0.02)
+	cancel_btn.offset_left = Global.pw(0.02); cancel_btn.offset_top = Global.ph(0.015)
 	cancel_btn.offset_right = Global.pw(-0.05); cancel_btn.offset_bottom = -Global.ph(0.04)
 	cancel_btn.pressed.connect(func():
 		overlay.queue_free()
@@ -4353,8 +4413,7 @@ func _on_battle_exit_btn() -> void:
 ## 返回主界面或地图内继续探索
 func _go_back_to_map() -> void:
 	# 恢复屏幕方向
-	DisplayServer.screen_set_orientation(DisplayServer.SCREEN_PORTRAIT)
-	DisplayServer.window_set_size(Vector2i(1080, 1920))
+	Global.exit_landscape_canvas()
 	
 	# 保存爬塔持久HP（战斗后更新）
 	if Global.current_run_player_hp > 0 and _battle_manager and _battle_manager.player_self:

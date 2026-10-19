@@ -586,12 +586,17 @@ func _update_button_style(btn: Button, nd: Dictionary) -> void:
 		s.border_color = nd["color"]
 		btn.add_theme_color_override("font_color", Color("#e8d5b7"))
 	else:
-		# 不可用 - 暗色
+		# 不可用 - 暗色（字要比底色亮一些，否则在暗背景上完全读不出来）
 		s.bg_color = Color(0.1, 0.1, 0.15)
 		s.border_color = Color(0.2, 0.2, 0.3)
-		btn.add_theme_color_override("font_color", Color(0.3, 0.3, 0.4))
+		btn.add_theme_color_override("font_color", Color(0.56, 0.56, 0.68))
 	
 	btn.add_theme_stylebox_override("normal", s)
+	# 关键：Button 处于 disabled 时画的是 "disabled" 样式。
+	# 之前只覆盖了 normal，于是「不可用」这套暗色带边框的配色根本不会生效，
+	# 实际显示成主题默认的灰色方块（没有圆角、没有边框，字也灰到看不清）。
+	btn.add_theme_stylebox_override("disabled", s)
+	btn.add_theme_color_override("font_disabled_color", btn.get_theme_color("font_color"))
 	
 	# 悬停样式
 	var sh = s.duplicate()
@@ -1143,7 +1148,7 @@ func _show_gather_result(gained: Array, layer_name: String, terrain_icon: String
 			
 			# 数量
 			var count_label = Label.new()
-			count_label.text = "x" + str(g["amount"])
+			count_label.text = "x" + str(int(g["amount"]))
 			count_label.add_theme_font_size_override("font_size", 42)
 			count_label.add_theme_color_override("font_color", rarity_color)
 			count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -1498,7 +1503,9 @@ func _update_title_with_progress() -> void:
 	title.position = Vector2(Global.pw(0.35), Global.ph(0.03))
 	title.size = Vector2(Global.pw(0.63), Global.ph(0.05))
 	title.add_theme_font_size_override("font_size", 42)
-	title.autowrap_mode = TextServer.AUTOWRAP_WORD
+	# AUTOWRAP_WORD 对中文不生效（整串被当成一个词）→ 最小宽度被撑到 1058px，
+	# 加上 x 偏移后右边界直接超出屏幕。中文必须用 WORD_SMART 才会按字断行。
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	print("[MapNode] Title 更新为: ", text)

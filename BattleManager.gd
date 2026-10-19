@@ -132,6 +132,13 @@ func start_battle(deck_id: String, enemy_name: String = "暗影法师", auto_sta
 	else:
 		player_self.hp = guild_max_hp
 	player_self.init_from_deck(deck_id, false, true)
+	# ★ 兜底：未选卡组（deck_id 为空）或卡组已失效时，from_deck 会加载出 0 张，
+	#   玩家开局无手牌直接被判负。这里退回「全部卡牌」，与 BattleScene3D 的显示逻辑一致。
+	if player_self.deck == null or player_self.deck.size() == 0:
+		var fallback_cards := CardManager.get_all_cards().duplicate(true)
+		if fallback_cards.size() > 0:
+			player_self.init_from_card_datas(fallback_cards, false, true)
+			print("[BattleManager] ⚠️ 卡组ID无效(\"%s\")，已回退为全部卡牌: %d张" % [deck_id, fallback_cards.size()])
 	# 如果是租借卡组，重新用 card_datas 初始化
 	if Global.current_rented_deck_id != "":
 		var rd = Global.get_rented_deck(Global.current_rented_deck_id)

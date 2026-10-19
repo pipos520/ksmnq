@@ -157,7 +157,7 @@ func _ready():
 
 	_ad_status_label = Label.new()
 	_ad_status_label.name = "AdRefreshStatus"
-	_ad_status_label.text = "⏳ 加载广告..."
+	_ad_status_label.text = ""  # 初值为空，真正点广告时再显示状态
 	_ad_status_label.add_theme_font_size_override("font_size", 35)
 	_ad_status_label.add_theme_color_override("font_color", Color("#aaaaaa"))
 	_ad_status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -674,7 +674,7 @@ func _show_reward_detail(task: Dictionary):
 	# 金币奖励
 	if gold > 0:
 		var gold_lbl = Label.new()
-		gold_lbl.text = "🪙 金币 ×" + str(gold)
+		gold_lbl.text = "🪙 金币 ×" + Global.n2s(gold)
 		gold_lbl.add_theme_font_size_override("font_size", 50)
 		gold_lbl.add_theme_color_override("font_color", Color("#f0c040"))
 		vbox.add_child(gold_lbl)

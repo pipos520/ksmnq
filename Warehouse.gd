@@ -194,7 +194,7 @@ func _refresh_material_list() -> void:
 		
 		# 数量
 		var count_label = Label.new()
-		count_label.text = "x" + str(row["count"])
+		count_label.text = "x" + str(int(row["count"]))
 		count_label.add_theme_font_size_override("font_size", 50)
 		count_label.add_theme_color_override("font_color", Global.current.title)
 		count_label.custom_minimum_size = Vector2(Global.pw(0.15), 0)
@@ -363,6 +363,7 @@ func _refresh_all_list() -> void:
 			hbox.anchor_left = 0.0; hbox.anchor_top = 0.0
 			hbox.anchor_right = 1.0; hbox.anchor_bottom = 1.0
 			hbox.offset_left = Global.pw(0.03)
+			hbox.offset_right = Global.pw(-0.03)
 			hbox.mouse_filter = MOUSE_FILTER_IGNORE
 			row.add_child(hbox)
 			
@@ -374,7 +375,7 @@ func _refresh_all_list() -> void:
 			hbox.add_child(name_lbl)
 			
 			var count_lbl = Label.new()
-			count_lbl.text = "x" + str(count)
+			count_lbl.text = "x" + str(int(count))
 			count_lbl.add_theme_font_size_override("font_size", 42)
 			count_lbl.add_theme_color_override("font_color", Global.current.title)
 			count_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -418,6 +419,7 @@ func _refresh_all_list() -> void:
 			hbox.anchor_left = 0.0; hbox.anchor_top = 0.0
 			hbox.anchor_right = 1.0; hbox.anchor_bottom = 1.0
 			hbox.offset_left = Global.pw(0.03)
+			hbox.offset_right = Global.pw(-0.03)
 			hbox.mouse_filter = MOUSE_FILTER_IGNORE
 			row.add_child(hbox)
 			
@@ -465,6 +467,7 @@ func _refresh_all_list() -> void:
 			hbox.anchor_left = 0.0; hbox.anchor_top = 0.0
 			hbox.anchor_right = 1.0; hbox.anchor_bottom = 1.0
 			hbox.offset_left = Global.pw(0.03)
+			hbox.offset_right = Global.pw(-0.03)
 			hbox.mouse_filter = MOUSE_FILTER_IGNORE
 			row.add_child(hbox)
 			
@@ -523,6 +526,7 @@ func _refresh_all_list() -> void:
 			hbox.anchor_left = 0.0; hbox.anchor_top = 0.0
 			hbox.anchor_right = 1.0; hbox.anchor_bottom = 1.0
 			hbox.offset_left = Global.pw(0.03)
+			hbox.offset_right = Global.pw(-0.03)
 			hbox.mouse_filter = MOUSE_FILTER_IGNORE
 			row.add_child(hbox)
 			
@@ -534,7 +538,7 @@ func _refresh_all_list() -> void:
 			hbox.add_child(name_lbl)
 			
 			var count_lbl = Label.new()
-			count_lbl.text = "x" + str(count)
+			count_lbl.text = "x" + str(int(count))
 			count_lbl.add_theme_font_size_override("font_size", 42)
 			count_lbl.add_theme_color_override("font_color", Global.current.title)
 			count_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -884,7 +888,7 @@ func _refresh_aux_list():
 		hbox.add_child(right_vbox)
 		
 		var count_label = Label.new()
-		count_label.text = "x" + str(count)
+		count_label.text = "x" + str(int(count))
 		count_label.add_theme_font_size_override("font_size", 45)
 		count_label.add_theme_color_override("font_color", rarity_color)
 		count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -1243,7 +1247,7 @@ func _show_detail(row: Control):
 			var count = data.get("count", 0)
 			rarity_color = _get_rarity_color(rarity)
 			title_text = name_str
-			subtitle_text = rarity + "  ·  " + category + "  ·  x" + str(count)
+			subtitle_text = rarity + "  ·  " + category + "  ·  x" + str(int(count))
 			var props_text := ""
 			match category:
 				"纤维": props_text = "承载力: " + str(mat_data.get("carry", 0)) + "  韧性: " + str(mat_data.get("toughness", 0))
@@ -1906,7 +1910,7 @@ func _show_material_detail(row: Control) -> void:
 	var info_labels := [
 		["类型", category],
 		["采集区域", area],
-		["数量", "x" + str(count)],
+		["数量", "x" + str(int(count))],
 		["倾向", tendency],
 		["属性", props_text]
 	]

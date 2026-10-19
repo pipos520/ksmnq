@@ -7,6 +7,10 @@ var _hj_ads: HJAdsNode = null
 var _pending_rent_deck: Dictionary = {}  # 待租借的卡组（广告回调用）
 
 func _ready():
+	# 这个场景的 tscn 把 Background 纹理写死成 bg_night，也没有任何主题处理，
+	# 于是白天模式下这里仍然是黑夜背景（其它场景都会应用当前主题的背景）。
+	Global.apply_bg(get_node_or_null("Background"))
+	Global.theme_changed.connect(_on_theme_changed)
 	var back := get_node_or_null("BackBtn")
 	if back is Button: back.pressed.connect(_on_back)
 	_update_gold()
@@ -25,9 +29,15 @@ func _ready():
 
 func _on_back(): Global.play_sfx("click"); Global.change_scene("res://StoreStreet.tscn")
 
+func _on_theme_changed(_mode = null):
+	Global.apply_bg(get_node_or_null("Background"))
+	_update_gold()
+
 func _update_gold():
 	var g = get_node_or_null("GoldLabel")
-	if g is Label: g.text = "💰 " + str(SaveManager.get_value("player", "gold", 0))
+	if g is Label:
+		g.text = "💰 " + Global.n2s(SaveManager.get_value("player", "gold", 0))
+		Global.make_gold_legible(g)
 
 func _set_status(t: String, c: Color):
 	var s = get_node_or_null("StatusLabel")
@@ -418,8 +428,16 @@ func _build_row(vbox, dd: Dictionary, dname: String, cc: int, owned_dur: int = -
 				if press_timer.time_left > 0:
 					press_timer.stop()
 	)
-	# 内部垂直容器（参考 CardPackShop，避免 anchor 定位超出）
+	# 内部垂直容器（Panel 不会自动内缩子节点，必须显式锚点+内边距）
 	var iv = VBoxContainer.new()
+	iv.anchor_left = 0.0
+	iv.anchor_top = 0.0
+	iv.anchor_right = 1.0
+	iv.anchor_bottom = 1.0
+	iv.offset_left = Global.pw(0.03)
+	iv.offset_right = Global.pw(-0.03)
+	iv.offset_top = Global.ph(0.008)
+	iv.offset_bottom = Global.ph(-0.008)
 	iv.size_flags_horizontal = SIZE_EXPAND | SIZE_FILL
 	iv.size_flags_vertical = SIZE_EXPAND | SIZE_FILL
 	row.add_child(iv)

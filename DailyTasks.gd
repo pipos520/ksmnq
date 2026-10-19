@@ -81,7 +81,7 @@ func _ready():
 	ad_bar.add_child(_ad_reset_btn)
 
 	_ad_status_label = Label.new()
-	_ad_status_label.text = "⏳ 加载广告..."
+	_ad_status_label.text = ""  # 初值为空，真正点广告时再显示状态
 	_ad_status_label.add_theme_font_size_override("font_size", 30)
 	_ad_status_label.add_theme_color_override("font_color", Color("#aaaaaa"))
 	_ad_status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -226,7 +226,7 @@ func _add_daily_ladder_card(top_y: float, label: String, step: int, count: int, 
 		if reset_key != "":
 			var reset_btn = Button.new()
 			reset_btn.text = "🔄 重置"
-			reset_btn.add_theme_font_size_override("font_size", 28)
+			reset_btn.add_theme_font_size_override("font_size", 32)
 			var rbs = StyleBoxFlat.new()
 			rbs.bg_color = color
 			rbs.border_width_left = 1; rbs.border_width_right = 1
@@ -235,8 +235,13 @@ func _add_daily_ladder_card(top_y: float, label: String, step: int, count: int, 
 			rbs.corner_radius_top_left = 4; rbs.corner_radius_top_right = 4
 			rbs.corner_radius_bottom_left = 4; rbs.corner_radius_bottom_right = 4
 			reset_btn.add_theme_stylebox_override("normal", rbs)
-			reset_btn.add_theme_color_override("font_color", Color("#ffffff"))
-			reset_btn.custom_minimum_size = Vector2(Global.pw(0.12), Global.ph(0.025))
+			# 阶梯配色都是偏亮的强调色（#FF6B6B/#FF9800/#4FC3F7/#81C784），
+			# 直接压白字对比只有 2:1 左右，字几乎糊在底色里 —— 按底色亮度自动选黑白字。
+			var bg_lum: float = 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b
+			reset_btn.add_theme_color_override("font_color", Color("#1a1a1a") if bg_lum > 0.45 else Color("#ffffff"))
+			reset_btn.add_theme_color_override("font_hover_color", Color("#000000") if bg_lum > 0.45 else Color("#ffffff"))
+			reset_btn.add_theme_color_override("font_pressed_color", Color("#000000") if bg_lum > 0.45 else Color("#ffffff"))
+			reset_btn.custom_minimum_size = Vector2(Global.pw(0.17), Global.ph(0.045))
 			reset_btn.size_flags_horizontal = SIZE_SHRINK_END
 			reset_btn.pressed.connect(_on_ladder_reset_pressed.bind(reset_key))
 			target_row.add_child(reset_btn)

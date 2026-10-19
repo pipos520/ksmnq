@@ -100,6 +100,7 @@ func _build_content():
 	title_label.text = "Lv." + str(guild_level) + "  " + guild_title
 	title_label.add_theme_font_size_override("font_size", 65)
 	title_label.add_theme_color_override("font_color", Color("#FFD700"))
+	Global.make_gold_legible(title_label)
 	title_label.add_theme_color_override("font_shadow_color", Color("#8B6914"))
 	title_label.add_theme_constant_override("shadow_offset_x", 2)
 	title_label.add_theme_constant_override("shadow_offset_y", 2)
@@ -131,6 +132,7 @@ func _build_content():
 		max_label.text = "🌟 已达成最高等级！"
 		max_label.add_theme_font_size_override("font_size", 40)
 		max_label.add_theme_color_override("font_color", Color("#FFD700"))
+		Global.make_gold_legible(max_label)
 		max_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		max_label.anchor_left = 0.0; max_label.anchor_top = 0.5; max_label.anchor_right = 1.0; max_label.anchor_bottom = 1.0
 		max_label.offset_left = Global.pw(0.2)

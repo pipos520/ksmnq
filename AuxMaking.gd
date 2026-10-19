@@ -174,7 +174,7 @@ func _build_aux_list(parent: VBoxContainer):
 			var have = inv.get(mid, 0)
 			var mat_info = Global.get_material_by_id(mid)
 			var mat_name = mat_info.get("name", mid)
-			material_details.append(mat_name + " x" + str(need) + "(" + str(have) + ")")
+			material_details.append(mat_name + " x" + Global.n2s(need) + "(" + Global.n2s(have) + ")")
 			if have < need:
 				can_craft = false
 		var gold = SaveManager.get_value("player", "gold", 0)
@@ -209,7 +209,7 @@ func _build_aux_list(parent: VBoxContainer):
 		info_vbox.add_child(name_label)
 		
 		var cost_label = Label.new()
-		cost_label.text = "💰" + str(gold_cost) + "  " + " ".join(material_details)
+		cost_label.text = "💰" + Global.n2s(gold_cost) + "  " + " ".join(material_details)
 		cost_label.add_theme_font_size_override("font_size", 35)
 		cost_label.add_theme_color_override("font_color", Global.current.btn_text)
 		cost_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -240,7 +240,7 @@ func _on_make_aux(aux_id: String, aux_data: Dictionary):
 	# 检查金币
 	var gold = SaveManager.get_value("player", "gold", 0)
 	if gold < gold_cost:
-		_show_popup("💰 金币不足！需要 " + str(gold_cost) + " 金币", Color("#FF6B6B"))
+		_show_popup("💰 金币不足！需要 " + Global.n2s(gold_cost) + " 金币", Color("#FF6B6B"))
 		return
 	
 	# 消耗素材
@@ -493,10 +493,10 @@ func _show_aux_detail(aux: Dictionary):
 	var cost = aux.get("craft_cost", {})
 	var gold_cost = cost.get("gold", 0)
 	var mats = cost.get("materials", {})
-	var cost_str = "制作消耗：💰" + str(gold_cost) + "金币"
+	var cost_str = "制作消耗：💰" + Global.n2s(gold_cost) + "金币"
 	for mid in mats.keys():
 		var mat_info = Global.get_material_by_id(mid)
-		cost_str += "\n  • " + mat_info.get("name", mid) + " x" + str(mats[mid])
+		cost_str += "\n  • " + mat_info.get("name", mid) + " x" + Global.n2s(mats[mid])
 	
 	var cost_label = Label.new()
 	cost_label.text = cost_str

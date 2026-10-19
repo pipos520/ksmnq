@@ -151,10 +151,10 @@ outline_size = 3
 [node name="BackBtn" type="Button" parent="UI" unique_id=972335762]
 offset_left = 20.0
 offset_top = 20.0
-offset_right = 560.0
-offset_bottom = 160.0
+offset_right = 300.0
+offset_bottom = 110.0
 theme_override_colors/font_color = Color(0.9, 0.3, 0.3, 1)
-theme_override_font_sizes/font_size = 80
+theme_override_font_sizes/font_size = 48
 theme_override_styles/normal = SubResource("sb_back")
 theme_override_styles/pressed = SubResource("sb_back")
 theme_override_styles/hover = SubResource("sb_back")
@@ -163,11 +163,11 @@ text = "🚪 返回"
 
 [node name="ViewBtn" type="Button" parent="UI" unique_id=1160231457]
 offset_left = 20.0
-offset_top = 920.0
-offset_right = 660.0
+offset_top = 964.0
+offset_right = 320.0
 offset_bottom = 1060.0
 theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
-theme_override_font_sizes/font_size = 80
+theme_override_font_sizes/font_size = 44
 theme_override_styles/normal = SubResource("sb_view")
 theme_override_styles/pressed = SubResource("sb_view")
 theme_override_styles/hover = SubResource("sb_view")

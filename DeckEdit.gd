@@ -82,12 +82,31 @@ func _ready():
 	_is_initial_theme = true
 	call_deferred("_apply_theme_styles")
 
+## 卡组行统一面板样式。
+## 预构建行池（DeckRow_0..9）只有被真实牌组占用的行才会拿到这个 stylebox，
+## 租借区块复用剩下的行时必须套同一份，否则那几行没有 content_margin：
+## 内容会贴到 x=0、「操作」按钮直接顶到屏幕右边缘被裁。
+func _make_row_style() -> StyleBoxFlat:
+	var row_sb = StyleBoxFlat.new()
+	row_sb.bg_color = Color(0.15, 0.13, 0.20, 0.9) if not Global.current_mode == Global.ThemeMode.DAY else Color(0.90, 0.85, 0.75, 0.9)
+	row_sb.border_width_left = 2; row_sb.border_width_right = 2
+	row_sb.border_width_top = 2; row_sb.border_width_bottom = 2
+	row_sb.border_color = Color("#E8A838") if not Global.current_mode == Global.ThemeMode.DAY else Color("#946F38")
+	row_sb.corner_radius_top_left = 12; row_sb.corner_radius_top_right = 12
+	row_sb.corner_radius_bottom_left = 12; row_sb.corner_radius_bottom_right = 12
+	row_sb.content_margin_left = 16; row_sb.content_margin_right = 16
+	row_sb.content_margin_top = 8; row_sb.content_margin_bottom = 8
+	return row_sb
+
 # ============================================================
 # 牌组列表刷新
 # ============================================================
 
 func _refresh_deck_list():
 	var _t0 = Time.get_ticks_msec()
+	# 行高：tscn 里写死 280，但行内只有「名称+卡片数」两行文字（实测内容高约 138），
+	# 不收紧的话每张卡下面挂着一大片空白，一屏只能看到 2 个卡组。
+	var row_min_h: float = Global.ph(0.078)
 	# 先隐藏所有预构建行
 	for i in range(_prebuilt_row_count):
 		var row = _list_vbox.get_node_or_null("DeckRow_%d" % i)
@@ -140,16 +159,8 @@ func _refresh_deck_list():
 		row.set_meta("deck_name", deck_name)
 
 		# 面板样式
-		var row_sb = StyleBoxFlat.new()
-		row_sb.bg_color = Color(0.15, 0.13, 0.20, 0.9) if not Global.current_mode == Global.ThemeMode.DAY else Color(0.90, 0.85, 0.75, 0.9)
-		row_sb.border_width_left = 2; row_sb.border_width_right = 2
-		row_sb.border_width_top = 2; row_sb.border_width_bottom = 2
-		row_sb.border_color = Color("#E8A838") if not Global.current_mode == Global.ThemeMode.DAY else Color("#946F38")
-		row_sb.corner_radius_top_left = 12; row_sb.corner_radius_top_right = 12
-		row_sb.corner_radius_bottom_left = 12; row_sb.corner_radius_bottom_right = 12
-		row_sb.content_margin_left = 16; row_sb.content_margin_right = 16
-		row_sb.content_margin_top = 8; row_sb.content_margin_bottom = 8
-		row.add_theme_stylebox_override("panel", row_sb)
+		row.add_theme_stylebox_override("panel", _make_row_style())
+		row.custom_minimum_size = Vector2(0, row_min_h)
 
 		# 填充数据
 		var name_label = row.get_node_or_null("hbox_%d/info_%d/name_%d" % [idx, idx, idx])
@@ -187,10 +198,19 @@ func _refresh_deck_list():
 			var head_row = _list_vbox.get_node_or_null("DeckRow_%d" % idx)
 			if head_row:
 				head_row.visible = true
+				# 这一行只是分组标题，不该长成一张 280px 高的卡牌（会在标题下留一大片空白）。
+				# 压成紧凑标题条 + 去掉卡面样式，视觉上才像「区块分隔」而不是空卡。
+				head_row.custom_minimum_size = Vector2(0, Global.ph(0.06))
+				# 透明背景 + 与普通行一致的水平内边距，否则标题会贴着屏幕左边缘
+				var head_sb := StyleBoxEmpty.new()
+				head_sb.content_margin_left = 16; head_sb.content_margin_right = 16
+				head_sb.content_margin_top = 8; head_sb.content_margin_bottom = 8
+				head_row.add_theme_stylebox_override("panel", head_sb)
 				# 用名称区显示标题，其余置空
 				var hl = head_row.get_node_or_null("hbox_%d/info_%d/name_%d" % [idx, idx, idx])
 				if hl is Label:
 					hl.text = "🃏 已租卡组（只读）"
+					hl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 					hl.add_theme_color_override("font_color", Color("#a8d8ea"))
 				var cl = head_row.get_node_or_null("hbox_%d/info_%d/count_%d" % [idx, idx, idx])
 				if cl is Label: cl.text = " "
@@ -205,6 +225,8 @@ func _refresh_deck_list():
 				var rrow = _list_vbox.get_node_or_null("DeckRow_%d" % idx)
 				if not rrow: break
 				rrow.visible = true
+				rrow.add_theme_stylebox_override("panel", _make_row_style())
+				rrow.custom_minimum_size = Vector2(0, row_min_h)
 				rrow.set_meta("deck_id", rid)
 				rrow.set_meta("is_rented", true)
 				var dur = int(rd.get("durability", 0))
