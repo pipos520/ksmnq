@@ -2567,6 +2567,35 @@ func pixel_panel_style(dark := false) -> StyleBoxTexture:
 	_pixel_style_cache[key] = sb
 	return sb
 
+## 火漆封印主行动按钮（L5）：红=危险/删除 绿=确认/购买 金=高亮/主CTA 蓝=信息。
+## 贴图在生成期就带目标色（运行时深色 tint 会把纹理对比压平），这里只按色相取图。
+func pixel_seal_style(hue: String, state: String) -> StyleBoxTexture:
+	var key := "seal_" + hue + "_" + state
+	if _pixel_style_cache.has(key):
+		return _pixel_style_cache[key]
+	var tex := pixel_tex("btn_seal_" + hue + "_" + state)
+	if tex == null:
+		return null
+	var sb := StyleBoxTexture.new()
+	sb.texture = tex
+	sb.texture_margin_left = 16
+	sb.texture_margin_right = 16
+	sb.texture_margin_top = 16
+	sb.texture_margin_bottom = 16
+	_pixel_style_cache[key] = sb
+	return sb
+
+## 原按钮底色 -> 火漆色相桶。红(含粉/深红) 金(橙/黄) 绿 蓝。
+func _seal_hue_bucket(c: Color) -> String:
+	var h := c.h * 360.0
+	if h < 18.0 or h >= 330.0:
+		return "red"
+	if h < 75.0:
+		return "gold"
+	if h < 190.0:
+		return "green"
+	return "blue"
+
 ## 列表行材质：白天=做旧薄纸带（纸压木，材质对比最强）
 ## 夜晚=深色旧皮革（夜间文字是浅金/奶油色，浅纸会让文字消失；皮革同样非木，层级成立）
 ## fallback: 调用方已建好的 StyleBoxFlat，素材缺失时原样返回，行为退回旧斑马纹
@@ -2651,6 +2680,8 @@ func _pixelize_node(n: Node) -> void:
 	_emoji_apply(n)
 	if n is ColorRect and (n.name == "TopBar" or n.name == "BottomBar"):
 		_pixel_bar_skin(n as Control)
+	if n is HSeparator:
+		_rope_sep_skin(n as HSeparator)
 	if n is Label:
 		_gold_label_fix(n)
 		_row_label_contrast_fix(n)
@@ -2659,6 +2690,43 @@ func _pixelize_node(n: Node) -> void:
 		(b as CanvasItem).texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		var old := b.get_theme_stylebox("normal")
 		if old is StyleBoxFlat:
+			var flat0 := old as StyleBoxFlat
+			# 主行动按钮判定：原底色高饱和 + 亮度不太低（夜间深底普通按钮 #222233 不会误判）
+			var sat := flat0.bg_color.s
+			var bg := flat0.bg_color
+			var v := maxf(bg.r, maxf(bg.g, bg.b))
+			if sat > 0.38 and v > 0.40:
+				var hue := _seal_hue_bucket(flat0.bg_color)
+				var sn := pixel_seal_style(hue, "normal")
+				if sn != null:
+					var s_new := sn.duplicate()
+					_copy_margins(s_new, flat0)
+					b.add_theme_stylebox_override("normal", s_new)
+					b.add_theme_stylebox_override("focus", s_new)
+					var old_h := b.get_theme_stylebox("hover")
+					if old_h is StyleBoxFlat:
+						var sh2 := pixel_seal_style(hue, "hover")
+						if sh2 != null:
+							var h_new := sh2.duplicate()
+							_copy_margins(h_new, old_h)
+							b.add_theme_stylebox_override("hover", h_new)
+					var old_p := b.get_theme_stylebox("pressed")
+					if old_p is StyleBoxFlat:
+						var sp2 := pixel_seal_style(hue, "pressed")
+						if sp2 != null:
+							var p_new := sp2.duplicate()
+							_copy_margins(p_new, old_p)
+							b.add_theme_stylebox_override("pressed", p_new)
+					var pd2 := pixel_seal_style(hue, "disabled")
+					if pd2 != null:
+						var d_new := pd2.duplicate()
+						_copy_margins(d_new, flat0)
+						b.add_theme_stylebox_override("disabled", d_new)
+					# 深色火漆底：禁用字色提亮而不是压暗（压暗会在深底上消失）
+					if b.has_theme_color_override("font_color"):
+						b.add_theme_color_override("font_disabled_color",
+							(b.get_theme_color("font_color") as Color).lightened(0.10))
+				return
 			var pn := pixel_btn_style("normal")
 			if pn != null:
 				var s_new := pn.duplicate()
@@ -2725,6 +2793,27 @@ func _copy_margins(dst: StyleBox, src: StyleBox) -> void:
 	dst.content_margin_right = src.content_margin_right
 	dst.content_margin_top = src.content_margin_top
 	dst.content_margin_bottom = src.content_margin_bottom
+
+## L6：水平分隔线 -> 麻绳（两股拧合 + 毛刺），与木墙/纸同族的"手作"材质
+func _rope_sep_skin(sep: HSeparator) -> void:
+	if sep.has_theme_stylebox_override("separator"):
+		var ex := sep.get_theme_stylebox("separator")
+		if ex is StyleBoxTexture:
+			return  # 已挂过皮
+	var tex := pixel_tex("sep_rope")
+	if tex == null:
+		return
+	var sb := StyleBoxTexture.new()
+	sb.texture = tex
+	sb.texture_margin_left = 12
+	sb.texture_margin_right = 12
+	sb.texture_margin_top = 10
+	sb.texture_margin_bottom = 10
+	sb.content_margin_top = 4
+	sb.content_margin_bottom = 4
+	sep.add_theme_stylebox_override("separator", sb)
+	sep.custom_minimum_size.y = maxf(sep.custom_minimum_size.y, 20.0)
+	sep.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 # ============================================================
 #  emoji 全量替换
