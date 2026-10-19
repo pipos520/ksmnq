@@ -1422,6 +1422,16 @@ func _on_battle_state_changed(state: int) -> void:
 	
 	# 胜利时：触发辅材掉落
 	if state == 1:
+		# 教学战胜利 → 推进教程，回主界面找老陈（与 3D 端 BattleScene3D 一致）
+		if Global.is_tutorial_battle:
+			_exit_to_main = true
+			print("[战斗] 🎉 教学战胜利！推进教程")
+			TutorialManager.advance()
+			# 教学战保底掉落：制作第一张卡所需的最低级卡基+卡墨素材
+			var craft_drops = _give_tutorial_craft_materials()
+			# 直接显示胜利结算（含保底素材 + 常规掉落）
+			_handle_victory_rewards(craft_drops)
+			return
 		# BOSS战胜利 → 标记地图通关，结束后回主界面
 		if Global.current_is_boss and Global.current_map_id != "":
 			PlayerManager.set_map_cleared(Global.current_map_id)
@@ -1445,7 +1455,7 @@ func _on_battle_state_changed(state: int) -> void:
 # ============================
 #  胜利奖励：辅材掉落
 # ============================
-func _handle_victory_rewards() -> void:
+func _handle_victory_rewards(extra_drops: Array = []) -> void:
 	var enemy_data = Global.current_enemy_data
 	if enemy_data.is_empty():
 		_show_battle_exit_btn()
@@ -1566,8 +1576,37 @@ func _handle_victory_rewards() -> void:
 			})
 			print("[战斗] 掉落: ", item["name"], " x", amount)
 	
-	# 显示掉落结果弹窗
-	_show_battle_reward_popup(gained_aux)
+		# 合并保底掉落（如教学战卡基/卡墨素材，已提前入库）
+		for drop in extra_drops:
+			gained_aux.append({
+				"material_id": drop.get("material_id", ""),
+				"name": drop.get("name", ""),
+				"rarity": drop.get("rarity", "普通"),
+				"amount": drop.get("amount", 1),
+			})
+
+
+func _give_tutorial_craft_materials() -> Array:
+	var drops := [
+		{"id": "F01", "name": "白麻纤维", "rarity": "普通", "cat": "卡基"},
+		{"id": "M01", "name": "石灰矿粉", "rarity": "普通", "cat": "卡基"},
+		{"id": "R01", "name": "普通松脂", "rarity": "普通", "cat": "卡基"},
+		{"id": "E01", "name": "清水", "rarity": "普通", "cat": "卡墨"},
+		{"id": "P01", "name": "炭黑", "rarity": "普通", "cat": "卡墨"},
+		{"id": "B01", "name": "骨胶", "rarity": "普通", "cat": "卡墨"},
+	]
+	var gained := []
+	for d in drops:
+		WarehouseManager.add_material(d["id"], 2)
+		print("[战斗] 教学战保底掉落: [", d["cat"], "] ", d["name"], " x2")
+		gained.append({
+			"material_id": d["id"],
+			"name": d["name"],
+			"rarity": d["rarity"],
+			"amount": 2,
+		})
+	print("[战斗] 教学战保底素材发放完毕（6种×2）")
+	return gained
 
 
 func _show_battle_reward_popup(gained_aux: Array) -> void:
@@ -1899,7 +1938,13 @@ func _go_back_to_map() -> void:
 	# 清理战斗数据
 	Global.current_enemy_data = {}
 	Global.current_battle_terrain = ""
-	
+
+	# 教学战：无论胜负都回主界面找老陈（与 3D 端 BattleScene3D 一致）
+	if Global.is_tutorial_battle:
+		Global.is_tutorial_battle = false
+		Global.change_scene("res://Main.tscn")
+		return
+
 	# 决斗场（地图ID为空）无论胜负都回选择地图界面
 	if Global.current_map_id == "":
 		Global.change_scene("res://Exploration.tscn")
