@@ -2543,10 +2543,10 @@ func pixel_btn_style(state: String) -> StyleBoxTexture:
 		return null
 	var sb := StyleBoxTexture.new()
 	sb.texture = tex
-	sb.texture_margin_left = 8
-	sb.texture_margin_right = 8
-	sb.texture_margin_top = 8
-	sb.texture_margin_bottom = 8
+	sb.texture_margin_left = 16
+	sb.texture_margin_right = 16
+	sb.texture_margin_top = 16
+	sb.texture_margin_bottom = 16
 	_pixel_style_cache[key] = sb
 	return sb
 
@@ -2559,7 +2559,7 @@ func pixel_panel_style(dark := false) -> StyleBoxTexture:
 		return null
 	var sb := StyleBoxTexture.new()
 	sb.texture = tex
-	var m := 10
+	var m := 20
 	sb.texture_margin_left = m
 	sb.texture_margin_right = m
 	sb.texture_margin_top = m

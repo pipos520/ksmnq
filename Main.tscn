@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_stall.png" id="23_px_shop"]
 [ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_map.png" id="24_px_map"]
 [ext_resource type="Texture2D" path="res://assets/ui/pixel/board_main.png" id="30_board"]
-[ext_resource type="Texture2D" path="res://assets/ui/pixel/btn_normal.png" id="31_paper"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/poster_card.png" id="31_paper"]
 [ext_resource type="Texture2D" path="res://assets/ui/pixel/pin.png" id="32_pin"]
 [ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_help.png" id="33_help"]
 [ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_gear.png" id="34_gear"]
@@ -197,10 +197,10 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource("31_paper")
-patch_margin_left = 12
-patch_margin_top = 12
-patch_margin_right = 12
-patch_margin_bottom = 12
+patch_margin_left = 0
+patch_margin_top = 0
+patch_margin_right = 0
+patch_margin_bottom = 0
 texture_filter = 1
 
 [node name="Pin" type="TextureRect" parent="CardGuild"]
@@ -278,10 +278,10 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource("31_paper")
-patch_margin_left = 12
-patch_margin_top = 12
-patch_margin_right = 12
-patch_margin_bottom = 12
+patch_margin_left = 0
+patch_margin_top = 0
+patch_margin_right = 0
+patch_margin_bottom = 0
 texture_filter = 1
 
 [node name="Pin" type="TextureRect" parent="CardWorkshop"]
@@ -356,10 +356,10 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource("31_paper")
-patch_margin_left = 12
-patch_margin_top = 12
-patch_margin_right = 12
-patch_margin_bottom = 12
+patch_margin_left = 0
+patch_margin_top = 0
+patch_margin_right = 0
+patch_margin_bottom = 0
 texture_filter = 1
 
 [node name="Pin" type="TextureRect" parent="CardDeck"]
@@ -434,10 +434,10 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource("31_paper")
-patch_margin_left = 12
-patch_margin_top = 12
-patch_margin_right = 12
-patch_margin_bottom = 12
+patch_margin_left = 0
+patch_margin_top = 0
+patch_margin_right = 0
+patch_margin_bottom = 0
 texture_filter = 1
 
 [node name="Pin" type="TextureRect" parent="CardShop"]
@@ -512,10 +512,10 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource("31_paper")
-patch_margin_left = 12
-patch_margin_top = 12
-patch_margin_right = 12
-patch_margin_bottom = 12
+patch_margin_left = 0
+patch_margin_top = 0
+patch_margin_right = 0
+patch_margin_bottom = 0
 texture_filter = 1
 
 [node name="Pin" type="TextureRect" parent="CardExplore"]
