@@ -1,10 +1,15 @@
-[gd_scene load_steps=10 format=3 uid="uid://b4x6m0vcn2k6c"]
+[gd_scene load_steps=15 format=3 uid="uid://b4x6m0vcn2k6c"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_script"]
 [ext_resource type="Theme" path="res://assets/theme/pixel_theme.tres" id="2_theme"]
 [ext_resource type="Shader" path="res://assets/shaders/card_gradient.gdshader" id="3_shader"]
 [ext_resource type="Texture2D" path="res://assets/theme/bg_night.png" id="4_bg_night"]
 [ext_resource type="Texture2D" path="res://assets/theme/bg_day.png" id="5_bg_day"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_signpost.png" id="20_px_guild"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_hammer.png" id="21_px_hammer"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_card_stack.png" id="22_px_deck"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_stall.png" id="23_px_shop"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/icon_map.png" id="24_px_map"]
 
 [sub_resource type="ShaderMaterial" id="mat_guild"]
 shader = ExtResource("3_shader")
@@ -135,9 +140,9 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -214.0
+offset_left = -248.0
 offset_top = -122.0
-offset_right = -134.0
+offset_right = -168.0
 offset_bottom = -42.0
 grow_horizontal = 0
 grow_vertical = 0
@@ -177,17 +182,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 material = SubResource("mat_guild")
 
-[node name="Icon" type="Label" parent="CardGuild"]
+[node name="Icon" type="TextureRect" parent="CardGuild"]
 layout_mode = 1
 anchor_left = 0.0
-anchor_top = 0.12
+anchor_top = 0.13
 anchor_right = 1.0
 anchor_bottom = 0.47
-theme_override_colors/font_color = Color(0.447, 0.651, 0.910, 1)
-theme_override_font_sizes/font_size = 80
-text = "🏛️"
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("20_px_guild")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
 
 [node name="Title" type="Label" parent="CardGuild"]
 layout_mode = 1
@@ -234,17 +238,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 material = SubResource("mat_workshop")
 
-[node name="Icon" type="Label" parent="CardWorkshop"]
+[node name="Icon" type="TextureRect" parent="CardWorkshop"]
 layout_mode = 1
 anchor_left = 0.0
-anchor_top = 0.12
+anchor_top = 0.13
 anchor_right = 1.0
 anchor_bottom = 0.47
-theme_override_colors/font_color = Color(0.894, 0.667, 0.384, 1)
-theme_override_font_sizes/font_size = 64
-text = "🔨"
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("21_px_hammer")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
 
 [node name="Title" type="Label" parent="CardWorkshop"]
 layout_mode = 1
@@ -291,17 +294,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 material = SubResource("mat_deck")
 
-[node name="Icon" type="Label" parent="CardDeck"]
+[node name="Icon" type="TextureRect" parent="CardDeck"]
 layout_mode = 1
 anchor_left = 0.0
-anchor_top = 0.12
+anchor_top = 0.13
 anchor_right = 1.0
 anchor_bottom = 0.47
-theme_override_colors/font_color = Color(0.788, 0.400, 0.424, 1)
-theme_override_font_sizes/font_size = 64
-text = "🃏"
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("22_px_deck")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
 
 [node name="Title" type="Label" parent="CardDeck"]
 layout_mode = 1
@@ -348,17 +350,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 material = SubResource("mat_shop")
 
-[node name="Icon" type="Label" parent="CardShop"]
+[node name="Icon" type="TextureRect" parent="CardShop"]
 layout_mode = 1
 anchor_left = 0.0
-anchor_top = 0.12
+anchor_top = 0.13
 anchor_right = 1.0
 anchor_bottom = 0.47
-theme_override_colors/font_color = Color(0.831, 0.486, 0.369, 1)
-theme_override_font_sizes/font_size = 64
-text = "🏪"
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("23_px_shop")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
 
 [node name="Title" type="Label" parent="CardShop"]
 layout_mode = 1
@@ -406,17 +407,16 @@ anchor_top = 0.0
 anchor_bottom = 1.0
 material = SubResource("mat_explore")
 
-[node name="Icon" type="Label" parent="CardExplore"]
+[node name="Icon" type="TextureRect" parent="CardExplore"]
 layout_mode = 1
 anchor_left = 0.0
 anchor_top = 0.12
 anchor_right = 1.0
-anchor_bottom = 0.27
-theme_override_colors/font_color = Color(0.384, 0.733, 0.518, 1)
-theme_override_font_sizes/font_size = 64
-text = "🗺️"
-horizontal_alignment = 1
-vertical_alignment = 1
+anchor_bottom = 0.47
+texture = ExtResource("24_px_map")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
 
 [node name="Title" type="Label" parent="CardExplore"]
 layout_mode = 1

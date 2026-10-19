@@ -1481,6 +1481,7 @@ func _ready() -> void:
 	_build_circuit_map()
 	_build_circuit_row_template()
 	_init_sfx()
+	_setup_pixel_kit()
 
 ## 全局 UI 字体：加载精简版中文字体（738KB），避免全量字体(25MB)拖慢界面
 func _setup_ui_font() -> void:
@@ -2480,3 +2481,149 @@ func show_global_toast(text: String, color: Color = Color("#FFD700")) -> void:
 	tw.tween_interval(1.8)
 	tw.tween_property(lbl, "modulate:a", 0.0, 0.4)
 	tw.tween_callback(lbl.queue_free)
+
+# ============================================================
+#  像素 UI 套件：全局统一风格
+#  - 素材: assets/ui/pixel/ (按钮九宫格 x4 态 / 面板 x2 / 图标 x12)
+#  - pixel_btn_style()/pixel_panel_style(): 手动取用
+#  - _pixelize_node(): 挂 node_added 信号, 把散落在各场景的内联
+#    StyleBoxFlat 统一替换为像素九宫格; 保留内容边距/禁用态/面板色相
+# ============================================================
+const PIXEL_DIR := "res://assets/ui/pixel/"
+const PIXEL_PARCH := Color(0.929, 0.878, 0.831)  # panel_card 填充色, 色相换算基准
+var _pixel_tex: Dictionary = {}
+var _pixel_style_cache: Dictionary = {}
+var _pixel_kit_ready := false
+
+func _setup_pixel_kit() -> void:
+	if _pixel_kit_ready:
+		return
+	_pixel_kit_ready = true
+	get_tree().node_added.connect(_pixelize_node)
+	# 素材导入完成前 node_added 可能拿不到纹理而跳过; 定期补扫兜底
+	var t := Timer.new()
+	t.wait_time = 2.0
+	t.timeout.connect(_pixel_rewalk)
+	add_child(t)
+	t.start()
+
+func _pixel_rewalk() -> void:
+	var cs := get_tree().current_scene
+	if cs == null:
+		return
+	_pixel_walk(cs)
+
+func _pixel_walk(n: Node) -> void:
+	_pixelize_node(n)
+	for c in n.get_children():
+		_pixel_walk(c)
+
+func pixel_tex(asset_name: String) -> Texture2D:
+	if _pixel_tex.has(asset_name):
+		var cached: Texture2D = _pixel_tex[asset_name]
+		if cached != null:
+			return cached
+	var p := PIXEL_DIR + asset_name + ".png"
+	if not ResourceLoader.exists(p):
+		return null
+	var t: Texture2D = load(p)
+	_pixel_tex[asset_name] = t
+	return t
+
+func pixel_btn_style(state: String) -> StyleBoxTexture:
+	var key := "btn_" + state
+	if _pixel_style_cache.has(key):
+		return _pixel_style_cache[key]
+	var tex := pixel_tex("btn_" + state)
+	if tex == null:
+		return null
+	var sb := StyleBoxTexture.new()
+	sb.texture = tex
+	sb.texture_margin_left = 8
+	sb.texture_margin_right = 8
+	sb.texture_margin_top = 8
+	sb.texture_margin_bottom = 8
+	_pixel_style_cache[key] = sb
+	return sb
+
+func pixel_panel_style(dark := false) -> StyleBoxTexture:
+	var key := "panel_dark" if dark else "panel_card"
+	if _pixel_style_cache.has(key):
+		return _pixel_style_cache[key]
+	var tex := pixel_tex(key)
+	if tex == null:
+		return null
+	var sb := StyleBoxTexture.new()
+	sb.texture = tex
+	var m := 10
+	sb.texture_margin_left = m
+	sb.texture_margin_right = m
+	sb.texture_margin_top = m
+	sb.texture_margin_bottom = m
+	_pixel_style_cache[key] = sb
+	return sb
+
+func _pixelize_node(n: Node) -> void:
+	if n is BaseButton:
+		var b := n as BaseButton
+		(b as CanvasItem).texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		var old := b.get_theme_stylebox("normal")
+		if old is StyleBoxFlat:
+			var pn := pixel_btn_style("normal")
+			if pn != null:
+				var s_new := pn.duplicate()
+				_copy_margins(s_new, old)
+				b.add_theme_stylebox_override("normal", s_new)
+				b.add_theme_stylebox_override("focus", s_new)
+				var old_h := b.get_theme_stylebox("hover")
+				if old_h is StyleBoxFlat:
+					var ph := pixel_btn_style("hover")
+					if ph != null:
+						var h_new := ph.duplicate()
+						_copy_margins(h_new, old_h)
+						b.add_theme_stylebox_override("hover", h_new)
+				var old_p := b.get_theme_stylebox("pressed")
+				if old_p is StyleBoxFlat:
+					var pp := pixel_btn_style("pressed")
+					if pp != null:
+						var p_new := pp.duplicate()
+						_copy_margins(p_new, old_p)
+						b.add_theme_stylebox_override("pressed", p_new)
+				var pd := pixel_btn_style("disabled")
+				if pd != null:
+					var d_new := pd.duplicate()
+					_copy_margins(d_new, old)
+					b.add_theme_stylebox_override("disabled", d_new)
+				if b.has_theme_color_override("font_color"):
+					b.add_theme_color_override("font_disabled_color",
+						(b.get_theme_color("font_color") as Color).darkened(0.45))
+				(b as CanvasItem).texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		return
+	if n is PanelContainer or (n is Panel and not n is PanelContainer):
+		var pnl := n as Control
+		pnl.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		var ps := pnl.get_theme_stylebox("panel")
+		if ps is StyleBoxFlat:
+			var flat := ps as StyleBoxFlat
+			if flat.bg_color.a < 0.1:
+				return
+			var dark := flat.bg_color.get_luminance() < 0.35
+			var base := pixel_panel_style(dark)
+			if base != null:
+				var s2 := base.duplicate()
+				_copy_margins(s2, flat)
+				# 用原底色对像素面板做色相映射, 保留原有的色彩语义(绿=可用/灰=不可用等)
+				var tint := Color(
+					clampf(flat.bg_color.r / PIXEL_PARCH.r, 0.0, 1.0),
+					clampf(flat.bg_color.g / PIXEL_PARCH.g, 0.0, 1.0),
+					clampf(flat.bg_color.b / PIXEL_PARCH.b, 0.0, 1.0),
+					1.0)
+				s2.modulate_color = tint
+				pnl.add_theme_stylebox_override("panel", s2)
+				pnl.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+
+func _copy_margins(dst: StyleBox, src: StyleBox) -> void:
+	dst.content_margin_left = src.content_margin_left
+	dst.content_margin_right = src.content_margin_right
+	dst.content_margin_top = src.content_margin_top
+	dst.content_margin_bottom = src.content_margin_bottom

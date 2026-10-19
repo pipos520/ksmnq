@@ -1,67 +1,75 @@
-[gd_resource type="Theme" format=3 uid="uid://dyu4rmxjbud8v"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://dyu4rmxjbud8v"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_focus"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.91, 0.659, 0.22, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-shadow_color = Color(0, 0, 0, 0.5)
-shadow_offset = Vector2(2, 2)
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/btn_normal.png" id="1"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/btn_hover.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/btn_pressed.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/btn_disabled.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/ui/pixel/panel_card.png" id="5"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.95, 0.72, 0.3, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.169, 0.169, 0.169, 1)
-shadow_color = Color(0, 0, 0, 0.5)
-shadow_offset = Vector2(2, 2)
+[sub_resource type="StyleBoxTexture" id="sb_normal"]
+texture = ExtResource("1")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.91, 0.659, 0.22, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.169, 0.169, 0.169, 1)
-shadow_color = Color(0, 0, 0, 0.5)
-shadow_offset = Vector2(2, 2)
+[sub_resource type="StyleBoxTexture" id="sb_hover"]
+texture = ExtResource("2")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
-content_margin_left = 8.0
-content_margin_top = 4.0
-content_margin_right = 8.0
-content_margin_bottom = 4.0
-bg_color = Color(0.72, 0.52, 0.15, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.169, 0.169, 0.169, 1)
-shadow_color = Color(0, 0, 0, 0.5)
-shadow_offset = Vector2(1, 1)
+[sub_resource type="StyleBoxTexture" id="sb_pressed"]
+texture = ExtResource("3")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="sb_disabled"]
+texture = ExtResource("4")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="sb_panel"]
+texture = ExtResource("5")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
 
 [resource]
-default_font_size = 48
-Button/colors/font_color = Color(0.169, 0.169, 0.169, 1)
-Button/colors/font_hover_color = Color(0.169, 0.169, 0.169, 1)
-Button/colors/font_pressed_color = Color(0.169, 0.169, 0.169, 1)
-Button/styles/focus = SubResource("StyleBoxFlat_btn_focus")
-Button/styles/hover = SubResource("StyleBoxFlat_btn_hover")
-Button/styles/normal = SubResource("StyleBoxFlat_btn_normal")
-Button/styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+Button/colors/font_color = Color(0.24, 0.157, 0.09, 1)
+Button/colors/font_hover_color = Color(0.24, 0.157, 0.09, 1)
+Button/colors/font_pressed_color = Color(0.15, 0.1, 0.05, 1)
+Button/colors/font_disabled_color = Color(0.42, 0.42, 0.44, 1)
+Button/styles/normal = SubResource("sb_normal")
+Button/styles/hover = SubResource("sb_hover")
+Button/styles/pressed = SubResource("sb_pressed")
+Button/styles/disabled = SubResource("sb_disabled")
+Button/styles/focus = SubResource("sb_normal")
+Panel/styles/panel = SubResource("sb_panel")
+PanelContainer/styles/panel = SubResource("sb_panel")
