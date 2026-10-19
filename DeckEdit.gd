@@ -82,11 +82,16 @@ func _ready():
 	_is_initial_theme = true
 	call_deferred("_apply_theme_styles")
 
-## 卡组行统一面板样式。
+## 卡组行统一面板样式：优先用全局像素行皮（row_paper/row_leather，昼夜自动切换），
+## 与其他列表界面（GuildTasks/StoreStreet…）同材质。
 ## 预构建行池（DeckRow_0..9）只有被真实牌组占用的行才会拿到这个 stylebox，
 ## 租借区块复用剩下的行时必须套同一份，否则那几行没有 content_margin：
 ## 内容会贴到 x=0、「操作」按钮直接顶到屏幕右边缘被裁。
-func _make_row_style() -> StyleBoxFlat:
+func _make_row_style() -> StyleBox:
+	var px := Global.pixel_row_style(0, null)
+	if px != null:
+		return px
+	# 回退：像素贴图缺失时用旧 flat（不应发生）
 	var row_sb = StyleBoxFlat.new()
 	row_sb.bg_color = Color(0.15, 0.13, 0.20, 0.9) if not Global.current_mode == Global.ThemeMode.DAY else Color(0.90, 0.85, 0.75, 0.9)
 	row_sb.border_width_left = 2; row_sb.border_width_right = 2
@@ -190,7 +195,7 @@ func _refresh_deck_list():
 					break
 				found += 1
 
-	# ===== 追加已租卡组（只读，不可修改/删除）=====
+	print("[DeckEdit] _refresh_deck_list: %dms (decks=%d)" % [Time.get_ticks_msec() - _t0, idx])
 	if idx < _prebuilt_row_count:
 		var rented = Global.get_all_rented_decks()
 		if not rented.is_empty():
@@ -251,6 +256,8 @@ func _refresh_deck_list():
 					n.visible = true
 					break
 				found += 1
+	# 行皮/文字是运行时替换的，对比度钩子不会再触发 —— 全部行就绪后统一重算
+	Global.refresh_contrast(_list_vbox)
 	print("[DeckEdit] _refresh_deck_list: %dms (decks=%d)" % [Time.get_ticks_msec() - _t0, idx])
 
 ## 已租卡组点击提示：只读，不可修改
@@ -2058,6 +2065,10 @@ func _apply_theme_styles():
 	# 编辑区标题
 	if _edit_title_label:
 		_edit_title_label.add_theme_color_override("font_color", Global.current.title)
+
+	# 主题切换后行皮/文字都要重算（row_fix_ 按模式记号，夜间会重新 lightened）
+	if _list_vbox:
+		Global.refresh_contrast(_list_vbox)
 
 	# 按钮：圆角背景 + 统一文字颜色（跟主界面/设置界面风格统一）
 	# 如果主题没变，直接跳过（避免重复创建16个StyleBoxFlat）

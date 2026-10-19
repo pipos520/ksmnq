@@ -2648,9 +2648,29 @@ func _gold_label_fix(n: Node) -> bool:
 		return true
 	return false
 
+## 品质/身份色判定：高饱和、亮度不太低的彩色文字（稀有蓝/史诗紫/状态绿/警告红）。
+## 这些颜色带语义（品质、状态），压暗就丢身份 —— 一律改用描边提供对比。
+## 白/米/灰等低饱和文字不在此列，仍走 darkened/lightened。
+func _is_identity_color(c: Color) -> bool:
+	if c.a < 0.35:
+		return false
+	var v := maxf(c.r, maxf(c.g, c.b))
+	return c.s > 0.34 and v > 0.34
+
+## 按背景亮度给文字加深/浅描边（不改变文字本身的颜色）。
+func _outline_contrast_fix(ctrl: Control, bg_l: float) -> void:
+	var fs := float(ctrl.get_theme_font_size("font_size"))
+	if fs <= 0.0:
+		fs = 24.0
+	var osz := int(clampf(roundf(fs * 0.20), 3.0, 9.0))
+	# 亮底(纸)用近黑描边；暗底(皮革/木)用奶油白描边 —— 描边才是对比的来源
+	var oc := Color(0.10, 0.07, 0.05, 0.90) if bg_l >= 0.45 else Color(0.96, 0.92, 0.82, 0.88)
+	ctrl.add_theme_color_override("font_outline_color", oc)
+	ctrl.add_theme_constant_override("outline_size", osz)
+
 ## 行内文字对比度自适应：行材质是纸/皮革（pixel_row_style 产物）时，
 ## 浅色文字压浅纸 / 深色文字压深皮革都会消失——按材质自动加深/提亮，
-## 用 darkened/lightened 保留原有色相（品质色、状态色不丢身份）。
+## 用 darkened/lightened 保留原有色相（品质色、状态色走描边分支，不压暗）。
 ## 注意：node_added 先父后子，Panel 的纸样式已在该 Label 入树前换好。
 func _row_label_contrast_fix(n: Node) -> void:
 	var lbl := n as Label
@@ -2676,6 +2696,15 @@ func _row_label_contrast_fix(n: Node) -> void:
 		# 用主题默认色的标签显式落定，避免主题切换后漂移
 		lbl.add_theme_color_override("font_color", lbl.get_theme_color("font_color") as Color)
 	var fc := lbl.get_theme_color("font_color") as Color
+	if _is_identity_color(fc):
+		_outline_contrast_fix(lbl, _stylebox_luminance(sb))
+		return
+	# 幂等保护：按主题模式记号。darkened/lightened 不是收敛操作，
+	# 场景运行时换行皮后 refresh_contrast 会再进来，不设防会越调越暗。
+	var fix_key := "row_fix_%d" % int(current_mode)
+	if lbl.has_meta(fix_key):
+		return
+	lbl.set_meta(fix_key, true)
 	if on_paper and fc.get_luminance() > 0.60:
 		lbl.add_theme_color_override("font_color", fc.darkened(0.62))
 	elif on_leather and fc.get_luminance() < 0.45:
@@ -2701,6 +2730,20 @@ func _flush_late() -> void:
 		if is_instance_valid(n) and n is Label:
 			_label_fix_all(n as Label)
 	_late_queue.clear()
+
+## 公开 API：场景在运行时替换 stylebox / font_color 之后调用（如 DeckEdit 刷列表）。
+## 遍历子树重算文字对比。幂等：已达标的跳过，darkened/lightened 分支有 meta 记号。
+func refresh_contrast(root: Node) -> void:
+	if root == null:
+		return
+	if root is Label:
+		_label_fix_all(root as Label)
+	elif root is BaseButton:
+		var bb := root as Control
+		_ensure_text_contrast(bb, _btn_bg_luminance(bb),
+			bb.get_theme_constant("outline_size") > 0)
+	for c in root.get_children():
+		refresh_contrast(c)
 
 func _label_fix_all(lbl: Label) -> void:
 	if lbl == null:
@@ -2794,9 +2837,10 @@ func _pixelize_node(n: Node) -> void:
 				b.add_theme_color_override("font_disabled_color",
 					(b.get_theme_color("font_color") as Color).darkened(0.45))
 			# 夜间模式：浅色文字（夜间主题的奶油色）压在米色纸按钮上不可读，换深墨色
+			# （品质/身份色除外 —— 那是语义色，走描边）
 			if current_mode == ThemeMode.NIGHT and b.has_theme_color_override("font_color"):
 				var fcc := b.get_theme_color("font_color") as Color
-				if fcc.get_luminance() > 0.55:
+				if fcc.get_luminance() > 0.55 and not _is_identity_color(fcc):
 					b.add_theme_color_override("font_color", Color(0.17, 0.12, 0.08))
 					b.add_theme_color_override("font_hover_color", Color(0.10, 0.07, 0.05))
 					b.add_theme_color_override("font_pressed_color", Color(0.10, 0.07, 0.05))
@@ -2927,6 +2971,11 @@ func _ensure_text_contrast(ctrl: Control, bg_l: float, outlined := false) -> voi
 		ctrl.add_theme_color_override("font_color", ctrl.get_theme_color("font_color") as Color)
 	var fc := ctrl.get_theme_color("font_color") as Color
 	if fc.a < 0.2:
+		return
+	if _is_identity_color(fc):
+		# 品质/身份色（稀有蓝、史诗紫、状态绿…）：颜色就是语义，
+		# 压暗会丢品质感 —— 保色相，用描边把文字从底上"勾"出来。
+		_outline_contrast_fix(ctrl, bg_l)
 		return
 	if _wcag_ratio(fc.get_luminance(), bg_l) >= CONTRAST_MIN:
 		return
