@@ -108,7 +108,7 @@ func _ready():
 	
 	# 背景
 	var bg = ColorRect.new()
-	bg.color = Color(0.06, 0.04, 0.10)
+	bg.color = Color(0.06, 0.04, 0.034)
 	bg.anchor_left = 0.0; bg.anchor_top = 0.0
 	bg.anchor_right = 1.0; bg.anchor_bottom = 1.0
 	add_child(bg)
@@ -163,7 +163,7 @@ func _ready():
 # ===== 网格背景装饰 =====
 func _add_grid_bg():
 	var grid = ColorRect.new()
-	grid.color = Color(0.12, 0.08, 0.18, 0.3)
+	grid.color = Color(0.12, 0.08, 0.068, 0.3)
 	grid.anchor_left = 0.0; grid.anchor_top = 0.16
 	grid.anchor_right = 1.0; grid.anchor_bottom = 0.52
 	add_child(grid)
@@ -172,14 +172,14 @@ func _add_grid_bg():
 # ===== 信息条 =====
 func _add_info_bar(top: float, bottom: float, name_str: String, hp: int, max_hp: int, energy: int, max_energy: int, is_enemy: bool):
 	var bar = ColorRect.new()
-	bar.color = Color(0.10, 0.08, 0.16) if is_enemy else Color(0.08, 0.12, 0.18)
+	bar.color = Color(0.10, 0.08, 0.068) if is_enemy else Color(0.08, 0.12, 0.18)
 	bar.anchor_left = 0.0; bar.anchor_top = top
 	bar.anchor_right = 1.0; bar.anchor_bottom = bottom
 	add_child(bar)
 	
 	# 底边线
 	var line = ColorRect.new()
-	line.color = Color(0.3, 0.2, 0.4, 0.5)
+	line.color = Color(0.3, 0.2, 0.17, 0.5)
 	line.anchor_left = 0.0; line.anchor_top = bottom
 	line.anchor_right = 1.0; line.anchor_bottom = bottom
 	line.offset_top = -2; line.offset_bottom = 0
@@ -470,7 +470,7 @@ func _add_field_slots(top: float, bottom: float, slot_color: Color, is_enemy: bo
 # ===== 中间分隔区 =====
 func _add_middle_divider(top: float, bottom: float):
 	var div = ColorRect.new()
-	div.color = Color(0.15, 0.10, 0.22, 0.6)
+	div.color = Color(0.15, 0.10, 0.085, 0.6)
 	div.anchor_left = 0.0; div.anchor_top = top
 	div.anchor_right = 1.0; div.anchor_bottom = bottom
 	add_child(div)
@@ -503,7 +503,7 @@ func _add_middle_divider(top: float, bottom: float):
 	
 	# 上装饰线
 	var line_top = ColorRect.new()
-	line_top.color = Color(0.4, 0.2, 0.6, 0.3)
+	line_top.color = Color(0.4, 0.2, 0.17, 0.3)
 	line_top.anchor_left = 0.1; line_top.anchor_top = top
 	line_top.anchor_right = 0.9; line_top.anchor_bottom = top
 	line_top.offset_bottom = 1
@@ -511,7 +511,7 @@ func _add_middle_divider(top: float, bottom: float):
 	
 	# 下装饰线
 	var line_bottom = ColorRect.new()
-	line_bottom.color = Color(0.4, 0.2, 0.6, 0.3)
+	line_bottom.color = Color(0.4, 0.2, 0.17, 0.3)
 	line_bottom.anchor_left = 0.1; line_bottom.anchor_top = bottom
 	line_bottom.anchor_right = 0.9; line_bottom.anchor_bottom = bottom
 	line_bottom.offset_top = -1
@@ -539,7 +539,7 @@ func _add_hand_area(top: float, bottom: float) -> Array:
 	
 	# 手牌区背景
 	var hand_bg = ColorRect.new()
-	hand_bg.color = Color(0.08, 0.06, 0.14, 0.5)
+	hand_bg.color = Color(0.08, 0.06, 0.051, 0.5)
 	hand_bg.anchor_left = 0.0; hand_bg.anchor_top = top
 	hand_bg.anchor_right = 1.0; hand_bg.anchor_bottom = bottom
 	add_child(hand_bg)
@@ -690,7 +690,7 @@ func _add_enemy_hand_area(top: float, bottom: float) -> Array:
 	
 	# 背景
 	var bg = ColorRect.new()
-	bg.color = Color(0.10, 0.06, 0.14, 0.4)
+	bg.color = Color(0.10, 0.06, 0.051, 0.4)
 	bg.anchor_left = 0.0; bg.anchor_top = top
 	bg.anchor_right = 1.0; bg.anchor_bottom = bottom
 	add_child(bg)
@@ -747,7 +747,7 @@ func _add_enemy_hand_area(top: float, bottom: float) -> Array:
 		
 		# 卡背
 		var back = ColorRect.new()
-		back.color = Color(0.10, 0.06, 0.16)
+		back.color = Color(0.10, 0.06, 0.051)
 		back.anchor_left = 0.0; back.anchor_top = 0.0
 		back.anchor_right = 1.0; back.anchor_bottom = 1.0
 		back.offset_left = 2; back.offset_top = 2
@@ -773,14 +773,14 @@ func _add_enemy_hand_area(top: float, bottom: float) -> Array:
 # ===== 底部操作栏 =====
 func _add_bottom_bar(top: float, bottom: float):
 	var bar = ColorRect.new()
-	bar.color = Color(0.08, 0.06, 0.14)
+	bar.color = Color(0.08, 0.06, 0.051)
 	bar.anchor_left = 0.0; bar.anchor_top = top
 	bar.anchor_right = 1.0; bar.anchor_bottom = bottom
 	add_child(bar)
 	
 	# 顶边线
 	var line = ColorRect.new()
-	line.color = Color(0.3, 0.2, 0.4, 0.5)
+	line.color = Color(0.3, 0.2, 0.17, 0.5)
 	line.anchor_left = 0.0; line.anchor_top = top
 	line.anchor_right = 1.0; line.anchor_bottom = top
 	line.offset_bottom = 2
@@ -2845,7 +2845,7 @@ func _show_grave_popup(player_ref: BattlePlayer, is_banish: bool, title_text: St
 	
 	# 分割线
 	var line = ColorRect.new()
-	line.color = Color(0.4, 0.3, 0.5, 0.3)
+	line.color = Color(0.4, 0.3, 0.255, 0.3)
 	line.anchor_left = 0.0; line.anchor_top = 0.0
 	line.anchor_right = 1.0; line.anchor_bottom = 0.0
 	line.offset_left = Global.pw(0.05); line.offset_top = Global.ph(0.09)
@@ -3471,7 +3471,7 @@ func _play_discard_animation(callback_id: int, is_player_side: bool, discard_ind
 	for i in range(start_positions.size()):
 		var fly_card = ColorRect.new()
 		fly_card.size = Vector2(Global.pw(0.10), Global.pw(0.10) * 1.4)
-		fly_card.color = Color(0.4, 0.3, 0.7, 0.9)
+		fly_card.color = Color(0.4, 0.3, 0.255, 0.9)
 		fly_card.z_index = 300 + i
 		var start_pos = start_positions[i]
 		fly_card.global_position = start_pos - fly_card.size / 2.0
@@ -3726,7 +3726,7 @@ func _input_handle_drag_summon(event: InputEvent) -> void:
 			
 			# 创建半透明预览
 			_drag_preview = ColorRect.new()
-			_drag_preview.color = Color(0.3, 0.5, 0.8, 0.4)
+			_drag_preview.color = Color(0.3, 0.5, 0.425, 0.4)
 			_drag_preview.size = Vector2(Global.pw(0.25), Global.pw(0.25) * 1.4)
 			_drag_preview.z_index = 100
 			_drag_preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -3862,7 +3862,7 @@ func _input_handle_drag_attack(event: InputEvent) -> void:
 			
 			# 创建攻击预览（红色半透明）
 			_drag_attack_preview = ColorRect.new()
-			_drag_attack_preview.color = Color(0.8, 0.2, 0.2, 0.4)
+			_drag_attack_preview.color = Color(0.8, 0.2, 0.17, 0.4)
 			_drag_attack_preview.size = Vector2(Global.pw(0.25), Global.pw(0.25) * 1.4)
 			_drag_attack_preview.z_index = 100
 			_drag_attack_preview.mouse_filter = Control.MOUSE_FILTER_IGNORE

@@ -2635,13 +2635,18 @@ func _pixel_bar_skin(bar: Control) -> void:
 	bar.add_child(np)
 
 ## 纯金色文字（如价格 #FFD700）压在浅纸/羊皮纸上对比不足 1.5:1，统一加深色描边
-func _gold_label_fix(n: Node) -> void:
+## 纯金色文字（如价格 #FFD700）压在浅纸/羊皮纸上对比不足 1.5:1。
+## 金色是"金币"的语义色，不能靠压暗解决（压暗就不是金了）——改用深色描边。
+## 返回是否施加了描边：已描边的文字不需要再走 _ensure_text_contrast。
+func _gold_label_fix(n: Node) -> bool:
 	var lbl := n as Label
 	if lbl == null or not lbl.has_theme_color_override("font_color"):
-		return
+		return false
 	var fc := lbl.get_theme_color("font_color") as Color
 	if fc.r > 0.85 and fc.g > 0.68 and fc.g < 0.95 and fc.b < 0.30:
 		make_gold_legible(lbl)
+		return true
+	return false
 
 ## 行内文字对比度自适应：行材质是纸/皮革（pixel_row_style 产物）时，
 ## 浅色文字压浅纸 / 深色文字压深皮革都会消失——按材质自动加深/提亮，
@@ -2676,6 +2681,37 @@ func _row_label_contrast_fix(n: Node) -> void:
 	elif on_leather and fc.get_luminance() < 0.45:
 		lbl.add_theme_color_override("font_color", fc.lightened(0.55))
 
+## node_added 在 add_child 时触发，此时 font_color 常常还没赋值，钩子读不到颜色 ——
+## 2s 补扫只能覆盖早期节点，异步/延迟创建的 Label（如公会金币条）会漏。
+## 这里把 Label 排进 0.35s 后的批量补做队列，幂等（已达标就跳过）。
+var _late_queue: Array = []
+var _late_pending := false
+
+func _queue_late(n: Node) -> void:
+	_late_queue.append(n)
+	if _late_pending:
+		return
+	_late_pending = true
+	var t := get_tree().create_timer(0.35)
+	t.timeout.connect(_flush_late)
+
+func _flush_late() -> void:
+	_late_pending = false
+	for n in _late_queue:
+		if is_instance_valid(n) and n is Label:
+			_label_fix_all(n as Label)
+	_late_queue.clear()
+
+func _label_fix_all(lbl: Label) -> void:
+	if lbl == null:
+		return
+	var gold := _gold_label_fix(lbl)
+	_row_label_contrast_fix(lbl)
+	# 通用兜底：任意容器内的文字，按实际底色自动适配对比度
+	if not gold:
+		_ensure_text_contrast(lbl, _ancestor_bg_luminance(lbl),
+			lbl.get_theme_constant("outline_size") > 0)
+
 func _pixelize_node(n: Node) -> void:
 	_emoji_apply(n)
 	if n is ColorRect and (n.name == "TopBar" or n.name == "BottomBar"):
@@ -2683,8 +2719,9 @@ func _pixelize_node(n: Node) -> void:
 	if n is HSeparator:
 		_rope_sep_skin(n as HSeparator)
 	if n is Label:
-		_gold_label_fix(n)
-		_row_label_contrast_fix(n)
+		_label_fix_all(n as Label)
+		# node_added 早于 font_color 赋值：先做一次，再入延迟队列补做一次
+		_queue_late(n)
 	if n is BaseButton:
 		var b := n as BaseButton
 		(b as CanvasItem).texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -2726,6 +2763,7 @@ func _pixelize_node(n: Node) -> void:
 					if b.has_theme_color_override("font_color"):
 						b.add_theme_color_override("font_disabled_color",
 							(b.get_theme_color("font_color") as Color).lightened(0.10))
+					_ensure_text_contrast(b, _stylebox_luminance(s_new))
 				return
 			var pn := pixel_btn_style("normal")
 			if pn != null:
@@ -2764,6 +2802,8 @@ func _pixelize_node(n: Node) -> void:
 					b.add_theme_color_override("font_pressed_color", Color(0.10, 0.07, 0.05))
 					b.add_theme_color_override("font_disabled_color", Color(0.32, 0.27, 0.22))
 				(b as CanvasItem).texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+			# 纸按钮 lum≈0.50：旧深色底调的浅字（#e8d5b7/#ffffff/#f9d371）压上去等于隐形
+			_ensure_text_contrast(b, _btn_bg_luminance(b))
 		return
 	if n is PanelContainer or (n is Panel and not n is PanelContainer):
 		var pnl := n as Control
@@ -2787,6 +2827,117 @@ func _pixelize_node(n: Node) -> void:
 				s2.modulate_color = tint
 				pnl.add_theme_stylebox_override("panel", s2)
 				pnl.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+
+## 文字对比度自适应（WCAG）。
+## 换材质后底色全变了：纸/行纸 lum ≈ 0.5~0.68（浅），木墙 0.03~0.45（不定），
+## 皮革/顶栏/暗面板 ≈ 0.03（深）。而 418 处硬编码文字色是为旧深色背景调的
+## （#FFD700 金 1.06、#ffffff 1.32、#e8d5b7 1.08 —— 压在纸上等于隐形）。
+## 这里按"该文字实际所在容器的底色"自动 darkened / lightened，保留色相。
+const CONTRAST_MIN := 3.2
+var _tex_lum: Dictionary = {}
+
+func _tex_luminance(t: Texture2D) -> float:
+	if t == null:
+		return -1.0
+	var path := t.resource_path
+	if _tex_lum.has(path):
+		return _tex_lum[path]
+	var v := -1.0
+	var img := t.get_image()
+	if img != null:
+		img.resize(12, 12, Image.INTERPOLATE_LANCZOS)
+		var acc := 0.0
+		var cnt := 0
+		for y in range(12):
+			for x in range(12):
+				var c := img.get_pixel(x, y)
+				if c.a > 0.5:
+					acc += c.get_luminance()
+					cnt += 1
+		if cnt > 0:
+			v = acc / float(cnt)
+	_tex_lum[path] = v
+	return v
+
+func _stylebox_luminance(sb: StyleBox) -> float:
+	if sb == null:
+		return -1.0
+	if sb is StyleBoxFlat:
+		var f := sb as StyleBoxFlat
+		if f.bg_color.a < 0.35:
+			return -1.0
+		return f.bg_color.get_luminance()
+	if sb is StyleBoxTexture:
+		var st := sb as StyleBoxTexture
+		var v := _tex_luminance(st.texture)
+		if v < 0.0:
+			return -1.0
+		var mc := st.modulate_color
+		if not mc.is_equal_approx(Color(1.0, 1.0, 1.0, 1.0)):
+			v *= clampf((mc.r + mc.g + mc.b) / 3.0, 0.05, 1.0)
+		return v
+	return -1.0
+
+## 向上找最近的"有实底"的祖先（行内 Label 常包在 HBox/VBox 里）。
+## 找不到时回落到"全屏背景 TextureRect"（主界面木板 / 昼夜木墙）——
+## 大量文字是直接贴在背景上的（如顶部资源条、地图标题），没有容器包着。
+func _ancestor_bg_luminance(n: Node) -> float:
+	var p := n.get_parent()
+	var depth := 0
+	var tex_fallback := -1.0
+	while p != null and depth < 6:
+		depth += 1
+		if p is ColorRect and (p as ColorRect).color.a > 0.35:
+			return (p as ColorRect).color.get_luminance()
+		if tex_fallback < 0.0 and p is TextureRect:
+			var tr := p as TextureRect
+			if tr.texture != null and tr.anchor_right >= 0.99 and tr.anchor_bottom >= 0.99:
+				tex_fallback = _tex_luminance(tr.texture)
+		var c := p as Control
+		if c != null:
+			if c is BaseButton and (c as BaseButton).disabled and c.has_theme_stylebox_override("disabled"):
+				var vd := _stylebox_luminance(c.get_theme_stylebox("disabled"))
+				if vd >= 0.0:
+					return vd
+			for k in (["panel", "normal"] if (c is Panel or c is PanelContainer or c is BaseButton) else ["panel"]):
+				if c.has_theme_stylebox_override(k):
+					# 注意：Control 只有 has_theme_stylebox_override，读取要用 get_theme_stylebox
+					var v := _stylebox_luminance(c.get_theme_stylebox(k))
+					if v >= 0.0:
+						return v
+		p = p.get_parent()
+	return tex_fallback
+
+## 按钮当前实际生效的底色亮度（禁用态要用 disabled 样式，否则会把深底当浅底改反方向）
+func _btn_bg_luminance(b: BaseButton) -> float:
+	if b.disabled and b.has_theme_stylebox_override("disabled"):
+		var v := _stylebox_luminance(b.get_theme_stylebox("disabled"))
+		if v >= 0.0:
+			return v
+	return _stylebox_luminance(b.get_theme_stylebox("normal"))
+
+func _wcag_ratio(l1: float, l2: float) -> float:
+	return (maxf(l1, l2) + 0.05) / (minf(l1, l2) + 0.05)
+
+## 把 ctrl 的文字色压到与 bg_l 至少 CONTRAST_MIN 的对比（保色相，逐档收敛）
+func _ensure_text_contrast(ctrl: Control, bg_l: float, outlined := false) -> void:
+	if bg_l < 0.0 or outlined:
+		return
+	if not ctrl.has_theme_color_override("font_color"):
+		ctrl.add_theme_color_override("font_color", ctrl.get_theme_color("font_color") as Color)
+	var fc := ctrl.get_theme_color("font_color") as Color
+	if fc.a < 0.2:
+		return
+	if _wcag_ratio(fc.get_luminance(), bg_l) >= CONTRAST_MIN:
+		return
+	var out := fc
+	for _i in range(10):
+		out = out.darkened(0.16) if bg_l > 0.42 else out.lightened(0.16)
+		if _wcag_ratio(out.get_luminance(), bg_l) >= CONTRAST_MIN:
+			break
+	ctrl.add_theme_color_override("font_color", out)
+	ctrl.add_theme_color_override("font_hover_color", out)
+	ctrl.add_theme_color_override("font_pressed_color", out)
 
 func _copy_margins(dst: StyleBox, src: StyleBox) -> void:
 	dst.content_margin_left = src.content_margin_left

@@ -2554,7 +2554,7 @@ func _show_grave_panel(is_player: bool) -> void:
 	)
 	# 面板容器（居中，占屏幕 90%×94%）
 	var panel = ColorRect.new()
-	panel.color = Color(0.08, 0.06, 0.12, 0.95)
+	panel.color = Color(0.08, 0.06, 0.051, 0.95)
 	var sw = float(DisplayServer.screen_get_size().x)
 	var sh = float(DisplayServer.screen_get_size().y)
 	panel.offset_left = sw * 0.05
