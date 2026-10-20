@@ -1588,14 +1588,21 @@ func _on_battle_state_changed(state: int) -> void:
 		# BOSS战胜利 → 标记地图通关，结束后回主界面
 		var was_boss = Global.current_is_boss
 		if was_boss and Global.current_map_id != "":
-			PlayerManager.set_map_cleared(Global.current_map_id)
-			Global.current_is_boss = false
-			_exit_to_main = true
-			print("[战斗]  BOSS战胜利！地图通关：", Global.current_map_id)
-			# 检查纹路解锁状态
-			var new_unlocks = CircuitManager.check_and_apply_unlocks()
-			if new_unlocks.size() > 0:
-				print("[战斗] 解锁了 ", new_unlocks.size(), " 个纹路组件")
+			# 裂隙局（GDD §7.3.3）：BOSS 击杀 → 回裂隙图走 EXIT 撤离领首通奖励，不直接结束
+			if Global.rift_active:
+				Global.rift_boss_killed = true
+				Global.current_is_boss = false
+				_exit_to_main = false
+				print("[裂隙] BOSS 击杀！可前往撤离点结算（首通奖励待领）")
+			else:
+				PlayerManager.set_map_cleared(Global.current_map_id)
+				Global.current_is_boss = false
+				_exit_to_main = true
+				print("[战斗]  BOSS战胜利！地图通关：", Global.current_map_id)
+				# 检查纹路解锁状态
+				var new_unlocks = CircuitManager.check_and_apply_unlocks()
+				if new_unlocks.size() > 0:
+					print("[战斗] 解锁了 ", new_unlocks.size(), " 个纹路组件")
 		else:
 			# ★ 普通战斗胜利 → 回地图内继续探索
 			_exit_to_main = false
@@ -1619,6 +1626,10 @@ func _on_battle_state_changed(state: int) -> void:
 	# 败北/平局时：显示退出按钮，回主界面
 	elif state == 2 or state == 3:
 		_exit_to_main = true
+		# 裂隙局（GDD §7.3.3）：全灭 → 素材折损 50% 携出（不清零），本局结束
+		if Global.rift_active:
+			var r = Global.rift_settle_wipe()
+			print("[裂隙] 全灭结算：折损携带 %d 件，损失 %d 件" % [r["kept"], r["lost"]])
 		_show_battle_exit_btn(state)
 
 

@@ -6,11 +6,12 @@ extends Control
 #  每层节点点击后，只有相邻的可达节点才能继续前进，当前节点居中
 # ============================================================
 
-enum NodeType { MONSTER, GATHER, REST, BOSS, START, EMPTY }
+enum NodeType { MONSTER, GATHER, REST, BOSS, START, EMPTY, EXIT }
 
 # 8层（起点 + 7层），每层有独立地形
 # y 坐标在 [0.13, 0.87] 范围内（避开 TopBar 0~0.083 和 BottomBar 0.917~1.0）
-const LAYER_CONFIG := [
+# 裂隙局模式下会被 _build_rift_layer_config() 整体替换（GDD §7.3 v1.3）
+var LAYER_CONFIG: Array = [
 	{"name": " 起点", "y": 0.87, "color": Color("#ffffff"), "node_count": 1, "is_start": true},
 	{"name": " 树林", "y": 0.77, "color": Color("#5cb85c"), "node_count": 3, "terrain": "forest"},
 	{"name": " 草丛", "y": 0.67, "color": Color("#e8a838"), "node_count": 3, "terrain": "grass"},
@@ -20,6 +21,17 @@ const LAYER_CONFIG := [
 	{"name": " 暗穴", "y": 0.27, "color": Color("#8e44ad"), "node_count": 3, "terrain": "cave"},
 	{"name": " BOSS", "y": 0.13, "color": Color("#e74c3c"), "node_count": 1},
 ]
+
+# ===== 裂隙局（GDD §7.3 v1.3：入口化裂隙局，外层包装，节点事件逻辑全部复用）=====
+var _is_rift := false
+# 裂隙中层节点权重（GDD §7.3.2，归一化自 40/25/10/15；EVENT 复用 EMPTY 承载）
+const RIFT_TYPE_WEIGHTS := [
+	{"t": NodeType.MONSTER, "w": 0.444},
+	{"t": NodeType.GATHER, "w": 0.278},
+	{"t": NodeType.REST, "w": 0.111},
+	{"t": NodeType.EMPTY, "w": 0.167},
+]
+const RIFT_TERRAINS := ["forest", "grass", "mine", "valley", "mountain", "cave"]
 
 # 连接关系改为动态生成（杀戮尖塔风格，每个节点有限扇出）
 # 不再使用硬编码 CONNECTIONS，由 _generate_connections() 生成
@@ -40,6 +52,8 @@ const NODE_ICONS := {
 	NodeType.REST: "",
 	NodeType.BOSS: "",
 	NodeType.START: "",
+	NodeType.EMPTY: "",
+	NodeType.EXIT: "",
 }
 const NODE_NAMES := {
 	NodeType.MONSTER: "野怪",
@@ -47,6 +61,8 @@ const NODE_NAMES := {
 	NodeType.REST: "休息",
 	NodeType.BOSS: "BOSS",
 	NodeType.START: "出发",
+	NodeType.EMPTY: "异事",
+	NodeType.EXIT: "撤离",
 }
 
 # 地形专属名称
@@ -213,14 +229,59 @@ var _line_container: Control = null
 func init_map(map_id: String, map_name: String) -> void:
 	_map_id = map_id
 	_map_name = map_name
+	_is_rift = Global.rift_active  # 裂隙局：外层包装换成随机节点图（节点事件全部复用）
+	if _is_rift:
+		_build_rift_layer_config()
 	_generate_nodes()
+
+## 数据侧地图 ID：裂隙局按深度映射区域（怪物池/采集表/BOSS 池全走区域数据）
+func _loot_map_id() -> String:
+	if _is_rift:
+		return Global.rift_depth_to_map(Global.rift_depth)
+	return _map_id
+
+## 构建裂隙局层配置：START + 4 个随机中层（总节点 8–12）+ BOSS + EXIT（BOSS 后必连）
+## 权重/层数 [PLACEHOLDER]：L4 监控「平均每局战斗数 ∈ [2,3]」与「采集点访问率」
+func _build_rift_layer_config() -> void:
+	var rng = RandomNumberGenerator.new()
+	rng.seed = Global.rift_seed  # 局内布局按局种子确定：战斗往返后重建同图（randomize 会覆盖 seed，勿调）
+	var target_total := rng.randi_range(8, 12)
+	var middle_total := clampi(target_total - 2, 4, 9)  # 去掉 START/BOSS/EXIT 后保底 4 层各 ≥1
+	# 把 middle_total 拆成 4 层，每层 1–3
+	var counts := [1, 1, 1, 1]
+	var extra := middle_total - 4
+	for i in range(extra):
+		var l := rng.randi_range(0, 3)
+		if counts[l] < 3:
+			counts[l] += 1
+		else:
+			counts[(l + 1) % 4] += 1
+	var layer_colors := [Color("#5cb85c"), Color("#e8a838"), Color("#3498db"), Color("#8e44ad")]
+	var cfg := []
+	cfg.append({"name": " 裂隙入口", "y": 0.88, "color": Color("#b07fd4"), "node_count": 1, "is_start": true})
+	for i in range(4):
+		cfg.append({
+			"name": " 虚渊 %d" % (i + 1),
+			"y": 0.735 - 0.155 * i,
+			"color": layer_colors[i],
+			"node_count": counts[i],
+			"terrain": RIFT_TERRAINS[(int(Global.rift_depth) + i) % RIFT_TERRAINS.size()],
+			"rift_pool": true,
+		})
+	cfg.append({"name": " 异兽巢穴", "y": 0.13, "color": Color("#e74c3c"), "node_count": 1, "fixed_type": NodeType.BOSS})
+	cfg.append({"name": " 撤离点", "y": 0.045, "color": Color("#f0c948"), "node_count": 1, "fixed_type": NodeType.EXIT})
+	LAYER_CONFIG = cfg
+	print("[裂隙] 深度 ", Global.rift_depth, " 生成节点图：目标 ", target_total, " 实际 ", 2 + middle_total + 1)
 
 func _generate_nodes() -> void:
 	_node_data.clear()
 	_node_buttons.clear()
-	
+
 	var rng = RandomNumberGenerator.new()
-	rng.randomize()
+	if _is_rift:
+		rng.seed = Global.rift_seed + 1  # 节点类型同局确定（战斗往返不变）
+	else:
+		rng.randomize()
 	
 	# 休息层集合：BOSS上一层(暗穴, index 6)固定1个休息点；
 	# 第2-3层(树林 index 1 / 草丛 index 2)随机选一层，50%概率生成1个（可能没有）
@@ -266,22 +327,32 @@ func _generate_nodes() -> void:
 		for node_idx in range(node_count):
 			var node_type: NodeType
 			var x: float
-			
+
 			if is_start_layer:
 				# 起点层
 				x = 0.50
 				node_type = NodeType.START
 			elif node_count == 1:
-				# BOSS层
+				# 单节点层：显式 fixed_type 优先（裂隙 EXIT/BOSS），
+				# 裂隙中层随机到 1 节点时按权重掷点，普通图保持 BOSS
 				x = 0.50
-				node_type = NodeType.BOSS
+				if layer.has("fixed_type"):
+					node_type = layer["fixed_type"]
+				elif layer.get("rift_pool", false):
+					node_type = _rift_weighted_type(rng)
+				else:
+					node_type = NodeType.BOSS
 			else:
 				x = NODE_X_POSITIONS[node_idx]
 				# 随机偏移
 				x += rng.randf_range(-X_RANDOM_RANGE, X_RANDOM_RANGE)
 				x = clamp(x, 0.05, 0.95)
-				# 从该层已洗牌的类型中取节点类型（必含1战斗+1采集）
-				node_type = layer_types[node_idx]
+				# 裂隙中层：按 GDD §7.3.2 权重独立掷点（MONSTER/GATHER/REST/EVENT）
+				if layer.get("rift_pool", false):
+					node_type = _rift_weighted_type(rng)
+				else:
+					# 从该层已洗牌的类型中取节点类型（必含1战斗+1采集）
+					node_type = layer_types[node_idx]
 			
 			# Y轴随机偏移
 			var y_offset = rng.randf_range(-Y_RANDOM_RANGE, Y_RANDOM_RANGE) if not is_start_layer and node_count > 1 else 0.0
@@ -290,7 +361,7 @@ func _generate_nodes() -> void:
 			var monster_data := {}  # 完整怪物数据（进战斗时直接用，不再重新随机）
 			var terrain = layer.get("terrain", "")
 			if node_type == NodeType.MONSTER and terrain != "":
-				var monsters = Global.get_map_monsters(_map_id, terrain)
+				var monsters = Global.get_map_monsters(_loot_map_id(), terrain)
 				if monsters.size() > 0:
 					var chosen = monsters[rng.randi_range(0, monsters.size() - 1)]
 					monster_data = chosen.duplicate(true)
@@ -327,10 +398,23 @@ func _generate_nodes() -> void:
 		_node_data[1][node_idx]["available"] = true
 
 ## 生成动态连接（杀戮尖塔风格：每个节点有限扇出，且不交叉）
+## 裂隙中层权重掷点（GDD §7.3.2：MONSTER 40 / GATHER 25 / REST 10 / EVENT 15）
+func _rift_weighted_type(rng: RandomNumberGenerator) -> NodeType:
+	var r := rng.randf()
+	var cum := 0.0
+	for e in RIFT_TYPE_WEIGHTS:
+		cum += e["w"]
+		if r <= cum:
+			return e["t"]
+	return NodeType.MONSTER
+
 func _generate_connections() -> void:
 	_connections.clear()
 	var rng = RandomNumberGenerator.new()
-	rng.randomize()
+	if _is_rift:
+		rng.seed = Global.rift_seed + 2  # 连接拓扑同局确定（战斗往返不变）
+	else:
+		rng.randomize()
 
 	for layer_idx in range(LAYER_CONFIG.size() - 1):
 		var src_count = _node_data[layer_idx].size()
@@ -660,6 +744,104 @@ func _on_node_pressed(layer_idx: int, node_idx: int) -> void:
 			_trigger_rest_event(layer_idx, node_idx)
 		NodeType.BOSS:
 			_trigger_boss_event(layer_idx, node_idx)
+		NodeType.EMPTY:
+			_trigger_rift_event(layer_idx, node_idx)
+		NodeType.EXIT:
+			_trigger_exit_event(layer_idx, node_idx)
+
+
+## 裂隙异事节点（EVENT，复用 EMPTY 承载 · GDD §7.3.2）：
+## 随机取舍小事件 [PLACEHOLDER]，L4 依「事件访问率」调内容池。
+## v1 三选一：灵质涌动（白拿 1 素材）/ 虚渊赌局（50% 双倍 or 空手）/ 余烬（回复 20% HP）
+func _trigger_rift_event(layer_idx: int, node_idx: int) -> void:
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var roll := rng.randi_range(0, 2)
+	match roll:
+		0:
+			# 灵质涌动：从当前区域采集表随机 1 个素材
+			var mats = Global.get_gather_materials(_loot_map_id(), LAYER_CONFIG[layer_idx].get("terrain", ""))
+			if mats.size() > 0:
+				var m = mats[rng.randi_range(0, mats.size() - 1)]
+				var ok := Global.rift_add_loot("material", m.get("material_id", ""), m.get("name", "素材"), 1)
+				_show_rift_event_result("灵质涌动", ("拾得 %s x1" % m.get("name", "素材")) if ok else "背包已满，素材消散了")
+			else:
+				_show_rift_event_result("灵质涌动", "裂缝间只有风声")
+		1:
+			# 虚渊赌局：50% 双倍最近一堆 / 50% 空手
+			if Global.rift_backpack.size() > 0 and rng.randf() < 0.5:
+				var it = Global.rift_backpack[rng.randi_range(0, Global.rift_backpack.size() - 1)]
+				it["amount"] += it["amount"]
+				_show_rift_event_result("虚渊赌局", "赌赢了！%s 翻倍 → x%d" % [it["name"], it["amount"]])
+			else:
+				_show_rift_event_result("虚渊赌局", "虚渊沉默着，什么也没给")
+		2:
+			var heal := ceili(Global.current_run_player_max_hp * 0.2)
+			var old_hp := Global.current_run_player_hp
+			Global.current_run_player_hp = mini(old_hp + heal, Global.current_run_player_max_hp)
+			_show_rift_event_result("余烬", "拾起异兽余烬，回复 %d 点生命" % (Global.current_run_player_hp - old_hp))
+	_mark_node_completed(layer_idx, node_idx)
+
+
+## 裂隙撤离节点（EXIT · GDD §7.3.3）：素材全额带出 + BOSS 首通奖励
+func _trigger_exit_event(layer_idx: int, node_idx: int) -> void:
+	var result = Global.rift_settle_exit()
+	var lines := ["背包素材全额带出（%d 件）" % result["brought"]]
+	if result["first_clear_gold"] > 0:
+		lines.append("首通 Rift %d！金币 +%d" % [Global.rift_depth, result["first_clear_gold"]])
+	_show_rift_event_result("撤离成功", "\n".join(lines), true)
+
+
+## 异事/撤离结果弹窗（leave_scene=true 时确认后回主城）
+func _show_rift_event_result(title: String, body: String, leave_scene := false) -> void:
+	var overlay = ColorRect.new()
+	overlay.color = Color(0.0, 0.0, 0.0, 0.65)
+	overlay.anchor_left = 0.0; overlay.anchor_top = 0.0
+	overlay.anchor_right = 1.0; overlay.anchor_bottom = 1.0
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(overlay)
+	var panel = Panel.new()
+	panel.anchor_left = 0.5; panel.anchor_top = 0.5
+	panel.anchor_right = 0.5; panel.anchor_bottom = 0.5
+	panel.offset_left = -Global.pw(0.36); panel.offset_right = Global.pw(0.36)
+	panel.offset_top = -Global.ph(0.16); panel.offset_bottom = Global.ph(0.16)
+	overlay.add_child(panel)
+	var vb = VBoxContainer.new()
+	vb.set_anchors_preset(Control.PRESET_FULL_RECT)
+	vb.offset_left = 24; vb.offset_right = -24; vb.offset_top = 20; vb.offset_bottom = -20
+	vb.add_theme_constant_override("separation", 14)
+	panel.add_child(vb)
+	var tl = Label.new()
+	tl.text = title
+	tl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	tl.add_theme_font_size_override("font_size", 44)
+	vb.add_child(tl)
+	var bl = Label.new()
+	bl.text = body
+	bl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	bl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	bl.add_theme_font_size_override("font_size", 30)
+	vb.add_child(bl)
+	var btn = Button.new()
+	btn.text = "确定"
+	btn.custom_minimum_size = Vector2(0, Global.ph(0.06))
+	btn.pressed.connect(func():
+		overlay.queue_free()
+		if leave_scene:
+			Global.change_scene("res://Main.tscn"))
+	vb.add_child(btn)
+
+
+## 标记节点完成并解锁下层（复用现有推进逻辑）
+func _mark_node_completed(layer_idx: int, node_idx: int) -> void:
+	var nd = _node_data[layer_idx][node_idx]
+	nd["completed"] = true
+	nd["current"] = false
+	var btn = _node_buttons[layer_idx][node_idx]
+	if btn != null:
+		_update_button_style(btn, nd)
+	_update_next_layer_availability(layer_idx, node_idx)
+	_update_title_with_progress()
 
 
 func _update_next_layer_availability(layer_idx: int, node_idx: int) -> void:
@@ -692,7 +874,7 @@ func _trigger_monster_event(layer_idx: int, node_idx: int) -> void:
 		print("[爬塔] 选定卡兽: ", monster_data.get("name", "未知"), " (Lv.", monster_data.get("level", 0), ")")
 	else:
 		# 兼容旧存档/异常兜底：从敌人数据中随机选一个卡兽
-		var monsters = Global.get_map_monsters(_map_id, terrain)
+		var monsters = Global.get_map_monsters(_loot_map_id(), terrain)
 		if monsters.size() > 0:
 			var rng = RandomNumberGenerator.new()
 			rng.randomize()
@@ -723,7 +905,8 @@ func _trigger_monster_event(layer_idx: int, node_idx: int) -> void:
 			})
 		Global.saved_map_node_data.append(layer_save)
 	
-	Global.current_map_id = _map_id
+	Global.current_map_id = _loot_map_id()
+	Global.current_rift_map_id = _map_id
 	Global.current_map_name = _map_name + " - " + layer_name
 	Global.current_battle_terrain = terrain
 	Global.current_map_layer = layer_idx  # 保存当前层数，战斗后返回用
@@ -904,7 +1087,8 @@ func _trigger_gather_event(layer_idx: int, node_idx: int) -> void:
 						})
 					Global.saved_map_node_data.append(layer_save)
 				
-				Global.current_map_id = _map_id
+				Global.current_map_id = _loot_map_id()
+				Global.current_rift_map_id = _map_id
 				Global.current_map_name = _map_name + " - " + layer_name + "（伏击）"
 				Global.current_battle_terrain = terrain
 				Global.current_map_layer = layer_idx
@@ -914,7 +1098,7 @@ func _trigger_gather_event(layer_idx: int, node_idx: int) -> void:
 				return
 	
 	# 获取该地图该地形可采集的素材
-	var available_materials = Global.get_gather_materials(_map_id, terrain)
+	var available_materials = Global.get_gather_materials(_loot_map_id(), terrain)
 	
 	if available_materials.size() == 0:
 		print("[爬塔] 警告：", _map_name, " 的 ", layer_name, " 没有可采集的素材")
@@ -978,7 +1162,7 @@ func _trigger_boss_event(layer_idx: int, node_idx: int) -> void:
 	print("[爬塔] BOSS战！")
 	
 	# 加载BOSS数据
-	var boss_data = Global.get_map_boss(_map_id)
+	var boss_data = Global.get_map_boss(_loot_map_id())
 	if boss_data.size() > 0:
 		Global.current_enemy_data = boss_data.duplicate(true)
 		print("[爬塔] BOSS: ", boss_data.get("name", "未知"))
@@ -1004,7 +1188,8 @@ func _trigger_boss_event(layer_idx: int, node_idx: int) -> void:
 			})
 		Global.saved_map_node_data.append(layer_save)
 	
-	Global.current_map_id = _map_id
+	Global.current_map_id = _loot_map_id()
+	Global.current_rift_map_id = _map_id
 	Global.current_map_name = _map_name + " - BOSS战"
 	Global.current_battle_terrain = ""
 	Global.current_map_layer = layer_idx

@@ -73,8 +73,76 @@ func _ready():
 	# 主题切换
 	Global.theme_changed.connect(_on_theme_changed)
 	_on_theme_changed(Global.current_mode)
+	# 裂隙入口（GDD §7.3 v1.3：主城仅一个裂隙入口，点门即开局）
+	_setup_rift_portal()
 	# 教程
 	call_deferred("_setup_tutorial_flow")
+
+# ==================== 裂隙入口 ====================
+
+## 主城唯一裂隙入口：钉在告示板下方的深色裂缝门。
+## 点开 = 深度选择（Rift i 解锁条件 = 卡师等级 ≥ ceil(i/2)），选定即开局。
+func _setup_rift_portal() -> void:
+	var portal = get_node_or_null("RiftPortal")
+	if portal == null:
+		portal = Button.new()
+		portal.name = "RiftPortal"
+		portal.text = "虚渊裂缝 · 裂隙探索"
+		portal.anchor_left = 0.5; portal.anchor_right = 0.5
+		portal.anchor_top = 1.0; portal.anchor_bottom = 1.0
+		portal.offset_left = -Global.pw(0.26)
+		portal.offset_right = Global.pw(0.26)
+		portal.offset_top = -Global.ph(0.075)
+		portal.offset_bottom = -Global.ph(0.028)
+		portal.add_theme_font_size_override("font_size", 30)
+		add_child(portal)
+	portal.pressed.connect(_on_rift_portal_pressed)
+
+func _on_rift_portal_pressed() -> void:
+	# 深度选择弹窗（只列已解锁深度）
+	var max_d := Global.rift_max_unlocked_depth()
+	var overlay = ColorRect.new()
+	overlay.color = Color(0, 0, 0, 0.66)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(overlay)
+	var panel = PanelContainer.new()
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.custom_minimum_size = Vector2(Global.pw(0.72), 0)
+	overlay.add_child(panel)
+	var vb = VBoxContainer.new()
+	vb.add_theme_constant_override("separation", 12)
+	panel.add_child(vb)
+	var tl = Label.new()
+	tl.text = "虚渊裂缝 —— 选择探索深度"
+	tl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	tl.add_theme_font_size_override("font_size", 38)
+	vb.add_child(tl)
+	var cleared = int(SaveManager.get_value("player", "rift_cleared_depth", 0))
+	for i in range(1, max_d + 1):
+		var d := i
+		var b = Button.new()
+		b.text = "Rift %d%s" % [d, ("  ✓已首通" if d <= cleared else "")]
+		b.custom_minimum_size = Vector2(0, Global.ph(0.055))
+		b.pressed.connect(func():
+			overlay.queue_free()
+			_enter_rift(d))
+		vb.add_child(b)
+	var cancel = Button.new()
+	cancel.text = "离开"
+	cancel.custom_minimum_size = Vector2(0, Global.ph(0.045))
+	cancel.pressed.connect(func(): overlay.queue_free())
+	vb.add_child(cancel)
+
+func _enter_rift(depth: int) -> void:
+	Global.rift_start(depth)
+	# 局内持久 HP：与爬塔同规则，进图重置
+	Global.current_run_player_max_hp = PlayerManager.get_guild_max_hp()
+	Global.current_run_player_hp = Global.current_run_player_max_hp
+	Global.current_map_id = "rift"
+	Global.current_map_name = "虚渊裂缝 · Rift %d" % depth
+	Global.saved_map_node_data = []
+	Global.change_scene("res://MapNodeScene.tscn")
 
 # ==================== 主题切换 ====================
 

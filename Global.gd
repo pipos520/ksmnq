@@ -469,6 +469,7 @@ var current_enemy_data: Dictionary = {}
 var current_battle_terrain: String = ""  # 当前战斗的地形（用于掉落判定）
 var current_map_layer: int = -1  # 当前地图层数，用于战斗后返回
 var current_map_node: int = -1   # 当前地图节点索引，用于战斗后滚动到该节点位置
+var current_rift_map_id: String = ""  # 裂隙局在 MapNodeScene 内的场景级地图标记（"rift"）
 var current_is_boss: bool = false  # 当前战斗是否为BOSS战（用于通关标记）
 var current_is_ambush: bool = false  # 当前战斗是否为伏击战（采集彩蛋，双倍掉落）
 var is_tutorial_battle: bool = false  # 当前战斗是否为新手教学战（教战AI放水+教学提示条）
@@ -477,6 +478,110 @@ var current_run_player_hp: int = -1  # 当前爬塔的玩家HP，-1表示未初�
 var current_run_player_max_hp: int = 0  # 当前爬塔的玩家最大HP
 var saved_map_node_data: Array = []  # 保存地图节点状态(available/completed)，用于战斗后恢复
 var _enemy_data_cache: Dictionary = {}
+
+# ===== 裂隙局（GDD §7.3 v1.3：入口化裂隙局）=====
+## 结构 = 元气骑士的门 + 杀戮尖塔的图 + 暗黑的掉落：
+## 局内只掉素材进背包，EXIT 主动撤离才全额带出；全灭折损 50%。
+var rift_active: bool = false          # 是否处于裂隙局内（掉落路由 / 战斗结算分支的总开关）
+var rift_depth: int = 1               # 当前深度 Rift i（1..14，1-10 五区域每区 2 层，11-14 void_rift）
+var rift_seed: int = 0                # 本局布局种子（战斗往返重建同图）
+var rift_backpack: Array = []         # 局内背包 [{kind, id, name, amount}]，≤8 格（去重按 kind+id）
+var rift_boss_killed: bool = false    # 本局 BOSS 是否已击杀（影响 EXIT 首通奖励）
+const RIFT_BACKPACK_SLOTS := 8        # 背包格位 [PLACEHOLDER 8]：超格必须取舍（L4 校准）
+const RIFT_WIPE_LOSS := 0.5           # 全灭折损 [PLACEHOLDER 0.5]：痛但不毁局外进度（L4 校准）
+const RIFT_MAX_DEPTH := 14
+
+## 裂隙深度 → 区域 map_id（1-10 层映射 5 既有区域，每区域 2 层；11-14 高级段）
+func rift_depth_to_map(depth: int) -> String:
+	var region := ceili(float(depth) / 2.0)
+	match region:
+		1: return "misty_forest"
+		2: return "flame_cavern"
+		3: return "storm_tower"
+		4: return "shadow_swamp"
+		5: return "legendary_ruins"
+		_: return "void_rift"  # 6+: 渊门之后（任务 B 数据补全后生效）
+
+## Rift i 解锁条件 = 卡师等级 ≥ ceil(i/2) [PLACEHOLDER rationale：探索侧用深度表达进度]
+func rift_is_depth_unlocked(depth: int) -> bool:
+	var need := ceili(float(depth) / 2.0)
+	return PlayerManager.get_guild_level() >= need
+
+func rift_max_unlocked_depth() -> int:
+	var best := 0
+	for i in range(1, RIFT_MAX_DEPTH + 1):
+		if rift_is_depth_unlocked(i):
+			best = i
+	return best
+
+## 开局：进入裂隙局（清空局内状态）
+func rift_start(depth: int) -> void:
+	rift_active = true
+	rift_depth = clampi(depth, 1, RIFT_MAX_DEPTH)
+	rift_seed = randi()
+	rift_backpack = []
+	rift_boss_killed = false
+
+## 局内拾取：同类合并，新种类超格返回 false（由 UI 弹取舍/放弃提示）。
+## 幂等安全：amount<=0 直接拒。
+func rift_add_loot(kind: String, id: String, display_name: String, amount: int) -> bool:
+	if amount <= 0:
+		return false
+	for item in rift_backpack:
+		if item["kind"] == kind and item["id"] == id:
+			item["amount"] += amount
+			return true
+	if rift_backpack.size() >= RIFT_BACKPACK_SLOTS:
+		return false
+	rift_backpack.append({"kind": kind, "id": id, "name": display_name, "amount": amount})
+	return true
+
+## EXIT 主动撤离：素材全额带出 + BOSS 首通深度奖励。
+## 返回结算摘要 {brought, first_clear_gold}。
+func rift_settle_exit() -> Dictionary:
+	rift_active = false  # 先关路由：否则下方转仓库会被 add_material 再拦回背包（素材蒸发）
+	var brought := 0
+	for item in rift_backpack:
+		brought += item["amount"]
+		if item["kind"] == "material":
+			WarehouseManager.add_material(item["id"], item["amount"])
+		else:
+			WarehouseManager.add_aux(item["id"], item["amount"])
+	var first_clear_gold := 0
+	if rift_boss_killed:
+		var cleared = SaveManager.get_value("player", "rift_cleared_depth", 0)
+		if rift_depth > int(cleared):
+			SaveManager.set_value("player", "rift_cleared_depth", rift_depth)
+			first_clear_gold = 50 + rift_depth * 20  # [PLACEHOLDER] 首通金币，L4 校准
+			SaveManager.set_value("player", "gold", int(SaveManager.get_value("player", "gold", 0)) + first_clear_gold)
+	rift_active = false
+	rift_backpack = []
+	rift_boss_killed = false
+	SaveManager.save_to_disk()
+	return {"brought": brought, "first_clear_gold": first_clear_gold}
+
+## 中途全灭：素材折损 50%（每堆保留 ceil(amount/2)），不清零。
+## 返回结算摘要 {kept, lost}。
+func rift_settle_wipe() -> Dictionary:
+	rift_active = false  # 先关路由：同 rift_settle_exit
+	var kept := 0
+	var lost := 0
+	for item in rift_backpack:
+		var amt: int = int(item["amount"])
+		var keep := ceili(float(amt) * (1.0 - RIFT_WIPE_LOSS))
+		var lose: int = amt - keep
+		kept += keep
+		lost += lose
+		if keep > 0:
+			if item["kind"] == "material":
+				WarehouseManager.add_material(item["id"], keep)
+			else:
+				WarehouseManager.add_aux(item["id"], keep)
+	rift_active = false
+	rift_backpack = []
+	rift_boss_killed = false
+	SaveManager.save_to_disk()
+	return {"kept": kept, "lost": lost}
 
 func load_enemy_data() -> Dictionary:
 	if _enemy_data_cache.size() > 0:

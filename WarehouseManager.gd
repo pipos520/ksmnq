@@ -27,6 +27,19 @@ func get_material_count(material_id: String) -> int:
 func add_material(material_id: String, amount: int) -> void:
 	if amount <= 0:
 		return
+	# 裂隙局内（GDD §7.3 v1.3）：掉落不进仓库，进局内背包，EXIT 撤离才带出。
+	# 路由做在这里 → 两个战斗场景与采集的全部入账点自动覆盖，零调用点改动。
+	if Global.rift_active:
+		var mname := material_id
+		var mdata = Global.get_material_by_id(material_id)
+		if not mdata.is_empty():
+			mname = mdata.get("name", material_id)
+		var ok := Global.rift_add_loot("material", material_id, mname, amount)
+		if ok:
+			print("[裂隙] 素材入背包 ", mname, " x", amount)
+		else:
+			print("[裂隙] 背包已满，放弃素材 ", mname, " x", amount)
+		return
 	var mats = get_materials()
 	var current = mats.get(material_id, 0)
 	mats[material_id] = current + amount
@@ -135,6 +148,18 @@ func get_aux_count(aux_id: String) -> int:
 ## 添加辅材
 func add_aux(aux_id: String, amount: int) -> void:
 	if amount <= 0:
+		return
+	# 裂隙局内：辅材同样路由进局内背包（见 add_material 注释）
+	if Global.rift_active:
+		var aname := aux_id
+		var adata = Global.get_aux_by_id(aux_id)
+		if not adata.is_empty():
+			aname = adata.get("name", aux_id)
+		var ok := Global.rift_add_loot("aux", aux_id, aname, amount)
+		if ok:
+			print("[裂隙] 辅材入背包 ", aname, " x", amount)
+		else:
+			print("[裂隙] 背包已满，放弃辅材 ", aname, " x", amount)
 		return
 	var aux = get_aux_items()
 	var current = aux.get(aux_id, 0)
