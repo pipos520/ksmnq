@@ -56,6 +56,13 @@ var _drag_attack_press_pos: Vector2 = Vector2()
 var _is_dragging_attack: bool = false
 var _drag_attack_slot: int = -1
 var _drag_attack_preview: Control = null
+# ===== 横屏三视角（战斗镜头） =====
+const VIEW_FIELD := 0   # 全场：双方卡位同屏（拖拽攻击/看全局）
+const VIEW_PLAYER := 1  # 我方半场：1.5x 放大（召唤/读手牌）
+const VIEW_ENEMY := 2   # 敌方半场：1.5x 放大（读敌方卡/看敌方动作）
+const VIEW_ZOOM := 1.5
+var _battle_view: int = VIEW_FIELD
+var _view_btns: Array = []
 
 # 动画状态
 var _is_animating: bool = false
@@ -165,6 +172,8 @@ func _ready():
 		_hand_cards = _add_hand_area(0.695, 0.87)
 		_add_info_bar(0.87, 0.945, _player_name, _player_hp, _player_max_hp, _player_energy, _player_max_energy, false)
 		_add_bottom_bar(0.945, 1.0)
+		# 横屏三视角切换钮（自动按阶段切镜头，也手动可切）
+		_setup_view_switcher()
 	else:
 		# ===== 1. 敌方信息区 (0 ~ 0.06) 115px =====
 		_add_info_bar(0.0, 0.09, _enemy_name, _enemy_hp, _enemy_max_hp, _enemy_energy, _enemy_max_energy, true)
@@ -938,6 +947,125 @@ func _add_bottom_bar(top: float, bottom: float):
 	add_child(_end_btn)
 
 
+# ===== 横屏三视角切换（战斗镜头） =====
+func _setup_view_switcher() -> void:
+	if not Global.landscape_canvas:
+		return
+	var labels := ["我方", "全场", "敌方"]
+	var views := [VIEW_PLAYER, VIEW_FIELD, VIEW_ENEMY]
+	for i in labels.size():
+		var b := Button.new()
+		b.name = "ViewBtn%d" % i
+		b.text = labels[i]
+		b.add_theme_font_size_override("font_size", 26)
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(0.10, 0.08, 0.07, 0.92)
+		sb.border_width_left = 2; sb.border_width_right = 2
+		sb.border_width_top = 2; sb.border_width_bottom = 2
+		sb.border_color = Color(0.45, 0.35, 0.25)
+		sb.corner_radius_top_left = 8; sb.corner_radius_top_right = 8
+		sb.corner_radius_bottom_left = 8; sb.corner_radius_bottom_right = 8
+		b.add_theme_stylebox_override("normal", sb)
+		b.add_theme_stylebox_override("hover", sb)
+		b.add_theme_stylebox_override("pressed", sb)
+		b.add_theme_stylebox_override("focus", sb)
+		b.add_theme_color_override("font_color", Color("#d8c9a8"))
+		b.size = Vector2(96, 64)
+		b.pressed.connect(_on_view_btn_pressed.bind(views[i]))
+		add_child(b)
+		_view_btns.append(b)
+	_apply_battle_view(VIEW_FIELD)
+
+
+func _on_view_btn_pressed(v: int) -> void:
+	_apply_battle_view(v)
+
+
+## 应用视角：全场=恒等变换；我方/敌方=1.5x 聚焦对应半场
+## 用视口 canvas_transform 做镜头，输入坐标由引擎自动反变换，按钮/拖拽不受影响
+func _apply_battle_view(v: int) -> void:
+	if not Global.landscape_canvas:
+		return
+	_battle_view = v
+	var vp := get_viewport()
+	if vp == null:
+		return
+	if v == VIEW_FIELD:
+		vp.canvas_transform = Transform2D()
+	else:
+		var z := VIEW_ZOOM
+		var cy := Global.ph(0.70) if v == VIEW_PLAYER else Global.ph(0.30)
+		# 画布点 (960, cy) 缩放后映射到视口中心 (960, 540)
+		vp.canvas_transform = Transform2D(Vector2(z, 0), Vector2(0, z), Vector2(960.0 * (1.0 - z), 540.0 - z * cy))
+	_update_view_btn_visual()
+	_reposition_view_btns()
+
+
+## 切换钮跟随镜头反变换重定位，视觉上保持屏幕右侧居中固定
+func _reposition_view_btns() -> void:
+	if _view_btns.is_empty():
+		return
+	var vp := get_viewport()
+	if vp == null:
+		return
+	var inv := vp.canvas_transform.affine_inverse()
+	var screen_x := 1920.0 - 116.0
+	var top_y := 540.0 - (_view_btns.size() * 76.0 - 12.0) / 2.0
+	for i in _view_btns.size():
+		var b := _view_btns[i] as Button
+		if b == null:
+			continue
+		var screen_center := Vector2(screen_x + b.size.x / 2.0, top_y + i * 76.0 + b.size.y / 2.0)
+		b.position = inv * screen_center - b.size / 2.0
+
+
+func _update_view_btn_visual() -> void:
+	var views := [VIEW_PLAYER, VIEW_FIELD, VIEW_ENEMY]
+	for i in _view_btns.size():
+		var b := _view_btns[i] as Button
+		if b == null:
+			continue
+		var active: bool = views[i] == _battle_view
+		var sb := b.get_theme_stylebox("normal") as StyleBoxFlat
+		if sb:
+			sb.border_color = Color("#f9d371") if active else Color(0.45, 0.35, 0.25)
+			sb.bg_color = Color(0.16, 0.12, 0.09, 0.95) if active else Color(0.10, 0.08, 0.07, 0.92)
+		b.add_theme_color_override("font_color", Color("#f9d371") if active else Color("#d8c9a8"))
+
+
+## 弹窗均为全屏布局，放大视角下会被裁切——弹窗前回全景
+func _view_to_field_for_popup() -> void:
+	if Global.landscape_canvas and _battle_view != VIEW_FIELD:
+		_apply_battle_view(VIEW_FIELD)
+
+
+## 阶段驱动的自动镜头：我方主要阶段→我方视角；战斗阶段→全场；敌方回合→敌方视角
+func _auto_battle_view_for_phase() -> void:
+	if not Global.landscape_canvas or _battle_manager == null:
+		return
+	if _discard_mode:
+		return  # 弃牌弹窗期间不动镜头
+	if _battle_manager.is_player_turn():
+		if _battle_manager.current_phase == BattleManager.Phase.MAIN:
+			_apply_battle_view(VIEW_PLAYER)
+		elif _battle_manager.current_phase == BattleManager.Phase.BATTLE:
+			_apply_battle_view(VIEW_FIELD)
+	else:
+		_apply_battle_view(VIEW_ENEMY)
+
+
+## 探针/调试用：强制切视角
+func debug_set_view(v: int) -> void:
+	_apply_battle_view(v)
+
+
+func _exit_tree() -> void:
+	# 镜头变换挂在视口上，离场必须还原，避免污染其他场景
+	var vp := get_viewport()
+	if vp:
+		vp.canvas_transform = Transform2D()
+
+
 # ===== 初始化战斗系统（BattleManager驱动） =====
 func _init_battle() -> void:
 	var deck_id = Global.current_deck_id
@@ -1391,6 +1519,7 @@ func _on_phase_changed(phase: int, player_index: int) -> void:
 	_update_phase_ui()
 	_refresh_hand_ui()
 	_refresh_field_ui()
+	_auto_battle_view_for_phase()
 
 ## 弃牌请求信号处理（由BattleManager的discard_requested信号触发）
 func _on_discard_requested(count: int, callback_id: int, reason: String) -> void:
@@ -1642,6 +1771,7 @@ func _give_tutorial_craft_materials() -> Array:
 
 
 func _show_battle_reward_popup(gained_aux: Array) -> void:
+	_view_to_field_for_popup()
 	# 遮罩
 	var overlay = ColorRect.new()
 	overlay.name = "BattleRewardOverlay"
@@ -2019,6 +2149,7 @@ func _on_effect_triggered(action_type: String, value: int, is_player_side: bool,
 
 ## 卡组检索弹窗请求
 func _on_deck_search_requested(cards: Array, max_select: int, callback_id: int) -> void:
+	_view_to_field_for_popup()
 	_set_driver_busy(true)
 	var popup = DeckSearchPopup.new()
 	add_child(popup)
@@ -2450,6 +2581,7 @@ func _show_float_number(btn: Button, value: int, color: Color) -> void:
 	)
 ## 显示连锁响应提示
 func _show_chain_prompt() -> void:
+	_view_to_field_for_popup()
 	if _chain_overlay != null:
 		return
 	# 创建遮罩层
@@ -2542,6 +2674,7 @@ func _on_chain_yes() -> void:
 	_show_chain_card_selection(chainable_cards)
 ## 显示可连锁卡牌选择
 func _show_chain_card_selection(chainable_cards: Array) -> void:
+	_view_to_field_for_popup()
 	if _chain_overlay != null:
 		_chain_overlay.queue_free()
 		_chain_overlay = null
@@ -2813,6 +2946,7 @@ func _on_enemy_banish_clicked() -> void:
 
 
 func _show_grave_popup(player_ref: BattlePlayer, is_banish: bool, title_text: String) -> void:
+	_view_to_field_for_popup()
 	# 遮罩
 	var overlay = ColorRect.new()
 	overlay.name = "GraveOverlay"
@@ -3172,6 +3306,7 @@ func _process(delta: float) -> void:
 
 ## 显示卡牌详情弹窗
 func _show_card_detail() -> void:
+	_view_to_field_for_popup()
 	if _battle_manager == null:
 		_reset_press()
 		return
@@ -3257,6 +3392,7 @@ func _on_summon_slot_selected(slot_index: int, hand_idx: int) -> void:
 
 ## 从弹窗点击攻击按钮 → 打开SlotSelectPopup选择敌方目标
 func _on_attack_from_popup(slot_idx: int, detail_popup) -> void:
+	_view_to_field_for_popup()
 	# 关闭详情弹窗
 	if detail_popup != null and is_instance_valid(detail_popup):
 		detail_popup.close()
@@ -3310,6 +3446,7 @@ func _toggle_discard_selection(hand_index: int) -> void:
 
 ## 显示弃牌弹窗
 func _show_discard_ui() -> void:
+	_view_to_field_for_popup()
 	if _battle_manager == null:
 		return
 	_discard_mode = true
