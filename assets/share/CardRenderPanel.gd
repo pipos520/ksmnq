@@ -127,7 +127,7 @@ func _draw() -> void:
 	var element: String = CardManager.get_card_element(card)
 	var star: int = card.get("star", 1)
 	var effects_raw: Array = card.get("effects", [])
-	var desc: String = card.get("desc", "")
+	var desc: String = card.get("description", card.get("desc", ""))
 	var aux_items: Array = card.get("aux_items", [])
 
 	# 提取效果描述

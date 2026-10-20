@@ -17,6 +17,48 @@ func _ready() -> void:
 	call_deferred("_check_import_starter")
 	# 启动后延迟清理卡组残留失效ID（等新手卡组导入完成后再执行）
 	call_deferred("_clean_invalid_deck_ids")
+	# 字段双轨统一（GDD §5.3 canonical）：等导入/清理完成后再执行
+	call_deferred("_migrate_card_fields")
+
+## 字段双轨统一迁移（GDD §5.3 Canonical 卡牌数据模型）。
+## 旧存档/新手卡可能用旧命名 cost/atk/hp/element/desc/card_name，
+## 统一改名为 canonical：energy_cost/attack/health/main_element/description/name，
+## 并给缺失 star 的卡补默认 1（自造卡历史上缺 star）。
+## 幂等：旧键不存在时为 no-op，每次启动安全执行；改名后删除旧键。
+func _migrate_card_fields() -> void:
+	var cards = get_all_cards()
+	if cards.is_empty():
+		return
+	var changed := false
+	for c in cards:
+		if c is Dictionary:
+			if _migrate_single_card(c):
+				changed = true
+	if changed:
+		SaveManager.set_value(STORAGE_SECTION, STORAGE_KEY, cards)
+		SaveManager.save_to_disk()
+		print("[CardManager] 卡牌字段迁移完成（cost/atk/hp/element/desc/card_name → canonical）")
+
+const _FIELD_MIGRATE_MAP := {
+	"cost": "energy_cost",
+	"atk": "attack",
+	"hp": "health",
+	"element": "main_element",
+	"desc": "description",
+	"card_name": "name",
+}
+
+func _migrate_single_card(c: Dictionary) -> bool:
+	var touched := false
+	for old in _FIELD_MIGRATE_MAP:
+		if c.has(old):
+			c[_FIELD_MIGRATE_MAP[old]] = c[old]
+			c.erase(old)
+			touched = true
+	if not c.has("star"):
+		c["star"] = 1
+		touched = true
+	return touched
 
 ## 启动时扫描所有卡组，移除匹配不到收藏卡的失效ID（修复历史残留）
 ## 让「卡组显示牌数」与「实际战斗可用牌数」永远一致

@@ -59,10 +59,21 @@ var current_phase: Phase = Phase.NONE
 var turn_count: int = 0
 var battle_state: State = State.PLAYING
 
+## 后手补偿（GDD §6.2 D1 定稿，验证报告 §8）：猜拳定先手后，
+## 后手玩家自身前两个回合能量 +1（临时回满加成，不改 max_energy 增长轨道，
+## 第 3 个自身回合起双方自然同轨）。模拟器四镜像后手胜率 31.1%→46.0%，
+## 换 seed 46.3%。回滚条件（L4）：≥2 镜像后手 <40% → 升档每回合+1；任一 >55% → 仅首回合+1。
+var _second_mover_index: int = 1
+
 # 先手标记
 var _is_first_turn: bool = true
 # 已攻击的卡牌列表（当前战斗阶段）
 var _attacked_this_battle: Array = []
+
+## 超时裁决回合上限（GDD §6.2 / 平衡表 §8.6）
+## [PLACEHOLDER 20] —— 防"控制镜像无限拖局"（L3 模拟发现的真需求）。
+## L4 playtest 监控拖局率后定档；依赖假设（英雄血 30/格位 5/能量曲线）见平衡表 §8.6。
+const TURN_LIMIT := 20
 
 # 敌方AI队列（用于分步执行）
 var ai_action_queue: Array = []
@@ -170,8 +181,8 @@ func start_battle(deck_id: String, enemy_name: String = "暗影法师", auto_sta
 				else:
 					# 模板不存在时创建一个默认卡牌
 					enemy_card_datas.append({
-						"name": "未知卡牌", "cost": 1, "atk": 1, "hp": 1,
-						"element": "无", "fields": [], "quality": "标准", "star": 1
+						"name": "未知卡牌", "energy_cost": 1, "attack": 1, "health": 1,
+						"main_element": "无", "fields": [], "quality": "标准", "star": 1
 					})
 		
 		# 创建敌方（后手，使用自定义卡组）
@@ -222,6 +233,7 @@ func start_battle(deck_id: String, enemy_name: String = "暗影法师", auto_sta
 	_is_first_turn = true
 	turn_count = 1
 	current_player_index = 0
+	_second_mover_index = 1 - current_player_index  # 后手 = 非先手方
 	current_phase = Phase.NONE
 	
 	turn_changed.emit(turn_count)
@@ -464,20 +476,32 @@ func _execute_ready_phase() -> void:
 	# 能量回满
 	player.energy = player.max_energy
 	player.energy_changed.emit(player.energy, player.max_energy)
-	
+
 	# 重置回合级约束（必须在触发回合效果之前重置，确保本回合的CO01标记从零开始）
 	_reset_turn_constraints()
-	
+
 	# 重置卡牌状态（攻击标记、临时增减等）
 	player.ready_phase()
-	
+
 	# 触发回合开始周期性效果
 	_execute_periodic_effects(player, "start_of_turn")  # TR12: 己方回合开始
 	_scan_and_trigger("TR13", opponent)  # TR13: 对方回合开始时（扫描对方场上）
-	
+
 	# 检查0/0卡牌自然送墓
 	player.cleanup_destroyed()
-	
+
+	# ★ 后手补偿（GDD §6.2 D1 定稿）：后手自身第 1/2 回合能量 +1。
+	# 必须放在 ready_phase() 之后 —— ready_phase 会把 energy 重置回 max_energy，
+	# 放在它前面会被覆盖。后手的自身回合均为偶数全局回合 → 自身回合序号 = turn_count/2。
+	# 只补临时能量，max_energy 增长轨道不变 → 自身第 3 回合起与先手同轨。
+	if current_player_index == _second_mover_index:
+		var own_turn := turn_count >> 1
+		if own_turn <= 2 and player.energy < 10:
+			player.energy = mini(player.energy + 1, 10)
+			player.energy_changed.emit(player.energy, player.max_energy)
+			if OS.is_debug_build():
+				print("[战斗]  后手补偿: ", player.player_name, " 自身第", own_turn, "回合 能量+1 → ", player.energy)
+
 	if OS.is_debug_build():
 		print("[战斗]  准备: 能量上限", player.max_energy, " 能量回满，卡牌已重置")
 
@@ -617,6 +641,10 @@ func _do_discard(player: BattlePlayer, discard_indices: Array) -> void:
 	_check_win_condition()
 
 func _switch_turn() -> void:
+	# 超时裁决（GDD §6.2 / 平衡表 §8.6）：回合数达到上限后逐级判定，不再换手
+	if turn_count >= TURN_LIMIT and battle_state == State.PLAYING:
+		_resolve_timeout()
+		return
 	current_player_index = 1 if current_player_index == 0 else 0
 	turn_count += 1
 	
@@ -4232,6 +4260,21 @@ func _on_player_card_sent_to_grave(card) -> void:
 					_execute_effect_with_chain(owner, card, effect, card.slot_index if card.slot_index >= 0 else 0)
 	_scan_and_trigger("TR08", owner)  # TR08 已注释，保留兼容
 # ===== 胜利条件检查 =====
+## 超时裁决（GDD §6.2 / 平衡表 §8.6）：回合上限后按
+## 「剩余英雄生命 → 牌库余量 → 平局」逐级判定。
+func _resolve_timeout() -> void:
+	if player_self.hp != player_opponent.hp:
+		battle_state = State.WON if player_self.hp > player_opponent.hp else State.LOST
+	elif player_self.deck.size() != player_opponent.deck.size():
+		battle_state = State.WON if player_self.deck.size() > player_opponent.deck.size() else State.LOST
+	else:
+		battle_state = State.DRAW
+	battle_state_changed.emit(battle_state)
+	if OS.is_debug_build():
+		print("[战斗] ⏱ 回合上限 %d 触发超时裁决：血 %d/%d 牌库 %d/%d → %s" % [
+			TURN_LIMIT, player_self.hp, player_opponent.hp,
+			player_self.deck.size(), player_opponent.deck.size(), battle_state])
+
 func _check_win_condition() -> void:
 	# 双方都归0 → 平局
 	if player_self.hp <= 0 and player_opponent.hp <= 0:

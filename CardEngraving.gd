@@ -3220,6 +3220,7 @@ func _finish_make_card(final_quality: String):
 		"circuit_load": _pending_final_load,
 		"quality": final_quality,
 		"rarity": _card_rarity,           # 稀有度
+		"star": 1,                        # GDD §5.3 canonical：自造卡历史上缺 star，补默认 1
 		"description": _card_description,  # 卡牌描述
 		"durability": _selected_card_base.get("durability", 10),
 		"max_durability": _selected_card_base.get("durability", 10),

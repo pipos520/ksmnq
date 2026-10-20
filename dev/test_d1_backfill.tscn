@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://dev/test_d1_backfill.gd" id="1"]
+
+[node name="TestD1" type="Node"]
+script = ExtResource("1")
