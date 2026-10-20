@@ -99,30 +99,35 @@ var _turn_timer_label: Label = null  # 回合倒计时标签
 # var _network_mgr: NetworkBattleManager = null
 
 
-## 横屏视角下把根节点钉在竖屏设计尺寸（见 _ready 注释）
-func _pin_portrait_root() -> void:
-	anchor_left = 0.0
-	anchor_top = 0.0
-	anchor_right = 0.0
-	anchor_bottom = 0.0
-	offset_left = 0.0
-	offset_top = 0.0
-	offset_right = Global.REF_W
-	offset_bottom = Global.REF_H
-	size = Vector2(Global.REF_W, Global.REF_H)
+## tscn 里预置了一套与代码重建同名的 UI 节点（历史遗留）。不清理的话：
+# 1) _update_label 按名取节点会命中 tscn 旧节点（先入树），运行时数值刷不到可见层；
+# 2) 横屏重排后 tscn 节点按旧锚点错位，从半透明色块下透出鬼影。
+const _TSCN_DUP_NODES := [
+	"EnemyInfoBar", "EnemyInfoLine", "EnemyName", "EnemyHP", "EnemyEnergy",
+	"EnemyHandArea", "EnemyHandLabel", "EnemyHandScroll",
+	"EnemyGrave", "EnemyDeck", "EnemyBanish",
+	"EnemySlot_0", "EnemySlot_1", "EnemySlot_2", "EnemySlot_3", "EnemySlot_4",
+	"MiddleDiv", "PhaseLabel", "TurnTimerLabel",
+	"PlayerSlot_0", "PlayerSlot_1", "PlayerSlot_2", "PlayerSlot_3", "PlayerSlot_4",
+	"PlayerGrave", "PlayerDeck", "PlayerBanish",
+	"HandArea", "HandLabel", "HandScroll",
+	"PlayerInfoBar", "PlayerInfoLine", "PlayerName", "PlayerHP", "PlayerEnergy",
+	"BottomBar", "EndTurnBtn", "BackBtn",
+]
 
 func _ready():
-	# 横屏/竖屏画布接线（视角转换方案见 Global.enter_landscape_canvas）
-	# 横屏：复用本竖屏场景 + canvas_transform 旋转；竖屏：防御性恢复（幂等）
+	# 横屏/竖屏画布接线：横屏=1920x1080 画布+按横屏比例重排；竖屏=防御性恢复（幂等）
 	if Global.use_legacy_battle:
 		Global.exit_landscape_canvas()
 	else:
 		Global.enter_landscape_canvas()
-		# 视角转换下根节点必须保持竖屏设计尺寸（1080x1920），
-		# 不能跟随横屏视口 full-rect，否则子节点全部按 1920x1080 重排。
-		# 必须延迟到本帧布局收口后再收钉：_ready 里立即改锚点会让
-		# tscn 子节点在父宽为 0 的瞬间解析布局且不再重排（手牌区宽度归 0）。
-		_pin_portrait_root.call_deferred()
+	# 先释放 tscn 预置的重复 UI 节点（BG/GridBG 背景装饰保留），
+	# 让代码重建的节点持有规范名，_update_label 等按名查找命中可见节点
+	for n in _TSCN_DUP_NODES:
+		var old_n := get_node_or_null(NodePath(n))
+		if old_n:
+			remove_child(old_n)
+			old_n.free()
 	# 按公会称号等级设置玩家血量
 	var guild_max_hp = PlayerManager.get_guild_max_hp()
 	_player_max_hp = guild_max_hp
@@ -148,35 +153,48 @@ func _ready():
 	# 网格装饰
 	_add_grid_bg()
 	
-	# ===== 1. 敌方信息区 (0 ~ 0.06) 115px =====
-	_add_info_bar(0.0, 0.09, _enemy_name, _enemy_hp, _enemy_max_hp, _enemy_energy, _enemy_max_energy, true)
-	
-	# ===== 2. 敌方手牌区 (0.06 ~ 0.10) 77px =====
-	_enemy_hand_cards = _add_enemy_hand_area(0.09, 0.16)
-	
-	# ===== 3. 敌方墓地/卡组 (0.10 ~ 0.15) 96px =====
-	_add_grave_deck(0.16, 0.24, true)
-	
-	# ===== 4. 敌方场地区 (0.16 ~ 0.32) 307px =====
-	_enemy_slots = _add_field_slots(0.24, 0.36, Color(0.7, 0.2, 0.2, 0.3), true)
-	
-	# ===== 5. 中间分隔区 (0.32 ~ 0.35) 58px =====
-	_add_middle_divider(0.36, 0.40)
-	
-	# ===== 6. 己方场地区 (0.36 ~ 0.52) 307px =====
-	_player_slots = _add_field_slots(0.40, 0.54, Color(0.2, 0.5, 0.8, 0.3), false)
-	
-	# ===== 7. 己方墓地/卡组 (0.52 ~ 0.57) 96px =====
-	_add_grave_deck(0.54, 0.62, false)
-	
-	# ===== 8. 己方手牌区 (0.57 ~ 0.78) 403px =====
-	_hand_cards = _add_hand_area(0.62, 0.8685)
-	
-	# ===== 9. 己方信息区 (0.78 ~ 0.84) 115px =====
-	_add_info_bar(0.8685, 0.937, _player_name, _player_hp, _player_max_hp, _player_energy, _player_max_energy, false)
-	
-	# ===== 10. 底部操作栏 (0.84 ~ 1.0) 307px =====
-	_add_bottom_bar(0.937, 1.0)
+	# ===== 区域纵向堆叠：横屏按 1080 高度重新分配比例（敌方上/手牌下） =====
+	if Global.landscape_canvas:
+		_add_info_bar(0.0, 0.095, _enemy_name, _enemy_hp, _enemy_max_hp, _enemy_energy, _enemy_max_energy, true)
+		_enemy_hand_cards = _add_enemy_hand_area(0.095, 0.155)
+		_add_grave_deck(0.155, 0.23, true)
+		_enemy_slots = _add_field_slots(0.23, 0.40, Color(0.7, 0.2, 0.2, 0.3), true)
+		_add_middle_divider(0.40, 0.465)
+		_player_slots = _add_field_slots(0.465, 0.63, Color(0.2, 0.5, 0.8, 0.3), false)
+		_add_grave_deck(0.63, 0.695, false)
+		_hand_cards = _add_hand_area(0.695, 0.87)
+		_add_info_bar(0.87, 0.945, _player_name, _player_hp, _player_max_hp, _player_energy, _player_max_energy, false)
+		_add_bottom_bar(0.945, 1.0)
+	else:
+		# ===== 1. 敌方信息区 (0 ~ 0.06) 115px =====
+		_add_info_bar(0.0, 0.09, _enemy_name, _enemy_hp, _enemy_max_hp, _enemy_energy, _enemy_max_energy, true)
+		
+		# ===== 2. 敌方手牌区 (0.06 ~ 0.10) 77px =====
+		_enemy_hand_cards = _add_enemy_hand_area(0.09, 0.16)
+		
+		# ===== 3. 敌方墓地/卡组 (0.10 ~ 0.15) 96px =====
+		_add_grave_deck(0.16, 0.24, true)
+		
+		# ===== 4. 敌方场地区 (0.16 ~ 0.32) 307px =====
+		_enemy_slots = _add_field_slots(0.24, 0.36, Color(0.7, 0.2, 0.2, 0.3), true)
+		
+		# ===== 5. 中间分隔区 (0.32 ~ 0.35) 58px =====
+		_add_middle_divider(0.36, 0.40)
+		
+		# ===== 6. 己方场地区 (0.36 ~ 0.52) 307px =====
+		_player_slots = _add_field_slots(0.40, 0.54, Color(0.2, 0.5, 0.8, 0.3), false)
+		
+		# ===== 7. 己方墓地/卡组 (0.52 ~ 0.57) 96px =====
+		_add_grave_deck(0.54, 0.62, false)
+		
+		# ===== 8. 己方手牌区 (0.57 ~ 0.78) 403px =====
+		_hand_cards = _add_hand_area(0.62, 0.8685)
+		
+		# ===== 9. 己方信息区 (0.78 ~ 0.84) 115px =====
+		_add_info_bar(0.8685, 0.937, _player_name, _player_hp, _player_max_hp, _player_energy, _player_max_energy, false)
+		
+		# ===== 10. 底部操作栏 (0.84 ~ 1.0) 307px =====
+		_add_bottom_bar(0.937, 1.0)
 	
 	# 更新显示
 	_update_all_info()
@@ -227,7 +245,11 @@ func _add_info_bar(top: float, bottom: float, name_str: String, hp: int, max_hp:
 	name_lbl.add_theme_constant_override("shadow_offset_y", 2)
 	name_lbl.add_theme_color_override("font_shadow_color", Color("#000000"))
 	name_lbl.anchor_left = 0.0; name_lbl.anchor_top = top
-	name_lbl.anchor_right = 0.25; name_lbl.anchor_bottom = mid_y
+	# 横屏：单行布局（名字左/血量中/能量右）；竖屏：上排名字
+	if Global.landscape_canvas:
+		name_lbl.anchor_right = 0.32; name_lbl.anchor_bottom = bottom
+	else:
+		name_lbl.anchor_right = 0.25; name_lbl.anchor_bottom = mid_y
 	name_lbl.offset_left = Global.pw(0.025)
 	name_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	add_child(name_lbl)
@@ -243,8 +265,12 @@ func _add_info_bar(top: float, bottom: float, name_str: String, hp: int, max_hp:
 	hp_lbl.add_theme_constant_override("shadow_offset_x", 1)
 	hp_lbl.add_theme_constant_override("shadow_offset_y", 1)
 	hp_lbl.add_theme_color_override("font_shadow_color", Color("#000000"))
-	hp_lbl.anchor_left = 0.0; hp_lbl.anchor_top = mid
-	hp_lbl.anchor_right = 0.40; hp_lbl.anchor_bottom = bottom
+	if Global.landscape_canvas:
+		hp_lbl.anchor_left = 0.32; hp_lbl.anchor_top = top
+		hp_lbl.anchor_right = 0.58; hp_lbl.anchor_bottom = bottom
+	else:
+		hp_lbl.anchor_left = 0.0; hp_lbl.anchor_top = mid
+		hp_lbl.anchor_right = 0.40; hp_lbl.anchor_bottom = bottom
 	hp_lbl.offset_left = Global.pw(0.025)
 	hp_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	add_child(hp_lbl)
@@ -258,8 +284,12 @@ func _add_info_bar(top: float, bottom: float, name_str: String, hp: int, max_hp:
 	energy_lbl.add_theme_constant_override("shadow_offset_x", 1)
 	energy_lbl.add_theme_constant_override("shadow_offset_y", 1)
 	energy_lbl.add_theme_color_override("font_shadow_color", Color("#000000"))
-	energy_lbl.anchor_left = 0.40; energy_lbl.anchor_top = mid
-	energy_lbl.anchor_right = 0.70; energy_lbl.anchor_bottom = bottom
+	if Global.landscape_canvas:
+		energy_lbl.anchor_left = 0.58; energy_lbl.anchor_top = top
+		energy_lbl.anchor_right = 0.84; energy_lbl.anchor_bottom = bottom
+	else:
+		energy_lbl.anchor_left = 0.40; energy_lbl.anchor_top = mid
+		energy_lbl.anchor_right = 0.70; energy_lbl.anchor_bottom = bottom
 	energy_lbl.offset_left = Global.pw(0.025)
 	energy_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	add_child(energy_lbl)
@@ -286,7 +316,7 @@ func _add_grave_deck(top: float, bottom: float, is_enemy: bool):
 	grave_btn.add_theme_color_override("font_color", Color("#a0a0b0"))
 	grave_btn.anchor_left = 0.02; grave_btn.anchor_top = top
 	grave_btn.anchor_right = 0.0; grave_btn.anchor_bottom = bottom
-	grave_btn.offset_right = Global.pw(0.13)
+	grave_btn.offset_right = Global.pw(0.07) if Global.landscape_canvas else Global.pw(0.13)
 	grave_btn.offset_top += Global.ph(0.005); grave_btn.offset_bottom -= Global.ph(0.005)
 	add_child(grave_btn)
 	if is_enemy:
@@ -313,7 +343,7 @@ func _add_grave_deck(top: float, bottom: float, is_enemy: bool):
 	deck_btn.add_theme_color_override("font_color", Color("#a0a0b0"))
 	deck_btn.anchor_left = 1.0; deck_btn.anchor_top = top
 	deck_btn.anchor_right = 1.0; deck_btn.anchor_bottom = bottom
-	deck_btn.offset_left = Global.pw(-0.15)
+	deck_btn.offset_left = Global.pw(-0.09) if Global.landscape_canvas else Global.pw(-0.15)
 	deck_btn.offset_right = Global.pw(-0.02)
 	deck_btn.offset_top += Global.ph(0.005); deck_btn.offset_bottom -= Global.ph(0.005)
 	add_child(deck_btn)
@@ -335,7 +365,10 @@ func _add_grave_deck(top: float, bottom: float, is_enemy: bool):
 	banish_btn.add_theme_color_override("font_color", Color("#b080c0"))
 	banish_btn.anchor_left = 0.5; banish_btn.anchor_top = top
 	banish_btn.anchor_right = 0.5; banish_btn.anchor_bottom = bottom
-	banish_btn.offset_left = Global.pw(-0.07); banish_btn.offset_right = Global.pw(0.07)
+	if Global.landscape_canvas:
+		banish_btn.offset_left = Global.pw(-0.04); banish_btn.offset_right = Global.pw(0.04)
+	else:
+		banish_btn.offset_left = Global.pw(-0.07); banish_btn.offset_right = Global.pw(0.07)
 	banish_btn.offset_top += Global.ph(0.005); banish_btn.offset_bottom -= Global.ph(0.005)
 	add_child(banish_btn)
 	if is_enemy:
@@ -348,20 +381,30 @@ func _add_grave_deck(top: float, bottom: float, is_enemy: bool):
 func _add_field_slots(top: float, bottom: float, slot_color: Color, is_enemy: bool = false) -> Array:
 	var slots := []
 	var area_h = self.size.y * (bottom - top)
-	var side_margin_r = 0.05
 	var gap_r = 0.025
-	var slot_w_r = (1.0 - side_margin_r * 2 - gap_r * 4) / 5.0
-	# slot_w_r是宽度百分比，要转成高度百分比需要乘以屏幕宽高比
-	var slot_h_r = slot_w_r * (680.0/480.0) * (self.size.x / self.size.y)
-	var max_h_r = (bottom - top) * 0.85
-	if slot_h_r > max_h_r:
-		slot_h_r = max_h_r
+	var slot_w_r: float
+	var slot_h_r: float
+	if Global.landscape_canvas:
+		# 横屏：卡槽取与手牌同级的高度基准尺寸，整排自动居中
+		var slot_w_px := Global.ph(0.115)
+		var slot_h_px := slot_w_px * (680.0 / 480.0)
+		slot_w_r = slot_w_px / Global.pw(1.0)
+		slot_h_r = slot_h_px / Global.ph(1.0)
+		gap_r = 0.02
+	else:
+		var side_margin_r = 0.05
+		slot_w_r = (1.0 - side_margin_r * 2 - gap_r * 4) / 5.0
+		# slot_w_r是宽度百分比，要转成高度百分比需要乘以屏幕宽高比
+		slot_h_r = slot_w_r * (680.0/480.0) * (self.size.x / self.size.y)
+		var max_h_r = (bottom - top) * 0.85
+		if slot_h_r > max_h_r:
+			slot_h_r = max_h_r
 	var total_w_r = 5 * slot_w_r + 4 * gap_r
 	var start_x_r = (1.0 - total_w_r) / 2.0
 	var center_y_r = (top + bottom) / 2.0
 	
 	# 字号缩放——和手牌一致：用实际像素宽度/300.0，四角×2，中间×1.5
-	var actual_slot_w = self.size.x * slot_w_r  # 场地卡槽实际像素宽度
+	var actual_slot_w = (Global.pw(1.0) if Global.landscape_canvas else self.size.x) * slot_w_r  # 场地卡槽实际像素宽度
 	var scale = actual_slot_w / 300.0
 	var elem_size = max(10, int(24 * scale * 2))
 	var cost_size = max(10, int(24 * scale * 2))
@@ -555,8 +598,8 @@ func _add_hand_area(top: float, bottom: float) -> Array:
 	var cards := []
 	var gap = Global.pw(0.015)
 	
-	# 卡牌宽度自适应（占手牌区宽度的22%），高度为宽度*1.4
-	var slot_w = Global.pw(0.22)
+	# 卡牌宽度自适应（占手牌区宽度的22%），高度为宽度*1.4；横屏按高度基准取尺寸
+	var slot_w = Global.ph(0.105) if Global.landscape_canvas else Global.pw(0.22)
 	var slot_h = slot_w * (680.0/480.0)
 	
 	# 字号缩放（相对于标准卡牌宽度300px）
@@ -584,7 +627,7 @@ func _add_hand_area(top: float, bottom: float) -> Array:
 	lbl.add_theme_color_override("font_color", Color(0.6, 0.5, 0.7, 0.6))
 	lbl.anchor_left = 0.02; lbl.anchor_top = top
 	lbl.anchor_right = 0.0; lbl.anchor_bottom = top
-	lbl.offset_bottom = Global.ph(0.03)
+	lbl.offset_bottom = Global.ph(0.05) if Global.landscape_canvas else Global.ph(0.03)
 	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	add_child(lbl)
 	
@@ -716,8 +759,8 @@ func _add_enemy_hand_area(top: float, bottom: float) -> Array:
 	var cards := []
 	var gap = Global.pw(0.01)
 	
-	# 卡牌缩小一点，紧凑显示
-	var card_w = Global.pw(0.075)
+	# 卡牌缩小一点，紧凑显示（横屏按高度基准取尺寸）
+	var card_w = Global.ph(0.040) if Global.landscape_canvas else Global.pw(0.075)
 	var card_h = card_w * 1.4
 	
 	# 背景
@@ -734,8 +777,12 @@ func _add_enemy_hand_area(top: float, bottom: float) -> Array:
 	lbl.text = "敌方手牌"
 	lbl.add_theme_font_size_override("font_size", 40)
 	lbl.add_theme_color_override("font_color", Color(0.5, 0.3, 0.6, 0.6))
-	lbl.anchor_left = 0.02; lbl.anchor_top = mid_y
-	lbl.anchor_right = 0.0; lbl.anchor_bottom = bottom
+	if Global.landscape_canvas:
+		lbl.anchor_left = 0.01; lbl.anchor_top = top
+		lbl.anchor_right = 0.10; lbl.anchor_bottom = bottom
+	else:
+		lbl.anchor_left = 0.02; lbl.anchor_top = mid_y
+		lbl.anchor_right = 0.0; lbl.anchor_bottom = bottom
 	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	add_child(lbl)
 	
@@ -743,8 +790,13 @@ func _add_enemy_hand_area(top: float, bottom: float) -> Array:
 	var scroll = ScrollContainer.new()
 	scroll.name = "EnemyHandScroll"
 	scroll.anchor_left = 0.0; scroll.anchor_top = top
-	scroll.anchor_right = 1.0; scroll.anchor_bottom = mid_y
-	scroll.offset_left = Global.pw(0.02)
+	scroll.anchor_right = 1.0
+	if Global.landscape_canvas:
+		scroll.anchor_bottom = bottom
+		scroll.offset_left = Global.pw(0.10)
+	else:
+		scroll.anchor_bottom = mid_y
+		scroll.offset_left = Global.pw(0.02)
 	scroll.offset_top = Global.ph(0.002)
 	scroll.offset_right = Global.pw(-0.02)
 	scroll.offset_bottom = Global.ph(-0.002)
@@ -822,7 +874,7 @@ func _add_bottom_bar(top: float, bottom: float):
 	var exit_btn = Button.new()
 	exit_btn.name = "BattleExitBtn"
 	exit_btn.text = "退出"
-	exit_btn.add_theme_font_size_override("font_size", 40)
+	exit_btn.add_theme_font_size_override("font_size", 26 if Global.landscape_canvas else 40)
 	var exit_s = StyleBoxFlat.new()
 	exit_s.bg_color = Color(0.2, 0.08, 0.08)
 	exit_s.border_width_left = 1; exit_s.border_width_right = 1
@@ -849,7 +901,7 @@ func _add_bottom_bar(top: float, bottom: float):
 	_end_btn = Button.new()
 	_end_btn.name = "EndTurnBtn"
 	_end_btn.text = "⏭ 结束回合"
-	_end_btn.add_theme_font_size_override("font_size", 50)
+	_end_btn.add_theme_font_size_override("font_size", 30 if Global.landscape_canvas else 50)
 	var s = StyleBoxFlat.new()
 	s.bg_color = Color(0.15, 0.12, 0.22)
 	s.border_width_left = 2; s.border_width_right = 2

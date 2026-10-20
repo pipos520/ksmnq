@@ -13,17 +13,19 @@ const REF_W := 1080.0
 const REF_H := 1920.0
 const CANVAS_LANDSCAPE := Vector2i(1920, 1080)
 const CANVAS_PORTRAIT := Vector2i(1080, 1920)
-# 横屏战斗采用「视角转换」：视口逻辑画布切 1920x1080，再用 canvas_transform
-# 把竖屏 1080x1920 的原生画布旋转铺满（与 Camera2D 同机制）。
-# 战斗场景内部坐标系仍是竖屏设计坐标，因此 pw/ph 恒返回竖屏值，
-# 场景代码（54 处 global_position、拖拽系统、飘字）零改动。
-# landscape_canvas 仅用于标记「当前处于横屏视角」防止重复切换。
+# 横屏战斗：视口逻辑画布切 1920x1080（KEEP），战斗场景按横屏比例重新布局。
+# pw/ph 在横屏下分别以 1920/1080 为基准返回比例值，布局代码由此自适应；
+# landscape_canvas 标记当前是否处于横屏画布。
 static var landscape_canvas: bool = false
 
 static func ph(ratio: float) -> float:
+	if landscape_canvas:
+		return CANVAS_LANDSCAPE.y * ratio
 	return REF_H * ratio
 
 static func pw(ratio: float) -> float:
+	if landscape_canvas:
+		return CANVAS_LANDSCAPE.x * ratio
 	return REF_W * ratio
 
 ## 获取元素emoji
@@ -261,19 +263,16 @@ func get_battle_scene_path() -> String:
 	return "res://BattleSceneLegacy.tscn"
 
 # ============================================================
-# 横屏战斗画布（视角转换方案）
-# 项目默认画布是竖屏 1080x1920，横屏战斗复用竖屏场景，做法：
-# 1. 视口逻辑画布切 1920x1080（KEEP，比例不符留黑边不拉伸）；
-# 2. canvas_transform 施加 ±90° 旋转，把竖屏画布铺满横屏视口——
-#    与 Camera2D 同机制，场景内部坐标（global_position/拖拽/飘字）
-#    全部保持竖屏原生坐标，输入拾取由引擎自动逆变换，零改动。
+# 横屏战斗画布
+# 项目默认画布是竖屏 1080x1920，横屏战斗复用竖屏场景：
+# 进战斗时把视口逻辑画布切到 1920x1080（KEEP，比例不符留黑边不拉伸），
+# 战斗场景检测到 landscape_canvas 后按横屏比例重新布局（敌方上/手牌下）。
 # 只调 DisplayServer.window_set_size 改不了逻辑画布：content_scale_size
 # 仍被项目设置钉住，所以进出战斗必须同时切 content_scale_size。
+# 注意：不要用 canvas_transform 旋转整个画布——那只会把竖屏布局横过来
+# 显示（文字竖排、敌方在侧边），不是真正的横屏布局。
 # ============================================================
-## 旋转方向：+1 = 画布顶边落在视口右侧；真机方向反了改这一个值
-const CANVAS_ROT_SIGN := 1.0
-
-## 进入横屏战斗：1920x1080 画布 + 视角旋转
+## 进入横屏战斗：1920x1080 画布
 func enter_landscape_canvas() -> void:
 	if landscape_canvas:
 		return
@@ -282,15 +281,10 @@ func enter_landscape_canvas() -> void:
 	if w:
 		w.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
 		w.content_scale_size = CANVAS_LANDSCAPE
-		# 视角转换：旋转 canvas_transform 把 1080x1920 原生画布铺满 1920x1080 视口
-		var s := CANVAS_ROT_SIGN
-		var rot := s * PI / 2.0
-		var origin := Vector2(CANVAS_LANDSCAPE.x, 0.0) if s > 0.0 else Vector2(0.0, CANVAS_LANDSCAPE.y)
-		w.canvas_transform = Transform2D(rot, origin)
 	DisplayServer.screen_set_orientation(DisplayServer.SCREEN_LANDSCAPE)
 	DisplayServer.window_set_size(CANVAS_LANDSCAPE)
 
-## 退出横屏战斗：恢复竖屏画布、恒等变换与 EXPAND 拉伸
+## 退出横屏战斗：恢复竖屏画布与 EXPAND 拉伸
 func exit_landscape_canvas() -> void:
 	if not landscape_canvas:
 		return
@@ -299,7 +293,6 @@ func exit_landscape_canvas() -> void:
 	if w:
 		w.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
 		w.content_scale_size = CANVAS_PORTRAIT
-		w.canvas_transform = Transform2D()
 	DisplayServer.screen_set_orientation(DisplayServer.SCREEN_PORTRAIT)
 	DisplayServer.window_set_size(CANVAS_PORTRAIT)
 
