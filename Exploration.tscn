@@ -130,7 +130,7 @@ offset_right = -20.0
 offset_bottom = -10.0
 [node name="MapName_0" type="Label" parent="MapScroll/MapList/MapCard_0/MapInfo_0"]
 theme_override_font_sizes/font_size = 50
-text = "迷雾森林"
+text = "沉雾植物园"
 [node name="MapDiff_0" type="Label" parent="MapScroll/MapList/MapCard_0/MapInfo_0"]
 theme_override_font_sizes/font_size = 35
 text = "难度：简单"
@@ -142,7 +142,7 @@ text = "推荐战力：100"
 [node name="MapDesc_0" type="Label" parent="MapScroll/MapList/MapCard_0/MapInfo_0"]
 theme_override_font_sizes/font_size = 30
 theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
-text = "幽暗的森林中弥漫着神秘雾气，据说深处藏着古老的卡牌碎片。"
+text = "大裂断吞没的城市植物园，雾气催生了温室般的异兽生态。"
 autowrap_mode = 2
 [node name="MapExploreBtn_0" type="Button" parent="MapScroll/MapList/MapCard_0"]
 anchor_left = 1.0
@@ -182,7 +182,7 @@ offset_right = -20.0
 offset_bottom = -10.0
 [node name="MapName_1" type="Label" parent="MapScroll/MapList/MapCard_1/MapInfo_1"]
 theme_override_font_sizes/font_size = 50
-text = "火焰洞穴"
+text = "烬燃热电厂"
 [node name="MapDiff_1" type="Label" parent="MapScroll/MapList/MapCard_1/MapInfo_1"]
 theme_override_font_sizes/font_size = 35
 text = "难度：普通"
@@ -194,7 +194,7 @@ text = "推荐战力：300"
 [node name="MapDesc_1" type="Label" parent="MapScroll/MapList/MapCard_1/MapInfo_1"]
 theme_override_font_sizes/font_size = 30
 theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
-text = "灼热的岩浆在地底流淌，火焰精灵守护着珍贵的火系素材。"
+text = "废弃热电厂的地下熔炉仍在运转，管网深处游荡着火的异兽。"
 autowrap_mode = 2
 [node name="MapExploreBtn_1" type="Button" parent="MapScroll/MapList/MapCard_1"]
 anchor_left = 1.0

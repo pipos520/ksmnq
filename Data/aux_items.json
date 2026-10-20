@@ -1,2241 +1,2241 @@
 {
-  "aux_items": [
-    {
-      "id": "AU16",
-      "name": "新生嫩芽",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "树苗精身上脱落的嫩芽，附在卡牌上使生命值+1",
-      "effect": {
-        "hp_bonus": 1
-      }
-    },
-    {
-      "id": "AU17",
-      "name": "木质纤维",
-      "type": "protect",
-      "rarity": "普通",
-      "description": "树苗精的木质躯干碎片，能吸收少量伤害，使卡牌受到伤害-1",
-      "effect": {
-        "damage_reduce": 1
-      }
-    },
-    {
-      "id": "AU18",
-      "name": "鹿角碎片",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "雾角鹿脱落的鹿角碎片，附在卡牌上使攻击力+1",
-      "effect": {
-        "atk_bonus": 1
-      }
-    },
-    {
-      "id": "AU19",
-      "name": "雾绒",
-      "type": "special",
-      "rarity": "普通",
-      "description": "鹿角上凝结的雾气绒毛，轻若无物，使卡牌能量消耗-1（最低1）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU20",
-      "name": "孢子囊",
-      "type": "element",
-      "rarity": "普通",
-      "description": "蘑菇人背上的孢子囊，赋予卡牌暗属性，暗系效果强度+10%",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.1
-      }
-    },
-    {
-      "id": "AU21",
-      "name": "蘑菇伞盖",
-      "type": "protect",
-      "rarity": "普通",
-      "description": "蘑菇人的伞盖碎片，为卡牌提供2点护盾（一次性抵消伤害）",
-      "effect": {
-        "shield": 2
-      }
-    },
-    {
-      "id": "AU22",
-      "name": "草蜥蜴鳞片",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "草蜥蜴身上脱落的火鳞片，附在卡牌上使攻击力+1",
-      "effect": {
-        "atk_bonus": 1
-      }
-    },
-    {
-      "id": "AU23",
-      "name": "蜥蜴尾",
-      "type": "protect",
-      "rarity": "普通",
-      "description": "草蜥蜴断尾再生的备用尾巴，卡牌被破坏时有30%概率不破坏",
-      "effect": {
-        "revive_chance": 0.3
-      }
-    },
-    {
-      "id": "AU24",
-      "name": "螳螂刀臂",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "螳螂刀客的前臂镰刀，附在卡牌上使攻击力+2",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU25",
-      "name": "螳螂翅膜",
-      "type": "special",
-      "rarity": "普通",
-      "description": "螳螂的透明翅膜，入场当回合即可进行攻击（一次性）",
-      "effect": {
-        "haste": true
-      }
-    },
-    {
-      "id": "AU26",
-      "name": "蛇鳞片",
-      "type": "protect",
-      "rarity": "普通",
-      "description": "青鳞蛇的翠绿鳞片，为卡牌提供1点护盾（一次性抵消伤害）",
-      "effect": {
-        "shield": 1
-      }
-    },
-    {
-      "id": "AU27",
-      "name": "毒液囊",
-      "type": "element",
-      "rarity": "普通",
-      "description": "青鳞蛇的毒腺囊，赋予卡牌暗属性，暗系效果强度+10%",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.1
-      }
-    },
-    {
-      "id": "AU28",
-      "name": "岩石核心",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "岩石傀儡的灵晶核心，附在卡牌上使生命值+2",
-      "effect": {
-        "hp_bonus": 2
-      }
-    },
-    {
-      "id": "AU29",
-      "name": "矿脉石鳞",
-      "type": "protect",
-      "rarity": "普通",
-      "description": "岩石傀儡身上的坚硬石片，为卡牌提供2点护盾",
-      "effect": {
-        "shield": 2
-      }
-    },
-    {
-      "id": "AU30",
-      "name": "熔岩核心",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "熔岩蠕虫的熔岩核心，附在卡牌上使攻击力+2",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU31",
-      "name": "火鳞粉",
-      "type": "element",
-      "rarity": "普通",
-      "description": "熔岩蠕虫身上脱落的火鳞粉，赋予卡牌火属性，火系效果强度+10%",
-      "effect": {
-        "element": "火",
-        "element_power": 0.1
-      }
-    },
-    {
-      "id": "AU32",
-      "name": "暗晶尾刺",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "暗晶蝎的尾针，附在卡牌上使攻击力+1、生命值+1",
-      "effect": {
-        "atk_bonus": 1,
-        "hp_bonus": 1
-      }
-    },
-    {
-      "id": "AU33",
-      "name": "暗晶碎片",
-      "type": "element",
-      "rarity": "普通",
-      "description": "暗晶蝎身上的暗晶碎片，赋予卡牌暗属性，暗系效果强度+10%",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.1
-      }
-    },
-    {
-      "id": "AU34",
-      "name": "纯净水心",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "水元素的核心结晶，附在卡牌上使生命值+2",
-      "effect": {
-        "hp_bonus": 2
-      }
-    },
-    {
-      "id": "AU35",
-      "name": "水纹护符",
-      "type": "protect",
-      "rarity": "普通",
-      "description": "水元素凝聚的水纹护符，卡牌被破坏时有30%概率不破坏",
-      "effect": {
-        "revive_chance": 0.3
-      }
-    },
-    {
-      "id": "AU36",
-      "name": "风蝶翅粉",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "风灵蝶翅膀上的闪亮粉末，附在卡牌上使攻击力+2",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU37",
-      "name": "轻羽",
-      "type": "special",
-      "rarity": "普通",
-      "description": "风灵蝶的轻柔羽毛，入场当回合即可进行攻击（一次性）",
-      "effect": {
-        "haste": true
-      }
-    },
-    {
-      "id": "AU38",
-      "name": "棱镜碎片",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "光棱镜的水晶碎片，附在卡牌上使攻击力+1、生命值+1",
-      "effect": {
-        "atk_bonus": 1,
-        "hp_bonus": 1
-      }
-    },
-    {
-      "id": "AU39",
-      "name": "圣光余晖",
-      "type": "element",
-      "rarity": "普通",
-      "description": "光棱镜折射的圣光残留，赋予卡牌光属性，光系效果强度+10%",
-      "effect": {
-        "element": "光",
-        "element_power": 0.1
-      }
-    },
-    {
-      "id": "AU40",
-      "name": "巨人之心",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "岩石巨人的核心碎片，附在卡牌上使生命值+3",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU41",
-      "name": "山岩石板",
-      "type": "protect",
-      "rarity": "普通",
-      "description": "岩石巨人身上的坚硬石板，为卡牌提供2点护盾",
-      "effect": {
-        "shield": 2
-      }
-    },
-    {
-      "id": "AU42",
-      "name": "暗影翎羽",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "暗影鸦的漆黑翎羽，附在卡牌上使攻击力+2",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU43",
-      "name": "夜喙碎片",
-      "type": "element",
-      "rarity": "普通",
-      "description": "暗影鸦喙尖的碎片，赋予卡牌暗属性，暗系效果强度+15%",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU44",
-      "name": "风暴羽",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "风暴鹰的雷霆羽毛，附在卡牌上使攻击力+2、生命值+1",
-      "effect": {
-        "atk_bonus": 2,
-        "hp_bonus": 1
-      }
-    },
-    {
-      "id": "AU45",
-      "name": "雷电之眼",
-      "type": "special",
-      "rarity": "普通",
-      "description": "风暴鹰的雷电之眼，入场当回合即可进行攻击（一次性）",
-      "effect": {
-        "haste": true
-      }
-    },
-    {
-      "id": "AU46",
-      "name": "蛛丝囊",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "暗穴蜘蛛的蛛丝腺囊，附在卡牌上使生命值+2",
-      "effect": {
-        "hp_bonus": 2
-      }
-    },
-    {
-      "id": "AU47",
-      "name": "毒牙",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "暗穴蜘蛛的毒牙，附在卡牌上使攻击力+2",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU48",
-      "name": "熔岩龟甲",
-      "type": "protect",
-      "rarity": "普通",
-      "description": "熔岩龟的坚硬龟甲，为卡牌提供3点护盾",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU49",
-      "name": "火核",
-      "type": "element",
-      "rarity": "普通",
-      "description": "熔岩龟体内的火核，赋予卡牌火属性，火系效果强度+15%",
-      "effect": {
-        "element": "火",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU50",
-      "name": "幻光翅粉",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "幻光蝶翅膀上的光粉，附在卡牌上使攻击力+1、生命值+2",
-      "effect": {
-        "atk_bonus": 1,
-        "hp_bonus": 2
-      }
-    },
-    {
-      "id": "AU51",
-      "name": "圣光蝶翼",
-      "type": "special",
-      "rarity": "普通",
-      "description": "幻光蝶的圣洁翅膀，入场当回合即可进行攻击（一次性）",
-      "effect": {
-        "haste": true
-      }
-    },
-    {
-      "id": "AU52",
-      "name": "迷雾结晶",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "迷雾守护者的力量结晶，附在卡牌上使攻击力+3",
-      "effect": {
-        "atk_bonus": 3
-      }
-    },
-    {
-      "id": "AU53",
-      "name": "守护之核",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "迷雾守护者的守护核心，卡牌被破坏时有50%概率不破坏",
-      "effect": {
-        "revive_chance": 0.5
-      }
-    },
-    {
-      "id": "AU54",
-      "name": "火焰核心",
-      "rarity": "稀有",
-      "desc": "熔岩元素的核心结晶，蕴含炽热的火元素能量。",
-      "type": "element",
-      "effect": {
-        "element": "火",
-        "element_power": 0.15
-      },
-      "description": "熔岩元素的核心结晶，附在卡牌上使火元素之力提升15%"
-    },
-    {
-      "id": "AU55",
-      "name": "支配徽记",
-      "rarity": "稀有",
-      "desc": "支配者掉落的暗黑徽记，铭刻着古老的奴役契约。",
-      "type": "special",
-      "effect": {
-        "energy_reduce": 1
-      },
-      "description": "支配者掉落的暗黑徽记，附在卡牌上使能量消耗降低1点"
-    },
-    {
-      "id": "AU56",
-      "name": "蝎毒腺",
-      "rarity": "稀有",
-      "desc": "熔岩毒蝎的毒腺，提炼后可制成强效火毒。",
-      "type": "poison",
-      "effect": {
-        "poison": 1
-      },
-      "description": "熔岩毒蝎的毒腺，附在卡牌上使攻击附带1层中毒"
-    },
-    {
-      "id": "AU57",
-      "name": "炎晶鳞片",
-      "rarity": "稀有",
-      "desc": "炎晶蛇蜕下的鳞片，灼热而坚硬，可用于制作火系防具。",
-      "type": "protect",
-      "effect": {
-        "shield": 3
-      },
-      "description": "炎晶蛇蜕下的鳞片，附在卡牌上获得3点护盾"
-    },
-    {
-      "id": "AU58",
-      "name": "猎犬獠牙",
-      "rarity": "稀有",
-      "desc": "熔岩猎犬的锋利獠牙，蕴含狂野的火焰之力。",
-      "type": "combo",
-      "effect": {
-        "combo": true
-      },
-      "description": "熔岩猎犬的锋利獠牙，附在卡牌上获得连击能力，一回合可攻击两次"
-    },
-    {
-      "id": "AU59",
-      "name": "星火碎片",
-      "rarity": "稀有",
-      "desc": "火焰占星师的法器碎片，残留着神秘的星火能量。",
-      "type": "special",
-      "effect": {
-        "energy_reduce": 1
-      },
-      "description": "火焰占星师的法器碎片，附在卡牌上使能量消耗降低1点"
-    },
-    {
-      "id": "AU60",
-      "name": "元素余烬",
-      "type": "element",
-      "rarity": "普通",
-      "description": "熔岩元素消散后留下的余烬，附在卡牌上使火元素之力提升10%",
-      "effect": {
-        "element": "火",
-        "element_power": 0.1
-      }
-    },
-    {
-      "id": "AU61",
-      "name": "奴役印记",
-      "type": "element",
-      "rarity": "普通",
-      "description": "支配者留下的奴役契约残片，附在卡牌上使暗元素之力提升10%",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.1
-      }
-    },
-    {
-      "id": "AU62",
-      "name": "蝎尾针",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "熔岩毒蝎尾端的毒针，附在卡牌上使攻击力+1",
-      "effect": {
-        "atk_bonus": 1
-      }
-    },
-    {
-      "id": "AU63",
-      "name": "炎晶蛇牙",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "炎晶蛇的锐利獠牙，附在卡牌上使攻击力+1",
-      "effect": {
-        "atk_bonus": 1
-      }
-    },
-    {
-      "id": "AU64",
-      "name": "熔岩犬爪",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "熔岩猎犬的锋利爪子，附在卡牌上使攻击力+1、生命值+1",
-      "effect": {
-        "atk_bonus": 1,
-        "hp_bonus": 1
-      }
-    },
-    {
-      "id": "AU65",
-      "name": "星火法阵",
-      "type": "element",
-      "rarity": "普通",
-      "description": "火焰占星师绘制的法阵残迹，附在卡牌上使火元素之力提升10%",
-      "effect": {
-        "element": "火",
-        "element_power": 0.1
-      }
-    },
-    {
-      "id": "AU1",
-      "name": "熔岩核心",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "熔岩巨像体内的能量核心，附在卡牌上使生命值+3",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU66",
-      "name": "巨像岩甲",
-      "type": "protect",
-      "rarity": "普通",
-      "description": "熔岩巨像的岩甲碎片，附在卡牌上获得2点护盾",
-      "effect": {
-        "shield": 2
-      }
-    },
-    {
-      "id": "AU2",
-      "name": "咒术符文",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "记录着古老咒术的符文石，附在卡牌上使火元素之力提升20%",
-      "effect": {
-        "element": "火",
-        "element_power": 0.2
-      }
-    },
-    {
-      "id": "AU67",
-      "name": "烈焰咒符",
-      "type": "element",
-      "rarity": "普通",
-      "description": "火焰咒术师书写的咒符，附在卡牌上使火元素之力提升10%",
-      "effect": {
-        "element": "火",
-        "element_power": 0.1
-      }
-    },
-    {
-      "id": "AU3",
-      "name": "黑曜碎片",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "黑曜石傀儡的碎片，附在卡牌上获得3点护盾",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU68",
-      "name": "黑曜石核",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "黑曜石傀儡的核心碎块，附在卡牌上使生命值+2",
-      "effect": {
-        "hp_bonus": 2
-      }
-    },
-    {
-      "id": "AU4",
-      "name": "水母触须",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "熔岩水母的触须，附在卡牌上使攻击力+2",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU69",
-      "name": "水母毒囊",
-      "type": "poison",
-      "rarity": "普通",
-      "description": "熔岩水母的剧毒囊，附在卡牌上使攻击附带1层中毒",
-      "effect": {
-        "poison": 1
-      }
-    },
-    {
-      "id": "AU5",
-      "name": "龙鳞碎片",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "熔岩飞龙掉落的鳞片，附在卡牌上获得3点护盾",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU70",
-      "name": "飞龙火翼",
-      "type": "combo",
-      "rarity": "普通",
-      "description": "熔岩飞龙的炽热火翼，附在卡牌上获得连击能力，一回合可攻击两次",
-      "effect": {
-        "combo": true
-      }
-    },
-    {
-      "id": "AU6",
-      "name": "蠕虫粘液",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "岩浆蠕虫的分泌物，附在卡牌上使生命值+2",
-      "effect": {
-        "hp_bonus": 2
-      }
-    },
-    {
-      "id": "AU71",
-      "name": "岩浆虫壳",
-      "type": "protect",
-      "rarity": "普通",
-      "description": "岩浆蠕虫的外壳碎片，附在卡牌上获得2点护盾",
-      "effect": {
-        "shield": 2
-      }
-    },
-    {
-      "id": "AU7",
-      "name": "地狱之牙",
-      "type": "combo",
-      "rarity": "稀有",
-      "description": "地狱三头犬的利齿，附在卡牌上获得连击能力，一回合可攻击两次",
-      "effect": {
-        "combo": true
-      }
-    },
-    {
-      "id": "AU72",
-      "name": "地狱硫磺",
-      "type": "element",
-      "rarity": "普通",
-      "description": "地狱三头犬爪下的硫磺矿，附在卡牌上使暗元素之力提升10%",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.1
-      }
-    },
-    {
-      "id": "AU8",
-      "name": "萨满图腾",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "火焰萨满的图腾碎片，附在卡牌上有40%概率复活",
-      "effect": {
-        "revive_chance": 0.4
-      }
-    },
-    {
-      "id": "AU73",
-      "name": "萨满火骨",
-      "type": "element",
-      "rarity": "普通",
-      "description": "火焰萨满祭祀用的火骨，附在卡牌上使火元素之力提升10%",
-      "effect": {
-        "element": "火",
-        "element_power": 0.1
-      }
-    },
-    {
-      "id": "AU9",
-      "name": "幽灵结晶",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "熔岩幽灵的结晶，附在卡牌上获得疾风能力，召唤当回合即可攻击",
-      "effect": {
-        "haste": true
-      }
-    },
-    {
-      "id": "AU74",
-      "name": "幽灵鬼火",
-      "type": "element",
-      "rarity": "普通",
-      "description": "熔岩幽灵燃烧的鬼火，附在卡牌上使暗元素之力提升10%",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.1
-      }
-    },
-    {
-      "id": "AU10",
-      "name": "亡灵骨灰",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "亡灵炼金师遗留的骨灰，附在卡牌上使能量消耗降低1点",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU75",
-      "name": "炼金药剂",
-      "type": "special",
-      "rarity": "普通",
-      "description": "亡灵炼金师调制的药剂，附在卡牌上有30%概率复活",
-      "effect": {
-        "revive_chance": 0.3
-      }
-    },
-    {
-      "id": "AU11",
-      "name": "深渊之眼",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "深渊掠夺者的魔眼，附在卡牌上使攻击力+2",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU76",
-      "name": "掠夺者钩爪",
-      "type": "boost",
-      "rarity": "普通",
-      "description": "深渊掠夺者的钩爪，附在卡牌上使攻击力+1",
-      "effect": {
-        "atk_bonus": 1
-      }
-    },
-    {
-      "id": "AU12",
-      "name": "暗影核心",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "暗影支配者的力量核心，附在卡牌上使暗元素之力提升20%",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.2
-      }
-    },
-    {
-      "id": "AU77",
-      "name": "暗影摄魂珠",
-      "type": "special",
-      "rarity": "普通",
-      "description": "暗影支配者的摄魂法器，附在卡牌上使能量消耗降低1点",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU100",
-      "name": "梭形脊",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "梭形脊，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU101",
-      "name": "破云脂",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "破云脂，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU102",
-      "name": "鹫皇冠羽",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "鹫皇冠羽，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU103",
-      "name": "裂空距",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "裂空距，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "水",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU104",
-      "name": "浮空伞盖",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "浮空伞盖，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU105",
-      "name": "悬垂触丝",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "悬垂触丝，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU106",
-      "name": "眼风丝",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "眼风丝，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU107",
-      "name": "静域卵囊",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "静域卵囊，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU108",
-      "name": "雷髓脂",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "雷髓脂，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "火",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU109",
-      "name": "环节壳",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "环节壳，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU110",
-      "name": "钟螺壳",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "钟螺壳，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU111",
-      "name": "鸣雷液",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "鸣雷液，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU112",
-      "name": "涡核",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "涡核，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU113",
-      "name": "守卫残躯",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "守卫残躯，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU114",
-      "name": "淖蛭素",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "淖蛭素，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU115",
-      "name": "吸盘环",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "吸盘环，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU116",
-      "name": "泅影膜",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "泅影膜，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU117",
-      "name": "潜影鳍",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "潜影鳍，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU118",
-      "name": "腐灯孢",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "腐灯孢，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "光",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU119",
-      "name": "荧腐液",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "荧腐液，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU120",
-      "name": "瘴囊",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "瘴囊，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU121",
-      "name": "蟾皮垢",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "蟾皮垢，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU122",
-      "name": "夜汗滴",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "夜汗滴，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU123",
-      "name": "缠藤须",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "缠藤须，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "地",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU124",
-      "name": "蚀根瘤",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "蚀根瘤，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU125",
-      "name": "渊纹皮",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "渊纹皮，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU126",
-      "name": "傀儡泥核",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "傀儡泥核，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU127",
-      "name": "沉矿块",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "沉矿块，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU128",
-      "name": "提灯骨",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "提灯骨，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "风",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU129",
-      "name": "磷火油",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "磷火油，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU130",
-      "name": "喉鳞",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "喉鳞，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU131",
-      "name": "吞渊颚",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "吞渊颚，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU132",
-      "name": "凝泪珠",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "凝泪珠，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU133",
-      "name": "沼精髓",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "沼精髓，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "水",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU134",
-      "name": "双生甲",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "双生甲，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU135",
-      "name": "苔背芯",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "苔背芯，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU136",
-      "name": "织影线",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "织影线，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU137",
-      "name": "织娘薄翼",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "织娘薄翼，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU138",
-      "name": "巨像残臂",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "巨像残臂，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "火",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU139",
-      "name": "溺影核",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "溺影核，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU140",
-      "name": "蜈肢钩",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "蜈肢钩，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU141",
-      "name": "腐潮腺",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "腐潮腺，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU142",
-      "name": "哑泉石",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "哑泉石，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU143",
-      "name": "守泉印",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "守泉印，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU144",
-      "name": "蛛后腹丝",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "蛛后腹丝，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU145",
-      "name": "雾茧",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "雾茧，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU146",
-      "name": "沉钟壳",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "沉钟壳，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU147",
-      "name": "鸣咽芯",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "鸣咽芯，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU148",
-      "name": "视者瞳",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "视者瞳，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "光",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU149",
-      "name": "渊纹眼睑",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "渊纹眼睑，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU150",
-      "name": "辉尘鳞",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "辉尘鳞，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU151",
-      "name": "蛾翼晶",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "蛾翼晶，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU152",
-      "name": "构装臂",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "构装臂，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU153",
-      "name": "碑文核",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "碑文核，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "地",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU154",
-      "name": "封苔层",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "封苔层，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU155",
-      "name": "石像心",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "石像心，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU156",
-      "name": "双面壳",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "双面壳，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU157",
-      "name": "断裂冕",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "断裂冕，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU158",
-      "name": "哨杵",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "哨杵，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "风",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU159",
-      "name": "门纹片",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "门纹片，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU160",
-      "name": "星坠角",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "星坠角，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU161",
-      "name": "坠星髓",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "坠星髓，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU162",
-      "name": "方碑屑",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "方碑屑，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU163",
-      "name": "刻痕回路",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "刻痕回路，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "水",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU164",
-      "name": "蜮甲",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "蜮甲，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU165",
-      "name": "辉光腺",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "辉光腺，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU166",
-      "name": "守骥鬃",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "守骥鬃，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU167",
-      "name": "圣所鞍骨",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "圣所鞍骨，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU168",
-      "name": "歌者喉石",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "歌者喉石，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "火",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU169",
-      "name": "回响腔",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "回响腔，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU170",
-      "name": "断念线",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "断念线，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU171",
-      "name": "偶芯",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "偶芯，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU172",
-      "name": "初痕体节",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "初痕体节，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU173",
-      "name": "痕迹黏液",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "痕迹黏液，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU174",
-      "name": "律噪核",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "律噪核，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU175",
-      "name": "石皇碎片",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "石皇碎片，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU176",
-      "name": "圣辉羽根",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "圣辉羽根，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU177",
-      "name": "圣辉羽根",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "圣辉羽根，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU178",
-      "name": "行者足环",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "行者足环，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "光",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU179",
-      "name": "裔纹皮",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "裔纹皮，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU180",
-      "name": "帘目珠",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "帘目珠，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU181",
-      "name": "帘膜",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "帘膜，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU182",
-      "name": "遗言拓片",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "遗言拓片，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU183",
-      "name": "碑灵芯",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "碑灵芯，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "地",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU184",
-      "name": "看守锁链",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "看守锁链，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU185",
-      "name": "隙间鳞",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "隙间鳞，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU186",
-      "name": "嵌卡残基",
-      "type": "boost",
-      "rarity": "史诗",
-      "description": "嵌卡残基，虚渊高级辅材（史诗）",
-      "effect": {
-        "atk_bonus": 4
-      }
-    },
-    {
-      "id": "AU187",
-      "name": "蛞蝓黏液",
-      "type": "special",
-      "rarity": "史诗",
-      "description": "蛞蝓黏液，虚渊高级辅材（史诗）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU188",
-      "name": "蚀膜光鳞",
-      "type": "element",
-      "rarity": "史诗",
-      "description": "蚀膜光鳞，虚渊高级辅材（史诗）",
-      "effect": {
-        "element": "光",
-        "element_power": 0.25
-      }
-    },
-    {
-      "id": "AU189",
-      "name": "膜翼晶粉",
-      "type": "protect",
-      "rarity": "史诗",
-      "description": "膜翼晶粉，虚渊高级辅材（史诗）",
-      "effect": {
-        "shield": 4
-      }
-    },
-    {
-      "id": "AU190",
-      "name": "渊苔疣垫",
-      "type": "protect",
-      "rarity": "史诗",
-      "description": "渊苔疣垫，虚渊高级辅材（史诗）",
-      "effect": {
-        "hp_bonus": 5
-      }
-    },
-    {
-      "id": "AU191",
-      "name": "蟾毒腺",
-      "type": "poison",
-      "rarity": "史诗",
-      "description": "蟾毒腺，虚渊高级辅材（史诗）",
-      "effect": {
-        "poison": 2
-      }
-    },
-    {
-      "id": "AU192",
-      "name": "无面壳",
-      "type": "protect",
-      "rarity": "史诗",
-      "description": "无面壳，虚渊高级辅材（史诗）",
-      "effect": {
-        "damage_reduce": 2
-      }
-    },
-    {
-      "id": "AU193",
-      "name": "拟面皮",
-      "type": "special",
-      "rarity": "史诗",
-      "description": "拟面皮，虚渊高级辅材（史诗）",
-      "effect": {
-        "revive_chance": 0.6
-      }
-    },
-    {
-      "id": "AU194",
-      "name": "泣渊珠",
-      "type": "boost",
-      "rarity": "史诗",
-      "description": "泣渊珠，虚渊高级辅材（史诗）",
-      "effect": {
-        "hp_bonus": 4
-      }
-    },
-    {
-      "id": "AU195",
-      "name": "幼体鳍膜",
-      "type": "special",
-      "rarity": "史诗",
-      "description": "幼体鳍膜，虚渊高级辅材（史诗）",
-      "effect": {
-        "haste": 1
-      }
-    },
-    {
-      "id": "AU196",
-      "name": "昼面核",
-      "type": "element",
-      "rarity": "史诗",
-      "description": "昼面核，虚渊高级辅材（史诗）",
-      "effect": {
-        "element": "光",
-        "element_power": 0.25
-      }
-    },
-    {
-      "id": "AU197",
-      "name": "夜面核",
-      "type": "element",
-      "rarity": "史诗",
-      "description": "夜面核，虚渊高级辅材（史诗）",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.25
-      }
-    },
-    {
-      "id": "AU198",
-      "name": "骨化石英",
-      "type": "boost",
-      "rarity": "史诗",
-      "description": "骨化石英，虚渊高级辅材（史诗）",
-      "effect": {
-        "atk_bonus": 4
-      }
-    },
-    {
-      "id": "AU199",
-      "name": "矿脉髓芯",
-      "type": "protect",
-      "rarity": "史诗",
-      "description": "矿脉髓芯，虚渊高级辅材（史诗）",
-      "effect": {
-        "shield": 4
-      }
-    },
-    {
-      "id": "AU200",
-      "name": "钟魔舌锤",
-      "type": "boost",
-      "rarity": "史诗",
-      "description": "钟魔舌锤，虚渊高级辅材（史诗）",
-      "effect": {
-        "atk_bonus": 4
-      }
-    },
-    {
-      "id": "AU201",
-      "name": "倒悬钟骨",
-      "type": "protect",
-      "rarity": "史诗",
-      "description": "倒悬钟骨，虚渊高级辅材（史诗）",
-      "effect": {
-        "hp_bonus": 5
-      }
-    },
-    {
-      "id": "AU202",
-      "name": "渊晶丝",
-      "type": "special",
-      "rarity": "史诗",
-      "description": "渊晶丝，虚渊高级辅材（史诗）",
-      "effect": {
-        "combo": 1
-      }
-    },
-    {
-      "id": "AU203",
-      "name": "蚕晶核",
-      "type": "boost",
-      "rarity": "史诗",
-      "description": "蚕晶核，虚渊高级辅材（史诗）",
-      "effect": {
-        "hp_bonus": 5
-      }
-    },
-    {
-      "id": "AU204",
-      "name": "渊潮之心",
-      "type": "boost",
-      "rarity": "传说",
-      "description": "渊潮之心，虚渊高级辅材（传说）",
-      "effect": {
-        "atk_bonus": 5
-      }
-    },
-    {
-      "id": "AU205",
-      "name": "潮骸甲",
-      "type": "protect",
-      "rarity": "传说",
-      "description": "潮骸甲，虚渊高级辅材（传说）",
-      "effect": {
-        "shield": 5
-      }
-    },
-    {
-      "id": "AU206",
-      "name": "噬忆颚",
-      "type": "special",
-      "rarity": "传说",
-      "description": "噬忆颚，虚渊高级辅材（传说）",
-      "effect": {
-        "energy_reduce": 2
-      }
-    },
-    {
-      "id": "AU207",
-      "name": "忆残片",
-      "type": "element",
-      "rarity": "传说",
-      "description": "忆残片，虚渊高级辅材（传说）",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.35
-      }
-    },
-    {
-      "id": "AU208",
-      "name": "熄焰之核",
-      "type": "element",
-      "rarity": "传说",
-      "description": "熄焰之核，虚渊高级辅材（传说）",
-      "effect": {
-        "element": "火",
-        "element_power": 0.35
-      }
-    },
-    {
-      "id": "AU209",
-      "name": "游魂余烬",
-      "type": "boost",
-      "rarity": "传说",
-      "description": "游魂余烬，虚渊高级辅材（传说）",
-      "effect": {
-        "hp_bonus": 6
-      }
-    },
-    {
-      "id": "AU210",
-      "name": "概念残影",
-      "type": "protect",
-      "rarity": "传说",
-      "description": "概念残影，虚渊高级辅材（传说）",
-      "effect": {
-        "damage_reduce": 2
-      }
-    },
-    {
-      "id": "AU211",
-      "name": "巨影之足",
-      "type": "boost",
-      "rarity": "传说",
-      "description": "巨影之足，虚渊高级辅材（传说）",
-      "effect": {
-        "atk_bonus": 5
-      }
-    },
-    {
-      "id": "AU212",
-      "name": "暴君翼骨",
-      "type": "special",
-      "rarity": "传说",
-      "description": "暴君翼骨，虚渊高级辅材（传说）",
-      "effect": {
-        "haste": 1
-      }
-    },
-    {
-      "id": "AU213",
-      "name": "暴风羽",
-      "type": "element",
-      "rarity": "传说",
-      "description": "暴风羽，虚渊高级辅材（传说）",
-      "effect": {
-        "element": "风",
-        "element_power": 0.35
-      }
-    },
-    {
-      "id": "AU214",
-      "name": "初源壳片",
-      "type": "protect",
-      "rarity": "传说",
-      "description": "初源壳片，虚渊高级辅材（传说）",
-      "effect": {
-        "hp_bonus": 6
-      }
-    },
-    {
-      "id": "AU215",
-      "name": "壳心晶",
-      "type": "boost",
-      "rarity": "传说",
-      "description": "壳心晶，虚渊高级辅材（传说）",
-      "effect": {
-        "atk_bonus": 5
-      }
-    },
-    {
-      "id": "AU216",
-      "name": "千喉索",
-      "type": "special",
-      "rarity": "传说",
-      "description": "千喉索，虚渊高级辅材（传说）",
-      "effect": {
-        "combo": 1
-      }
-    },
-    {
-      "id": "AU217",
-      "name": "窟主黏膜",
-      "type": "protect",
-      "rarity": "传说",
-      "description": "窟主黏膜，虚渊高级辅材（传说）",
-      "effect": {
-        "shield": 5
-      }
-    },
-    {
-      "id": "AU218",
-      "name": "渊语残响",
-      "type": "element",
-      "rarity": "传说",
-      "description": "渊语残响，虚渊高级辅材（传说）",
-      "effect": {
-        "element": "光",
-        "element_power": 0.35
-      }
-    },
-    {
-      "id": "AU219",
-      "name": "语者喉晶",
-      "type": "special",
-      "rarity": "传说",
-      "description": "语者喉晶，虚渊高级辅材（传说）",
-      "effect": {
-        "revive_chance": 0.75
-      }
-    },
-    {
-      "id": "AU220",
-      "name": "僭主冠羽",
-      "type": "boost",
-      "rarity": "传说",
-      "description": "僭主冠羽，虚渊高级辅材（传说）",
-      "effect": {
-        "atk_bonus": 5
-      }
-    },
-    {
-      "id": "AU221",
-      "name": "僭主权杖",
-      "type": "special",
-      "rarity": "传说",
-      "description": "僭主权杖，虚渊高级辅材（传说）",
-      "effect": {
-        "energy_reduce": 2
-      }
-    },
-    {
-      "id": "AU78",
-      "name": "悬雷萤囊",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "悬雷萤囊，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "火",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU79",
-      "name": "蜉翼膜",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "蜉翼膜，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU80",
-      "name": "鸢羽刃",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "鸢羽刃，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU81",
-      "name": "割风骨",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "割风骨，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU82",
-      "name": "蜃云髓",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "蜃云髓，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU83",
-      "name": "幻层壳",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "幻层壳，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "暗",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU84",
-      "name": "焦纹木心",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "焦纹木心，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU85",
-      "name": "蓄雷环",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "蓄雷环，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU86",
-      "name": "气压鳞",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "气压鳞，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU87",
-      "name": "缠压筋",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "缠压筋，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU88",
-      "name": "风骨片",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "风骨片，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "光",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU89",
-      "name": "鸣哨腔",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "鸣哨腔，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU90",
-      "name": "磁魁核",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "磁魁核，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU91",
-      "name": "导雷须",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "导雷须，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU92",
-      "name": "隼翎",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "隼翎，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU93",
-      "name": "撕空爪",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "撕空爪，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "地",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU94",
-      "name": "锚云腱",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "锚云腱，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    },
-    {
-      "id": "AU95",
-      "name": "压舱石",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "压舱石，来自深层裂隙异兽的辅材（攻击强化）",
-      "effect": {
-        "atk_bonus": 2
-      }
-    },
-    {
-      "id": "AU96",
-      "name": "卷心涡核",
-      "type": "boost",
-      "rarity": "稀有",
-      "description": "卷心涡核，来自深层裂隙异兽的辅材（生命强化）",
-      "effect": {
-        "hp_bonus": 3
-      }
-    },
-    {
-      "id": "AU97",
-      "name": "逆流鳞",
-      "type": "protect",
-      "rarity": "稀有",
-      "description": "逆流鳞，来自深层裂隙异兽的辅材（护盾）",
-      "effect": {
-        "shield": 3
-      }
-    },
-    {
-      "id": "AU98",
-      "name": "鼓翅板",
-      "type": "element",
-      "rarity": "稀有",
-      "description": "鼓翅板，来自深层裂隙异兽的辅材（元素增幅）",
-      "effect": {
-        "element": "风",
-        "element_power": 0.15
-      }
-    },
-    {
-      "id": "AU99",
-      "name": "共振液",
-      "type": "special",
-      "rarity": "稀有",
-      "description": "共振液，来自深层裂隙异兽的辅材（能量减免）",
-      "effect": {
-        "energy_reduce": 1
-      }
-    }
-  ]
+ "aux_items": [
+  {
+   "id": "AU16",
+   "name": "新生嫩芽",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "催芽藓偶身上脱落的嫩芽，附在卡牌上使生命值+1",
+   "effect": {
+    "hp_bonus": 1
+   }
+  },
+  {
+   "id": "AU17",
+   "name": "木质纤维",
+   "type": "protect",
+   "rarity": "普通",
+   "description": "催芽藓偶的木质躯干碎片，能吸收少量伤害，使卡牌受到伤害-1",
+   "effect": {
+    "damage_reduce": 1
+   }
+  },
+  {
+   "id": "AU18",
+   "name": "鹿角碎片",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "雾栖鹿偶脱落的鹿角碎片，附在卡牌上使攻击力+1",
+   "effect": {
+    "atk_bonus": 1
+   }
+  },
+  {
+   "id": "AU19",
+   "name": "雾绒",
+   "type": "special",
+   "rarity": "普通",
+   "description": "鹿角上凝结的雾气绒毛，轻若无物，使卡牌能量消耗-1（最低1）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU20",
+   "name": "孢子囊",
+   "type": "element",
+   "rarity": "普通",
+   "description": "霉斑菌傀背上的孢子囊，赋予卡牌暗属性，暗系效果强度+10%",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.1
+   }
+  },
+  {
+   "id": "AU21",
+   "name": "蘑菇伞盖",
+   "type": "protect",
+   "rarity": "普通",
+   "description": "霉斑菌傀的伞盖碎片，为卡牌提供2点护盾（一次性抵消伤害）",
+   "effect": {
+    "shield": 2
+   }
+  },
+  {
+   "id": "AU22",
+   "name": "灼背蜥鳞片",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "灼背蜥身上脱落的火鳞片，附在卡牌上使攻击力+1",
+   "effect": {
+    "atk_bonus": 1
+   }
+  },
+  {
+   "id": "AU23",
+   "name": "蜥蜴尾",
+   "type": "protect",
+   "rarity": "普通",
+   "description": "灼背蜥断尾再生的备用尾巴，卡牌被破坏时有30%概率不破坏",
+   "effect": {
+    "revive_chance": 0.3
+   }
+  },
+  {
+   "id": "AU24",
+   "name": "螳螂刀臂",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "刈草螳的前臂镰刀，附在卡牌上使攻击力+2",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU25",
+   "name": "螳螂翅膜",
+   "type": "special",
+   "rarity": "普通",
+   "description": "螳螂的透明翅膜，入场当回合即可进行攻击（一次性）",
+   "effect": {
+    "haste": true
+   }
+  },
+  {
+   "id": "AU26",
+   "name": "蛇鳞片",
+   "type": "protect",
+   "rarity": "普通",
+   "description": "灌渠鳞蛇的翠绿鳞片，为卡牌提供1点护盾（一次性抵消伤害）",
+   "effect": {
+    "shield": 1
+   }
+  },
+  {
+   "id": "AU27",
+   "name": "毒液囊",
+   "type": "element",
+   "rarity": "普通",
+   "description": "灌渠鳞蛇的毒腺囊，赋予卡牌暗属性，暗系效果强度+10%",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.1
+   }
+  },
+  {
+   "id": "AU28",
+   "name": "岩石核心",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "假山傀儡的灵晶核心，附在卡牌上使生命值+2",
+   "effect": {
+    "hp_bonus": 2
+   }
+  },
+  {
+   "id": "AU29",
+   "name": "矿脉石鳞",
+   "type": "protect",
+   "rarity": "普通",
+   "description": "假山傀儡身上的坚硬石片，为卡牌提供2点护盾",
+   "effect": {
+    "shield": 2
+   }
+  },
+  {
+   "id": "AU30",
+   "name": "熔岩核心",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "暖管蠕虫的熔岩核心，附在卡牌上使攻击力+2",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU31",
+   "name": "火鳞粉",
+   "type": "element",
+   "rarity": "普通",
+   "description": "暖管蠕虫身上脱落的火鳞粉，赋予卡牌火属性，火系效果强度+10%",
+   "effect": {
+    "element": "火",
+    "element_power": 0.1
+   }
+  },
+  {
+   "id": "AU32",
+   "name": "暗晶尾刺",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "沥青蝎的尾针，附在卡牌上使攻击力+1、生命值+1",
+   "effect": {
+    "atk_bonus": 1,
+    "hp_bonus": 1
+   }
+  },
+  {
+   "id": "AU33",
+   "name": "暗晶碎片",
+   "type": "element",
+   "rarity": "普通",
+   "description": "沥青蝎身上的暗晶碎片，赋予卡牌暗属性，暗系效果强度+10%",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.1
+   }
+  },
+  {
+   "id": "AU34",
+   "name": "纯净水心",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "喷泉水灵的核心结晶，附在卡牌上使生命值+2",
+   "effect": {
+    "hp_bonus": 2
+   }
+  },
+  {
+   "id": "AU35",
+   "name": "水纹护符",
+   "type": "protect",
+   "rarity": "普通",
+   "description": "喷泉水灵凝聚的水纹护符，卡牌被破坏时有30%概率不破坏",
+   "effect": {
+    "revive_chance": 0.3
+   }
+  },
+  {
+   "id": "AU36",
+   "name": "风蝶翅粉",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "玻璃翼蝶翅膀上的闪亮粉末，附在卡牌上使攻击力+2",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU37",
+   "name": "轻羽",
+   "type": "special",
+   "rarity": "普通",
+   "description": "玻璃翼蝶的轻柔羽毛，入场当回合即可进行攻击（一次性）",
+   "effect": {
+    "haste": true
+   }
+  },
+  {
+   "id": "AU38",
+   "name": "棱镜碎片",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "聚光蜮的水晶碎片，附在卡牌上使攻击力+1、生命值+1",
+   "effect": {
+    "atk_bonus": 1,
+    "hp_bonus": 1
+   }
+  },
+  {
+   "id": "AU39",
+   "name": "圣光余晖",
+   "type": "element",
+   "rarity": "普通",
+   "description": "聚光蜮折射的圣光残留，赋予卡牌光属性，光系效果强度+10%",
+   "effect": {
+    "element": "光",
+    "element_power": 0.1
+   }
+  },
+  {
+   "id": "AU40",
+   "name": "巨人之心",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "叠石巨人的核心碎片，附在卡牌上使生命值+3",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU41",
+   "name": "山岩石板",
+   "type": "protect",
+   "rarity": "普通",
+   "description": "叠石巨人身上的坚硬石板，为卡牌提供2点护盾",
+   "effect": {
+    "shield": 2
+   }
+  },
+  {
+   "id": "AU42",
+   "name": "暗影翎羽",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "掠影寒鸦的漆黑翎羽，附在卡牌上使攻击力+2",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU43",
+   "name": "夜喙碎片",
+   "type": "element",
+   "rarity": "普通",
+   "description": "掠影寒鸦喙尖的碎片，赋予卡牌暗属性，暗系效果强度+15%",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU44",
+   "name": "风暴羽",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "贯雾鹰的雷霆羽毛，附在卡牌上使攻击力+2、生命值+1",
+   "effect": {
+    "atk_bonus": 2,
+    "hp_bonus": 1
+   }
+  },
+  {
+   "id": "AU45",
+   "name": "雷电之眼",
+   "type": "special",
+   "rarity": "普通",
+   "description": "贯雾鹰的雷电之眼，入场当回合即可进行攻击（一次性）",
+   "effect": {
+    "haste": true
+   }
+  },
+  {
+   "id": "AU46",
+   "name": "蛛丝囊",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "井穴蜘蛛的蛛丝腺囊，附在卡牌上使生命值+2",
+   "effect": {
+    "hp_bonus": 2
+   }
+  },
+  {
+   "id": "AU47",
+   "name": "毒牙",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "井穴蜘蛛的毒牙，附在卡牌上使攻击力+2",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU48",
+   "name": "锅炉龟甲",
+   "type": "protect",
+   "rarity": "普通",
+   "description": "锅炉龟的坚硬龟甲，为卡牌提供3点护盾",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU49",
+   "name": "火核",
+   "type": "element",
+   "rarity": "普通",
+   "description": "锅炉龟体内的火核，赋予卡牌火属性，火系效果强度+15%",
+   "effect": {
+    "element": "火",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU50",
+   "name": "幻光翅粉",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "灯诱光蝶翅膀上的光粉，附在卡牌上使攻击力+1、生命值+2",
+   "effect": {
+    "atk_bonus": 1,
+    "hp_bonus": 2
+   }
+  },
+  {
+   "id": "AU51",
+   "name": "圣光蝶翼",
+   "type": "special",
+   "rarity": "普通",
+   "description": "灯诱光蝶的圣洁翅膀，入场当回合即可进行攻击（一次性）",
+   "effect": {
+    "haste": true
+   }
+  },
+  {
+   "id": "AU52",
+   "name": "迷雾结晶",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "沉雾园主的力量结晶，附在卡牌上使攻击力+3",
+   "effect": {
+    "atk_bonus": 3
+   }
+  },
+  {
+   "id": "AU53",
+   "name": "守护之核",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "沉雾园主的守护核心，卡牌被破坏时有50%概率不破坏",
+   "effect": {
+    "revive_chance": 0.5
+   }
+  },
+  {
+   "id": "AU54",
+   "name": "火焰核心",
+   "rarity": "稀有",
+   "desc": "煤渣火灵的核心结晶，蕴含炽热的火元素能量。",
+   "type": "element",
+   "effect": {
+    "element": "火",
+    "element_power": 0.15
+   },
+   "description": "煤渣火灵的核心结晶，附在卡牌上使火元素之力提升15%"
+  },
+  {
+   "id": "AU55",
+   "name": "支配徽记",
+   "rarity": "稀有",
+   "desc": "支配者掉落的暗黑徽记，铭刻着古老的奴役契约。",
+   "type": "special",
+   "effect": {
+    "energy_reduce": 1
+   },
+   "description": "支配者掉落的暗黑徽记，附在卡牌上使能量消耗降低1点"
+  },
+  {
+   "id": "AU56",
+   "name": "蝎毒腺",
+   "rarity": "稀有",
+   "desc": "熔渣蝎的毒腺，提炼后可制成强效火毒。",
+   "type": "poison",
+   "effect": {
+    "poison": 1
+   },
+   "description": "熔渣蝎的毒腺，附在卡牌上使攻击附带1层中毒"
+  },
+  {
+   "id": "AU57",
+   "name": "炎晶鳞片",
+   "rarity": "稀有",
+   "desc": "燃缆火蛇蜕下的鳞片，灼热而坚硬，可用于制作火系防具。",
+   "type": "protect",
+   "effect": {
+    "shield": 3
+   },
+   "description": "燃缆火蛇蜕下的鳞片，附在卡牌上获得3点护盾"
+  },
+  {
+   "id": "AU58",
+   "name": "猎犬獠牙",
+   "rarity": "稀有",
+   "desc": "炉门火犬的锋利獠牙，蕴含狂野的火焰之力。",
+   "type": "combo",
+   "effect": {
+    "combo": true
+   },
+   "description": "炉门火犬的锋利獠牙，附在卡牌上获得连击能力，一回合可攻击两次"
+  },
+  {
+   "id": "AU59",
+   "name": "星火碎片",
+   "rarity": "稀有",
+   "desc": "焰瞳占卜师的法器碎片，残留着神秘的星火能量。",
+   "type": "special",
+   "effect": {
+    "energy_reduce": 1
+   },
+   "description": "焰瞳占卜师的法器碎片，附在卡牌上使能量消耗降低1点"
+  },
+  {
+   "id": "AU60",
+   "name": "元素余烬",
+   "type": "element",
+   "rarity": "普通",
+   "description": "煤渣火灵消散后留下的余烬，附在卡牌上使火元素之力提升10%",
+   "effect": {
+    "element": "火",
+    "element_power": 0.1
+   }
+  },
+  {
+   "id": "AU61",
+   "name": "奴役印记",
+   "type": "element",
+   "rarity": "普通",
+   "description": "支配者留下的奴役契约残片，附在卡牌上使暗元素之力提升10%",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.1
+   }
+  },
+  {
+   "id": "AU62",
+   "name": "蝎尾针",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "熔渣蝎尾端的毒针，附在卡牌上使攻击力+1",
+   "effect": {
+    "atk_bonus": 1
+   }
+  },
+  {
+   "id": "AU63",
+   "name": "燃缆蛇牙",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "燃缆火蛇的锐利獠牙，附在卡牌上使攻击力+1",
+   "effect": {
+    "atk_bonus": 1
+   }
+  },
+  {
+   "id": "AU64",
+   "name": "炉门犬爪",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "炉门火犬的锋利爪子，附在卡牌上使攻击力+1、生命值+1",
+   "effect": {
+    "atk_bonus": 1,
+    "hp_bonus": 1
+   }
+  },
+  {
+   "id": "AU65",
+   "name": "星火法阵",
+   "type": "element",
+   "rarity": "普通",
+   "description": "焰瞳占卜师绘制的法阵残迹，附在卡牌上使火元素之力提升10%",
+   "effect": {
+    "element": "火",
+    "element_power": 0.1
+   }
+  },
+  {
+   "id": "AU1",
+   "name": "熔岩核心",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "冷塔巨像体内的能量核心，附在卡牌上使生命值+3",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU66",
+   "name": "巨像岩甲",
+   "type": "protect",
+   "rarity": "普通",
+   "description": "冷塔巨像的岩甲碎片，附在卡牌上获得2点护盾",
+   "effect": {
+    "shield": 2
+   }
+  },
+  {
+   "id": "AU2",
+   "name": "咒术符文",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "记录着古老咒术的符文石，附在卡牌上使火元素之力提升20%",
+   "effect": {
+    "element": "火",
+    "element_power": 0.2
+   }
+  },
+  {
+   "id": "AU67",
+   "name": "烈焰咒符",
+   "type": "element",
+   "rarity": "普通",
+   "description": "焚化咒师书写的咒符，附在卡牌上使火元素之力提升10%",
+   "effect": {
+    "element": "火",
+    "element_power": 0.1
+   }
+  },
+  {
+   "id": "AU3",
+   "name": "黑曜碎片",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "焦砖傀儡的碎片，附在卡牌上获得3点护盾",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU68",
+   "name": "黑曜石核",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "焦砖傀儡的核心碎块，附在卡牌上使生命值+2",
+   "effect": {
+    "hp_bonus": 2
+   }
+  },
+  {
+   "id": "AU4",
+   "name": "水母触须",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "蒸汽水母的触须，附在卡牌上使攻击力+2",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU69",
+   "name": "水母毒囊",
+   "type": "poison",
+   "rarity": "普通",
+   "description": "蒸汽水母的剧毒囊，附在卡牌上使攻击附带1层中毒",
+   "effect": {
+    "poison": 1
+   }
+  },
+  {
+   "id": "AU5",
+   "name": "龙鳞碎片",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "烟囱火龙掉落的鳞片，附在卡牌上获得3点护盾",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU70",
+   "name": "飞龙火翼",
+   "type": "combo",
+   "rarity": "普通",
+   "description": "烟囱火龙的炽热火翼，附在卡牌上获得连击能力，一回合可攻击两次",
+   "effect": {
+    "combo": true
+   }
+  },
+  {
+   "id": "AU6",
+   "name": "蠕虫粘液",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "熔管蠕虫的分泌物，附在卡牌上使生命值+2",
+   "effect": {
+    "hp_bonus": 2
+   }
+  },
+  {
+   "id": "AU71",
+   "name": "岩浆虫壳",
+   "type": "protect",
+   "rarity": "普通",
+   "description": "熔管蠕虫的外壳碎片，附在卡牌上获得2点护盾",
+   "effect": {
+    "shield": 2
+   }
+  },
+  {
+   "id": "AU7",
+   "name": "地狱之牙",
+   "type": "combo",
+   "rarity": "稀有",
+   "description": "三缸火犬的利齿，附在卡牌上获得连击能力，一回合可攻击两次",
+   "effect": {
+    "combo": true
+   }
+  },
+  {
+   "id": "AU72",
+   "name": "地狱硫磺",
+   "type": "element",
+   "rarity": "普通",
+   "description": "三缸火犬爪下的硫磺矿，附在卡牌上使暗元素之力提升10%",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.1
+   }
+  },
+  {
+   "id": "AU8",
+   "name": "萨满图腾",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "点炉火祝的图腾碎片，附在卡牌上有40%概率复活",
+   "effect": {
+    "revive_chance": 0.4
+   }
+  },
+  {
+   "id": "AU73",
+   "name": "萨满火骨",
+   "type": "element",
+   "rarity": "普通",
+   "description": "点炉火祝祭祀用的火骨，附在卡牌上使火元素之力提升10%",
+   "effect": {
+    "element": "火",
+    "element_power": 0.1
+   }
+  },
+  {
+   "id": "AU9",
+   "name": "幽灵结晶",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "余烬幽灵的结晶，附在卡牌上获得疾风能力，召唤当回合即可攻击",
+   "effect": {
+    "haste": true
+   }
+  },
+  {
+   "id": "AU74",
+   "name": "幽灵鬼火",
+   "type": "element",
+   "rarity": "普通",
+   "description": "余烬幽灵燃烧的鬼火，附在卡牌上使暗元素之力提升10%",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.1
+   }
+  },
+  {
+   "id": "AU10",
+   "name": "亡灵骨灰",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "废料炼金师遗留的骨灰，附在卡牌上使能量消耗降低1点",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU75",
+   "name": "炼金药剂",
+   "type": "special",
+   "rarity": "普通",
+   "description": "废料炼金师调制的药剂，附在卡牌上有30%概率复活",
+   "effect": {
+    "revive_chance": 0.3
+   }
+  },
+  {
+   "id": "AU11",
+   "name": "深渊之眼",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "窃火者的魔眼，附在卡牌上使攻击力+2",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU76",
+   "name": "掠夺者钩爪",
+   "type": "boost",
+   "rarity": "普通",
+   "description": "窃火者的钩爪，附在卡牌上使攻击力+1",
+   "effect": {
+    "atk_bonus": 1
+   }
+  },
+  {
+   "id": "AU12",
+   "name": "暗影核心",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "黑烟暴君的力量核心，附在卡牌上使暗元素之力提升20%",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.2
+   }
+  },
+  {
+   "id": "AU77",
+   "name": "暗影摄魂珠",
+   "type": "special",
+   "rarity": "普通",
+   "description": "黑烟暴君的摄魂法器，附在卡牌上使能量消耗降低1点",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU100",
+   "name": "梭形脊",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "梭形脊，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU101",
+   "name": "破云脂",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "破云脂，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU102",
+   "name": "鹫皇冠羽",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "鹫皇冠羽，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU103",
+   "name": "裂空距",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "裂空距，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "水",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU104",
+   "name": "浮空伞盖",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "浮空伞盖，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU105",
+   "name": "悬垂触丝",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "悬垂触丝，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU106",
+   "name": "眼风丝",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "眼风丝，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU107",
+   "name": "静域卵囊",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "静域卵囊，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU108",
+   "name": "雷髓脂",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "雷髓脂，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "火",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU109",
+   "name": "环节壳",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "环节壳，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU110",
+   "name": "钟螺壳",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "钟螺壳，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU111",
+   "name": "鸣雷液",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "鸣雷液，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU112",
+   "name": "涡核",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "涡核，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU113",
+   "name": "守卫残躯",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "守卫残躯，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU114",
+   "name": "淖蛭素",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "淖蛭素，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU115",
+   "name": "吸盘环",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "吸盘环，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU116",
+   "name": "泅影膜",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "泅影膜，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU117",
+   "name": "潜影鳍",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "潜影鳍，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU118",
+   "name": "腐灯孢",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "腐灯孢，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "光",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU119",
+   "name": "荧腐液",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "荧腐液，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU120",
+   "name": "瘴囊",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "瘴囊，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU121",
+   "name": "蟾皮垢",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "蟾皮垢，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU122",
+   "name": "夜汗滴",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "夜汗滴，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU123",
+   "name": "缠藤须",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "缠藤须，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "地",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU124",
+   "name": "蚀根瘤",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "蚀根瘤，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU125",
+   "name": "渊纹皮",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "渊纹皮，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU126",
+   "name": "傀儡泥核",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "傀儡泥核，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU127",
+   "name": "沉矿块",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "沉矿块，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU128",
+   "name": "提灯骨",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "提灯骨，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "风",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU129",
+   "name": "磷火油",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "磷火油，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU130",
+   "name": "喉鳞",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "喉鳞，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU131",
+   "name": "吞渊颚",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "吞渊颚，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU132",
+   "name": "凝泪珠",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "凝泪珠，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU133",
+   "name": "沼精髓",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "沼精髓，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "水",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU134",
+   "name": "双生甲",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "双生甲，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU135",
+   "name": "苔背芯",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "苔背芯，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU136",
+   "name": "织影线",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "织影线，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU137",
+   "name": "织娘薄翼",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "织娘薄翼，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU138",
+   "name": "巨像残臂",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "巨像残臂，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "火",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU139",
+   "name": "溺影核",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "溺影核，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU140",
+   "name": "蜈肢钩",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "蜈肢钩，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU141",
+   "name": "腐潮腺",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "腐潮腺，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU142",
+   "name": "哑泉石",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "哑泉石，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU143",
+   "name": "守泉印",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "守泉印，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU144",
+   "name": "蛛后腹丝",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "蛛后腹丝，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU145",
+   "name": "雾茧",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "雾茧，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU146",
+   "name": "沉钟壳",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "沉钟壳，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU147",
+   "name": "鸣咽芯",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "鸣咽芯，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU148",
+   "name": "视者瞳",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "视者瞳，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "光",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU149",
+   "name": "渊纹眼睑",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "渊纹眼睑，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU150",
+   "name": "辉尘鳞",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "辉尘鳞，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU151",
+   "name": "蛾翼晶",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "蛾翼晶，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU152",
+   "name": "构装臂",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "构装臂，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU153",
+   "name": "碑文核",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "碑文核，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "地",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU154",
+   "name": "封苔层",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "封苔层，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU155",
+   "name": "石像心",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "石像心，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU156",
+   "name": "双面壳",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "双面壳，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU157",
+   "name": "断裂冕",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "断裂冕，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU158",
+   "name": "哨杵",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "哨杵，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "风",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU159",
+   "name": "门纹片",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "门纹片，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU160",
+   "name": "星坠角",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "星坠角，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU161",
+   "name": "坠星髓",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "坠星髓，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU162",
+   "name": "方碑屑",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "方碑屑，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU163",
+   "name": "刻痕回路",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "刻痕回路，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "水",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU164",
+   "name": "蜮甲",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "蜮甲，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU165",
+   "name": "辉光腺",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "辉光腺，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU166",
+   "name": "守骥鬃",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "守骥鬃，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU167",
+   "name": "圣所鞍骨",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "圣所鞍骨，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU168",
+   "name": "歌者喉石",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "歌者喉石，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "火",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU169",
+   "name": "回响腔",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "回响腔，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU170",
+   "name": "断念线",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "断念线，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU171",
+   "name": "偶芯",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "偶芯，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU172",
+   "name": "初痕体节",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "初痕体节，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU173",
+   "name": "痕迹黏液",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "痕迹黏液，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU174",
+   "name": "律噪核",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "律噪核，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU175",
+   "name": "石皇碎片",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "石皇碎片，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU176",
+   "name": "圣辉羽根",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "圣辉羽根，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU177",
+   "name": "圣辉羽根",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "圣辉羽根，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU178",
+   "name": "行者足环",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "行者足环，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "光",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU179",
+   "name": "裔纹皮",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "裔纹皮，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU180",
+   "name": "帘目珠",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "帘目珠，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU181",
+   "name": "帘膜",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "帘膜，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU182",
+   "name": "遗言拓片",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "遗言拓片，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU183",
+   "name": "碑灵芯",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "碑灵芯，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "地",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU184",
+   "name": "看守锁链",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "看守锁链，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU185",
+   "name": "隙间鳞",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "隙间鳞，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU186",
+   "name": "嵌卡残基",
+   "type": "boost",
+   "rarity": "史诗",
+   "description": "嵌卡残基，虚渊高级辅材（史诗）",
+   "effect": {
+    "atk_bonus": 4
+   }
+  },
+  {
+   "id": "AU187",
+   "name": "蛞蝓黏液",
+   "type": "special",
+   "rarity": "史诗",
+   "description": "蛞蝓黏液，虚渊高级辅材（史诗）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU188",
+   "name": "蚀膜光鳞",
+   "type": "element",
+   "rarity": "史诗",
+   "description": "蚀膜光鳞，虚渊高级辅材（史诗）",
+   "effect": {
+    "element": "光",
+    "element_power": 0.25
+   }
+  },
+  {
+   "id": "AU189",
+   "name": "膜翼晶粉",
+   "type": "protect",
+   "rarity": "史诗",
+   "description": "膜翼晶粉，虚渊高级辅材（史诗）",
+   "effect": {
+    "shield": 4
+   }
+  },
+  {
+   "id": "AU190",
+   "name": "渊苔疣垫",
+   "type": "protect",
+   "rarity": "史诗",
+   "description": "渊苔疣垫，虚渊高级辅材（史诗）",
+   "effect": {
+    "hp_bonus": 5
+   }
+  },
+  {
+   "id": "AU191",
+   "name": "蟾毒腺",
+   "type": "poison",
+   "rarity": "史诗",
+   "description": "蟾毒腺，虚渊高级辅材（史诗）",
+   "effect": {
+    "poison": 2
+   }
+  },
+  {
+   "id": "AU192",
+   "name": "无面壳",
+   "type": "protect",
+   "rarity": "史诗",
+   "description": "无面壳，虚渊高级辅材（史诗）",
+   "effect": {
+    "damage_reduce": 2
+   }
+  },
+  {
+   "id": "AU193",
+   "name": "拟面皮",
+   "type": "special",
+   "rarity": "史诗",
+   "description": "拟面皮，虚渊高级辅材（史诗）",
+   "effect": {
+    "revive_chance": 0.6
+   }
+  },
+  {
+   "id": "AU194",
+   "name": "泣渊珠",
+   "type": "boost",
+   "rarity": "史诗",
+   "description": "泣渊珠，虚渊高级辅材（史诗）",
+   "effect": {
+    "hp_bonus": 4
+   }
+  },
+  {
+   "id": "AU195",
+   "name": "幼体鳍膜",
+   "type": "special",
+   "rarity": "史诗",
+   "description": "幼体鳍膜，虚渊高级辅材（史诗）",
+   "effect": {
+    "haste": 1
+   }
+  },
+  {
+   "id": "AU196",
+   "name": "昼面核",
+   "type": "element",
+   "rarity": "史诗",
+   "description": "昼面核，虚渊高级辅材（史诗）",
+   "effect": {
+    "element": "光",
+    "element_power": 0.25
+   }
+  },
+  {
+   "id": "AU197",
+   "name": "夜面核",
+   "type": "element",
+   "rarity": "史诗",
+   "description": "夜面核，虚渊高级辅材（史诗）",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.25
+   }
+  },
+  {
+   "id": "AU198",
+   "name": "骨化石英",
+   "type": "boost",
+   "rarity": "史诗",
+   "description": "骨化石英，虚渊高级辅材（史诗）",
+   "effect": {
+    "atk_bonus": 4
+   }
+  },
+  {
+   "id": "AU199",
+   "name": "矿脉髓芯",
+   "type": "protect",
+   "rarity": "史诗",
+   "description": "矿脉髓芯，虚渊高级辅材（史诗）",
+   "effect": {
+    "shield": 4
+   }
+  },
+  {
+   "id": "AU200",
+   "name": "钟魔舌锤",
+   "type": "boost",
+   "rarity": "史诗",
+   "description": "钟魔舌锤，虚渊高级辅材（史诗）",
+   "effect": {
+    "atk_bonus": 4
+   }
+  },
+  {
+   "id": "AU201",
+   "name": "倒悬钟骨",
+   "type": "protect",
+   "rarity": "史诗",
+   "description": "倒悬钟骨，虚渊高级辅材（史诗）",
+   "effect": {
+    "hp_bonus": 5
+   }
+  },
+  {
+   "id": "AU202",
+   "name": "渊晶丝",
+   "type": "special",
+   "rarity": "史诗",
+   "description": "渊晶丝，虚渊高级辅材（史诗）",
+   "effect": {
+    "combo": 1
+   }
+  },
+  {
+   "id": "AU203",
+   "name": "蚕晶核",
+   "type": "boost",
+   "rarity": "史诗",
+   "description": "蚕晶核，虚渊高级辅材（史诗）",
+   "effect": {
+    "hp_bonus": 5
+   }
+  },
+  {
+   "id": "AU204",
+   "name": "渊潮之心",
+   "type": "boost",
+   "rarity": "传说",
+   "description": "渊潮之心，虚渊高级辅材（传说）",
+   "effect": {
+    "atk_bonus": 5
+   }
+  },
+  {
+   "id": "AU205",
+   "name": "潮骸甲",
+   "type": "protect",
+   "rarity": "传说",
+   "description": "潮骸甲，虚渊高级辅材（传说）",
+   "effect": {
+    "shield": 5
+   }
+  },
+  {
+   "id": "AU206",
+   "name": "噬忆颚",
+   "type": "special",
+   "rarity": "传说",
+   "description": "噬忆颚，虚渊高级辅材（传说）",
+   "effect": {
+    "energy_reduce": 2
+   }
+  },
+  {
+   "id": "AU207",
+   "name": "忆残片",
+   "type": "element",
+   "rarity": "传说",
+   "description": "忆残片，虚渊高级辅材（传说）",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.35
+   }
+  },
+  {
+   "id": "AU208",
+   "name": "熄焰之核",
+   "type": "element",
+   "rarity": "传说",
+   "description": "熄焰之核，虚渊高级辅材（传说）",
+   "effect": {
+    "element": "火",
+    "element_power": 0.35
+   }
+  },
+  {
+   "id": "AU209",
+   "name": "游魂余烬",
+   "type": "boost",
+   "rarity": "传说",
+   "description": "游魂余烬，虚渊高级辅材（传说）",
+   "effect": {
+    "hp_bonus": 6
+   }
+  },
+  {
+   "id": "AU210",
+   "name": "概念残影",
+   "type": "protect",
+   "rarity": "传说",
+   "description": "概念残影，虚渊高级辅材（传说）",
+   "effect": {
+    "damage_reduce": 2
+   }
+  },
+  {
+   "id": "AU211",
+   "name": "巨影之足",
+   "type": "boost",
+   "rarity": "传说",
+   "description": "巨影之足，虚渊高级辅材（传说）",
+   "effect": {
+    "atk_bonus": 5
+   }
+  },
+  {
+   "id": "AU212",
+   "name": "暴君翼骨",
+   "type": "special",
+   "rarity": "传说",
+   "description": "暴君翼骨，虚渊高级辅材（传说）",
+   "effect": {
+    "haste": 1
+   }
+  },
+  {
+   "id": "AU213",
+   "name": "暴风羽",
+   "type": "element",
+   "rarity": "传说",
+   "description": "暴风羽，虚渊高级辅材（传说）",
+   "effect": {
+    "element": "风",
+    "element_power": 0.35
+   }
+  },
+  {
+   "id": "AU214",
+   "name": "初源壳片",
+   "type": "protect",
+   "rarity": "传说",
+   "description": "初源壳片，虚渊高级辅材（传说）",
+   "effect": {
+    "hp_bonus": 6
+   }
+  },
+  {
+   "id": "AU215",
+   "name": "壳心晶",
+   "type": "boost",
+   "rarity": "传说",
+   "description": "壳心晶，虚渊高级辅材（传说）",
+   "effect": {
+    "atk_bonus": 5
+   }
+  },
+  {
+   "id": "AU216",
+   "name": "千喉索",
+   "type": "special",
+   "rarity": "传说",
+   "description": "千喉索，虚渊高级辅材（传说）",
+   "effect": {
+    "combo": 1
+   }
+  },
+  {
+   "id": "AU217",
+   "name": "窟主黏膜",
+   "type": "protect",
+   "rarity": "传说",
+   "description": "窟主黏膜，虚渊高级辅材（传说）",
+   "effect": {
+    "shield": 5
+   }
+  },
+  {
+   "id": "AU218",
+   "name": "渊语残响",
+   "type": "element",
+   "rarity": "传说",
+   "description": "渊语残响，虚渊高级辅材（传说）",
+   "effect": {
+    "element": "光",
+    "element_power": 0.35
+   }
+  },
+  {
+   "id": "AU219",
+   "name": "语者喉晶",
+   "type": "special",
+   "rarity": "传说",
+   "description": "语者喉晶，虚渊高级辅材（传说）",
+   "effect": {
+    "revive_chance": 0.75
+   }
+  },
+  {
+   "id": "AU220",
+   "name": "僭主冠羽",
+   "type": "boost",
+   "rarity": "传说",
+   "description": "僭主冠羽，虚渊高级辅材（传说）",
+   "effect": {
+    "atk_bonus": 5
+   }
+  },
+  {
+   "id": "AU221",
+   "name": "僭主权杖",
+   "type": "special",
+   "rarity": "传说",
+   "description": "僭主权杖，虚渊高级辅材（传说）",
+   "effect": {
+    "energy_reduce": 2
+   }
+  },
+  {
+   "id": "AU78",
+   "name": "悬雷萤囊",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "悬雷萤囊，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "火",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU79",
+   "name": "蜉翼膜",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "蜉翼膜，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU80",
+   "name": "鸢羽刃",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "鸢羽刃，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU81",
+   "name": "割风骨",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "割风骨，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU82",
+   "name": "蜃云髓",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "蜃云髓，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU83",
+   "name": "幻层壳",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "幻层壳，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "暗",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU84",
+   "name": "焦纹木心",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "焦纹木心，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU85",
+   "name": "蓄雷环",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "蓄雷环，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU86",
+   "name": "气压鳞",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "气压鳞，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU87",
+   "name": "缠压筋",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "缠压筋，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU88",
+   "name": "风骨片",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "风骨片，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "光",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU89",
+   "name": "鸣哨腔",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "鸣哨腔，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU90",
+   "name": "磁魁核",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "磁魁核，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU91",
+   "name": "导雷须",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "导雷须，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU92",
+   "name": "隼翎",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "隼翎，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU93",
+   "name": "撕空爪",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "撕空爪，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "地",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU94",
+   "name": "锚云腱",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "锚云腱，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  },
+  {
+   "id": "AU95",
+   "name": "压舱石",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "压舱石，来自深层裂隙异兽的辅材（攻击强化）",
+   "effect": {
+    "atk_bonus": 2
+   }
+  },
+  {
+   "id": "AU96",
+   "name": "卷心涡核",
+   "type": "boost",
+   "rarity": "稀有",
+   "description": "卷心涡核，来自深层裂隙异兽的辅材（生命强化）",
+   "effect": {
+    "hp_bonus": 3
+   }
+  },
+  {
+   "id": "AU97",
+   "name": "逆流鳞",
+   "type": "protect",
+   "rarity": "稀有",
+   "description": "逆流鳞，来自深层裂隙异兽的辅材（护盾）",
+   "effect": {
+    "shield": 3
+   }
+  },
+  {
+   "id": "AU98",
+   "name": "鼓翅板",
+   "type": "element",
+   "rarity": "稀有",
+   "description": "鼓翅板，来自深层裂隙异兽的辅材（元素增幅）",
+   "effect": {
+    "element": "风",
+    "element_power": 0.15
+   }
+  },
+  {
+   "id": "AU99",
+   "name": "共振液",
+   "type": "special",
+   "rarity": "稀有",
+   "description": "共振液，来自深层裂隙异兽的辅材（能量减免）",
+   "effect": {
+    "energy_reduce": 1
+   }
+  }
+ ]
 }

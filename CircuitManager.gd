@@ -185,15 +185,15 @@ func _check_condition(condition: String) -> bool:
 			return PlayerManager.get_total_tasks_completed() >= 5
 		"完成20次公会任务":
 			return PlayerManager.get_total_tasks_completed() >= 20
-		"通关迷雾森林":
+		"通关沉雾植物园":
 			return PlayerManager.is_map_cleared("misty_forest")
-		"通关火焰洞穴":
+		"通关烬燃热电厂":
 			return PlayerManager.is_map_cleared("flame_cavern")
-		"通关风暴高塔":
+		"通关雷鸣电视塔":
 			return PlayerManager.is_map_cleared("storm_tower")
-		"通关暗影沼泽":
+		"通关沉陷湿地公园":
 			return PlayerManager.is_map_cleared("shadow_swamp")
-		"通关传说遗迹":
+		"通关圮城博物馆":
 			return PlayerManager.is_map_cleared("legendary_ruins")
 	return false
 

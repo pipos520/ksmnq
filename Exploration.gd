@@ -1,7 +1,7 @@
 extends Control
 var _maps := [
-	{"id": "misty_forest", "name": " 迷雾森林", "desc": "幽暗的森林中弥漫着神秘雾气，\n据说深处藏着古老的卡牌碎片。", "difficulty": "简单", "diff_color": Color("#5cb85c"), "recommend": "推荐战力：100", "bg_color": Color("#1a3a2a"), "icon": ""},
-	{"id": "flame_cavern", "name": " 火焰洞穴", "desc": "灼热的岩浆在地底流淌，\n火焰精灵守护着珍贵的火系素材。", "difficulty": "普通", "diff_color": Color("#e8a838"), "recommend": "推荐战力：300", "bg_color": Color("#3a1a0a"), "icon": ""},
+	{"id": "misty_forest", "name": " 沉雾植物园", "desc": "大裂断吞没的城市植物园，\n雾气催生了温室般的异兽生态。", "difficulty": "简单", "diff_color": Color("#5cb85c"), "recommend": "推荐战力：100", "bg_color": Color("#1a3a2a"), "icon": ""},
+	{"id": "flame_cavern", "name": " 烬燃热电厂", "desc": "废弃热电厂的地下熔炉仍在运转，\n管网深处游荡着火的异兽。", "difficulty": "普通", "diff_color": Color("#e8a838"), "recommend": "推荐战力：300", "bg_color": Color("#3a1a0a"), "icon": ""},
 	{"id": "duel", "name": " 决斗场", "desc": "与服务器上的其他玩家卡组进行虚拟对战！\n选择你的卡组，随机匹配对手。", "difficulty": "匹配", "diff_color": Color("#e8a838"), "recommend": "无限制", "bg_color": Color(0.25, 0.10, 0.15), "icon": ""},
 ]
 const MATERIAL_NAME_TO_ID := {
@@ -28,7 +28,7 @@ const MATERIAL_NAME_TO_ID := {
 const AUX_NAME_TO_ID := {
 	"新生嫩芽": "AU16", "木质纤维": "AU17", "鹿角碎片": "AU18",
 	"雾绒": "AU19", "孢子囊": "AU20", "蘑菇伞盖": "AU21",
-	"草蜥蜴鳞片": "AU22", "蜥蜴尾": "AU23", "螳螂刀臂": "AU24",
+	"灼背蜥鳞片": "AU22", "蜥蜴尾": "AU23", "螳螂刀臂": "AU24",
 	"螳螂翅膜": "AU25", "蛇鳞片": "AU26", "毒液囊": "AU27",
 	"岩石核心": "AU28", "矿脉石鳞": "AU29", "熔岩核心": "AU30",
 	"火鳞粉": "AU31", "暗晶尾刺": "AU32", "暗晶碎片": "AU33",
@@ -36,38 +36,38 @@ const AUX_NAME_TO_ID := {
 	"轻羽": "AU37", "棱镜碎片": "AU38", "圣光余晖": "AU39",
 	"巨人之心": "AU40", "山岩石板": "AU41", "暗影翎羽": "AU42",
 	"夜喙碎片": "AU43", "风暴羽": "AU44", "雷电之眼": "AU45",
-	"蛛丝囊": "AU46", "毒牙": "AU47", "熔岩龟甲": "AU48",
+	"蛛丝囊": "AU46", "毒牙": "AU47", "锅炉龟甲": "AU48",
 	"火核": "AU49", "幻光翅粉": "AU50", "圣光蝶翼": "AU51",
 	"迷雾结晶": "AU52", "守护之核": "AU53",
 }
 const ENEMY_NAME_TO_DATA := {
-	"树苗精": {"id": "MF_FOREST_M1", "level": 2, "hp": 20, "element": "地", "desc": "迷雾森林中最常见的低阶精灵，由古木精华凝聚而成。", "aux_drops": ["AU16", "AU17"]},
-	"雾角鹿": {"id": "MF_FOREST_M2", "level": 3, "hp": 25, "element": "风", "desc": "沐浴在迷雾中生长的灵鹿，双角能凝聚雾气形成幻影。", "aux_drops": ["AU18", "AU19"]},
-	"蘑菇人": {"id": "MF_FOREST_M3", "level": 4, "hp": 30, "element": "地", "desc": "寄宿在古树根部的蘑菇精灵，擅长用毒孢子折磨对手。", "aux_drops": ["AU20", "AU21"]},
-	"草蜥蜴": {"id": "MF_GRASS_M1", "level": 5, "hp": 30, "element": "火", "desc": "草丛中潜伏的火焰蜥蜴。", "aux_drops": ["AU22", "AU23"]},
-	"螳螂刀客": {"id": "MF_GRASS_M2", "level": 6, "hp": 35, "element": "风", "desc": "草丛中的顶级猎手，双臂如镰刀般锋利。", "aux_drops": ["AU24", "AU25"]},
-	"青鳞蛇": {"id": "MF_GRASS_M3", "level": 7, "hp": 40, "element": "水", "desc": "草丛深处的剧毒之蛇。", "aux_drops": ["AU26", "AU27"]},
-	"岩石傀儡": {"id": "MF_MINE_M1", "level": 8, "hp": 50, "element": "地", "desc": "矿区深处的岩石守卫。", "aux_drops": ["AU28", "AU29"]},
-	"熔岩蠕虫": {"id": "MF_MINE_M2", "level": 9, "hp": 50, "element": "火", "desc": "盘踞在矿区岩浆裂隙中的巨型蠕虫。", "aux_drops": ["AU30", "AU31"]},
-	"暗晶蝎": {"id": "MF_MINE_M3", "level": 10, "hp": 55, "element": "暗", "desc": "矿区深处吸收暗晶能量变异而成的巨蝎。", "aux_drops": ["AU32", "AU33"]},
-	"水元素": {"id": "MF_VALLEY_M1", "level": 11, "hp": 55, "element": "水", "desc": "溪谷深处的纯净水元素。", "aux_drops": ["AU34", "AU35"]},
-	"风灵蝶": {"id": "MF_VALLEY_M2", "level": 12, "hp": 55, "element": "风", "desc": "在溪谷上空翩翩起舞的精灵蝴蝶。", "aux_drops": ["AU36", "AU37"]},
-	"光棱镜": {"id": "MF_VALLEY_M3", "level": 13, "hp": 65, "element": "光", "desc": "溪谷深处的水晶棱镜。", "aux_drops": ["AU38", "AU39"]},
-	"岩石巨人": {"id": "MF_MOUNTAIN_M1", "level": 14, "hp": 65, "element": "地", "desc": "山道上的巨型岩石构造体。", "aux_drops": ["AU40", "AU41"]},
-	"暗影鸦": {"id": "MF_MOUNTAIN_M2", "level": 15, "hp": 60, "element": "暗", "desc": "盘旋在山道暗影中的漆黑巨鸦。", "aux_drops": ["AU42", "AU43"]},
-	"风暴鹰": {"id": "MF_MOUNTAIN_M3", "level": 16, "hp": 70, "element": "风", "desc": "山道之巅的风暴之王。", "aux_drops": ["AU44", "AU45"]},
-	"暗穴蜘蛛": {"id": "MF_CAVE_M1", "level": 17, "hp": 70, "element": "暗", "desc": "暗穴深处编织巨网的巨型蜘蛛。", "aux_drops": ["AU46", "AU47"]},
-	"熔岩龟": {"id": "MF_CAVE_M2", "level": 18, "hp": 75, "element": "火", "desc": "暗穴地底岩浆池中沉睡的远古巨龟。", "aux_drops": ["AU48", "AU49"]},
-	"幻光蝶": {"id": "MF_CAVE_M3", "level": 19, "hp": 80, "element": "光", "desc": "暗穴中最神秘的存在，幻光蝶的翅膀散发着柔和的光芒。", "aux_drops": ["AU50", "AU51"]},
-	"古木": {"id": "MF_BOSS_1", "level": 20, "hp": 100, "element": "地", "desc": "迷雾森林的远古守护者。", "aux_drops": ["AU52", "AU53"]},
-	"烈焰": {"id": "MF_BOSS_2", "level": 20, "hp": 100, "element": "火", "desc": "迷雾森林的狂暴守护者。", "aux_drops": ["AU52", "AU53"]},
-	"暗影": {"id": "MF_BOSS_3", "level": 20, "hp": 100, "element": "暗", "desc": "迷雾森林的诡秘守护者。", "aux_drops": ["AU52", "AU53"]},
-	"岩浆": {"id": "FC_BOSS_1", "level": 30, "hp": 150, "element": "火", "desc": "火焰洞穴的BOSS。", "aux_drops": ["AU54", "AU1"]},
-	"熔核": {"id": "FC_BOSS_2", "level": 30, "hp": 150, "element": "火", "desc": "火焰洞穴的BOSS。", "aux_drops": ["AU57", "AU58"]},
-	"炎魔": {"id": "FC_BOSS_3", "level": 30, "hp": 150, "element": "火", "desc": "火焰洞穴的BOSS。", "aux_drops": ["AU2", "AU56"]},
-	"雷电": {"id": "ST_BOSS_1", "level": 40, "hp": 200, "element": "风", "desc": "风暴高塔的BOSS。", "aux_drops": []},
-	"风暴": {"id": "ST_BOSS_2", "level": 40, "hp": 200, "element": "风", "desc": "风暴高塔的BOSS。", "aux_drops": []},
-	"云龙": {"id": "ST_BOSS_3", "level": 40, "hp": 200, "element": "风", "desc": "风暴高塔的BOSS。", "aux_drops": []},
+	"催芽藓偶": {"id": "MF_FOREST_M1", "level": 2, "hp": 20, "element": "地", "desc": "沉雾植物园催芽箱里冒出来的苔藓傀儡，见苗就缠。", "aux_drops": ["AU16", "AU17"]},
+	"雾栖鹿偶": {"id": "MF_FOREST_M2", "level": 3, "hp": 25, "element": "风", "desc": "园区里的雕塑鹿，大裂断之后开始在雾里自己挪位。", "aux_drops": ["AU18", "AU19"]},
+	"霉斑菌傀": {"id": "MF_FOREST_M3", "level": 4, "hp": 30, "element": "地", "desc": "菌房的霉斑一夜之间凝成的人形，孢子随呼吸散开。", "aux_drops": ["AU20", "AU21"]},
+	"灼背蜥": {"id": "MF_GRASS_M1", "level": 5, "hp": 30, "element": "火", "desc": "贴着地暖管道晒背的蜥蜴，背脊烫得能点燃落叶。", "aux_drops": ["AU22", "AU23"]},
+	"刈草螳": {"id": "MF_GRASS_M2", "level": 6, "hp": 35, "element": "风", "desc": "捡走园丁镰刀的螳螂，双臂快得像一台割草机。", "aux_drops": ["AU24", "AU25"]},
+	"灌渠鳞蛇": {"id": "MF_GRASS_M3", "level": 7, "hp": 40, "element": "水", "desc": "在灌溉渠底潜行的青鳞长虫，水面只留一圈涟漪。", "aux_drops": ["AU26", "AU27"]},
+	"假山傀儡": {"id": "MF_MINE_M1", "level": 8, "hp": 50, "element": "地", "desc": "枯山水假山站起来了，走路时碎石哗啦作响。", "aux_drops": ["AU28", "AU29"]},
+	"暖管蠕虫": {"id": "MF_MINE_M2", "level": 9, "hp": 50, "element": "火", "desc": "钻进地暖管网里的蠕虫，所过之处管道发烫。", "aux_drops": ["AU30", "AU31"]},
+	"沥青蝎": {"id": "MF_MINE_M3", "level": 10, "hp": 55, "element": "暗", "desc": "从步道裂缝析出的蝎子，甲壳是半融的沥青。", "aux_drops": ["AU32", "AU33"]},
+	"喷泉水灵": {"id": "MF_VALLEY_M1", "level": 11, "hp": 55, "element": "水", "desc": "喷泉池里活过来的水，水柱就是它的拳头。", "aux_drops": ["AU34", "AU35"]},
+	"玻璃翼蝶": {"id": "MF_VALLEY_M2", "level": 12, "hp": 55, "element": "风", "desc": "翅膀透明得像温室玻璃，落在哪哪就跟着消失。", "aux_drops": ["AU36", "AU37"]},
+	"聚光蜮": {"id": "MF_VALLEY_M3", "level": 13, "hp": 65, "element": "光", "desc": "会聚光的小怪，被它盯上的叶子十秒冒烟。", "aux_drops": ["AU38", "AU39"]},
+	"叠石巨人": {"id": "MF_MOUNTAIN_M1", "level": 14, "hp": 65, "element": "地", "desc": "叠石景观一块块码起来的巨人，倒下就散回石头。", "aux_drops": ["AU40", "AU41"]},
+	"掠影寒鸦": {"id": "MF_MOUNTAIN_M2", "level": 15, "hp": 60, "element": "暗", "desc": "只在影子的落点停留的鸦，数它的影子比数它容易。", "aux_drops": ["AU42", "AU43"]},
+	"贯雾鹰": {"id": "MF_MOUNTAIN_M3", "level": 16, "hp": 70, "element": "风", "desc": "俯冲时能把雾墙撕开一道口的鹰。", "aux_drops": ["AU44", "AU45"]},
+	"井穴蜘蛛": {"id": "MF_CAVE_M1", "level": 17, "hp": 70, "element": "暗", "desc": "地下井道里的织网者，井盖就是它的门。", "aux_drops": ["AU46", "AU47"]},
+	"锅炉龟": {"id": "MF_CAVE_M2", "level": 18, "hp": 75, "element": "火", "desc": "背甲就是一台小锅炉的龟，生气时压力阀会响。", "aux_drops": ["AU48", "AU49"]},
+	"灯诱光蝶": {"id": "MF_CAVE_M3", "level": 19, "hp": 80, "element": "光", "desc": "被园区夜景灯诱变的蝶，绕着灯能转到天亮。", "aux_drops": ["AU50", "AU51"]},
+	"古荫": {"id": "MF_BOSS_1", "level": 20, "hp": 100, "element": "地", "desc": "沉雾植物园最深处那棵老树，整座园子的雾都听它的。", "aux_drops": ["AU52", "AU53"]},
+	"炉心": {"id": "MF_BOSS_2", "level": 20, "hp": 100, "element": "火", "desc": "温室锅炉里长出的园主分体，把整条暖路烧成火网。", "aux_drops": ["AU52", "AU53"]},
+	"夜幕": {"id": "MF_BOSS_3", "level": 20, "hp": 100, "element": "暗", "desc": "只在闭园后睁眼的园主分体，黑暗里所有影子都是它的枝。", "aux_drops": ["AU52", "AU53"]},
+	"炎宰": {"id": "FC_BOSS_1", "level": 30, "hp": 150, "element": "火", "desc": "烬燃热电厂自封的主人，炉温就是它的心跳。", "aux_drops": ["AU54", "AU1"]},
+	"熔核": {"id": "FC_BOSS_2", "level": 30, "hp": 150, "element": "火", "desc": "整台熔核机组拼成的巨像，格隆是机身铭牌上的编号。", "aux_drops": ["AU57", "AU58"]},
+	"过热": {"id": "FC_BOSS_3", "level": 30, "hp": 150, "element": "火", "desc": "过热蒸汽凝成的领主，压力表爆表才是它的常态。", "aux_drops": ["AU2", "AU56"]},
+	"过载": {"id": "ST_BOSS_1", "level": 40, "hp": 200, "element": "风", "desc": "雷鸣电视塔的塔主之一，永远处在放电的边缘。", "aux_drops": []},
+	"失真": {"id": "ST_BOSS_2", "level": 40, "hp": 200, "element": "风", "desc": "塔主之一，它出现时信号里全是不该有的声音。", "aux_drops": []},
+	"惊蛰": {"id": "ST_BOSS_3", "level": 40, "hp": 200, "element": "风", "desc": "塔主之一，每年第一声春雷其实是它在换班。", "aux_drops": []},
 }
 var _guide_press_timer: float = 0.0
 var _guide_pressed_label = null
@@ -406,7 +406,7 @@ func _build_help_content(vbox):
 	_make_help_label(s1, "选择地图进入爬塔探索，每层可选择战斗或采集。", Global.current.btn_text, 42)
 	_make_help_label(s1, "击败卡兽可获得辅材掉落，采集可获得制作素材。", Color("#CCCCCC"))
 	_make_help_label(s1, "通关全部8层并击败BOSS即可获得胜利！", Color("#CCCCCC"))
-	var s2 = _make_help_section(vbox, " ② 迷雾森林 · 掉落一览", Color("#5cb85c"))
+	var s2 = _make_help_section(vbox, " ② 沉雾植物园 · 掉落一览", Color("#5cb85c"))
 	_make_help_label(s2, "难度：简单 | 推荐战力：100", Color("#AAAAAA"))
 	_make_help_label(s2, " 树林采集：", Color("#8BC34A"), 48)
 	_make_help_label(s2, "  • 白麻纤维 (普通) prob:70%", Color("#CCCCCC"))

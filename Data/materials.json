@@ -1,1560 +1,1560 @@
 {
-  "materials": {
-    "fiber": [
+ "materials": {
+  "fiber": [
+   {
+    "id": "F01",
+    "name": "白麻纤维",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "carry": 2,
+    "toughness": 1,
+    "tendency": "",
+    "gather": {
+     "misty_forest": [
       {
-        "id": "F01",
-        "name": "白麻纤维",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "carry": 2,
-        "toughness": 1,
-        "tendency": "",
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "F02",
-        "name": "青藤纤维",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "carry": 1,
-        "toughness": 2,
-        "tendency": "",
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "F03",
-        "name": "枯草纤维",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "carry": 1,
-        "toughness": 1,
-        "tendency": "",
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "mountain",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "F04",
-        "name": "月光麻",
-        "rarity": "稀有",
-        "area": "暗影沼泽",
-        "carry": 2,
-        "toughness": 2,
-        "tendency": "",
-        "gather": {
-          "shadow_swamp": [
-            {
-              "terrain": "mountain",
-              "min": 1,
-              "max": 1,
-              "prob": 0.5
-            }
-          ]
-        }
-      },
-      {
-        "id": "F05",
-        "name": "火焰苔藓",
-        "rarity": "稀有",
-        "area": "火焰洞穴",
-        "carry": 3,
-        "toughness": 2,
-        "tendency": "火1",
-        "gather": {
-          "flame_cavern": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 2,
-              "prob": 0.6
-            }
-          ]
-        }
-      },
-      {
-        "id": "F06",
-        "name": "熔岩藤",
-        "rarity": "稀有",
-        "area": "火焰洞穴",
-        "carry": 3,
-        "toughness": 1,
-        "tendency": "火2",
-        "gather": {
-          "flame_cavern": [
-            {
-              "terrain": "mountain",
-              "min": 1,
-              "max": 2,
-              "prob": 0.6
-            }
-          ]
-        }
-      },
-      {
-        "id": "F07",
-        "name": "风暴棉",
-        "rarity": "史诗",
-        "area": "风暴高塔",
-        "carry": 4,
-        "toughness": 3,
-        "tendency": "风1",
-        "gather": {
-          "storm_tower": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "F08",
-        "name": "雷纹藤",
-        "rarity": "史诗",
-        "area": "风暴高塔",
-        "carry": 3,
-        "toughness": 4,
-        "tendency": "风2",
-        "gather": {
-          "storm_tower": [
-            {
-              "terrain": "mountain",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "F09",
-        "name": "冰霜亚麻",
-        "rarity": "稀有",
-        "area": "暗影沼泽",
-        "carry": 2,
-        "toughness": 4,
-        "tendency": "水1",
-        "gather": {
-          "shadow_swamp": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.5
-            }
-          ]
-        }
-      },
-      {
-        "id": "F10",
-        "name": "暗影藤",
-        "rarity": "史诗",
-        "area": "暗影沼泽、传说遗迹",
-        "carry": 3,
-        "toughness": 4,
-        "tendency": "暗1",
-        "gather": {
-          "shadow_swamp": [
-            {
-              "terrain": "cave",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ],
-          "legendary_ruins": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "F11",
-        "name": "光之丝",
-        "rarity": "史诗",
-        "area": "传说遗迹",
-        "carry": 4,
-        "toughness": 3,
-        "tendency": "光1",
-        "gather": {
-          "legendary_ruins": [
-            {
-              "terrain": "grass",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "F12",
-        "name": "传说亚麻",
-        "rarity": "传说",
-        "area": "传说遗迹",
-        "carry": 5,
-        "toughness": 5,
-        "tendency": "",
-        "gather": {
-          "legendary_ruins": [
-            {
-              "terrain": "mountain",
-              "min": 1,
-              "max": 1,
-              "prob": 0.15
-            }
-          ]
-        }
-      },
-      {
-        "id": "F13",
-        "name": "渊纹膜缕",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "carry": 6,
-        "toughness": 6,
-        "tendency": "暗2"
-      },
-      {
-        "id": "F14",
-        "name": "曦光丝缕",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "carry": 7,
-        "toughness": 6,
-        "tendency": "光2"
-      },
-      {
-        "id": "F15",
-        "name": "熵藤纤维",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "grass",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "carry": 6,
-        "toughness": 7,
-        "tendency": "风3"
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
       }
-    ],
-    "mineral": [
+     ]
+    }
+   },
+   {
+    "id": "F02",
+    "name": "青藤纤维",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "carry": 1,
+    "toughness": 2,
+    "tendency": "",
+    "gather": {
+     "misty_forest": [
       {
-        "id": "M01",
-        "name": "石灰矿粉",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "stability": 1,
-        "hardness": 2,
-        "tendency": "",
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "mine",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "M02",
-        "name": "辉光矿粉",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "stability": 2,
-        "hardness": 1,
-        "tendency": "",
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "mine",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "M03",
-        "name": "砂金石粉",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "stability": 1,
-        "hardness": 1,
-        "tendency": "",
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "valley",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "M04",
-        "name": "月长石粉",
-        "rarity": "稀有",
-        "area": "暗影沼泽",
-        "stability": 3,
-        "hardness": 2,
-        "tendency": "",
-        "gather": {
-          "shadow_swamp": [
-            {
-              "terrain": "mountain",
-              "min": 1,
-              "max": 1,
-              "prob": 0.5
-            }
-          ]
-        }
-      },
-      {
-        "id": "M05",
-        "name": "熔核矿粉",
-        "rarity": "稀有",
-        "area": "火焰洞穴",
-        "stability": 2,
-        "hardness": 3,
-        "tendency": "火1",
-        "gather": {
-          "flame_cavern": [
-            {
-              "terrain": "mine",
-              "min": 1,
-              "max": 2,
-              "prob": 0.6
-            }
-          ]
-        }
-      },
-      {
-        "id": "M06",
-        "name": "炎晶粉末",
-        "rarity": "稀有",
-        "area": "火焰洞穴",
-        "stability": 3,
-        "hardness": 4,
-        "tendency": "火2",
-        "gather": {
-          "flame_cavern": [
-            {
-              "terrain": "mine",
-              "min": 1,
-              "max": 2,
-              "prob": 0.6
-            }
-          ]
-        }
-      },
-      {
-        "id": "M07",
-        "name": "雷击矿砂",
-        "rarity": "史诗",
-        "area": "风暴高塔",
-        "stability": 3,
-        "hardness": 3,
-        "tendency": "风1",
-        "gather": {
-          "storm_tower": [
-            {
-              "terrain": "mine",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "M08",
-        "name": "风暴晶尘",
-        "rarity": "史诗",
-        "area": "风暴高塔",
-        "stability": 4,
-        "hardness": 2,
-        "tendency": "风2",
-        "gather": {
-          "storm_tower": [
-            {
-              "terrain": "mine",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "M09",
-        "name": "冰晶粉末",
-        "rarity": "稀有",
-        "area": "暗影沼泽",
-        "stability": 3,
-        "hardness": 2,
-        "tendency": "水1",
-        "gather": {
-          "shadow_swamp": [
-            {
-              "terrain": "mine",
-              "min": 1,
-              "max": 1,
-              "prob": 0.5
-            }
-          ]
-        }
-      },
-      {
-        "id": "M10",
-        "name": "暗铁砂",
-        "rarity": "史诗",
-        "area": "传说遗迹",
-        "stability": 4,
-        "hardness": 3,
-        "tendency": "暗1",
-        "gather": {
-          "legendary_ruins": [
-            {
-              "terrain": "mine",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "M11",
-        "name": "圣光石粉",
-        "rarity": "史诗",
-        "area": "传说遗迹",
-        "stability": 2,
-        "hardness": 4,
-        "tendency": "光1",
-        "gather": {
-          "legendary_ruins": [
-            {
-              "terrain": "mine",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "M12",
-        "name": "星辰粉末",
-        "rarity": "传说",
-        "area": "传说遗迹",
-        "stability": 5,
-        "hardness": 4,
-        "tendency": "",
-        "gather": {
-          "legendary_ruins": [
-            {
-              "terrain": "mine",
-              "min": 1,
-              "max": 1,
-              "prob": 0.15
-            }
-          ]
-        }
-      },
-      {
-        "id": "M13",
-        "name": "渊核砂",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "mine",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "stability": 6,
-        "hardness": 7,
-        "tendency": "暗2"
-      },
-      {
-        "id": "M14",
-        "name": "圣遗石粉",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "mine",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "stability": 7,
-        "hardness": 6,
-        "tendency": "光2"
-      },
-      {
-        "id": "M15",
-        "name": "坍缩星髓",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "mountain",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "stability": 7,
-        "hardness": 7,
-        "tendency": "地3"
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
       }
-    ],
-    "resin": [
+     ]
+    }
+   },
+   {
+    "id": "F03",
+    "name": "枯草纤维",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "carry": 1,
+    "toughness": 1,
+    "tendency": "",
+    "gather": {
+     "misty_forest": [
       {
-        "id": "R01",
-        "name": "普通松脂",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "bond": 1,
-        "gloss": 0,
-        "tendency": "",
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "R02",
-        "name": "琥珀树脂",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "bond": 1,
-        "gloss": 1,
-        "tendency": "",
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "cave",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "R03",
-        "name": "古树树脂",
-        "rarity": "稀有",
-        "area": "火焰洞穴",
-        "bond": 2,
-        "gloss": 1,
-        "tendency": "",
-        "gather": {
-          "flame_cavern": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 2,
-              "prob": 0.6
-            }
-          ]
-        }
-      },
-      {
-        "id": "R04",
-        "name": "熔岩树脂",
-        "rarity": "稀有",
-        "area": "火焰洞穴",
-        "bond": 2,
-        "gloss": 2,
-        "tendency": "火1",
-        "gather": {
-          "flame_cavern": [
-            {
-              "terrain": "valley",
-              "min": 1,
-              "max": 2,
-              "prob": 0.6
-            }
-          ]
-        }
-      },
-      {
-        "id": "R05",
-        "name": "龙血树脂",
-        "rarity": "史诗",
-        "area": "风暴高塔",
-        "bond": 3,
-        "gloss": 2,
-        "tendency": "",
-        "gather": {
-          "storm_tower": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "R06",
-        "name": "风泪树脂",
-        "rarity": "史诗",
-        "area": "风暴高塔",
-        "bond": 2,
-        "gloss": 3,
-        "tendency": "风1",
-        "gather": {
-          "storm_tower": [
-            {
-              "terrain": "valley",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "R07",
-        "name": "冰霜琥珀",
-        "rarity": "稀有",
-        "area": "暗影沼泽",
-        "bond": 3,
-        "gloss": 1,
-        "tendency": "水1",
-        "gather": {
-          "shadow_swamp": [
-            {
-              "terrain": "valley",
-              "min": 1,
-              "max": 1,
-              "prob": 0.5
-            }
-          ]
-        }
-      },
-      {
-        "id": "R08",
-        "name": "暗影树脂",
-        "rarity": "传说",
-        "area": "传说遗迹",
-        "bond": 4,
-        "gloss": 3,
-        "tendency": "暗1",
-        "gather": {
-          "legendary_ruins": [
-            {
-              "terrain": "valley",
-              "min": 1,
-              "max": 1,
-              "prob": 0.15
-            }
-          ]
-        }
-      },
-      {
-        "id": "R09",
-        "name": "深渊树脂",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "valley",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "bond": 5,
-        "gloss": 4,
-        "tendency": "暗2"
-      },
-      {
-        "id": "R10",
-        "name": "晨曦凝脂",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "valley",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "bond": 5,
-        "gloss": 5,
-        "tendency": "光2"
-      },
-      {
-        "id": "R11",
-        "name": "潮汐脂",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "cave",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "bond": 6,
-        "gloss": 5,
-        "tendency": "水3"
+       "terrain": "mountain",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
       }
-    ],
-    "extract": [
+     ]
+    }
+   },
+   {
+    "id": "F04",
+    "name": "月光麻",
+    "rarity": "稀有",
+    "area": "沉陷湿地公园",
+    "carry": 2,
+    "toughness": 2,
+    "tendency": "",
+    "gather": {
+     "shadow_swamp": [
       {
-        "id": "E01",
-        "name": "清水",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "conductivity": 1,
-        "purity": 0,
-        "tendency": "",
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "valley",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "E02",
-        "name": "生命露水",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "conductivity": 1,
-        "purity": 1,
-        "tendency": "",
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "grass",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "E03",
-        "name": "月光露",
-        "rarity": "稀有",
-        "area": "暗影沼泽",
-        "conductivity": 2,
-        "purity": 2,
-        "tendency": "",
-        "gather": {
-          "shadow_swamp": [
-            {
-              "terrain": "cave",
-              "min": 1,
-              "max": 1,
-              "prob": 0.5
-            }
-          ]
-        }
-      },
-      {
-        "id": "E04",
-        "name": "火焰精华",
-        "rarity": "稀有",
-        "area": "火焰洞穴",
-        "conductivity": 2,
-        "purity": 2,
-        "tendency": "火1",
-        "gather": {
-          "flame_cavern": [
-            {
-              "terrain": "valley",
-              "min": 1,
-              "max": 2,
-              "prob": 0.6
-            }
-          ]
-        }
-      },
-      {
-        "id": "E05",
-        "name": "熔岩之息",
-        "rarity": "稀有",
-        "area": "火焰洞穴",
-        "conductivity": 3,
-        "purity": 1,
-        "tendency": "火2",
-        "gather": {
-          "flame_cavern": [
-            {
-              "terrain": "cave",
-              "min": 1,
-              "max": 2,
-              "prob": 0.6
-            }
-          ]
-        }
-      },
-      {
-        "id": "E06",
-        "name": "风之灵息",
-        "rarity": "史诗",
-        "area": "风暴高塔",
-        "conductivity": 3,
-        "purity": 3,
-        "tendency": "风1",
-        "gather": {
-          "storm_tower": [
-            {
-              "terrain": "valley",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "E07",
-        "name": "雷暴精华",
-        "rarity": "史诗",
-        "area": "风暴高塔",
-        "conductivity": 4,
-        "purity": 2,
-        "tendency": "风2",
-        "gather": {
-          "storm_tower": [
-            {
-              "terrain": "cave",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "E08",
-        "name": "冰霜精华",
-        "rarity": "稀有",
-        "area": "暗影沼泽",
-        "conductivity": 2,
-        "purity": 3,
-        "tendency": "水1",
-        "gather": {
-          "shadow_swamp": [
-            {
-              "terrain": "grass",
-              "min": 1,
-              "max": 1,
-              "prob": 0.5
-            }
-          ]
-        }
-      },
-      {
-        "id": "E09",
-        "name": "虚空精华",
-        "rarity": "传说",
-        "area": "传说遗迹",
-        "conductivity": 5,
-        "purity": 4,
-        "tendency": "暗1",
-        "gather": {
-          "legendary_ruins": [
-            {
-              "terrain": "valley",
-              "min": 1,
-              "max": 1,
-              "prob": 0.15
-            }
-          ]
-        }
-      },
-      {
-        "id": "E10",
-        "name": "圣光露",
-        "rarity": "史诗",
-        "area": "传说遗迹",
-        "conductivity": 3,
-        "purity": 4,
-        "tendency": "光1",
-        "gather": {
-          "legendary_ruins": [
-            {
-              "terrain": "grass",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "E11",
-        "name": "渊液",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "valley",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "conductivity": 7,
-        "purity": 5,
-        "tendency": "暗2"
-      },
-      {
-        "id": "E12",
-        "name": "曦光露",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "grass",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "conductivity": 6,
-        "purity": 6,
-        "tendency": "光2"
-      },
-      {
-        "id": "E13",
-        "name": "熄焰精华",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "cave",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "conductivity": 7,
-        "purity": 6,
-        "tendency": "火3"
+       "terrain": "mountain",
+       "min": 1,
+       "max": 1,
+       "prob": 0.5
       }
-    ],
-    "pigment": [
+     ]
+    }
+   },
+   {
+    "id": "F05",
+    "name": "火焰苔藓",
+    "rarity": "稀有",
+    "area": "烬燃热电厂",
+    "carry": 3,
+    "toughness": 2,
+    "tendency": "火1",
+    "gather": {
+     "flame_cavern": [
       {
-        "id": "P01",
-        "name": "炭黑",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "adhesion": 1,
-        "chromatography": 0,
-        "tendency": "",
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "grass",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "P02",
-        "name": "朱砂",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "adhesion": 1,
-        "chromatography": 1,
-        "tendency": "",
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "grass",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "P03",
-        "name": "赭石",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "adhesion": 2,
-        "chromatography": 1,
-        "tendency": "",
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "mountain",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "P04",
-        "name": "石青",
-        "rarity": "稀有",
-        "area": "火焰洞穴",
-        "adhesion": 2,
-        "chromatography": 2,
-        "tendency": "",
-        "gather": {
-          "flame_cavern": [
-            {
-              "terrain": "grass",
-              "min": 1,
-              "max": 2,
-              "prob": 0.6
-            }
-          ]
-        }
-      },
-      {
-        "id": "P05",
-        "name": "硫磺黄",
-        "rarity": "稀有",
-        "area": "火焰洞穴",
-        "adhesion": 1,
-        "chromatography": 3,
-        "tendency": "火1",
-        "gather": {
-          "flame_cavern": [
-            {
-              "terrain": "grass",
-              "min": 1,
-              "max": 2,
-              "prob": 0.6
-            }
-          ]
-        }
-      },
-      {
-        "id": "P06",
-        "name": "云母粉",
-        "rarity": "史诗",
-        "area": "风暴高塔",
-        "adhesion": 3,
-        "chromatography": 3,
-        "tendency": "",
-        "gather": {
-          "storm_tower": [
-            {
-              "terrain": "grass",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "P07",
-        "name": "雷晶粉",
-        "rarity": "史诗",
-        "area": "风暴高塔",
-        "adhesion": 2,
-        "chromatography": 4,
-        "tendency": "风1",
-        "gather": {
-          "storm_tower": [
-            {
-              "terrain": "cave",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "P08",
-        "name": "冰蓝",
-        "rarity": "稀有",
-        "area": "暗影沼泽",
-        "adhesion": 3,
-        "chromatography": 2,
-        "tendency": "水1",
-        "gather": {
-          "shadow_swamp": [
-            {
-              "terrain": "grass",
-              "min": 1,
-              "max": 1,
-              "prob": 0.5
-            }
-          ]
-        }
-      },
-      {
-        "id": "P09",
-        "name": "暗晶粉",
-        "rarity": "史诗",
-        "area": "传说遗迹",
-        "adhesion": 4,
-        "chromatography": 3,
-        "tendency": "暗1",
-        "gather": {
-          "legendary_ruins": [
-            {
-              "terrain": "cave",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "P10",
-        "name": "金粉",
-        "rarity": "传说",
-        "area": "传说遗迹",
-        "adhesion": 4,
-        "chromatography": 5,
-        "tendency": "",
-        "gather": {
-          "legendary_ruins": [
-            {
-              "terrain": "mountain",
-              "min": 1,
-              "max": 1,
-              "prob": 0.15
-            }
-          ]
-        }
-      },
-      {
-        "id": "P11",
-        "name": "渊墨",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "cave",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "adhesion": 6,
-        "chromatography": 6,
-        "tendency": "暗2"
-      },
-      {
-        "id": "P12",
-        "name": "极光颜料",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "mountain",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "adhesion": 6,
-        "chromatography": 7,
-        "tendency": "光2"
-      },
-      {
-        "id": "P13",
-        "name": "蚀纹色",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "adhesion": 7,
-        "chromatography": 6,
-        "tendency": "地3"
+       "terrain": "forest",
+       "min": 1,
+       "max": 2,
+       "prob": 0.6
       }
-    ],
-    "binder": [
+     ]
+    }
+   },
+   {
+    "id": "F06",
+    "name": "熔岩藤",
+    "rarity": "稀有",
+    "area": "烬燃热电厂",
+    "carry": 3,
+    "toughness": 1,
+    "tendency": "火2",
+    "gather": {
+     "flame_cavern": [
       {
-        "id": "B01",
-        "name": "骨胶",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "harmony": 1,
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "B02",
-        "name": "鱼鳔胶",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "harmony": 2,
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "valley",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "B03",
-        "name": "树汁胶",
-        "rarity": "普通",
-        "area": "迷雾森林",
-        "harmony": 1,
-        "gather": {
-          "misty_forest": [
-            {
-              "terrain": "cave",
-              "min": 1,
-              "max": 1,
-              "prob": 0.7
-            }
-          ]
-        }
-      },
-      {
-        "id": "B04",
-        "name": "精灵胶",
-        "rarity": "稀有",
-        "area": "火焰洞穴",
-        "harmony": 3,
-        "gather": {
-          "flame_cavern": [
-            {
-              "terrain": "mountain",
-              "min": 1,
-              "max": 2,
-              "prob": 0.6
-            }
-          ]
-        }
-      },
-      {
-        "id": "B05",
-        "name": "炎胶",
-        "rarity": "稀有",
-        "area": "火焰洞穴",
-        "harmony": 2,
-        "gather": {
-          "flame_cavern": [
-            {
-              "terrain": "cave",
-              "min": 1,
-              "max": 2,
-              "prob": 0.6
-            }
-          ]
-        }
-      },
-      {
-        "id": "B06",
-        "name": "风凝胶",
-        "rarity": "史诗",
-        "area": "风暴高塔",
-        "harmony": 4,
-        "gather": {
-          "storm_tower": [
-            {
-              "terrain": "mountain",
-              "min": 1,
-              "max": 1,
-              "prob": 0.3
-            }
-          ]
-        }
-      },
-      {
-        "id": "B07",
-        "name": "冰胶",
-        "rarity": "稀有",
-        "area": "暗影沼泽",
-        "harmony": 3,
-        "gather": {
-          "shadow_swamp": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.5
-            }
-          ]
-        }
-      },
-      {
-        "id": "B08",
-        "name": "龙涎胶",
-        "rarity": "传说",
-        "area": "传说遗迹",
-        "harmony": 5,
-        "gather": {
-          "legendary_ruins": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.15
-            }
-          ]
-        }
-      },
-      {
-        "id": "B09",
-        "name": "渊胶",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "mine",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "harmony": 6
-      },
-      {
-        "id": "B10",
-        "name": "晨曦胶",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "grass",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "harmony": 6
-      },
-      {
-        "id": "B11",
-        "name": "万象胶",
-        "rarity": "传说",
-        "area": "虚渊深层",
-        "gather": {
-          "void_rift": [
-            {
-              "terrain": "forest",
-              "min": 1,
-              "max": 1,
-              "prob": 0.1
-            }
-          ]
-        },
-        "harmony": 7
+       "terrain": "mountain",
+       "min": 1,
+       "max": 2,
+       "prob": 0.6
       }
-    ]
+     ]
+    }
+   },
+   {
+    "id": "F07",
+    "name": "风暴棉",
+    "rarity": "史诗",
+    "area": "雷鸣电视塔",
+    "carry": 4,
+    "toughness": 3,
+    "tendency": "风1",
+    "gather": {
+     "storm_tower": [
+      {
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "F08",
+    "name": "雷纹藤",
+    "rarity": "史诗",
+    "area": "雷鸣电视塔",
+    "carry": 3,
+    "toughness": 4,
+    "tendency": "风2",
+    "gather": {
+     "storm_tower": [
+      {
+       "terrain": "mountain",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "F09",
+    "name": "冰霜亚麻",
+    "rarity": "稀有",
+    "area": "沉陷湿地公园",
+    "carry": 2,
+    "toughness": 4,
+    "tendency": "水1",
+    "gather": {
+     "shadow_swamp": [
+      {
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.5
+      }
+     ]
+    }
+   },
+   {
+    "id": "F10",
+    "name": "暗影藤",
+    "rarity": "史诗",
+    "area": "沉陷湿地公园、圮城博物馆",
+    "carry": 3,
+    "toughness": 4,
+    "tendency": "暗1",
+    "gather": {
+     "shadow_swamp": [
+      {
+       "terrain": "cave",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ],
+     "legendary_ruins": [
+      {
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "F11",
+    "name": "光之丝",
+    "rarity": "史诗",
+    "area": "圮城博物馆",
+    "carry": 4,
+    "toughness": 3,
+    "tendency": "光1",
+    "gather": {
+     "legendary_ruins": [
+      {
+       "terrain": "grass",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "F12",
+    "name": "传说亚麻",
+    "rarity": "传说",
+    "area": "圮城博物馆",
+    "carry": 5,
+    "toughness": 5,
+    "tendency": "",
+    "gather": {
+     "legendary_ruins": [
+      {
+       "terrain": "mountain",
+       "min": 1,
+       "max": 1,
+       "prob": 0.15
+      }
+     ]
+    }
+   },
+   {
+    "id": "F13",
+    "name": "渊纹膜缕",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "carry": 6,
+    "toughness": 6,
+    "tendency": "暗2"
+   },
+   {
+    "id": "F14",
+    "name": "曦光丝缕",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "carry": 7,
+    "toughness": 6,
+    "tendency": "光2"
+   },
+   {
+    "id": "F15",
+    "name": "熵藤纤维",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "grass",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "carry": 6,
+    "toughness": 7,
+    "tendency": "风3"
+   }
+  ],
+  "mineral": [
+   {
+    "id": "M01",
+    "name": "石灰矿粉",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "stability": 1,
+    "hardness": 2,
+    "tendency": "",
+    "gather": {
+     "misty_forest": [
+      {
+       "terrain": "mine",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
+      }
+     ]
+    }
+   },
+   {
+    "id": "M02",
+    "name": "辉光矿粉",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "stability": 2,
+    "hardness": 1,
+    "tendency": "",
+    "gather": {
+     "misty_forest": [
+      {
+       "terrain": "mine",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
+      }
+     ]
+    }
+   },
+   {
+    "id": "M03",
+    "name": "砂金石粉",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "stability": 1,
+    "hardness": 1,
+    "tendency": "",
+    "gather": {
+     "misty_forest": [
+      {
+       "terrain": "valley",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
+      }
+     ]
+    }
+   },
+   {
+    "id": "M04",
+    "name": "月长石粉",
+    "rarity": "稀有",
+    "area": "沉陷湿地公园",
+    "stability": 3,
+    "hardness": 2,
+    "tendency": "",
+    "gather": {
+     "shadow_swamp": [
+      {
+       "terrain": "mountain",
+       "min": 1,
+       "max": 1,
+       "prob": 0.5
+      }
+     ]
+    }
+   },
+   {
+    "id": "M05",
+    "name": "熔核矿粉",
+    "rarity": "稀有",
+    "area": "烬燃热电厂",
+    "stability": 2,
+    "hardness": 3,
+    "tendency": "火1",
+    "gather": {
+     "flame_cavern": [
+      {
+       "terrain": "mine",
+       "min": 1,
+       "max": 2,
+       "prob": 0.6
+      }
+     ]
+    }
+   },
+   {
+    "id": "M06",
+    "name": "炎晶粉末",
+    "rarity": "稀有",
+    "area": "烬燃热电厂",
+    "stability": 3,
+    "hardness": 4,
+    "tendency": "火2",
+    "gather": {
+     "flame_cavern": [
+      {
+       "terrain": "mine",
+       "min": 1,
+       "max": 2,
+       "prob": 0.6
+      }
+     ]
+    }
+   },
+   {
+    "id": "M07",
+    "name": "雷击矿砂",
+    "rarity": "史诗",
+    "area": "雷鸣电视塔",
+    "stability": 3,
+    "hardness": 3,
+    "tendency": "风1",
+    "gather": {
+     "storm_tower": [
+      {
+       "terrain": "mine",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "M08",
+    "name": "风暴晶尘",
+    "rarity": "史诗",
+    "area": "雷鸣电视塔",
+    "stability": 4,
+    "hardness": 2,
+    "tendency": "风2",
+    "gather": {
+     "storm_tower": [
+      {
+       "terrain": "mine",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "M09",
+    "name": "冰晶粉末",
+    "rarity": "稀有",
+    "area": "沉陷湿地公园",
+    "stability": 3,
+    "hardness": 2,
+    "tendency": "水1",
+    "gather": {
+     "shadow_swamp": [
+      {
+       "terrain": "mine",
+       "min": 1,
+       "max": 1,
+       "prob": 0.5
+      }
+     ]
+    }
+   },
+   {
+    "id": "M10",
+    "name": "暗铁砂",
+    "rarity": "史诗",
+    "area": "圮城博物馆",
+    "stability": 4,
+    "hardness": 3,
+    "tendency": "暗1",
+    "gather": {
+     "legendary_ruins": [
+      {
+       "terrain": "mine",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "M11",
+    "name": "圣光石粉",
+    "rarity": "史诗",
+    "area": "圮城博物馆",
+    "stability": 2,
+    "hardness": 4,
+    "tendency": "光1",
+    "gather": {
+     "legendary_ruins": [
+      {
+       "terrain": "mine",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "M12",
+    "name": "星辰粉末",
+    "rarity": "传说",
+    "area": "圮城博物馆",
+    "stability": 5,
+    "hardness": 4,
+    "tendency": "",
+    "gather": {
+     "legendary_ruins": [
+      {
+       "terrain": "mine",
+       "min": 1,
+       "max": 1,
+       "prob": 0.15
+      }
+     ]
+    }
+   },
+   {
+    "id": "M13",
+    "name": "渊核砂",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "mine",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "stability": 6,
+    "hardness": 7,
+    "tendency": "暗2"
+   },
+   {
+    "id": "M14",
+    "name": "圣遗石粉",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "mine",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "stability": 7,
+    "hardness": 6,
+    "tendency": "光2"
+   },
+   {
+    "id": "M15",
+    "name": "坍缩星髓",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "mountain",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "stability": 7,
+    "hardness": 7,
+    "tendency": "地3"
+   }
+  ],
+  "resin": [
+   {
+    "id": "R01",
+    "name": "普通松脂",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "bond": 1,
+    "gloss": 0,
+    "tendency": "",
+    "gather": {
+     "misty_forest": [
+      {
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
+      }
+     ]
+    }
+   },
+   {
+    "id": "R02",
+    "name": "琥珀树脂",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "bond": 1,
+    "gloss": 1,
+    "tendency": "",
+    "gather": {
+     "misty_forest": [
+      {
+       "terrain": "cave",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
+      }
+     ]
+    }
+   },
+   {
+    "id": "R03",
+    "name": "古树树脂",
+    "rarity": "稀有",
+    "area": "烬燃热电厂",
+    "bond": 2,
+    "gloss": 1,
+    "tendency": "",
+    "gather": {
+     "flame_cavern": [
+      {
+       "terrain": "forest",
+       "min": 1,
+       "max": 2,
+       "prob": 0.6
+      }
+     ]
+    }
+   },
+   {
+    "id": "R04",
+    "name": "熔岩树脂",
+    "rarity": "稀有",
+    "area": "烬燃热电厂",
+    "bond": 2,
+    "gloss": 2,
+    "tendency": "火1",
+    "gather": {
+     "flame_cavern": [
+      {
+       "terrain": "valley",
+       "min": 1,
+       "max": 2,
+       "prob": 0.6
+      }
+     ]
+    }
+   },
+   {
+    "id": "R05",
+    "name": "龙血树脂",
+    "rarity": "史诗",
+    "area": "雷鸣电视塔",
+    "bond": 3,
+    "gloss": 2,
+    "tendency": "",
+    "gather": {
+     "storm_tower": [
+      {
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "R06",
+    "name": "风泪树脂",
+    "rarity": "史诗",
+    "area": "雷鸣电视塔",
+    "bond": 2,
+    "gloss": 3,
+    "tendency": "风1",
+    "gather": {
+     "storm_tower": [
+      {
+       "terrain": "valley",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "R07",
+    "name": "冰霜琥珀",
+    "rarity": "稀有",
+    "area": "沉陷湿地公园",
+    "bond": 3,
+    "gloss": 1,
+    "tendency": "水1",
+    "gather": {
+     "shadow_swamp": [
+      {
+       "terrain": "valley",
+       "min": 1,
+       "max": 1,
+       "prob": 0.5
+      }
+     ]
+    }
+   },
+   {
+    "id": "R08",
+    "name": "暗影树脂",
+    "rarity": "传说",
+    "area": "圮城博物馆",
+    "bond": 4,
+    "gloss": 3,
+    "tendency": "暗1",
+    "gather": {
+     "legendary_ruins": [
+      {
+       "terrain": "valley",
+       "min": 1,
+       "max": 1,
+       "prob": 0.15
+      }
+     ]
+    }
+   },
+   {
+    "id": "R09",
+    "name": "深渊树脂",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "valley",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "bond": 5,
+    "gloss": 4,
+    "tendency": "暗2"
+   },
+   {
+    "id": "R10",
+    "name": "晨曦凝脂",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "valley",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "bond": 5,
+    "gloss": 5,
+    "tendency": "光2"
+   },
+   {
+    "id": "R11",
+    "name": "潮汐脂",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "cave",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "bond": 6,
+    "gloss": 5,
+    "tendency": "水3"
+   }
+  ],
+  "extract": [
+   {
+    "id": "E01",
+    "name": "清水",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "conductivity": 1,
+    "purity": 0,
+    "tendency": "",
+    "gather": {
+     "misty_forest": [
+      {
+       "terrain": "valley",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
+      }
+     ]
+    }
+   },
+   {
+    "id": "E02",
+    "name": "生命露水",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "conductivity": 1,
+    "purity": 1,
+    "tendency": "",
+    "gather": {
+     "misty_forest": [
+      {
+       "terrain": "grass",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
+      }
+     ]
+    }
+   },
+   {
+    "id": "E03",
+    "name": "月光露",
+    "rarity": "稀有",
+    "area": "沉陷湿地公园",
+    "conductivity": 2,
+    "purity": 2,
+    "tendency": "",
+    "gather": {
+     "shadow_swamp": [
+      {
+       "terrain": "cave",
+       "min": 1,
+       "max": 1,
+       "prob": 0.5
+      }
+     ]
+    }
+   },
+   {
+    "id": "E04",
+    "name": "火焰精华",
+    "rarity": "稀有",
+    "area": "烬燃热电厂",
+    "conductivity": 2,
+    "purity": 2,
+    "tendency": "火1",
+    "gather": {
+     "flame_cavern": [
+      {
+       "terrain": "valley",
+       "min": 1,
+       "max": 2,
+       "prob": 0.6
+      }
+     ]
+    }
+   },
+   {
+    "id": "E05",
+    "name": "熔岩之息",
+    "rarity": "稀有",
+    "area": "烬燃热电厂",
+    "conductivity": 3,
+    "purity": 1,
+    "tendency": "火2",
+    "gather": {
+     "flame_cavern": [
+      {
+       "terrain": "cave",
+       "min": 1,
+       "max": 2,
+       "prob": 0.6
+      }
+     ]
+    }
+   },
+   {
+    "id": "E06",
+    "name": "风之灵息",
+    "rarity": "史诗",
+    "area": "雷鸣电视塔",
+    "conductivity": 3,
+    "purity": 3,
+    "tendency": "风1",
+    "gather": {
+     "storm_tower": [
+      {
+       "terrain": "valley",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "E07",
+    "name": "雷暴精华",
+    "rarity": "史诗",
+    "area": "雷鸣电视塔",
+    "conductivity": 4,
+    "purity": 2,
+    "tendency": "风2",
+    "gather": {
+     "storm_tower": [
+      {
+       "terrain": "cave",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "E08",
+    "name": "冰霜精华",
+    "rarity": "稀有",
+    "area": "沉陷湿地公园",
+    "conductivity": 2,
+    "purity": 3,
+    "tendency": "水1",
+    "gather": {
+     "shadow_swamp": [
+      {
+       "terrain": "grass",
+       "min": 1,
+       "max": 1,
+       "prob": 0.5
+      }
+     ]
+    }
+   },
+   {
+    "id": "E09",
+    "name": "虚空精华",
+    "rarity": "传说",
+    "area": "圮城博物馆",
+    "conductivity": 5,
+    "purity": 4,
+    "tendency": "暗1",
+    "gather": {
+     "legendary_ruins": [
+      {
+       "terrain": "valley",
+       "min": 1,
+       "max": 1,
+       "prob": 0.15
+      }
+     ]
+    }
+   },
+   {
+    "id": "E10",
+    "name": "圣光露",
+    "rarity": "史诗",
+    "area": "圮城博物馆",
+    "conductivity": 3,
+    "purity": 4,
+    "tendency": "光1",
+    "gather": {
+     "legendary_ruins": [
+      {
+       "terrain": "grass",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "E11",
+    "name": "渊液",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "valley",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "conductivity": 7,
+    "purity": 5,
+    "tendency": "暗2"
+   },
+   {
+    "id": "E12",
+    "name": "曦光露",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "grass",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "conductivity": 6,
+    "purity": 6,
+    "tendency": "光2"
+   },
+   {
+    "id": "E13",
+    "name": "熄焰精华",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "cave",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "conductivity": 7,
+    "purity": 6,
+    "tendency": "火3"
+   }
+  ],
+  "pigment": [
+   {
+    "id": "P01",
+    "name": "炭黑",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "adhesion": 1,
+    "chromatography": 0,
+    "tendency": "",
+    "gather": {
+     "misty_forest": [
+      {
+       "terrain": "grass",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
+      }
+     ]
+    }
+   },
+   {
+    "id": "P02",
+    "name": "朱砂",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "adhesion": 1,
+    "chromatography": 1,
+    "tendency": "",
+    "gather": {
+     "misty_forest": [
+      {
+       "terrain": "grass",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
+      }
+     ]
+    }
+   },
+   {
+    "id": "P03",
+    "name": "赭石",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "adhesion": 2,
+    "chromatography": 1,
+    "tendency": "",
+    "gather": {
+     "misty_forest": [
+      {
+       "terrain": "mountain",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
+      }
+     ]
+    }
+   },
+   {
+    "id": "P04",
+    "name": "石青",
+    "rarity": "稀有",
+    "area": "烬燃热电厂",
+    "adhesion": 2,
+    "chromatography": 2,
+    "tendency": "",
+    "gather": {
+     "flame_cavern": [
+      {
+       "terrain": "grass",
+       "min": 1,
+       "max": 2,
+       "prob": 0.6
+      }
+     ]
+    }
+   },
+   {
+    "id": "P05",
+    "name": "硫磺黄",
+    "rarity": "稀有",
+    "area": "烬燃热电厂",
+    "adhesion": 1,
+    "chromatography": 3,
+    "tendency": "火1",
+    "gather": {
+     "flame_cavern": [
+      {
+       "terrain": "grass",
+       "min": 1,
+       "max": 2,
+       "prob": 0.6
+      }
+     ]
+    }
+   },
+   {
+    "id": "P06",
+    "name": "云母粉",
+    "rarity": "史诗",
+    "area": "雷鸣电视塔",
+    "adhesion": 3,
+    "chromatography": 3,
+    "tendency": "",
+    "gather": {
+     "storm_tower": [
+      {
+       "terrain": "grass",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "P07",
+    "name": "雷晶粉",
+    "rarity": "史诗",
+    "area": "雷鸣电视塔",
+    "adhesion": 2,
+    "chromatography": 4,
+    "tendency": "风1",
+    "gather": {
+     "storm_tower": [
+      {
+       "terrain": "cave",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "P08",
+    "name": "冰蓝",
+    "rarity": "稀有",
+    "area": "沉陷湿地公园",
+    "adhesion": 3,
+    "chromatography": 2,
+    "tendency": "水1",
+    "gather": {
+     "shadow_swamp": [
+      {
+       "terrain": "grass",
+       "min": 1,
+       "max": 1,
+       "prob": 0.5
+      }
+     ]
+    }
+   },
+   {
+    "id": "P09",
+    "name": "暗晶粉",
+    "rarity": "史诗",
+    "area": "圮城博物馆",
+    "adhesion": 4,
+    "chromatography": 3,
+    "tendency": "暗1",
+    "gather": {
+     "legendary_ruins": [
+      {
+       "terrain": "cave",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "P10",
+    "name": "金粉",
+    "rarity": "传说",
+    "area": "圮城博物馆",
+    "adhesion": 4,
+    "chromatography": 5,
+    "tendency": "",
+    "gather": {
+     "legendary_ruins": [
+      {
+       "terrain": "mountain",
+       "min": 1,
+       "max": 1,
+       "prob": 0.15
+      }
+     ]
+    }
+   },
+   {
+    "id": "P11",
+    "name": "渊墨",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "cave",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "adhesion": 6,
+    "chromatography": 6,
+    "tendency": "暗2"
+   },
+   {
+    "id": "P12",
+    "name": "极光颜料",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "mountain",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "adhesion": 6,
+    "chromatography": 7,
+    "tendency": "光2"
+   },
+   {
+    "id": "P13",
+    "name": "蚀纹色",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "adhesion": 7,
+    "chromatography": 6,
+    "tendency": "地3"
+   }
+  ],
+  "binder": [
+   {
+    "id": "B01",
+    "name": "骨胶",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "harmony": 1,
+    "gather": {
+     "misty_forest": [
+      {
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
+      }
+     ]
+    }
+   },
+   {
+    "id": "B02",
+    "name": "鱼鳔胶",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "harmony": 2,
+    "gather": {
+     "misty_forest": [
+      {
+       "terrain": "valley",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
+      }
+     ]
+    }
+   },
+   {
+    "id": "B03",
+    "name": "树汁胶",
+    "rarity": "普通",
+    "area": "沉雾植物园",
+    "harmony": 1,
+    "gather": {
+     "misty_forest": [
+      {
+       "terrain": "cave",
+       "min": 1,
+       "max": 1,
+       "prob": 0.7
+      }
+     ]
+    }
+   },
+   {
+    "id": "B04",
+    "name": "精灵胶",
+    "rarity": "稀有",
+    "area": "烬燃热电厂",
+    "harmony": 3,
+    "gather": {
+     "flame_cavern": [
+      {
+       "terrain": "mountain",
+       "min": 1,
+       "max": 2,
+       "prob": 0.6
+      }
+     ]
+    }
+   },
+   {
+    "id": "B05",
+    "name": "炎胶",
+    "rarity": "稀有",
+    "area": "烬燃热电厂",
+    "harmony": 2,
+    "gather": {
+     "flame_cavern": [
+      {
+       "terrain": "cave",
+       "min": 1,
+       "max": 2,
+       "prob": 0.6
+      }
+     ]
+    }
+   },
+   {
+    "id": "B06",
+    "name": "风凝胶",
+    "rarity": "史诗",
+    "area": "雷鸣电视塔",
+    "harmony": 4,
+    "gather": {
+     "storm_tower": [
+      {
+       "terrain": "mountain",
+       "min": 1,
+       "max": 1,
+       "prob": 0.3
+      }
+     ]
+    }
+   },
+   {
+    "id": "B07",
+    "name": "冰胶",
+    "rarity": "稀有",
+    "area": "沉陷湿地公园",
+    "harmony": 3,
+    "gather": {
+     "shadow_swamp": [
+      {
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.5
+      }
+     ]
+    }
+   },
+   {
+    "id": "B08",
+    "name": "龙涎胶",
+    "rarity": "传说",
+    "area": "圮城博物馆",
+    "harmony": 5,
+    "gather": {
+     "legendary_ruins": [
+      {
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.15
+      }
+     ]
+    }
+   },
+   {
+    "id": "B09",
+    "name": "渊胶",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "mine",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "harmony": 6
+   },
+   {
+    "id": "B10",
+    "name": "晨曦胶",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "grass",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "harmony": 6
+   },
+   {
+    "id": "B11",
+    "name": "万象胶",
+    "rarity": "传说",
+    "area": "虚渊深层",
+    "gather": {
+     "void_rift": [
+      {
+       "terrain": "forest",
+       "min": 1,
+       "max": 1,
+       "prob": 0.1
+      }
+     ]
+    },
+    "harmony": 7
+   }
+  ]
+ },
+ "formulas": {
+  "input_rules": {
+   "fiber_min": 1,
+   "fiber_max": 3,
+   "mineral_min": 1,
+   "mineral_max": 3,
+   "resin_min": 1,
+   "resin_max": 2,
+   "total_min": 3,
+   "total_max": 8
   },
-  "formulas": {
-    "input_rules": {
-      "fiber_min": 1,
-      "fiber_max": 3,
-      "mineral_min": 1,
-      "mineral_max": 3,
-      "resin_min": 1,
-      "resin_max": 2,
-      "total_min": 3,
-      "total_max": 8
-    },
-    "attributes": {
-      "load_cap": {
-        "formula": "Σ(矿粉硬度) × 2 + Σ(树脂光泽) × 1 + 5",
-        "hard_cap": 30
-      },
-      "slots": {
-        "formula": "floor( Σ(纤维承载力) × 0.5 + Σ(矿粉稳定性) × 0.3 ) + 2",
-        "hard_cap": 12
-      },
-      "durability": {
-        "formula": "5 + Σ(纤维韧性) × 3 + Σ(树脂粘合度) × 2",
-        "hard_cap": 60
-      },
-      "quality_lower": {
-        "formula": "floor( Σ(矿粉稳定性) / 矿粉种类数 )",
-        "mapping": {
-          "0": "废品",
-          "1": "瑕疵",
-          "2": "标准",
-          "3": "卓越",
-          "4+": "完美"
-        }
-      },
-      "quality_upper": {
-        "formula": "floor( Σ(树脂光泽) / 树脂种类数 )",
-        "mapping": {
-          "0": "标准",
-          "1": "卓越",
-          "2+": "完美"
-        }
-      },
-      "tendency": {
-        "formula": "Σ(所有纤维/矿粉/树脂的倾向值)"
-      }
-    },
-    "material_penalty": [
-      {
-        "total_count_range": [
-          3,
-          4
-        ],
-        "quality_mod": 0,
-        "complexity_mod": 0,
-        "desc": "无惩罚"
-      },
-      {
-        "total_count_range": [
-          5,
-          6
-        ],
-        "quality_mod": -1,
-        "complexity_mod": 1,
-        "desc": "品质下限-1"
-      },
-      {
-        "total_count_range": [
-          7,
-          8
-        ],
-        "quality_mod": -2,
-        "complexity_mod": 2,
-        "desc": "品质下限-2，品质上限-1"
-      }
-    ]
-  }
+  "attributes": {
+   "load_cap": {
+    "formula": "Σ(矿粉硬度) × 2 + Σ(树脂光泽) × 1 + 5",
+    "hard_cap": 30
+   },
+   "slots": {
+    "formula": "floor( Σ(纤维承载力) × 0.5 + Σ(矿粉稳定性) × 0.3 ) + 2",
+    "hard_cap": 12
+   },
+   "durability": {
+    "formula": "5 + Σ(纤维韧性) × 3 + Σ(树脂粘合度) × 2",
+    "hard_cap": 60
+   },
+   "quality_lower": {
+    "formula": "floor( Σ(矿粉稳定性) / 矿粉种类数 )",
+    "mapping": {
+     "0": "废品",
+     "1": "瑕疵",
+     "2": "标准",
+     "3": "卓越",
+     "4+": "完美"
+    }
+   },
+   "quality_upper": {
+    "formula": "floor( Σ(树脂光泽) / 树脂种类数 )",
+    "mapping": {
+     "0": "标准",
+     "1": "卓越",
+     "2+": "完美"
+    }
+   },
+   "tendency": {
+    "formula": "Σ(所有纤维/矿粉/树脂的倾向值)"
+   }
+  },
+  "material_penalty": [
+   {
+    "total_count_range": [
+     3,
+     4
+    ],
+    "quality_mod": 0,
+    "complexity_mod": 0,
+    "desc": "无惩罚"
+   },
+   {
+    "total_count_range": [
+     5,
+     6
+    ],
+    "quality_mod": -1,
+    "complexity_mod": 1,
+    "desc": "品质下限-1"
+   },
+   {
+    "total_count_range": [
+     7,
+     8
+    ],
+    "quality_mod": -2,
+    "complexity_mod": 2,
+    "desc": "品质下限-2，品质上限-1"
+   }
+  ]
+ }
 }

@@ -17,12 +17,12 @@ const GUILD_LEVELS := [
 	{"title": "初级制卡师",  "level": 2,  "cards_needed": 3,   "quality_needed": "",        "map_needed": ""},
 	{"title": "中级制卡师",  "level": 3,  "cards_needed": 10,  "quality_needed": "",        "map_needed": ""},
 	{"title": "高级制卡师",  "level": 4,  "cards_needed": 20,  "quality_needed": "优秀",    "map_needed": ""},
-	{"title": "精英制卡师",  "level": 5,  "cards_needed": 40,  "quality_needed": "",        "map_needed": "迷雾森林"},
+	{"title": "精英制卡师",  "level": 5,  "cards_needed": 40,  "quality_needed": "",        "map_needed": "沉雾植物园"},
 	{"title": "卓越制卡师",  "level": 6,  "cards_needed": 60,  "quality_needed": "卓越",    "map_needed": ""},
-	{"title": "大师制卡师",  "level": 7,  "cards_needed": 80,  "quality_needed": "",        "map_needed": "火焰洞穴"},
-	{"title": "宗师制卡师",  "level": 8,  "cards_needed": 100, "quality_needed": "",        "map_needed": "风暴高塔"},
-	{"title": "传说制卡师",  "level": 9,  "cards_needed": 150, "quality_needed": "完美",    "map_needed": "暗影沼泽"},
-	{"title": "制卡圣手",    "level": 10, "cards_needed": 200, "quality_needed": "",        "map_needed": "传说遗迹"},
+	{"title": "大师制卡师",  "level": 7,  "cards_needed": 80,  "quality_needed": "",        "map_needed": "烬燃热电厂"},
+	{"title": "宗师制卡师",  "level": 8,  "cards_needed": 100, "quality_needed": "",        "map_needed": "雷鸣电视塔"},
+	{"title": "传说制卡师",  "level": 9,  "cards_needed": 150, "quality_needed": "完美",    "map_needed": "沉陷湿地公园"},
+	{"title": "制卡圣手",    "level": 10, "cards_needed": 200, "quality_needed": "",        "map_needed": "圮城博物馆"},
 ]
 
 # 默认初始数据
@@ -478,7 +478,7 @@ func _update_guild_level() -> void:
 			if lv.quality_needed != "" and QUALITY_LEVELS.get(highest_quality, -1) < QUALITY_LEVELS.get(lv.quality_needed, 0):
 				continue
 			if lv.map_needed != "":
-				var map_key = {"迷雾森林":"misty_forest","火焰洞穴":"flame_cavern","风暴高塔":"storm_tower","暗影沼泽":"shadow_swamp","传说遗迹":"legendary_ruins"}
+				var map_key = {"沉雾植物园":"misty_forest","烬燃热电厂":"flame_cavern","雷鸣电视塔":"storm_tower","沉陷湿地公园":"shadow_swamp","圮城博物馆":"legendary_ruins"}
 				if not get_data("progress", map_key.get(lv.map_needed, ""), false):
 					continue
 			new_level = lv.level
@@ -508,7 +508,7 @@ func get_next_guild_level_info() -> Dictionary:
 		var ok = QUALITY_LEVELS.get(highest_quality, -1) >= QUALITY_LEVELS.get(next.quality_needed, 0)
 		conds.append({"text": "品质达到" + next.quality_needed + "及以上", "done": ok, "current": highest_quality if highest_quality != "" else "暂无"})
 	if next.map_needed != "":
-		var map_key = {"迷雾森林":"misty_forest","火焰洞穴":"flame_cavern","风暴高塔":"storm_tower","暗影沼泽":"shadow_swamp","传说遗迹":"legendary_ruins"}
+		var map_key = {"沉雾植物园":"misty_forest","烬燃热电厂":"flame_cavern","雷鸣电视塔":"storm_tower","沉陷湿地公园":"shadow_swamp","圮城博物馆":"legendary_ruins"}
 		var mk = map_key.get(next.map_needed, "")
 		var cleared = get_data("progress", mk, false)
 		conds.append({"text": "通关" + next.map_needed, "done": cleared, "current": ""})
