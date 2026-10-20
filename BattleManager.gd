@@ -776,6 +776,34 @@ func _build_ai_main_phase_queue() -> void:
 			if not is_urgent:
 				score += card_adv * 10  # 亏卡差扣分（负数乘正数=负数）
 		
+		# ★ 生存与交换前瞻：下到玩家场怪威胁前，先评估这张卡的站场质量
+		var player_max_atk := 0
+		var player_min_hp := 9999
+		for i in range(self_p.max_field_size):
+			var pc = self_p.field[i]
+			if pc and pc.is_alive():
+				player_max_atk = max(player_max_atk, pc.current_atk)
+				player_min_hp = min(player_min_hp, pc.current_hp)
+		if self_field_count > 0:
+			# 会被玩家任意单怪白吃：白板扣分（有亡语/持续触发则死了也值）
+			if card.current_hp <= player_max_atk:
+				var has_late_value := false
+				for eff4 in card.effects:
+					if eff4 is Dictionary and eff4.get("trigger", "") in ["TR06", "TR12", "TR13", "TR14", "TR15"]:
+						has_late_value = true
+						break
+				if not has_late_value:
+					score -= 25
+			# 能主动换掉玩家最脆的怪 → 站场有输出价值
+			if card.current_atk >= player_min_hp:
+				score += 15
+		else:
+			# 玩家空场：下怪抢节奏（下回合无人可挡）
+			score += 15
+		# 血量告急：高血卡挡刀价值上升
+		if enemy.hp < enemy.max_hp * 0.35 and card.current_hp >= 4:
+			score += 30
+
 		# ★ AI 全知视角加成：根据对手手牌情报微调评分
 		score = _ai_apply_omniscient_bonus(card, score)
 		# ★ AI 战略加权（连招/抢血/控场）
@@ -968,119 +996,87 @@ func _build_ai_battle_phase_queue() -> void:
 				return
 		# 没有可攻击的卡或对方场上有卡 → 走正常流程（继续往下）
 	
-	# 找最佳攻击者（只规划一个，打完后 replan 重新评估）
+	# ★ 交换评估（重构）：目标价值与攻击者损失同时计价，亏本交换宁可不打
+	# 守护规则：玩家场上有怪时不能打脸，"打谁/打不打"只在双方场怪之间决策
 	var best_attacker_slot = -1
 	var best_target_slot = -1
-	var best_target_score = -1
-	var attacker_score = -100000  # 极小值：只要我方场上有卡就必定选到目标，杜绝评分全负掉到直击
-	
+	var best_pair_score = -1
+	var has_any_attacker := false
+
 	for slot in range(enemy.max_field_size):
 		var card = enemy.field[slot]
 		if card == null or not card.is_alive() or not card.can_attack():
 			continue
-		
-		# 找该攻击者的最佳目标
-		if self_p.get_field_count() > 0:
-			for target_slot in range(self_p.max_field_size):
-				var target = self_p.field[target_slot]
-				if target == null or not target.is_alive():
-					continue
-				var score = 0
-				# ★ 攻击交换比：能杀死
-				if card.current_atk >= target.current_hp:
-					score += 1500
-					# ★ 刚好能杀（完美交换）：用最低攻的怪去解，高攻留打脸
-					var overkill = card.current_atk - target.current_hp
-					if overkill == 0:
-						score += 500  # 刚好杀死，完美！
-					elif overkill <= 2:
-						score += 200  # 浪费1-2点，还行
-					else:
-						score -= overkill * 8  # 浪费太多攻击力，扣分！
-				# 对方攻击力越高越危险
-				score += target.current_atk * 10
-				# 对方生命值越低越好杀
-				score -= target.current_hp * 2
-				# 高攻低血优先
-				if target.current_atk >= 3 and target.current_hp <= 2:
-					score += 500
-				# 持续收益卡优先集火
-				for teff in target.effects:
-					if teff is Dictionary:
-						var ttrig = teff.get("trigger", "")
-						if ttrig in ["TR12", "TR13", "TR14", "TR15"]:
-							score += 300
-							break
-				
-				# ★ 攻击者价值保留：高攻怪留着打脸更值钱
-				if card.current_atk >= 4:
-					# 如果场上还有别的低攻怪也能解这个目标 → 高攻怪扣分，让低攻怪去解
-					var has_lower_attacker := false
-					for s2 in range(enemy.max_field_size):
-						if s2 == slot: continue
-						var c2 = enemy.field[s2]
-						if c2 and c2.is_alive() and c2.can_attack():
-							if c2.current_atk >= target.current_hp and c2.current_atk < card.current_atk:
-								has_lower_attacker = true
-								break
-					if has_lower_attacker:
-						score -= 300  # 让低攻怪去解，高攻留打脸
-				
-				# 攻击者-目标组合评分 = 攻击者攻击力权重 + 目标评分
-				var this_attacker_score = card.current_atk * 5 + score
-				
-				# 元素克制：克制目标时攻击伤害+20%，提高击杀成功率
-				var atk_elem = card.get_effective_element()
-				var def_elem = target.get_effective_element()
-				var affinity = Global.get_element_affinity(atk_elem, def_elem)
-				if affinity > 1.0:
-					# 克制目标 → 伤害+20%，更容易击杀，加分
-					this_attacker_score += 250
-					# 如果刚好能击杀（克制后足够杀死），额外加分
-					var effective_dmg = roundi(float(card.current_atk) * affinity)
-					if effective_dmg >= target.current_hp:
-						this_attacker_score += 400
-					if OS.is_debug_build():
-						print("[AI-元素] ", card.get_display_name(), " (", atk_elem, ") 克制 ", target.get_display_name(), " (", def_elem, ") 评分+", this_attacker_score)
-				elif affinity < 1.0:
-					# 实际上不会发生，先留着
-					pass
-				
-				if this_attacker_score > attacker_score:
-					attacker_score = this_attacker_score
-					best_attacker_slot = slot
-					best_target_slot = target_slot
-					best_target_score = score
-	
-	# 有最佳目标 → 攻击卡牌
-	if best_attacker_slot >= 0 and best_target_slot >= 0:
-		var card = enemy.field[best_attacker_slot]
+		has_any_attacker = true
+		if self_p.get_field_count() == 0:
+			continue
+		var attacker_value = card.current_atk * 10 + card.current_hp * 5
+		for target_slot in range(self_p.max_field_size):
+			var target = self_p.field[target_slot]
+			if target == null or not target.is_alive():
+				continue
+			# 元素克制修正后判断能否击杀
+			var affinity = Global.get_element_affinity(card.get_effective_element(), target.get_effective_element())
+			var eff_dmg = roundi(float(card.current_atk) * affinity)
+			var target_value = target.current_atk * 10 + target.current_hp * 5
+			var attacker_dies = target.current_atk >= card.current_hp
+			var pair_score = 0
+			if eff_dmg >= target.current_hp:
+				# 击杀：赚目标价值，overkill 浪费攻击力扣分
+				pair_score += 200 + target_value - max(0, eff_dmg - target.current_hp) * 8
+			else:
+				# 打不死只压血线：按削掉的威胁计小收益
+				pair_score += target.current_atk * 3
+			if attacker_dies:
+				pair_score -= attacker_value  # 攻击者阵亡：损失自身价值
+			# 持续收益/亡语目标优先集火
+			for teff in target.effects:
+				if teff is Dictionary and teff.get("trigger", "") in ["TR12", "TR13", "TR14", "TR15", "TR06"]:
+					pair_score += 200
+					break
+			if affinity > 1.0:
+				pair_score += 150  # 克制目标：交换稳赚
+			# 攻击者价值保留：有更低攻的怪也能杀同一目标 → 高攻怪去解扣分
+			if card.current_atk >= 4:
+				for s2 in range(enemy.max_field_size):
+					if s2 == slot:
+						continue
+					var c2 = enemy.field[s2]
+					if c2 and c2.is_alive() and c2.can_attack() and c2.current_atk >= target.current_hp and c2.current_atk < card.current_atk:
+						pair_score -= 250
+						break
+			if pair_score > best_pair_score:
+				best_pair_score = pair_score
+				best_attacker_slot = slot
+				best_target_slot = target_slot
+
+	if self_p.get_field_count() == 0 and has_any_attacker:
+		# 玩家空场 → 守护解除，全员直击英雄（动画逐个播，打完 replan 收尾）
+		for slot in range(enemy.max_field_size):
+			var card = enemy.field[slot]
+			if card and card.is_alive() and card.can_attack():
+				ai_action_queue.append({"type": "enemy_attack_hero", "slot": slot})
+				ai_action_queue.append({"type": "wait", "delay": 1.2})
+		if OS.is_debug_build():
+			print("[AI] 对方空场，全员直击英雄")
+		ai_action_queue.append({"type": "replan"})
+		return
+
+	# 有正收益的交换才动手；均势以下保留攻击力（怪不死，攻击机会下回合还在）
+	if best_attacker_slot >= 0 and best_pair_score > 0:
+		var best_card = enemy.field[best_attacker_slot]
 		ai_action_queue.append({"type": "enemy_attack", "slot": best_attacker_slot, "target_slot": best_target_slot})
 		ai_action_queue.append({"type": "wait", "delay": 1.5})
 		if OS.is_debug_build():
-			print("[AI] 攻击: ", card.get_display_name(), " → 场地", best_target_slot, " (得分:", best_target_score, ")")
+			print("[AI] 交换: ", best_card.get_display_name(), " → ", self_p.field[best_target_slot].get_display_name(), " (净值:", best_pair_score, ")")
 		# 攻击完后重新评估战场
 		ai_action_queue.append({"type": "replan"})
 		return
-	
-	# 没有场上目标 → 检查是否有能攻击英雄的卡牌
-	var has_hero_attacker := false
-	for slot in range(enemy.max_field_size):
-		var card = enemy.field[slot]
-		if card and card.is_alive() and card.can_attack():
-			has_hero_attacker = true
-			ai_action_queue.append({"type": "enemy_attack_hero", "slot": slot})
-			ai_action_queue.append({"type": "wait", "delay": 1.5})
-			if OS.is_debug_build():
-				print("[AI] 攻击英雄: ", card.get_display_name())
-			# 攻击完后重新评估战场
-			ai_action_queue.append({"type": "replan"})
-			break  # 只打一个，然后replan
-	
-	if not has_hero_attacker:
-		ai_action_queue.append({"type": "to_end"})
-		if OS.is_debug_build():
-			print("[AI] 敌方结束战斗阶段，进入结束阶段")
+
+	# 没有划算交换 → 宁可不攻，直接结束战斗阶段
+	ai_action_queue.append({"type": "to_end"})
+	if OS.is_debug_build():
+		print("[AI] 无划算交换，保留攻击力结束战斗阶段")
 func _execute_next_ai_action() -> bool:
 	"""返回true表示还有更多动作，false表示队列已空"""
 	# 战斗已结束，停止AI
@@ -1841,13 +1837,18 @@ func _update_ai_strategy() -> void:
 	var field_diff = enemy.get_field_count() - self_p.get_field_count()
 	var hand_groups = _rank_hand_strategy(enemy.hand)
 	
+	# -0.5 ★ 危急防御：对方下回合理论伤害足以斩杀我 → 全力控场保命（压过连招计划/运营）
+	var lethal_now = _estimate_player_lethal(self_p)
+	if lethal_now >= enemy.hp:
+		_ai_strategy = "control"
+		return
+
 	# 0. ★ 有进行中的连招计划（预读牌库已配对）→ 锁定 combo 战略，不动摇
 	if _ai_combo_plan_active:
 		_ai_strategy = "combo"
 		return
-	
+
 	# 1. 有斩杀组件（大量直伤/连招组件）→ 抢血
-	var lethal_now = _estimate_player_lethal(self_p)
 	var enemy_lethal = _estimate_player_lethal(enemy)
 	if enemy_hp_ratio <= 0.5 and lethal_now >= enemy.hp:
 		_ai_strategy = "combo"  # 能一波带走
