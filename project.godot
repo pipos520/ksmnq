@@ -22,7 +22,6 @@ audio/driver/output_latency=1
 
 [autoload]
 
-_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 Global="*res://Global.gd"
 SaveManager="*res://SaveManager.gd"
 WarehouseManager="*res://WarehouseManager.gd"
@@ -32,6 +31,7 @@ PlayerManager="*res://PlayerManager.gd"
 GuildTaskManager="*res://GuildTaskManager.gd"
 TutorialManager="*res://TutorialManager.gd"
 CardBridge="*res://CardBridge.gd"
+_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [display]
 

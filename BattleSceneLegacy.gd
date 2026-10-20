@@ -100,6 +100,18 @@ var _turn_timer_label: Label = null  # 回合倒计时标签
 
 
 func _ready():
+	# 横屏/竖屏画布接线（视角转换方案见 Global.enter_landscape_canvas）
+	# 横屏：复用本竖屏场景 + canvas_transform 旋转；竖屏：防御性恢复（幂等）
+	if Global.use_legacy_battle:
+		Global.exit_landscape_canvas()
+	else:
+		Global.enter_landscape_canvas()
+		# 视角转换下根节点必须保持竖屏设计尺寸（1080x1920），
+		# 不能跟随横屏视口 full-rect，否则子节点全部按 1920x1080 重排
+		anchor_right = 0.0
+		anchor_bottom = 0.0
+		offset_right = Global.REF_W
+		offset_bottom = Global.REF_H
 	# 按公会称号等级设置玩家血量
 	var guild_max_hp = PlayerManager.get_guild_max_hp()
 	_player_max_hp = guild_max_hp
@@ -1968,6 +1980,8 @@ func _on_battle_exit_btn() -> void:
 
 ## 返回主界面或地图内继续探索
 func _go_back_to_map() -> void:
+	# 退出横屏视角（竖屏模式下幂等，无副作用）
+	Global.exit_landscape_canvas()
 	# 清理战斗数据
 	Global.current_enemy_data = {}
 	Global.current_battle_terrain = ""

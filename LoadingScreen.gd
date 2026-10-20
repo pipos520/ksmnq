@@ -29,8 +29,7 @@ const SCENES_TO_PRELOAD := [
 	"res://CardGallery.tscn",
 	# Tier 4 — 最深层（GuildTasks → DailyTasks）
 	"res://DailyTasks.tscn",
-	# Tier 3 — 最重场景（5025行，放最后避免阻塞前面轻量场景）
-	"res://BattleScene3D.tscn",
+	# Tier 3 — 最重场景（放最后避免阻塞前面轻量场景；3D 战斗场已退役，横竖屏共用 Legacy）
 	"res://BattleSceneLegacy.tscn",
 ]
 

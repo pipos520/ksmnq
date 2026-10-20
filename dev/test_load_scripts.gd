@@ -4,7 +4,7 @@ extends Node
 
 func _ready() -> void:
 	var ok := true
-	for path in ["res://BattleSceneLegacy.gd", "res://BattleScene3D.gd", "res://MapNodeScene.gd", "res://Exploration.gd", "res://Global.gd"]:
+	for path in ["res://BattleSceneLegacy.gd", "res://BattleManager.gd", "res://battle_core/BattleDriver.gd", "res://MapNodeScene.gd", "res://Exploration.gd", "res://Global.gd"]:
 		var s = load(path)
 		if s == null:
 			print("[TEST] FAIL: ", path)

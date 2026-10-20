@@ -111,7 +111,7 @@ func _on_setting_pressed(action: String):
 			Global.use_legacy_battle = not Global.use_legacy_battle
 			Global._save_battle_mode()
 			_refresh_battle_mode_btn()
-			print("[设置] 战斗界面切换为:", "竖屏2D" if Global.use_legacy_battle else "横屏3D")
+			print("[设置] 战斗界面切换为:", "竖屏2D" if Global.use_legacy_battle else "横屏2D·视角旋转")
 		"reset":
 			print("[设置] 重置游戏...")
 			_confirm_reset()

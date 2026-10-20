@@ -13,18 +13,17 @@ const REF_W := 1080.0
 const REF_H := 1920.0
 const CANVAS_LANDSCAPE := Vector2i(1920, 1080)
 const CANVAS_PORTRAIT := Vector2i(1080, 1920)
-# 横屏战斗时画布变成 1920x1080，pw/ph 必须跟着换算，
-# 否则 ph(0.35)=672 这种竖屏比例在 1080 高的画布上会把面板算出负高度（面板直接消失）。
+# 横屏战斗采用「视角转换」：视口逻辑画布切 1920x1080，再用 canvas_transform
+# 把竖屏 1080x1920 的原生画布旋转铺满（与 Camera2D 同机制）。
+# 战斗场景内部坐标系仍是竖屏设计坐标，因此 pw/ph 恒返回竖屏值，
+# 场景代码（54 处 global_position、拖拽系统、飘字）零改动。
+# landscape_canvas 仅用于标记「当前处于横屏视角」防止重复切换。
 static var landscape_canvas: bool = false
 
 static func ph(ratio: float) -> float:
-	if landscape_canvas:
-		return CANVAS_LANDSCAPE.y * ratio
 	return REF_H * ratio
 
 static func pw(ratio: float) -> float:
-	if landscape_canvas:
-		return CANVAS_LANDSCAPE.x * ratio
 	return REF_W * ratio
 
 ## 获取元素emoji
@@ -254,41 +253,53 @@ func start_background_loading(scenes_to_preload: Array, total_tasks: int) -> voi
 	pass  # 同步预加载已在 LoadingScreen 完成，此处无需异步循环
 
 ## 全局场景切换函数——优先使用预加载的场景缓存，瞬间切换无等待
-# 战斗界面模式：false=横屏3D（默认），true=竖屏2D旧版
+# 战斗界面模式：false=横屏 2D（默认，竖屏场景 + 视角旋转），true=竖屏 2D
 var use_legacy_battle: bool = false
 
-# 根据设置返回战斗场景路径
+# 根据设置返回战斗场景路径（3D 战斗场已退役，横竖屏共用同一 2D 场景）
 func get_battle_scene_path() -> String:
-	if use_legacy_battle:
-		return "res://BattleSceneLegacy.tscn"
-	return "res://BattleScene3D.tscn"
+	return "res://BattleSceneLegacy.tscn"
 
 # ============================================================
-# 横屏战斗画布
-# 项目默认画布是竖屏 1080x1920（display/window/size/viewport_*），
-# 而 BattleScene3D 的 HUD 全部是按横屏 1920x1080 的固定坐标手写布局的。
-# 只调 DisplayServer.window_set_size 改不了逻辑画布：content_scale_size 仍被
-# 项目设置钉在 1080x1920，结果横屏 HUD 被竖向压扁、底部一排按钮直接被裁掉。
-# 因此进出战斗时必须同时切 content_scale_size，并用 KEEP（信箱）而不是
-# EXPAND：EXPAND 会把可见区拉到 1920x3413，固定 Y 坐标的 UI 又跑偏。
+# 横屏战斗画布（视角转换方案）
+# 项目默认画布是竖屏 1080x1920，横屏战斗复用竖屏场景，做法：
+# 1. 视口逻辑画布切 1920x1080（KEEP，比例不符留黑边不拉伸）；
+# 2. canvas_transform 施加 ±90° 旋转，把竖屏画布铺满横屏视口——
+#    与 Camera2D 同机制，场景内部坐标（global_position/拖拽/飘字）
+#    全部保持竖屏原生坐标，输入拾取由引擎自动逆变换，零改动。
+# 只调 DisplayServer.window_set_size 改不了逻辑画布：content_scale_size
+# 仍被项目设置钉住，所以进出战斗必须同时切 content_scale_size。
 # ============================================================
-## 进入横屏战斗：逻辑画布切 1920x1080，窗口比例不符时留黑边而不是拉伸
+## 旋转方向：+1 = 画布顶边落在视口右侧；真机方向反了改这一个值
+const CANVAS_ROT_SIGN := 1.0
+
+## 进入横屏战斗：1920x1080 画布 + 视角旋转
 func enter_landscape_canvas() -> void:
+	if landscape_canvas:
+		return
 	landscape_canvas = true
 	var w: Window = get_window()
 	if w:
 		w.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
 		w.content_scale_size = CANVAS_LANDSCAPE
+		# 视角转换：旋转 canvas_transform 把 1080x1920 原生画布铺满 1920x1080 视口
+		var s := CANVAS_ROT_SIGN
+		var rot := s * PI / 2.0
+		var origin := Vector2(CANVAS_LANDSCAPE.x, 0.0) if s > 0.0 else Vector2(0.0, CANVAS_LANDSCAPE.y)
+		w.canvas_transform = Transform2D(rot, origin)
 	DisplayServer.screen_set_orientation(DisplayServer.SCREEN_LANDSCAPE)
 	DisplayServer.window_set_size(CANVAS_LANDSCAPE)
 
-## 退出横屏战斗：恢复竖屏画布与 EXPAND 拉伸
+## 退出横屏战斗：恢复竖屏画布、恒等变换与 EXPAND 拉伸
 func exit_landscape_canvas() -> void:
+	if not landscape_canvas:
+		return
 	landscape_canvas = false
 	var w: Window = get_window()
 	if w:
 		w.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
 		w.content_scale_size = CANVAS_PORTRAIT
+		w.canvas_transform = Transform2D()
 	DisplayServer.screen_set_orientation(DisplayServer.SCREEN_PORTRAIT)
 	DisplayServer.window_set_size(CANVAS_PORTRAIT)
 
@@ -2637,7 +2648,7 @@ func _pixel_walk(n: Node) -> void:
 #  只"加件"不改树结构：匾是 Title 的前置兄弟节点，图钉是卡片的子节点。
 #  跳过：战斗（用户拍板不套材质）/ 加载页 / 主界面（本体就是告示板）。
 # ============================================================
-const BULLETIN_SKIP := ["BattleScene3D", "BattleSceneLegacy", "LoadingScreen", "Main", "node_2d"]
+const BULLETIN_SKIP := ["BattleSceneLegacy", "LoadingScreen", "Main", "node_2d"]
 var _bulletin_done: Dictionary = {}
 
 func _bulletin_bootstrap() -> void:
