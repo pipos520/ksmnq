@@ -1,5 +1,14 @@
 extends Control
 
+## BOSS 首通金币 = 100 × 区域序号（野外地图，仅首次通关发放；[PLACEHOLDER] L4 校准）
+const BOSS_FIRST_CLEAR_GOLD := {
+	"misty_forest": 100,
+	"flame_cavern": 200,
+	"storm_tower": 300,
+	"shadow_swamp": 400,
+	"legendary_ruins": 500,
+}
+
 # ============================================================
 #  战斗场景 —— 分区域布局
 # 双方场地区（5卡位）+ 手牌区 + 墓地 + 卡组 + 信息区
@@ -1422,6 +1431,8 @@ func _on_battle_state_changed(state: int) -> void:
 	
 	# 胜利时：触发辅材掉落
 	if state == 1:
+		var boss_extra: Array = []      # BOSS 首通金币等额外展示条目（已提前入账）
+		var boss_bonus := false         # BOSS 掉落加成（素材 3-5 件）
 		# 教学战胜利 → 推进教程，回主界面找老陈（与 3D 端 BattleScene3D 一致）
 		if Global.is_tutorial_battle:
 			_exit_to_main = true
@@ -1441,10 +1452,19 @@ func _on_battle_state_changed(state: int) -> void:
 				_exit_to_main = false
 				print("[裂隙] BOSS 击杀！可前往撤离点结算（首通奖励待领）")
 			else:
+				var first_clear := not PlayerManager.is_map_cleared(Global.current_map_id)
 				PlayerManager.set_map_cleared(Global.current_map_id)
 				Global.current_is_boss = false
 				_exit_to_main = true
 				print("[战斗]  BOSS战胜利！地图通关：", Global.current_map_id)
+				# 首通金币 = 100 × 区域序号（仅首次通关，[PLACEHOLDER] L4 校准）
+				if first_clear:
+					var amt := int(BOSS_FIRST_CLEAR_GOLD.get(Global.current_map_id, 0))
+					if amt > 0:
+						PlayerManager.set_gold(PlayerManager.get_gold() + amt)
+						boss_extra.append({"material_id": "GOLD", "name": "首通金币", "rarity": "奖励", "amount": amt})
+						print("[战斗]  BOSS 首通奖励：金币 +", amt)
+				boss_bonus = true
 				# 检查纹路解锁状态
 				var new_unlocks = CircuitManager.check_and_apply_unlocks()
 				if new_unlocks.size() > 0:
@@ -1452,7 +1472,7 @@ func _on_battle_state_changed(state: int) -> void:
 		else:
 			# ★ 普通战斗胜利 → 回地图内继续探索
 			_exit_to_main = false
-		_handle_victory_rewards()
+		_handle_victory_rewards(boss_extra, boss_bonus)
 	# 败北/平局时：显示退出按钮，回主界面
 	elif state == 2 or state == 3:
 		_exit_to_main = true
@@ -1468,7 +1488,7 @@ func _on_battle_state_changed(state: int) -> void:
 # ============================
 #  胜利奖励：辅材掉落
 # ============================
-func _handle_victory_rewards(extra_drops: Array = []) -> void:
+func _handle_victory_rewards(extra_drops: Array = [], boss_bonus: bool = false) -> void:
 	var enemy_data = Global.current_enemy_data
 	if enemy_data.is_empty():
 		_show_battle_exit_btn()
@@ -1519,9 +1539,9 @@ func _handle_victory_rewards(extra_drops: Array = []) -> void:
 				"max": 1,
 			})
 	
-	# 从合并池中随机掉落1~3个（按概率判定，保底至少1个）
+	# 从合并池中随机掉落（按概率判定；BOSS 加成 3~5 件，普通 1~3，保底至少1个）
 	if all_drops.size() > 0:
-		var drop_count = rng.randi_range(1, 3)  # 期望掉落1~3个
+		var drop_count = rng.randi_range(3, 5) if boss_bonus else rng.randi_range(1, 3)
 		
 		# 按概率判定每个素材是否掉落
 		var passed := []

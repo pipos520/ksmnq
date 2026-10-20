@@ -1,6 +1,15 @@
 extends Node3D
 class_name BattleScene3D
 
+## BOSS 首通金币 = 100 × 区域序号（野外地图，仅首次通关发放；[PLACEHOLDER] L4 校准）
+const BOSS_FIRST_CLEAR_GOLD := {
+	"misty_forest": 100,
+	"flame_cavern": 200,
+	"storm_tower": 300,
+	"shadow_swamp": 400,
+	"legendary_ruins": 500,
+}
+
 const CARD_SCENE = preload("res://battle_new/BattleCard3D.tscn")
 
 var _enemy_slots: Array = []
@@ -1575,6 +1584,7 @@ func _on_battle_state_changed(state: int) -> void:
 	
 	# 胜利时：触发辅材掉落
 	if state == 1:
+		var boss_extra: Array = []      # BOSS 首通金币等额外展示条目（已提前入账）
 		# 教学战胜利 → 推进教程，回主界面找老陈
 		if Global.is_tutorial_battle:
 			_exit_to_main = true
@@ -1595,10 +1605,18 @@ func _on_battle_state_changed(state: int) -> void:
 				_exit_to_main = false
 				print("[裂隙] BOSS 击杀！可前往撤离点结算（首通奖励待领）")
 			else:
+				var first_clear := not PlayerManager.is_map_cleared(Global.current_map_id)
 				PlayerManager.set_map_cleared(Global.current_map_id)
 				Global.current_is_boss = false
 				_exit_to_main = true
 				print("[战斗]  BOSS战胜利！地图通关：", Global.current_map_id)
+				# 首通金币 = 100 × 区域序号（仅首次通关，[PLACEHOLDER] L4 校准）
+				if first_clear:
+					var amt := int(BOSS_FIRST_CLEAR_GOLD.get(Global.current_map_id, 0))
+					if amt > 0:
+						PlayerManager.set_gold(PlayerManager.get_gold() + amt)
+						boss_extra.append({"material_id": "GOLD", "name": "首通金币", "rarity": "奖励", "amount": amt})
+						print("[战斗]  BOSS 首通奖励：金币 +", amt)
 				# 检查纹路解锁状态
 				var new_unlocks = CircuitManager.check_and_apply_unlocks()
 				if new_unlocks.size() > 0:
@@ -1606,7 +1624,7 @@ func _on_battle_state_changed(state: int) -> void:
 		else:
 			# ★ 普通战斗胜利 → 回地图内继续探索
 			_exit_to_main = false
-		_handle_victory_rewards()
+		_handle_victory_rewards(boss_extra)
 		
 		# ★ 决斗场胜利 → 记录每日阶梯任务
 		if Global.current_map_name == " 决斗场":
