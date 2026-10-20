@@ -2504,6 +2504,9 @@ func _setup_pixel_kit() -> void:
 		return
 	_pixel_kit_ready = true
 	get_tree().node_added.connect(_pixelize_node)
+	# 主场景与其余 autoload 可能在本节点 _ready（connect）之前就已入树，
+	# node_added 已经错过 —— 延迟一帧对 root 直系补一轮告示板化。
+	_bulletin_bootstrap.call_deferred()
 	# 素材导入完成前 node_added 可能拿不到纹理而跳过; 定期补扫兜底
 	var t := Timer.new()
 	t.wait_time = 2.0
@@ -2521,6 +2524,158 @@ func _pixel_walk(n: Node) -> void:
 	_pixelize_node(n)
 	for c in n.get_children():
 		_pixel_walk(c)
+
+# ============================================================
+#  告示板化（BulletinBoard）：让每屏复用主界面的布局语言
+#    标题 = 挂在板上的木匾（plate_title，深胡桃 + 铜钉，微倾斜）
+#    主内容大卡 = 钉在板上的告示纸（顶部图钉；中幅卡微倾斜，全屏滚动卡保持水平）
+#  只"加件"不改树结构：匾是 Title 的前置兄弟节点，图钉是卡片的子节点。
+#  跳过：战斗（用户拍板不套材质）/ 加载页 / 主界面（本体就是告示板）。
+# ============================================================
+const BULLETIN_SKIP := ["BattleScene3D", "BattleSceneLegacy", "LoadingScreen", "Main", "node_2d"]
+var _bulletin_done: Dictionary = {}
+
+func _bulletin_bootstrap() -> void:
+	if get_tree() == null:
+		return
+	for c in get_tree().root.get_children():
+		if c != self:
+			_queue_bulletin(c)
+
+func _queue_bulletin(scene_root: Node) -> void:
+	var key := scene_root.get_instance_id()
+	if _bulletin_done.has(key):
+		return
+	_bulletin_done[key] = true
+	_bulletinize_later.call_deferred(scene_root)
+
+func _bulletinize_later(root: Node) -> void:
+	if not is_instance_valid(root) or not root.is_inside_tree():
+		return
+	await get_tree().process_frame  # 等一帧：容器排版完成、anchors 出 size
+	if is_instance_valid(root) and root.is_inside_tree():
+		_bulletinize(root)
+
+func _bulletinize(root: Node) -> void:
+	if not (root is Control):
+		return
+	# current_scene 赋值与 deferred 有帧间竞争：仅在已确定"当前场景是别人"时退出
+	if get_tree().current_scene != null and root != get_tree().current_scene:
+		return  # 只处理当前场景根（autoload/弹窗散件不进来）
+	var sname := String(root.name)
+	for s in BULLETIN_SKIP:
+		if sname.begins_with(s):
+			return
+	# 确定性倾斜：同一场景每次进入角度一致（hash 场景名），避免"每次进来歪得不一样"
+	var h := absi(int(sname.hash()))
+	var tilt_t := float(h % 7 - 3) * 0.0024        # 标题匾 ±0.0072 rad（±0.41°）
+	var tilt_c := float((h / 7) % 7 - 3) * 0.0018  # 内容卡反向错开（±0.31°）
+	_bulletin_title(root as Control, tilt_t)
+	_bulletin_card(root as Control, tilt_c)
+
+## 标题挂匾：root 直系 "Title" Label（或兜底：屏顶最大字号 Label）。
+## 匾 = NinePatchRect 插到 Label 前一个兄弟位（画在字下层），左右两颗图钉。
+func _bulletin_title(root: Control, tilt: float) -> void:
+	var lbl := root.get_node_or_null("Title") as Label
+	if lbl == null:
+		# 兜底：屏顶（y<22%）字号最大的 Label，且字号要够大（避免误挂资源条小字）
+		var best_fs := 43.0
+		for c in root.get_children():
+			if c is Label:
+				var l2 := c as Label
+				if l2.position.y < root.size.y * 0.22:
+					var fs := float(l2.get_theme_font_size("font_size"))
+					if fs > best_fs:
+						best_fs = fs
+						lbl = l2
+	if lbl == null or lbl.has_meta("bulletin_plate"):
+		return
+	if lbl.get_parent() is Container:
+		return  # 容器里的标题不动布局，避免破坏排列
+	var tex := pixel_tex("plate_title")
+	if tex == null:
+		return
+	lbl.set_meta("bulletin_plate", true)
+	# 匾的宽以"文字实宽"为准（Title 常是全宽 anchors，直接用 size 会拉满屏）
+	var fnt := lbl.get_theme_font("font")
+	var fsize := lbl.get_theme_font_size("font_size")
+	var tw := 220.0
+	if fnt != null and lbl.text != "":
+		tw = fnt.get_string_size(lbl.text, HORIZONTAL_ALIGNMENT_LEFT, -1, fsize).x
+	var cx := lbl.position.x + lbl.size.x * 0.5
+	var cy := lbl.position.y + lbl.size.y * 0.5
+	var pw := clampf(tw + 150.0, 300.0, root.size.x * 0.86)
+	var ph := clampf(lbl.size.y + 96.0, 126.0, 176.0)
+	var np := NinePatchRect.new()
+	np.texture = tex
+	np.patch_margin_left = 48
+	np.patch_margin_right = 48
+	np.patch_margin_top = 44
+	np.patch_margin_bottom = 44
+	np.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	np.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	np.size = Vector2(pw, ph)
+	np.position = Vector2(cx - pw * 0.5, cy - ph * 0.5)
+	np.pivot_offset = np.size * 0.5  # 倾斜必须绕中心（默认绕左上会甩出屏）
+	np.rotation = tilt
+	lbl.get_parent().add_child(np)
+	lbl.get_parent().move_child(np, lbl.get_index())  # 画在文字下层
+	# 左右两颗图钉
+	var pin := pixel_tex("pin")
+	if pin != null:
+		for px in [30.0, pw - 30.0]:
+			var p := TextureRect.new()
+			p.texture = pin
+			p.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			p.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+			p.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			p.stretch_mode = TextureRect.STRETCH_SCALE
+			p.size = Vector2(42, 42)
+			p.position = Vector2(px - 21.0, 7.0)
+			np.add_child(p)
+	# 标题字适配深匾底：保色相提亮 + 奶油描边（刻字感）
+	var fc := lbl.get_theme_color("font_color") as Color
+	if _wcag_ratio(fc.get_luminance(), 0.10) < CONTRAST_MIN:
+		lbl.add_theme_color_override("font_color", fc.lightened(0.35))
+	_outline_contrast_fix(lbl, 0.10)
+
+## 主内容纸卡：root 直系中"最大且已挂纸材质（panel_*）"的卡片，
+## 顶部钉图钉；中幅卡（高度 30%~82% 屏高）微倾斜，全屏滚动卡保持水平。
+func _bulletin_card(root: Control, tilt: float) -> void:
+	var best: Control = null
+	var best_area := 0.0
+	for c in root.get_children():
+		if not (c is Control) or c is Label:
+			continue
+		var cc := c as Control
+		if cc.size.x < root.size.x * 0.62 or cc.size.y < root.size.y * 0.30:
+			continue
+		var sb := cc.get_theme_stylebox("panel")
+		if sb is StyleBoxTexture:
+			var tp: String = (sb as StyleBoxTexture).texture.resource_path if (sb as StyleBoxTexture).texture != null else ""
+			if tp.contains("panel_"):
+				var area := cc.size.x * cc.size.y
+				if area > best_area:
+					best = cc
+					best_area = area
+	if best == null or best.has_meta("bulletin_pin"):
+		return
+	var pin := pixel_tex("pin")
+	if pin == null:
+		return
+	best.set_meta("bulletin_pin", true)
+	var p := TextureRect.new()
+	p.texture = pin
+	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	p.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	p.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	p.stretch_mode = TextureRect.STRETCH_SCALE
+	p.size = Vector2(56, 56)
+	p.position = Vector2(best.size.x * 0.5 - 28.0, -22.0)
+	best.add_child(p)  # 子节点最后 => 画在内容之上，钉子压住纸
+	if best.size.y < root.size.y * 0.82:
+		best.pivot_offset = best.size * 0.5
+		best.rotation = tilt
 
 func pixel_tex(asset_name: String) -> Texture2D:
 	if _pixel_tex.has(asset_name):
@@ -2756,6 +2911,9 @@ func _label_fix_all(lbl: Label) -> void:
 			lbl.get_theme_constant("outline_size") > 0)
 
 func _pixelize_node(n: Node) -> void:
+	# 场景根入树 => 排队告示板化（延迟两帧，等布局出 size）
+	if n.get_parent() == get_tree().root and n != self:
+		_queue_bulletin(n)
 	_emoji_apply(n)
 	if n is ColorRect and (n.name == "TopBar" or n.name == "BottomBar"):
 		_pixel_bar_skin(n as Control)
