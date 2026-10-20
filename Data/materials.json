@@ -236,6 +236,63 @@
             }
           ]
         }
+      },
+      {
+        "id": "F13",
+        "name": "渊纹膜缕",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "forest",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "carry": 6,
+        "toughness": 6,
+        "tendency": "暗2"
+      },
+      {
+        "id": "F14",
+        "name": "曦光丝缕",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "forest",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "carry": 7,
+        "toughness": 6,
+        "tendency": "光2"
+      },
+      {
+        "id": "F15",
+        "name": "熵藤纤维",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "grass",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "carry": 6,
+        "toughness": 7,
+        "tendency": "风3"
       }
     ],
     "mineral": [
@@ -466,6 +523,63 @@
             }
           ]
         }
+      },
+      {
+        "id": "M13",
+        "name": "渊核砂",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "mine",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "stability": 6,
+        "hardness": 7,
+        "tendency": "暗2"
+      },
+      {
+        "id": "M14",
+        "name": "圣遗石粉",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "mine",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "stability": 7,
+        "hardness": 6,
+        "tendency": "光2"
+      },
+      {
+        "id": "M15",
+        "name": "坍缩星髓",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "mountain",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "stability": 7,
+        "hardness": 7,
+        "tendency": "地3"
       }
     ],
     "resin": [
@@ -620,6 +734,63 @@
             }
           ]
         }
+      },
+      {
+        "id": "R09",
+        "name": "深渊树脂",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "valley",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "bond": 5,
+        "gloss": 4,
+        "tendency": "暗2"
+      },
+      {
+        "id": "R10",
+        "name": "晨曦凝脂",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "valley",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "bond": 5,
+        "gloss": 5,
+        "tendency": "光2"
+      },
+      {
+        "id": "R11",
+        "name": "潮汐脂",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "cave",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "bond": 6,
+        "gloss": 5,
+        "tendency": "水3"
       }
     ],
     "extract": [
@@ -812,6 +983,63 @@
             }
           ]
         }
+      },
+      {
+        "id": "E11",
+        "name": "渊液",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "valley",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "conductivity": 7,
+        "purity": 5,
+        "tendency": "暗2"
+      },
+      {
+        "id": "E12",
+        "name": "曦光露",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "grass",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "conductivity": 6,
+        "purity": 6,
+        "tendency": "光2"
+      },
+      {
+        "id": "E13",
+        "name": "熄焰精华",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "cave",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "conductivity": 7,
+        "purity": 6,
+        "tendency": "火3"
       }
     ],
     "pigment": [
@@ -1004,6 +1232,63 @@
             }
           ]
         }
+      },
+      {
+        "id": "P11",
+        "name": "渊墨",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "cave",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "adhesion": 6,
+        "chromatography": 6,
+        "tendency": "暗2"
+      },
+      {
+        "id": "P12",
+        "name": "极光颜料",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "mountain",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "adhesion": 6,
+        "chromatography": 7,
+        "tendency": "光2"
+      },
+      {
+        "id": "P13",
+        "name": "蚀纹色",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "forest",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "adhesion": 7,
+        "chromatography": 6,
+        "tendency": "地3"
       }
     ],
     "binder": [
@@ -1142,6 +1427,57 @@
             }
           ]
         }
+      },
+      {
+        "id": "B09",
+        "name": "渊胶",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "mine",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "harmony": 6
+      },
+      {
+        "id": "B10",
+        "name": "晨曦胶",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "grass",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "harmony": 6
+      },
+      {
+        "id": "B11",
+        "name": "万象胶",
+        "rarity": "传说",
+        "area": "虚渊深层",
+        "gather": {
+          "void_rift": [
+            {
+              "terrain": "forest",
+              "min": 1,
+              "max": 1,
+              "prob": 0.1
+            }
+          ]
+        },
+        "harmony": 7
       }
     ]
   },
