@@ -99,6 +99,18 @@ var _turn_timer_label: Label = null  # 回合倒计时标签
 # var _network_mgr: NetworkBattleManager = null
 
 
+## 横屏视角下把根节点钉在竖屏设计尺寸（见 _ready 注释）
+func _pin_portrait_root() -> void:
+	anchor_left = 0.0
+	anchor_top = 0.0
+	anchor_right = 0.0
+	anchor_bottom = 0.0
+	offset_left = 0.0
+	offset_top = 0.0
+	offset_right = Global.REF_W
+	offset_bottom = Global.REF_H
+	size = Vector2(Global.REF_W, Global.REF_H)
+
 func _ready():
 	# 横屏/竖屏画布接线（视角转换方案见 Global.enter_landscape_canvas）
 	# 横屏：复用本竖屏场景 + canvas_transform 旋转；竖屏：防御性恢复（幂等）
@@ -107,11 +119,10 @@ func _ready():
 	else:
 		Global.enter_landscape_canvas()
 		# 视角转换下根节点必须保持竖屏设计尺寸（1080x1920），
-		# 不能跟随横屏视口 full-rect，否则子节点全部按 1920x1080 重排
-		anchor_right = 0.0
-		anchor_bottom = 0.0
-		offset_right = Global.REF_W
-		offset_bottom = Global.REF_H
+		# 不能跟随横屏视口 full-rect，否则子节点全部按 1920x1080 重排。
+		# 必须延迟到本帧布局收口后再收钉：_ready 里立即改锚点会让
+		# tscn 子节点在父宽为 0 的瞬间解析布局且不再重排（手牌区宽度归 0）。
+		_pin_portrait_root.call_deferred()
 	# 按公会称号等级设置玩家血量
 	var guild_max_hp = PlayerManager.get_guild_max_hp()
 	_player_max_hp = guild_max_hp
