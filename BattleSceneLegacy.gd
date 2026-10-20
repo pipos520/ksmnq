@@ -377,6 +377,176 @@ func _add_grave_deck(top: float, bottom: float, is_enemy: bool):
 		banish_btn.pressed.connect(_on_player_banish_clicked)
 
 
+# ============================================================
+#  卡面/卡位素材（羊皮纸墨线风）
+# ============================================================
+const CARD_FACE_PATH := "res://assets/cards/ink/card_face.png"
+const SLOT_RECESS_PATH := "res://assets/cards/ink/slot_recess.png"
+var _card_face_tex: Texture2D
+var _slot_recess_tex: Texture2D
+
+func _get_card_face_tex() -> Texture2D:
+	if _card_face_tex == null:
+		_card_face_tex = load(CARD_FACE_PATH)
+	return _card_face_tex
+
+func _get_slot_recess_tex() -> Texture2D:
+	if _slot_recess_tex == null:
+		_slot_recess_tex = load(SLOT_RECESS_PATH)
+	return _slot_recess_tex
+
+func _make_flat_fallback(bg: Color, border: Color) -> StyleBoxFlat:
+	var s := StyleBoxFlat.new()
+	s.bg_color = bg
+	s.border_width_left = 2; s.border_width_right = 2
+	s.border_width_top = 2; s.border_width_bottom = 2
+	s.border_color = border
+	s.corner_radius_top_left = 6; s.corner_radius_top_right = 6
+	s.corner_radius_bottom_left = 6; s.corner_radius_bottom_right = 6
+	return s
+
+## 卡面样式（手牌/场地位上的卡牌），素材缺失时回退纯色羊皮纸块
+func _make_card_face_style(tint: Color = Color.WHITE) -> StyleBox:
+	var tex := _get_card_face_tex()
+	if tex == null:
+		return _make_flat_fallback(Color(0.87, 0.80, 0.62), Color(0.30, 0.20, 0.12))
+	var sb := StyleBoxTexture.new()
+	sb.texture = tex
+	sb.modulate_color = tint
+	return sb
+
+## 空卡位凹槽样式
+func _make_slot_recess_style(tint: Color = Color.WHITE) -> StyleBox:
+	var tex := _get_slot_recess_tex()
+	if tex == null:
+		return _make_flat_fallback(Color(0.24, 0.18, 0.12, 0.9), Color(0.35, 0.25, 0.15))
+	var sb := StyleBoxTexture.new()
+	sb.texture = tex
+	sb.modulate_color = tint
+	return sb
+
+func _apply_all_states(btn: Button, sb: StyleBox) -> void:
+	for state in ["normal", "hover", "pressed", "focus", "disabled"]:
+		btn.add_theme_stylebox_override(state, sb)
+
+## 功能高亮描边（绿色可召唤 / 金色可攻击 / 红色可选中）
+func _set_card_highlight(btn: Button, color: Color) -> void:
+	var hl := btn.get_node_or_null("HighlightOverlay") as Panel
+	if hl == null:
+		hl = Panel.new()
+		hl.name = "HighlightOverlay"
+		hl.set_anchors_preset(Control.PRESET_FULL_RECT)
+		hl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var hs := StyleBoxFlat.new()
+		hs.bg_color = Color(0, 0, 0, 0)
+		hs.border_width_left = 3; hs.border_width_right = 3
+		hs.border_width_top = 3; hs.border_width_bottom = 3
+		hl.add_theme_stylebox_override("panel", hs)
+		btn.add_child(hl)
+	var hs2 := hl.get_theme_stylebox("panel") as StyleBoxFlat
+	if hs2:
+		hs2.border_color = color
+	hl.visible = true
+
+func _clear_card_highlight(btn: Button) -> void:
+	var hl := btn.get_node_or_null("HighlightOverlay") as Panel
+	if hl:
+		hl.visible = false
+
+func _mk_card_label(lname: String, r: Rect2, fsize: int, col: Color, halign: int, autowrap: bool = false) -> Label:
+	var l := Label.new()
+	l.name = lname
+	l.anchor_left = r.position.x
+	l.anchor_top = r.position.y
+	l.anchor_right = r.position.x + r.size.x
+	l.anchor_bottom = r.position.y + r.size.y
+	l.offset_left = 0; l.offset_top = 0
+	l.offset_right = 0; l.offset_bottom = 0
+	l.add_theme_font_size_override("font_size", fsize)
+	l.add_theme_color_override("font_color", col)
+	l.horizontal_alignment = halign
+	l.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if autowrap:
+		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	return l
+
+## 卡面文字组：费用左上蜡印 / 元素右上 / 名称条 / 描述区 / 攻击左下 / 生命右下
+## 分区坐标与 card_face.png 的墨线结构一一对应（横线约在 16% 与 72% 高度）
+func _add_card_labels(parent: Control, scale: float) -> void:
+	var ink_dark := Color("#3a2617")   # 名称主墨色
+	var ink_dim := Color("#54402c")    # 描述次级墨色
+	var wax_red := Color("#8a2418")    # 费用蜡印红
+	var atk_red := Color("#9c2b1e")
+	var hp_green := Color("#1f6b38")
+
+	var cost_size = max(12, int(24 * scale * 1.6))
+	var elem_size = max(10, int(24 * scale * 1.2))
+	var name_size = max(12, int(30 * scale * 1.3))
+	var desc_size = max(9, int(20 * scale * 1.1))
+	var atk_hp_size = max(12, int(22 * scale * 1.8))
+
+	# 费用-左上角（朱红蜡印徽章上）
+	parent.add_child(_mk_card_label("CostLabel", Rect2(0.04, 0.03, 0.14, 0.11), cost_size, wax_red, HORIZONTAL_ALIGNMENT_CENTER))
+	# 元素-右上角（小方框内）
+	parent.add_child(_mk_card_label("ElemLabel", Rect2(0.82, 0.03, 0.14, 0.11), elem_size, ink_dim, HORIZONTAL_ALIGNMENT_CENTER))
+	# 名称条（顶部两方框之间）
+	var name_l := _mk_card_label("NameLabel", Rect2(0.21, 0.03, 0.58, 0.11), name_size, ink_dark, HORIZONTAL_ALIGNMENT_CENTER)
+	name_l.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	parent.add_child(name_l)
+	# 描述区（上下两条墨线之间）：字段 | 效果数
+	parent.add_child(_mk_card_label("DescLabel", Rect2(0.09, 0.19, 0.82, 0.50), desc_size, ink_dim, HORIZONTAL_ALIGNMENT_CENTER, true))
+	# 攻击-左下（墨剑图标右侧）
+	parent.add_child(_mk_card_label("AtkLabel", Rect2(0.16, 0.75, 0.18, 0.21), atk_hp_size, atk_red, HORIZONTAL_ALIGNMENT_LEFT))
+	# 生命-右下（墨心图标左侧）
+	parent.add_child(_mk_card_label("HpLabel", Rect2(0.62, 0.75, 0.18, 0.21), atk_hp_size, hp_green, HORIZONTAL_ALIGNMENT_RIGHT))
+
+func _get_card_labels(btn: Button) -> Dictionary:
+	return {
+		"elem": btn.get_node_or_null("ElemLabel") as Label,
+		"cost": btn.get_node_or_null("CostLabel") as Label,
+		"name": btn.get_node_or_null("NameLabel") as Label,
+		"desc": btn.get_node_or_null("DescLabel") as Label,
+		"atk": btn.get_node_or_null("AtkLabel") as Label,
+		"hp": btn.get_node_or_null("HpLabel") as Label,
+	}
+
+## 填充卡牌文字到卡面对应分区
+func _set_card_texts(btn: Button, card: BattleCard) -> void:
+	var lbls := _get_card_labels(btn)
+	# 元素-右上角（当前元素图标已清空，保留分区）
+	if lbls.elem:
+		lbls.elem.text = ""
+	# 费用-左上角蜡印
+	if lbls.cost:
+		lbls.cost.text = str(card.base_cost)
+	# 名称条
+	if lbls.name:
+		lbls.name.text = card.card_name
+	# 描述区：字段 | 效果数
+	if lbls.desc:
+		var dt := ""
+		if card.fields.size() > 0:
+			dt += "|".join(card.fields)
+		if card.effects.size() > 0:
+			if dt != "":
+				dt += "\n"
+			dt += str(card.effects.size()) + "效果"
+		lbls.desc.text = dt
+	# 攻/血角标
+	if lbls.atk:
+		lbls.atk.text = str(card.current_atk)
+	if lbls.hp:
+		lbls.hp.text = str(card.current_hp)
+
+func _clear_card_texts(btn: Button) -> void:
+	var lbls := _get_card_labels(btn)
+	for key in lbls:
+		var l: Label = lbls[key]
+		if l:
+			l.text = ""
+
+
 # ===== 场地区（5个可点击Button卡位，固定宽高，子Label布局同手牌） =====
 func _add_field_slots(top: float, bottom: float, slot_color: Color, is_enemy: bool = false) -> Array:
 	var slots := []
@@ -403,14 +573,10 @@ func _add_field_slots(top: float, bottom: float, slot_color: Color, is_enemy: bo
 	var start_x_r = (1.0 - total_w_r) / 2.0
 	var center_y_r = (top + bottom) / 2.0
 	
-	# 字号缩放——和手牌一致：用实际像素宽度/300.0，四角×2，中间×1.5
+	# 字号缩放——以实际像素宽度/300.0为基准（卡面标签统一由 _add_card_labels 生成）
 	var actual_slot_w = (Global.pw(1.0) if Global.landscape_canvas else self.size.x) * slot_w_r  # 场地卡槽实际像素宽度
 	var scale = actual_slot_w / 300.0
-	var elem_size = max(10, int(24 * scale * 2))
-	var cost_size = max(10, int(24 * scale * 2))
-	var center_size = max(8, int(36 * scale * 1.2))
-	var atk_hp_size = max(10, int(22 * scale * 2))
-	
+
 	for i in range(5):
 		# 全部使用锚点百分比定位——自适应任何屏幕
 		var slot_btn = Button.new()
@@ -424,83 +590,11 @@ func _add_field_slots(top: float, bottom: float, slot_color: Color, is_enemy: bo
 		slot_btn.offset_right = 0; slot_btn.offset_bottom = 0
 		slot_btn.text = ""
 		
-		var s = StyleBoxFlat.new()
-		s.bg_color = slot_color
-		s.border_width_left = 2; s.border_width_right = 2
-		s.border_width_top = 2; s.border_width_bottom = 2
-		s.border_color = Color(1.0, 1.0, 1.0, 0.15)
-		s.corner_radius_top_left = 6; s.corner_radius_top_right = 6
-		s.corner_radius_bottom_left = 6; s.corner_radius_bottom_right = 6
-		slot_btn.add_theme_stylebox_override("normal", s)
-		slot_btn.add_theme_stylebox_override("hover", s)
-		slot_btn.add_theme_stylebox_override("pressed", s)
-		slot_btn.add_theme_stylebox_override("focus", s)
-		
-		# ===== 子Label布局和手牌一致：四角20%+中间60%，字号等比例缩小 =====
-		# 元素-左上角（占卡牌宽20% 高20%）
-		var elem_lbl = Label.new()
-		elem_lbl.name = "ElemLabel"
-		elem_lbl.anchor_left = 0.0; elem_lbl.anchor_top = 0.0
-		elem_lbl.anchor_right = 0.2; elem_lbl.anchor_bottom = 0.2
-		elem_lbl.offset_left = 1; elem_lbl.offset_top = 1
-		elem_lbl.offset_right = -1; elem_lbl.offset_bottom = -1
-		elem_lbl.add_theme_font_size_override("font_size", elem_size)
-		elem_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-		elem_lbl.vertical_alignment = VERTICAL_ALIGNMENT_TOP
-		slot_btn.add_child(elem_lbl)
-		
-		# 费用-右上角（占卡牌宽20% 高20%）
-		var cost_lbl = Label.new()
-		cost_lbl.name = "CostLabel"
-		cost_lbl.anchor_left = 0.8; cost_lbl.anchor_top = 0.0
-		cost_lbl.anchor_right = 1.0; cost_lbl.anchor_bottom = 0.2
-		cost_lbl.offset_left = 1; cost_lbl.offset_top = 1
-		cost_lbl.offset_right = -1; cost_lbl.offset_bottom = -1
-		cost_lbl.add_theme_font_size_override("font_size", cost_size)
-		cost_lbl.add_theme_color_override("font_color", Color("#f9d371"))
-		cost_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		cost_lbl.vertical_alignment = VERTICAL_ALIGNMENT_TOP
-		slot_btn.add_child(cost_lbl)
-		
-		# 中间内容区（占卡牌宽100% 高60%，居中）
-		var center_lbl = Label.new()
-		center_lbl.name = "CenterLabel"
-		center_lbl.anchor_left = 0.0; center_lbl.anchor_top = 0.2
-		center_lbl.anchor_right = 1.0; center_lbl.anchor_bottom = 0.8
-		center_lbl.offset_left = 1; center_lbl.offset_top = 1
-		center_lbl.offset_right = -1; center_lbl.offset_bottom = -1
-		center_lbl.add_theme_font_size_override("font_size", center_size)
-		center_lbl.add_theme_color_override("font_color", Color("#e8d5b7"))
-		center_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		center_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		center_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		slot_btn.add_child(center_lbl)
-		
-		# 攻击-左下角（占卡牌宽20% 高20%）
-		var atk_lbl = Label.new()
-		atk_lbl.name = "AtkLabel"
-		atk_lbl.anchor_left = 0.0; atk_lbl.anchor_top = 0.8
-		atk_lbl.anchor_right = 0.2; atk_lbl.anchor_bottom = 1.0
-		atk_lbl.offset_left = 1; atk_lbl.offset_top = 1
-		atk_lbl.offset_right = -1; atk_lbl.offset_bottom = -1
-		atk_lbl.add_theme_font_size_override("font_size", atk_hp_size)
-		atk_lbl.add_theme_color_override("font_color", Color("#e74c3c"))
-		atk_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-		atk_lbl.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
-		slot_btn.add_child(atk_lbl)
-		
-		# 生命-右下角（占卡牌宽20% 高20%）
-		var hp_lbl = Label.new()
-		hp_lbl.name = "HpLabel"
-		hp_lbl.anchor_left = 0.8; hp_lbl.anchor_top = 0.8
-		hp_lbl.anchor_right = 1.0; hp_lbl.anchor_bottom = 1.0
-		hp_lbl.offset_left = 1; hp_lbl.offset_top = 1
-		hp_lbl.offset_right = -1; hp_lbl.offset_bottom = -1
-		hp_lbl.add_theme_font_size_override("font_size", atk_hp_size)
-		hp_lbl.add_theme_color_override("font_color", Color("#2ecc71"))
-		hp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		hp_lbl.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
-		slot_btn.add_child(hp_lbl)
+		# 空位：羊皮纸墨线凹槽
+		_apply_all_states(slot_btn, _make_slot_recess_style())
+
+		# 卡面文字组（与手牌同一套分区）
+		_add_card_labels(slot_btn, scale)
 		
 		# 护盾遮罩（半透明浅蓝色，覆盖整张卡）
 		var shield_overlay = ColorRect.new()
@@ -521,7 +615,7 @@ func _add_field_slots(top: float, bottom: float, slot_color: Color, is_enemy: bo
 		shield_lbl.anchor_right = 1.0; shield_lbl.anchor_bottom = 1.0
 		shield_lbl.offset_left = 0; shield_lbl.offset_top = 2
 		shield_lbl.offset_right = 0; shield_lbl.offset_bottom = 0
-		shield_lbl.add_theme_font_size_override("font_size", max(10, int(atk_hp_size * 0.8)))
+		shield_lbl.add_theme_font_size_override("font_size", max(10, int(35 * scale)))
 		shield_lbl.add_theme_color_override("font_color", Color("#4FC3F7"))
 		shield_lbl.text = ""
 		shield_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -602,15 +696,8 @@ func _add_hand_area(top: float, bottom: float) -> Array:
 	var slot_w = Global.ph(0.105) if Global.landscape_canvas else Global.pw(0.22)
 	var slot_h = slot_w * (680.0/480.0)
 	
-	# 字号缩放（相对于标准卡牌宽度300px）
+	# 字号缩放（相对于标准卡牌宽度300px，卡面标签统一由 _add_card_labels 生成）
 	var scale = slot_w / 300.0
-	# 中间名字放大1.2倍，四角数值放大2倍
-	var elem_size = max(12, int(24 * scale * 2))
-	var cost_size = max(12, int(24 * scale * 2))
-	var center_size = max(10, int(36 * scale * 1.2))
-	var atk_hp_size = max(12, int(22 * scale * 2))
-	# 四角用更小的内部边距，腾出更多空间给文字
-	var pad = max(2, int(3 * scale))
 	
 	# 手牌区背景
 	var hand_bg = ColorRect.new()
@@ -657,17 +744,8 @@ func _add_hand_area(top: float, bottom: float) -> Array:
 		var card_btn = Button.new()
 		card_btn.name = "HandCard_" + str(i)
 		
-		var s = StyleBoxFlat.new()
-		s.bg_color = Color(0.18, 0.14, 0.25)
-		s.border_width_left = 2; s.border_width_right = 2
-		s.border_width_top = 2; s.border_width_bottom = 2
-		s.border_color = Color(0.4, 0.3, 0.5, 0.6)
-		s.corner_radius_top_left = 6; s.corner_radius_top_right = 6
-		s.corner_radius_bottom_left = 6; s.corner_radius_bottom_right = 6
-		card_btn.add_theme_stylebox_override("normal", s)
-		card_btn.add_theme_stylebox_override("hover", s)
-		card_btn.add_theme_stylebox_override("pressed", s)
-		card_btn.add_theme_stylebox_override("focus", s)
+		# 卡面底图（羊皮纸墨线卡框），初始为置灰占位
+		_apply_all_states(card_btn, _make_card_face_style(Color(0.4, 0.38, 0.45, 0.55)))
 		
 		# 用偏移定位精确控制位置和尺寸
 		card_btn.anchor_left = 0.0; card_btn.anchor_top = 0.0
@@ -680,71 +758,8 @@ func _add_hand_area(top: float, bottom: float) -> Array:
 		card_btn.text = ""  # 空文字
 		card_btn.disabled = true
 		
-		# ===== 子Label用偏移定位，字号按卡牌实际宽度缩放 =====
-		# 元素-左上角（占卡牌宽20% 高20%）
-		var elem_lbl = Label.new()
-		elem_lbl.name = "ElemLabel"
-		elem_lbl.anchor_left = 0.0; elem_lbl.anchor_top = 0.0
-		elem_lbl.anchor_right = 0.0; elem_lbl.anchor_bottom = 0.0
-		elem_lbl.offset_left = pad; elem_lbl.offset_top = pad / 2
-		elem_lbl.offset_right = slot_w * 0.2 - pad; elem_lbl.offset_bottom = slot_h * 0.2 - pad / 2
-		elem_lbl.add_theme_font_size_override("font_size", elem_size)
-		elem_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-		elem_lbl.vertical_alignment = VERTICAL_ALIGNMENT_TOP
-		card_btn.add_child(elem_lbl)
-		
-		# 费用-右上角（占卡牌宽20% 高20%）
-		var cost_lbl = Label.new()
-		cost_lbl.name = "CostLabel"
-		cost_lbl.anchor_left = 0.0; cost_lbl.anchor_top = 0.0
-		cost_lbl.anchor_right = 0.0; cost_lbl.anchor_bottom = 0.0
-		cost_lbl.offset_left = slot_w * 0.8 + pad; cost_lbl.offset_top = pad / 2
-		cost_lbl.offset_right = slot_w - pad; cost_lbl.offset_bottom = slot_h * 0.2 - pad / 2
-		cost_lbl.add_theme_font_size_override("font_size", cost_size)
-		cost_lbl.add_theme_color_override("font_color", Color("#f9d371"))
-		cost_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		cost_lbl.vertical_alignment = VERTICAL_ALIGNMENT_TOP
-		card_btn.add_child(cost_lbl)
-		
-		# 中间内容区（占卡牌宽100% 高60%）
-		var center_lbl = Label.new()
-		center_lbl.name = "CenterLabel"
-		center_lbl.anchor_left = 0.0; center_lbl.anchor_top = 0.0
-		center_lbl.anchor_right = 0.0; center_lbl.anchor_bottom = 0.0
-		center_lbl.offset_left = pad; center_lbl.offset_top = slot_h * 0.2 + pad
-		center_lbl.offset_right = slot_w - pad; center_lbl.offset_bottom = slot_h * 0.8 - pad
-		center_lbl.add_theme_font_size_override("font_size", center_size)
-		center_lbl.add_theme_color_override("font_color", Color("#e8d5b7"))
-		center_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		center_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		center_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		card_btn.add_child(center_lbl)
-		
-		# 攻击-左下角（占卡牌宽20% 高20%）
-		var atk_lbl = Label.new()
-		atk_lbl.name = "AtkLabel"
-		atk_lbl.anchor_left = 0.0; atk_lbl.anchor_top = 0.0
-		atk_lbl.anchor_right = 0.0; atk_lbl.anchor_bottom = 0.0
-		atk_lbl.offset_left = pad; atk_lbl.offset_top = slot_h * 0.8 + pad
-		atk_lbl.offset_right = slot_w * 0.2 - pad; atk_lbl.offset_bottom = slot_h - pad / 2
-		atk_lbl.add_theme_font_size_override("font_size", atk_hp_size)
-		atk_lbl.add_theme_color_override("font_color", Color("#e74c3c"))
-		atk_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-		atk_lbl.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
-		card_btn.add_child(atk_lbl)
-		
-		# 生命-右下角（占卡牌宽20% 高20%）
-		var hp_lbl = Label.new()
-		hp_lbl.name = "HpLabel"
-		hp_lbl.anchor_left = 0.0; hp_lbl.anchor_top = 0.0
-		hp_lbl.anchor_right = 0.0; hp_lbl.anchor_bottom = 0.0
-		hp_lbl.offset_left = slot_w * 0.8 + pad; hp_lbl.offset_top = slot_h * 0.8 + pad
-		hp_lbl.offset_right = slot_w - pad; hp_lbl.offset_bottom = slot_h - pad / 2
-		hp_lbl.add_theme_font_size_override("font_size", atk_hp_size)
-		hp_lbl.add_theme_color_override("font_color", Color("#2ecc71"))
-		hp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		hp_lbl.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
-		card_btn.add_child(hp_lbl)
+		# 卡面文字组：文字摆到卡框对应分区（费用蜡印/名称条/描述区/攻血角标）
+		_add_card_labels(card_btn, scale)
 		
 		card_btn.gui_input.connect(_on_hand_card_drag.bind(i))
 		
@@ -1058,37 +1073,36 @@ func _refresh_hand_ui() -> void:
 		# 获取子Label引用
 		var elem_lbl = btn.get_node_or_null("ElemLabel") as Label
 		var cost_lbl = btn.get_node_or_null("CostLabel") as Label
-		var center_lbl = btn.get_node_or_null("CenterLabel") as Label
+		var name_lbl = btn.get_node_or_null("NameLabel") as Label
+		var desc_lbl = btn.get_node_or_null("DescLabel") as Label
 		var atk_lbl = btn.get_node_or_null("AtkLabel") as Label
 		var hp_lbl = btn.get_node_or_null("HpLabel") as Label
 		
 		if i < self_p.hand.size():
 			var card = self_p.hand[i] as BattleCard
 			
-			# 元素-左上角（用简短文字代替emoji）
+			# 元素-右上角（当前元素图标已清空，保留分区）
 			if elem_lbl:
-				var element_icon = ""
-				match card.element:
-					"火": element_icon = ""
-					"水": element_icon = ""
-					"风": element_icon = ""
-					"地": element_icon = ""
-					"光": element_icon = ""
-					"暗": element_icon = ""
-				elem_lbl.text = element_icon
+				elem_lbl.text = ""
 			
-			# 费用-右上角
+			# 费用-左上角蜡印
 			if cost_lbl:
 				cost_lbl.text = str(card.base_cost)
 			
-			# 中间内容：名字 + 字段 + 效果
-			if center_lbl:
-				var center_text = card.card_name + "\n"
+			# 名称条
+			if name_lbl:
+				name_lbl.text = card.card_name
+			
+			# 描述区：字段 | 效果数
+			if desc_lbl:
+				var desc_text = ""
 				if card.fields.size() > 0:
-					center_text += "" + "|".join(card.fields) + "\n"
+					desc_text += "|".join(card.fields)
 				if card.effects.size() > 0:
-					center_text += "" + str(card.effects.size()) + "效果"
-				center_lbl.text = center_text
+					if desc_text != "":
+						desc_text += "\n"
+					desc_text += str(card.effects.size()) + "效果"
+				desc_lbl.text = desc_text
 			
 			# 攻击-左下角
 			if atk_lbl:
@@ -1100,64 +1114,25 @@ func _refresh_hand_ui() -> void:
 			
 			btn.disabled = false
 			
-			# 根据费用高亮可召唤的卡牌（主要阶段时）
-			if _battle_manager.current_phase == BattleManager.Phase.MAIN and _battle_manager.is_player_turn():
-				if card.base_cost <= self_p.energy:
-					# 可召唤，绿色边框
-					var s = StyleBoxFlat.new()
-					s.bg_color = Color(0.18, 0.14, 0.25)
-					s.border_width_left = 2; s.border_width_right = 2
-					s.border_width_top = 2; s.border_width_bottom = 2
-					s.border_color = Color(0.2, 0.8, 0.2, 0.8)
-					s.corner_radius_top_left = 6; s.corner_radius_top_right = 6
-					s.corner_radius_bottom_left = 6; s.corner_radius_bottom_right = 6
-					btn.add_theme_stylebox_override("normal", s)
-					btn.add_theme_stylebox_override("hover", s)
-					btn.add_theme_stylebox_override("pressed", s)
-					btn.add_theme_stylebox_override("focus", s)
-					btn.add_theme_color_override("font_color", Color("#80ff80"))
-				else:
-					# 费用不足，灰色
-					var s = StyleBoxFlat.new()
-					s.bg_color = Color(0.18, 0.14, 0.25)
-					s.border_width_left = 2; s.border_width_right = 2
-					s.border_width_top = 2; s.border_width_bottom = 2
-					s.border_color = Color(0.4, 0.3, 0.5, 0.6)
-					s.corner_radius_top_left = 6; s.corner_radius_top_right = 6
-					s.corner_radius_bottom_left = 6; s.corner_radius_bottom_right = 6
-					btn.add_theme_stylebox_override("normal", s)
-					btn.add_theme_stylebox_override("hover", s)
-					btn.add_theme_stylebox_override("pressed", s)
-					btn.add_theme_stylebox_override("focus", s)
-					btn.add_theme_color_override("font_color", Color("#a0a0b0"))
+			# 卡面底图 + 功能高亮描边（可召唤绿框 / 费用不足置灰）
+			var can_summon_now: bool = _battle_manager.current_phase == BattleManager.Phase.MAIN and _battle_manager.is_player_turn()
+			if can_summon_now and card.base_cost <= self_p.energy:
+				_apply_all_states(btn, _make_card_face_style())
+				_set_card_highlight(btn, Color(0.13, 0.75, 0.25, 0.95))
+			elif can_summon_now:
+				_apply_all_states(btn, _make_card_face_style(Color(0.55, 0.53, 0.60)))
+				_clear_card_highlight(btn)
 			else:
-				# 非己方回合或非主要阶段，重置为默认样式
-				var reset_s = StyleBoxEmpty.new()
-				btn.add_theme_stylebox_override("normal", reset_s)
-				btn.add_theme_stylebox_override("hover", reset_s)
-				btn.add_theme_stylebox_override("pressed", reset_s)
-				btn.add_theme_stylebox_override("focus", reset_s)
-				btn.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 0.9))
+				_apply_all_states(btn, _make_card_face_style())
+				_clear_card_highlight(btn)
 		else:
 			# 无手牌，隐藏/清空子Label
-			if elem_lbl: elem_lbl.text = ""
-			if cost_lbl: cost_lbl.text = ""
-			if center_lbl: center_lbl.text = ""
-			if atk_lbl: atk_lbl.text = ""
-			if hp_lbl: hp_lbl.text = ""
+			for l in [elem_lbl, cost_lbl, name_lbl, desc_lbl, atk_lbl, hp_lbl]:
+				if l:
+					l.text = ""
 			btn.disabled = true
-			var s = StyleBoxFlat.new()
-			s.bg_color = Color(0.10, 0.08, 0.16)
-			s.border_width_left = 2; s.border_width_right = 2
-			s.border_width_top = 2; s.border_width_bottom = 2
-			s.border_color = Color(0.3, 0.2, 0.4, 0.3)
-			s.corner_radius_top_left = 6; s.corner_radius_top_right = 6
-			s.corner_radius_bottom_left = 6; s.corner_radius_bottom_right = 6
-			btn.add_theme_stylebox_override("normal", s)
-			btn.add_theme_stylebox_override("hover", s)
-			btn.add_theme_stylebox_override("pressed", s)
-			btn.add_theme_stylebox_override("focus", s)
-			btn.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 0.1))
+			_apply_all_states(btn, _make_card_face_style(Color(0.35, 0.32, 0.40, 0.5)))
+			_clear_card_highlight(btn)
 
 
 # ===== 刷新场地UI（通过子Label布局，同手牌卡面） =====
@@ -1174,7 +1149,8 @@ func _refresh_field_ui() -> void:
 			continue
 		var elem_lbl = btn.get_node_or_null("ElemLabel") as Label
 		var cost_lbl = btn.get_node_or_null("CostLabel") as Label
-		var center_lbl = btn.get_node_or_null("CenterLabel") as Label
+		var name_lbl = btn.get_node_or_null("NameLabel") as Label
+		var desc_lbl = btn.get_node_or_null("DescLabel") as Label
 		var atk_lbl = btn.get_node_or_null("AtkLabel") as Label
 		var hp_lbl = btn.get_node_or_null("HpLabel") as Label
 		
@@ -1185,30 +1161,26 @@ func _refresh_field_ui() -> void:
 			btn.disabled = false
 			btn.scale = Vector2(1.0, 1.0)
 			btn.modulate = Color(1.0, 1.0, 1.0, 1.0)
-			# 元素
+			# 元素（右上角，当前图标已清空，保留分区）
 			if elem_lbl:
-				var icon = ""
-				match card.element:
-					"火": icon = ""
-					"水": icon = ""
-					"风": icon = ""
-					"地": icon = ""
-					"光": icon = ""
-					"暗": icon = ""
-				elem_lbl.text = icon
-			# 费用（纯数字，和手牌一致）
+				elem_lbl.text = ""
+			# 费用（左上角蜡印）
 			if cost_lbl: cost_lbl.text = str(card.base_cost)
-			# 中间（名字 + 字段 + 效果数）
-			if center_lbl:
-				var ct = card.card_name + "\n"
+			# 名称条
+			if name_lbl: name_lbl.text = card.card_name
+			# 描述区（字段 | 效果数）
+			if desc_lbl:
+				var dt = ""
 				if card.fields.size() > 0:
-					ct += "|".join(card.fields) + "\n"
+					dt += "|".join(card.fields)
 				if card.effects.size() > 0:
-					ct += str(card.effects.size()) + "效果"
-				center_lbl.text = ct
-			# 攻击（纯数字，和手牌一致）
+					if dt != "":
+						dt += "\n"
+					dt += str(card.effects.size()) + "效果"
+				desc_lbl.text = dt
+			# 攻击（左下角）
 			if atk_lbl: atk_lbl.text = str(card.current_atk)
-			# 生命（纯数字，和手牌一致）
+			# 生命（右下角）
 			if hp_lbl: hp_lbl.text = str(card.current_hp)
 			
 			# 护盾遮罩 + 护盾数值
@@ -1249,37 +1221,13 @@ func _refresh_field_ui() -> void:
 			_prev_player_hp[i] = card.current_hp
 			
 			# 攻击选择模式高亮
-			if _attack_target_mode and _selected_attacker_slot >= 0:
-				pass
-			elif _battle_manager.current_phase == BattleManager.Phase.BATTLE and _battle_manager.is_player_turn():
+			_apply_all_states(btn, _make_card_face_style())
+			_clear_card_highlight(btn)
+			if not (_attack_target_mode and _selected_attacker_slot >= 0) \
+					and _battle_manager.current_phase == BattleManager.Phase.BATTLE and _battle_manager.is_player_turn():
 				if card.can_attack():
-					var s = StyleBoxFlat.new()
-					s.bg_color = Color(0.2, 0.5, 0.8, 0.3)
-					s.border_width_left = 2; s.border_width_right = 2
-					s.border_width_top = 2; s.border_width_bottom = 2
-					s.border_color = Color("#f9d371")
-					s.corner_radius_top_left = 6; s.corner_radius_top_right = 6
-					s.corner_radius_bottom_left = 6; s.corner_radius_bottom_right = 6
-					btn.add_theme_stylebox_override("normal", s)
-				else:
-					var s = StyleBoxFlat.new()
-					s.bg_color = Color(0.2, 0.5, 0.8, 0.3)
-					s.border_width_left = 2; s.border_width_right = 2
-					s.border_width_top = 2; s.border_width_bottom = 2
-					s.border_color = Color(1.0, 1.0, 1.0, 0.15)
-					s.corner_radius_top_left = 6; s.corner_radius_top_right = 6
-					s.corner_radius_bottom_left = 6; s.corner_radius_bottom_right = 6
-					btn.add_theme_stylebox_override("normal", s)
-			else:
-				# 非战斗阶段或非己方回合，重置为默认样式
-				var s = StyleBoxFlat.new()
-				s.bg_color = Color(0.2, 0.5, 0.8, 0.3)
-				s.border_width_left = 2; s.border_width_right = 2
-				s.border_width_top = 2; s.border_width_bottom = 2
-				s.border_color = Color(1.0, 1.0, 1.0, 0.15)
-				s.corner_radius_top_left = 6; s.corner_radius_top_right = 6
-				s.corner_radius_bottom_left = 6; s.corner_radius_bottom_right = 6
-				btn.add_theme_stylebox_override("normal", s)
+					# 可攻击：金色描边
+					_set_card_highlight(btn, Color(0.98, 0.80, 0.20, 0.95))
 		else:
 			# 卡牌离场：检测是否刚离场，先播放破坏动画
 			var was_occupied = false
@@ -1292,30 +1240,22 @@ func _refresh_field_ui() -> void:
 				# 旧值在动画结束后才清空，防止重复触发
 				# 但标记为即将离场，下次刷新时不会再触发
 			else:
-			# 已经是空位，直接清空
-				if elem_lbl: elem_lbl.text = ""
-				if cost_lbl: cost_lbl.text = ""
-				if center_lbl: center_lbl.text = ""
-				if atk_lbl: atk_lbl.text = ""
-				if hp_lbl: hp_lbl.text = ""
+				# 已经是空位，直接清空
+				for l in [elem_lbl, cost_lbl, name_lbl, desc_lbl, atk_lbl, hp_lbl]:
+					if l:
+						l.text = ""
 				var shield_overlay = btn.get_node_or_null("ShieldOverlay") as ColorRect
 				var shield_lbl = btn.get_node_or_null("ShieldLabel") as Label
 				if shield_overlay: shield_overlay.visible = false
 				if shield_lbl: shield_lbl.visible = false
 				btn.disabled = true
+				_apply_all_states(btn, _make_slot_recess_style())
+				_clear_card_highlight(btn)
 			
 			# 清空旧值（卡牌离场）
 			if i < _prev_player_atk.size():
 				_prev_player_atk[i] = 0
 				_prev_player_hp[i] = 0
-			var s = StyleBoxFlat.new()
-			s.bg_color = Color(0.2, 0.5, 0.8, 0.3)
-			s.border_width_left = 2; s.border_width_right = 2
-			s.border_width_top = 2; s.border_width_bottom = 2
-			s.border_color = Color(1.0, 1.0, 1.0, 0.15)
-			s.corner_radius_top_left = 6; s.corner_radius_top_right = 6
-			s.corner_radius_bottom_left = 6; s.corner_radius_bottom_right = 6
-			btn.add_theme_stylebox_override("normal", s)
 	
 	# 敌方场地
 	for i in range(_enemy_slots.size()):
@@ -1324,7 +1264,8 @@ func _refresh_field_ui() -> void:
 			continue
 		var elem_lbl = btn.get_node_or_null("ElemLabel") as Label
 		var cost_lbl = btn.get_node_or_null("CostLabel") as Label
-		var center_lbl = btn.get_node_or_null("CenterLabel") as Label
+		var name_lbl = btn.get_node_or_null("NameLabel") as Label
+		var desc_lbl = btn.get_node_or_null("DescLabel") as Label
 		var atk_lbl = btn.get_node_or_null("AtkLabel") as Label
 		var hp_lbl = btn.get_node_or_null("HpLabel") as Label
 		
@@ -1332,23 +1273,18 @@ func _refresh_field_ui() -> void:
 		if card != null:
 			# 敌方卡牌显示完整信息
 			if elem_lbl:
-				var icon = ""
-				match card.element:
-					"火": icon = ""
-					"水": icon = ""
-					"风": icon = ""
-					"地": icon = ""
-					"光": icon = ""
-					"暗": icon = ""
-				elem_lbl.text = icon
+				elem_lbl.text = ""
 			if cost_lbl: cost_lbl.text = str(card.base_cost)
-			if center_lbl:
-				var ct = card.card_name + "\n"
+			if name_lbl: name_lbl.text = card.card_name
+			if desc_lbl:
+				var dt = ""
 				if card.fields.size() > 0:
-					ct += "|".join(card.fields) + "\n"
+					dt += "|".join(card.fields)
 				if card.effects.size() > 0:
-					ct += str(card.effects.size()) + "效果"
-				center_lbl.text = ct
+					if dt != "":
+						dt += "\n"
+					dt += str(card.effects.size()) + "效果"
+				desc_lbl.text = dt
 			if atk_lbl: atk_lbl.text = str(card.current_atk)
 			if hp_lbl: hp_lbl.text = str(card.current_hp)
 			
@@ -1389,15 +1325,11 @@ func _refresh_field_ui() -> void:
 			_prev_enemy_hp[i] = card.current_hp
 			
 			# 攻击目标模式高亮
+			_apply_all_states(btn, _make_card_face_style())
+			_clear_card_highlight(btn)
 			if _attack_target_mode and _selected_attacker_slot >= 0:
-				var s = StyleBoxFlat.new()
-				s.bg_color = Color(0.7, 0.2, 0.2, 0.5)
-				s.border_width_left = 3; s.border_width_right = 3
-				s.border_width_top = 3; s.border_width_bottom = 3
-				s.border_color = Color("#e74c3c")
-				s.corner_radius_top_left = 6; s.corner_radius_top_right = 6
-				s.corner_radius_bottom_left = 6; s.corner_radius_bottom_right = 6
-				btn.add_theme_stylebox_override("normal", s)
+				# 可选目标：红色描边
+				_set_card_highlight(btn, Color(0.91, 0.30, 0.24, 0.95))
 		else:
 			# 卡牌离场：检测是否刚离场，先播放破坏动画（敌方）
 			var was_occupied = false
@@ -1407,28 +1339,20 @@ func _refresh_field_ui() -> void:
 			if was_occupied:
 				_play_destroy_animation(btn, 0.5)
 			else:
-				if elem_lbl: elem_lbl.text = ""
-				if cost_lbl: cost_lbl.text = ""
-				if center_lbl: center_lbl.text = ""
-				if atk_lbl: atk_lbl.text = ""
-				if hp_lbl: hp_lbl.text = ""
+				for l in [elem_lbl, cost_lbl, name_lbl, desc_lbl, atk_lbl, hp_lbl]:
+					if l:
+						l.text = ""
 				var shield_overlay = btn.get_node_or_null("ShieldOverlay") as ColorRect
 				var shield_lbl = btn.get_node_or_null("ShieldLabel") as Label
 				if shield_overlay: shield_overlay.visible = false
 				if shield_lbl: shield_lbl.visible = false
 				btn.disabled = true
+				_apply_all_states(btn, _make_slot_recess_style())
+				_clear_card_highlight(btn)
 			# 清空旧值（敌方卡牌离场）
 			if i < _prev_enemy_atk.size():
 				_prev_enemy_atk[i] = 0
 				_prev_enemy_hp[i] = 0
-			var s = StyleBoxFlat.new()
-			s.bg_color = Color(0.7, 0.2, 0.2, 0.3)
-			s.border_width_left = 2; s.border_width_right = 2
-			s.border_width_top = 2; s.border_width_bottom = 2
-			s.border_color = Color(1.0, 1.0, 1.0, 0.15)
-			s.corner_radius_top_left = 6; s.corner_radius_top_right = 6
-			s.corner_radius_bottom_left = 6; s.corner_radius_bottom_right = 6
-			btn.add_theme_stylebox_override("normal", s)
 
 
 # ===== 更新阶段UI =====
@@ -3478,22 +3402,12 @@ func _refresh_discard_hand_ui() -> void:
 		if i < self_p.hand.size():
 			btn.show()
 			var is_selected = _discard_selected.has(i)
-			# 选中高亮
-			var s = StyleBoxFlat.new()
+			# 卡面底图 + 选中红框高亮
+			_apply_all_states(btn, _make_card_face_style())
 			if is_selected:
-				s.bg_color = Color(0.6, 0.2, 0.3, 0.8)
-				s.border_color = Color(1.0, 0.4, 0.4)
+				_set_card_highlight(btn, Color(1.0, 0.4, 0.4, 0.95))
 			else:
-				s.bg_color = Color(0.18, 0.14, 0.25)
-				s.border_color = Color(0.4, 0.3, 0.5, 0.6)
-			s.border_width_left = 2; s.border_width_right = 2
-			s.border_width_top = 2; s.border_width_bottom = 2
-			s.corner_radius_top_left = 6; s.corner_radius_top_right = 6
-			s.corner_radius_bottom_left = 6; s.corner_radius_bottom_right = 6
-			btn.add_theme_stylebox_override("normal", s)
-			btn.add_theme_stylebox_override("hover", s)
-			btn.add_theme_stylebox_override("pressed", s)
-			btn.add_theme_stylebox_override("focus", s)
+				_clear_card_highlight(btn)
 			btn.disabled = false
 		else:
 			btn.hide()
@@ -3886,26 +3800,10 @@ func _input_handle_drag_summon(event: InputEvent) -> void:
 					var slot_rect = Rect2(slot_btn.global_position, slot_btn.size)
 					if slot_rect.has_point(mouse_global):
 						# 悬停高亮：绿色边框
-						var hs = StyleBoxFlat.new()
-						hs.bg_color = Color(0.2, 0.5, 0.8, 0.3)
-						hs.border_width_left = 3; hs.border_width_right = 3
-						hs.border_width_top = 3; hs.border_width_bottom = 3
-						hs.border_color = Color(0.2, 1.0, 0.2, 0.9)
-						hs.corner_radius_top_left = 6; hs.corner_radius_top_right = 6
-						hs.corner_radius_bottom_left = 6; hs.corner_radius_bottom_right = 6
-						slot_btn.add_theme_stylebox_override("normal", hs)
-						slot_btn.add_theme_stylebox_override("hover", hs)
+						_set_card_highlight(slot_btn, Color(0.2, 1.0, 0.2, 0.9))
 					else:
-						# 恢复默认空卡槽样式
-						var ds = StyleBoxFlat.new()
-						ds.bg_color = Color(0.2, 0.5, 0.8, 0.3)
-						ds.border_width_left = 2; ds.border_width_right = 2
-						ds.border_width_top = 2; ds.border_width_bottom = 2
-						ds.border_color = Color(1.0, 1.0, 1.0, 0.15)
-						ds.corner_radius_top_left = 6; ds.corner_radius_top_right = 6
-						ds.corner_radius_bottom_left = 6; ds.corner_radius_bottom_right = 6
-						slot_btn.add_theme_stylebox_override("normal", ds)
-						slot_btn.add_theme_stylebox_override("hover", ds)
+						# 非悬停空位恢复默认（墨线凹槽，无高亮）
+						_clear_card_highlight(slot_btn)
 	
 	elif event is InputEventMouseButton:
 		if not event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -4023,38 +3921,14 @@ func _input_handle_drag_attack(event: InputEvent) -> void:
 				
 				if has_card and is_hovering:
 					# 可攻击目标：金色高亮边框
-					var hs = StyleBoxFlat.new()
-					hs.bg_color = Color(0.7, 0.2, 0.2, 0.3)
-					hs.border_width_left = 3; hs.border_width_right = 3
-					hs.border_width_top = 3; hs.border_width_bottom = 3
-					hs.border_color = Color(1.0, 0.8, 0.0, 1.0)  # 金色
-					hs.corner_radius_top_left = 6; hs.corner_radius_top_right = 6
-					hs.corner_radius_bottom_left = 6; hs.corner_radius_bottom_right = 6
-					slot_btn.add_theme_stylebox_override("normal", hs)
-					slot_btn.add_theme_stylebox_override("hover", hs)
+					_set_card_highlight(slot_btn, Color(1.0, 0.8, 0.0, 1.0))
 				elif not has_card:
-					# 空敌方卡槽恢复默认
-					var ds = StyleBoxFlat.new()
-					ds.bg_color = Color(0.7, 0.2, 0.2, 0.3)
-					ds.border_width_left = 2; ds.border_width_right = 2
-					ds.border_width_top = 2; ds.border_width_bottom = 2
-					ds.border_color = Color(1.0, 1.0, 1.0, 0.15)
-					ds.corner_radius_top_left = 6; ds.corner_radius_top_right = 6
-					ds.corner_radius_bottom_left = 6; ds.corner_radius_bottom_right = 6
-					slot_btn.add_theme_stylebox_override("normal", ds)
-					slot_btn.add_theme_stylebox_override("hover", ds)
+					# 空敌方卡槽恢复默认（墨线凹槽，无高亮）
+					_clear_card_highlight(slot_btn)
 				else:
 					# 有卡牌但没悬停，恢复默认样式
 					# 由 _refresh_field_ui 管理，但我们简单恢复
-					var ds = StyleBoxFlat.new()
-					ds.bg_color = Color(0.7, 0.2, 0.2, 0.3)
-					ds.border_width_left = 2; ds.border_width_right = 2
-					ds.border_width_top = 2; ds.border_width_bottom = 2
-					ds.border_color = Color(1.0, 1.0, 1.0, 0.15)
-					ds.corner_radius_top_left = 6; ds.corner_radius_top_right = 6
-					ds.corner_radius_bottom_left = 6; ds.corner_radius_bottom_right = 6
-					slot_btn.add_theme_stylebox_override("normal", ds)
-					slot_btn.add_theme_stylebox_override("hover", ds)
+					_clear_card_highlight(slot_btn)
 			
 			# 检查是否悬停在敌方英雄区域（上半屏）
 			var is_over_hero = mouse_global.y < middle_y
@@ -4133,21 +4007,13 @@ func _cleanup_drag() -> void:
 				continue
 			var slot_has_card = i < self_p.field.size() and self_p.field[i] != null and self_p.field[i].is_alive()
 			if slot_has_card:
-				# 有卡牌的卡槽由 _refresh_field_ui 管理
-				continue
+				# 有卡牌的卡槽恢复卡面底图
+				_apply_all_states(slot_btn, _make_card_face_style())
+				_clear_card_highlight(slot_btn)
 			else:
-				# 空卡槽恢复默认
-				var ds = StyleBoxFlat.new()
-				ds.bg_color = Color(0.2, 0.5, 0.8, 0.3)
-				ds.border_width_left = 2; ds.border_width_right = 2
-				ds.border_width_top = 2; ds.border_width_bottom = 2
-				ds.border_color = Color(1.0, 1.0, 1.0, 0.15)
-				ds.corner_radius_top_left = 6; ds.corner_radius_top_right = 6
-				ds.corner_radius_bottom_left = 6; ds.corner_radius_bottom_right = 6
-				slot_btn.add_theme_stylebox_override("normal", ds)
-				slot_btn.add_theme_stylebox_override("hover", ds)
-				slot_btn.add_theme_stylebox_override("pressed", ds)
-				slot_btn.add_theme_stylebox_override("focus", ds)
+				# 空卡槽恢复墨线凹槽
+				_apply_all_states(slot_btn, _make_slot_recess_style())
+				_clear_card_highlight(slot_btn)
 	
 	print("[拖拽] 清理完成")
 
@@ -4166,21 +4032,19 @@ func _cleanup_drag_attack() -> void:
 	_press_slot_index = -1
 	
 	# 恢复所有敌方卡槽样式
-	for i in range(_enemy_slots.size()):
-		var slot_btn = _enemy_slots[i] as Button
-		if slot_btn == null:
-			continue
-		var ds = StyleBoxFlat.new()
-		ds.bg_color = Color(0.7, 0.2, 0.2, 0.3)
-		ds.border_width_left = 2; ds.border_width_right = 2
-		ds.border_width_top = 2; ds.border_width_bottom = 2
-		ds.border_color = Color(1.0, 1.0, 1.0, 0.15)
-		ds.corner_radius_top_left = 6; ds.corner_radius_top_right = 6
-		ds.corner_radius_bottom_left = 6; ds.corner_radius_bottom_right = 6
-		slot_btn.add_theme_stylebox_override("normal", ds)
-		slot_btn.add_theme_stylebox_override("hover", ds)
-		slot_btn.add_theme_stylebox_override("pressed", ds)
-		slot_btn.add_theme_stylebox_override("focus", ds)
+	if _battle_manager != null:
+		var enemy_p = _battle_manager.player_opponent
+		for i in range(_enemy_slots.size()):
+			var slot_btn = _enemy_slots[i] as Button
+			if slot_btn == null:
+				continue
+			var enemy_slot_has_card = i < enemy_p.field.size() and enemy_p.field[i] != null and enemy_p.field[i].is_alive()
+			if enemy_slot_has_card:
+				_apply_all_states(slot_btn, _make_card_face_style())
+				_clear_card_highlight(slot_btn)
+			else:
+				_apply_all_states(slot_btn, _make_slot_recess_style())
+				_clear_card_highlight(slot_btn)
 	
 	print("[拖拽攻击] 清理完成")
 

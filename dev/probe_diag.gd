@@ -11,6 +11,8 @@ func _process(_d: float) -> void:
 			get_tree().quit()
 			return
 		print("[PROBE] scene=", battle.name, " root.size=", battle.size)
+		var win := battle.get_window()
+		print("[PROBE] window.size=", win.size, " content_scale_size=", win.content_scale_size, " scale_factor=", win.content_scale_factor, " scale_mode=", win.content_scale_mode, " aspect=", win.content_scale_aspect, " screen_size=", DisplayServer.screen_get_size(win.current_screen), " dpi=", DisplayServer.screen_get_dpi(win.current_screen))
 		var vp := battle.get_viewport()
 		print("[PROBE] visible_rect=", vp.get_visible_rect())
 		# 真实手牌卡父链（代码建的真身，被改名 @ScrollContainer@63）
